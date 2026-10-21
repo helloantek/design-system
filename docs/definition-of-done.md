@@ -5,6 +5,7 @@ A component is ready for other projects when all of these hold:
 **Fidelity**
 - [ ] Every Figma variant and state is reachable through props or CSS states.
 - [ ] `npm run test:visual -- <component>` passes; references cover all states of the default size, every size and every shape.
+- [ ] `spec.json` + `layer-map.json` exist and every mapped layer is "exact"; any `skip` has a `$why`.
 
 **Code**
 - [ ] Styles live in `@helloantek/ds-css`, use only `var(--ds-*)`, and work with plain HTML.

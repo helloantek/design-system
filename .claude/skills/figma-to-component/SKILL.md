@@ -29,6 +29,7 @@ Parse the URL: `figma.com/design/<fileKey>/…?node-id=<a>-<b>` → nodeId `<a>:
 
 1. For each variant to verify, `get_screenshot(fileKey, nodeId, enableBase64Response: true)`: the PNG is saved under the session's `tool-results/` folder (path printed in the result). Copy them into `tools/figma-visual/references/<name>/<slug>.png`. Cover all states of the default size, every size, every shape.
 2. Write `manifest.json` like `references/button/manifest.json` (props = Figma properties, nodeW/nodeH from metadata).
+   Then export exact values: run `scripts/export-spec.js` with the manifest's node ids and the layer paths you need (`root`, `Label/TEXT`, `badge`, `Suffix#1`…), save the result as `references/<name>/spec.json`, and write `references/<name>/layer-map.json` mapping each path to a selector inside `#target` (how strokes are drawn: `before-border`, `inset-shadow`; icon colour: `"fill": "color"`; placeholder text: `"text": "placeholder-if-empty"`). Skip a key only when the structure differs on purpose, and say why in `$why`.
 3. Add `tools/figma-visual/renderers/<name>.tsx` and register it in `renderers/index.ts`. Hover/Press/Focus come from real input; render the element to measure with `id="target"`.
 4. `npm run test:visual -- <name>` and `npm run build-storybook && npm run test:storybook`. Look at `tools/figma-visual/out/report.html`; do not raise thresholds to pass.
 
@@ -47,6 +48,7 @@ Parse the URL: `figma.com/design/<fileKey>/…?node-id=<a>-<b>` → nodeId `<a>:
 - **Load every font weight the component uses** (`@fontsource/inter/400.css` and `500.css`). With one weight loaded, the browser draws every weight with it and the visual check cannot see weight mistakes (Input text rendered Medium instead of Regular until this was fixed).
 - **Text must be laid out with fractional glyph advances** (`--font-render-hinting=none`, set in `check.mjs`). Hinted builds snap labels to whole pixels (~1 px narrower than Figma) and fail only on CI; the check now refuses to run in that mode.
 - **Interactive states in the visual check need a repaint and a real focus**; `check.mjs` waits for both. If an Active/Focus reference fails, look at the capture before changing CSS.
+- **Pixels miss 1 px spacing, radius and weight changes**; the spec check catches them. A spec mismatch is a real difference from Figma even when the render looks identical (e.g. icon-only buttons had a 6 px `gap` that Figma doesn't).
 - **Subtle fills (≤ 10% alpha) pass the 0.1 pixelmatch threshold** — the `tint` metric exists for them; never raise `maxTint` to make a variant pass.
 - **Don't build one component for a whole Figma set** when variants need their own behaviour; see "Decide the scope" in the playbook.
 - Contrast failures that come from the Figma palette are design findings: report them, do not change colours in code.

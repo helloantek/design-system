@@ -9,6 +9,8 @@ import { preview } from 'vite';
 import { chromium } from 'playwright';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
+import { existsSync } from 'node:fs';
+import { compareInPage, layersFor } from './spec-check.mjs';
 
 const here = import.meta.dirname;
 const out = join(here, 'out');
@@ -107,6 +109,10 @@ const results = [];
 for (const component of components) {
   const manifest = JSON.parse(readFileSync(join(here, 'references', component, 'manifest.json')));
   const { maxMismatch, maxTint, maxSizeDelta } = manifest.thresholds;
+  const specFile = join(here, 'references', component, 'spec.json');
+  const spec = existsSync(specFile) ? JSON.parse(readFileSync(specFile)) : null;
+  const layerMap = spec ? JSON.parse(readFileSync(join(here, 'references', component, 'layer-map.json'))).layers : null;
+  if (!spec) console.warn(`Warning: ${component} has no spec.json; only pixels are compared.`);
   for (const entry of manifest.entries) {
     const params = new URLSearchParams({ component, brand: manifest.brand, scheme: manifest.scheme, props: JSON.stringify(entry.props) });
     await page.goto(`http://localhost:4179/?${params}`);
@@ -130,6 +136,9 @@ for (const component of components) {
       clip: { x: box.x - PAD, y: box.y - PAD, width: box.width + PAD * 2, height: box.height + PAD * 2 },
       animations: 'disabled',
     });
+    // Exact values (while Hover/Press/Focus is still active).
+    const expected = spec && layersFor(spec, entry.nodeId);
+    const specIssues = expected ? await page.evaluate(compareInPage, { map: layerMap, layers: expected }) : spec ? [`no spec for ${entry.nodeId}`] : [];
     if (state === 'Press') await page.mouse.up();
     await page.mouse.move(0, 0);
 
@@ -138,10 +147,11 @@ for (const component of components) {
     const diffFile = `${component}--${entry.slug}.png`;
     writeFileSync(join(out, 'diff', diffFile), PNG.sync.write(sideBySide(ref, r.cand, r.diff)));
     const sizeDelta = Math.max(Math.abs(box.width - entry.nodeW), Math.abs(box.height - entry.nodeH));
-    const pass = r.mismatch <= maxMismatch && r.tint <= maxTint && sizeDelta <= maxSizeDelta;
-    results.push({ component, slug: entry.slug, nodeId: entry.nodeId, mismatch: r.mismatch, tint: r.tint, size: [box.width, box.height], figmaSize: [entry.nodeW, entry.nodeH], sizeDelta, pass, diffFile });
+    const pass = r.mismatch <= maxMismatch && r.tint <= maxTint && sizeDelta <= maxSizeDelta && specIssues.length === 0;
+    results.push({ component, slug: entry.slug, nodeId: entry.nodeId, mismatch: r.mismatch, tint: r.tint, specIssues, size: [box.width, box.height], figmaSize: [entry.nodeW, entry.nodeH], sizeDelta, pass, diffFile });
     const pct = (v) => `${(v * 100).toFixed(1).padStart(5)}%`;
-    console.log(`${pass ? 'ok  ' : 'FAIL'} ${component}/${entry.slug.padEnd(42)} mismatch ${pct(r.mismatch)}  tint ${pct(r.tint)}  Δsize ${sizeDelta.toFixed(1)}px`);
+    console.log(`${pass ? 'ok  ' : 'FAIL'} ${component}/${entry.slug.padEnd(42)} mismatch ${pct(r.mismatch)}  tint ${pct(r.tint)}  Δsize ${sizeDelta.toFixed(1)}px  spec ${specIssues.length ? `${specIssues.length} off` : 'exact'}`);
+    for (const issue of specIssues.slice(0, 4)) console.log(`       ${issue}`);
   }
 }
 await browser.close();
@@ -151,14 +161,14 @@ const failed = results.filter((r) => !r.pass);
 writeFileSync(join(out, 'results.json'), JSON.stringify(results, null, 1));
 const rows = results
   .sort((a, b) => b.mismatch - a.mismatch)
-  .map((r) => `<tr class="${r.pass ? '' : 'fail'}"><td>${r.component}/${r.slug}</td><td>${(r.mismatch * 100).toFixed(1)}%</td><td>${(r.tint * 100).toFixed(1)}%</td><td>${r.size.map((v) => v.toFixed(1)).join('×')} / ${r.figmaSize.join('×')}</td><td><img src="diff/${r.diffFile}"></td></tr>`)
+  .map((r) => `<tr class="${r.pass ? '' : 'fail'}"><td>${r.component}/${r.slug}</td><td>${(r.mismatch * 100).toFixed(1)}%</td><td>${(r.tint * 100).toFixed(1)}%</td><td>${r.specIssues.length ? r.specIssues.join('<br>') : 'exact'}</td><td>${r.size.map((v) => v.toFixed(1)).join('×')} / ${r.figmaSize.join('×')}</td><td><img src="diff/${r.diffFile}"></td></tr>`)
   .join('\n');
 writeFileSync(
   join(out, 'report.html'),
   `<!doctype html><meta charset="utf-8"><title>Figma visual check</title>
 <style>body{font:14px system-ui;margin:24px}td{padding:6px 12px;border-bottom:1px solid #eee}img{image-rendering:pixelated;height:60px}.fail{background:#fee}</style>
 <h1>Figma visual check</h1><p>${results.length - failed.length}/${results.length} pass. Columns in each image: Figma · code · diff.</p>
-<table><tr><th>Variant</th><th>Mismatch</th><th>Tint</th><th>Size (code / Figma)</th><th>Figma · code · diff</th></tr>${rows}</table>`,
+<table><tr><th>Variant</th><th>Mismatch</th><th>Tint</th><th>Figma values</th><th>Size (code / Figma)</th><th>Figma · code · diff</th></tr>${rows}</table>`,
 );
 console.log(`\n${results.length - failed.length}/${results.length} variants within thresholds. Report: tools/figma-visual/out/report.html`);
 process.exit(failed.length ? 1 : 0);

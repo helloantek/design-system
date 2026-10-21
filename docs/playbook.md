@@ -35,11 +35,11 @@ A Figma component set can bundle several components under one `Variant` property
 
 ## 4. Verify against Figma
 
-1. Export reference renders for the important variants (all states of the default size, every size, every shape) into `tools/figma-visual/references/<component>/` with a `manifest.json`.
+1. Export reference renders and the spec (`spec.json`, `layer-map.json`) for the important variants (all states of the default size, every size, every shape) into `tools/figma-visual/references/<component>/` with a `manifest.json`.
 2. Add a renderer in `tools/figma-visual/renderers/`.
 3. `npm run test:visual -- <component>`: every variant must be within the manifest thresholds — **mismatch** (structure, pixelmatch 0.1) ≤ 6%, **tint** (subtle fills, pixelmatch 0.03) ≤ 10%, size within 2 px. Open `tools/figma-visual/out/report.html` for anything close to a limit.
    - Prove the check can fail: break one value (a padding, a background) and confirm the affected variants go red, then revert.
-   - Pixel metrics are coarse: rasterisation differs between machines by ~2 points, so the limits leave that margin and **do not catch 1 px padding or radius changes** (measured: padding +1 px and radius 4→6 px both pass; a 2 px gap change is caught by the size check). Check exact values with the Figma spec when you change spacing.
+   - Pixel metrics are coarse (rasterisation differs between machines by ~2 points). Exact values come from the **spec check**: export `spec.json` with `export-spec.js` and map Figma layers to elements in `layer-map.json`. It compares size, padding, gap, radius, fill, stroke and text style per variant — deterministic, and it catches what pixels miss (measured: padding +1 px, radius 4→6 px, weight 500→400, placeholder colour all fail).
    - Known blind spot: a soft drop shadow outside the element (Default vs Shadow style) barely moves either metric; check those variants by eye in the report.
 4. `npm run test:storybook`: no render errors; read the axe output.
 
