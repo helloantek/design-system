@@ -6,7 +6,7 @@
  "brand": "theme-1",
  "scheme": "light",
  "thresholds": {
-  "maxMismatch": 0.06,
+  "maxMismatch": 0.08,
   "maxTint": 0.1,
   "maxSizeDelta": 2
  },
@@ -791,5 +791,6 @@
    "nodeW": 143.0,
    "nodeH": 36.0
   }
- ]
+ ],
+ "$thresholds": "Measured 2026-10-21 on Chromium 141.0.7390.37: identical code renders up to 2.2 points higher on the GitHub runner than in the cloud dev container (worst: button xs 4.8% -> 7.0%). maxMismatch keeps ~1 point above the CI maximum. Pixel metrics do not catch 1 px layout or radius changes; see docs/playbook.md."
 }

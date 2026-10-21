@@ -30,6 +30,7 @@ npm i @helloantek/ds-tokens @helloantek/ds-css @helloantek/ds-react @fontsource/
 
 ```tsx
 // once, at the app root
+import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@helloantek/ds-tokens/css/theme-1.css'; // the project's brand
 import '@helloantek/ds-css';
