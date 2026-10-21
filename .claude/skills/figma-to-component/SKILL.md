@@ -44,6 +44,7 @@ Parse the URL: `figma.com/design/<fileKey>/…?node-id=<a>-<b>` → nodeId `<a>:
 - **`use_figma` returns at most 48 KB** — never return PNG bytes from it; batch large reads.
 - **Raw MCP output for form fields uses a `<button>` root and no `<input>`.** Build on the native control.
 - **Effect colours bound to variables** (focus rings) belong in the component CSS, composed from colour tokens — a CSS variable that references other variables is resolved where it is defined, so a dark section would inherit the light colours.
+- **Text must be laid out with fractional glyph advances** (`--font-render-hinting=none`, set in `check.mjs`). Hinted builds snap labels to whole pixels (~1 px narrower than Figma) and fail only on CI; the check now refuses to run in that mode.
 - **Interactive states in the visual check need a repaint and a real focus**; `check.mjs` waits for both. If an Active/Focus reference fails, look at the capture before changing CSS.
 - **Subtle fills (≤ 10% alpha) pass the 0.1 pixelmatch threshold** — the `tint` metric exists for them; never raise `maxTint` to make a variant pass.
 - **Don't build one component for a whole Figma set** when variants need their own behaviour; see "Decide the scope" in the playbook.

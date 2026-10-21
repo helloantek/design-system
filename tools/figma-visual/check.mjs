@@ -78,7 +78,9 @@ function sideBySide(...pngs) {
 }
 
 const server = await preview({ configFile: join(here, 'vite.config.ts'), preview: { port: 4179, strictPort: true } });
-const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+// Without --font-render-hinting=none, some Chromium builds (e.g. the headless shell on CI) snap glyph advances to
+// whole pixels, so labels render ~1 px narrower than Figma and on other machines. Fractional advances match Figma.
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, args: ['--font-render-hinting=none'] });
 const page = await (await browser.newContext({ deviceScaleFactor: 1, viewport: { width: 600, height: 300 } })).newPage();
 
 // Environment fingerprint: text rendering differs between browser builds and machines, so print what this run used.
@@ -93,6 +95,8 @@ const page = await (await browser.newContext({ deviceScaleFactor: 1, viewport: {
   const fonts = (await cdp.send('CSS.getPlatformFontsForNode', { nodeId })).fonts.map((f) => `${f.familyName} (${f.isCustomFont ? 'web font' : 'system'})`);
   const width = await page.evaluate(() => document.querySelector('.ds-button__label').getBoundingClientRect().width);
   console.log(`Environment: ${browser.version()} · label font ${fonts.join(', ')} · "Button" label box ${width.toFixed(2)} px (Figma: 49)`);
+  // Inter Medium 14px "Button" + 4px padding is 47.84px with fractional advances; whole pixels mean hinting is on.
+  if (Number.isInteger(Math.round(width * 100) / 100)) throw new Error('Text is laid out on whole pixels (font hinting is on); comparisons with Figma would be off by ~1px.');
   await cdp.detach();
 }
 
