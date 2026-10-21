@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build-storybook
+      - run: npx playwright install --with-deps chromium
+      - name: Stories render, axe report
+        run: npm run test:storybook
+      - name: Components match Figma
+        run: npm run test:visual
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: figma-visual-report
+          path: tools/figma-visual/out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: storybook
+          path: apps/storybook/storybook-static
+
+  ios-tokens:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build -w @helloantek/ds-tokens
+      - name: Generated Swift compiles
+        run: swiftc -typecheck packages/tokens/dist/ios/*.swift
+
+  android-tokens:
+    runs-on: ubuntu-latest
+    env:
+      KOTLIN_VERSION: 2.2.20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+      - run: npm run build -w @helloantek/ds-tokens
+      - name: Generated Kotlin compiles
+        run: |
+          curl -fsSL -o kotlin.zip "https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip"
+          unzip -q kotlin.zip
+          ./kotlinc/bin/kotlinc packages/tokens/dist/android/*.kt -d build/kotlin

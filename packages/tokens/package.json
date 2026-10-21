@@ -1,0 +1,19 @@
+{
+  "name": "@helloantek/ds-tokens",
+  "version": "0.1.0",
+  "description": "Design tokens from Figma for every brand: CSS, JS, Swift and Kotlin.",
+  "type": "module",
+  "files": ["dist", "brands.json"],
+  "exports": {
+    "./css/*": "./dist/css/*",
+    "./js/*": { "types": "./dist/js/*.d.ts", "default": "./dist/js/*.js" },
+    "./brands.json": "./dist/brands.json",
+    "./ios/*": "./dist/ios/*",
+    "./android/*": "./dist/android/*"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test \"test/**/*.test.mjs\""
+  },
+  "publishConfig": { "registry": "https://npm.pkg.github.com" }
+}

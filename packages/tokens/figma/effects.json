@@ -1,0 +1,11 @@
+{
+  "$source": {
+    "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+    "note": "Figma effect styles are not variables, so they are captured here by hand. Colors are fixed across modes in Figma. Hidden effects are omitted."
+  },
+  "effects": {
+    "shadow/components-default": "0 1px 2px 0 #0000000d, inset 0 -1px 0 0 #00000014",
+    "shadow/components-focus": "0 1px 2px 0 #0000000d, inset 0 -1px 0 0 #0000001a",
+    "text-shadow/on-primary": "0 0.5px 1px #00000026"
+  }
+}

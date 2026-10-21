@@ -1,0 +1,348 @@
+{
+ "$source": {
+  "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+  "exportedWith": "Figma Plugin API (use_figma), values resolved per mode",
+  "note": "Only the variables used by implemented components. Extend by re-exporting from Figma; see docs/playbook.md."
+ },
+ "Themes": {
+  "modes": [
+   "Theme-1-Light",
+   "Theme-1-Dark",
+   "Theme-2-Light",
+   "Theme-2-Dark"
+  ],
+  "vars": {
+   "text/default": {
+    "Theme-1-Light": "#111115",
+    "Theme-1-Dark": "#ffffff",
+    "Theme-2-Light": "#24211e",
+    "Theme-2-Dark": "#ffffff"
+   },
+   "text/subtle": {
+    "Theme-1-Light": "#4e4e55",
+    "Theme-1-Dark": "#ffffffb2",
+    "Theme-2-Light": "#57534d",
+    "Theme-2-Dark": "#ffffffb2"
+   },
+   "text/muted": {
+    "Theme-1-Light": "#6f6f77",
+    "Theme-1-Dark": "#ffffff80",
+    "Theme-2-Light": "#79716b",
+    "Theme-2-Dark": "#ffffff80"
+   },
+   "text/hint": {
+    "Theme-1-Light": "#27272a4d",
+    "Theme-1-Dark": "#ffffff4d",
+    "Theme-2-Light": "#27272a4d",
+    "Theme-2-Dark": "#ffffff4d"
+   },
+   "text/white-default": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#18181b",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#ffffff"
+   },
+   "bg/default": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#18181b",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#301108"
+   },
+   "bg/state/primary": {
+    "Theme-1-Light": "#111115",
+    "Theme-1-Dark": "#ffffff",
+    "Theme-2-Light": "#f27313",
+    "Theme-2-Dark": "#e35706"
+   },
+   "bg/state/primary-hover": {
+    "Theme-1-Light": "#18181b",
+    "Theme-1-Dark": "#fafafa",
+    "Theme-2-Light": "#f38f36",
+    "Theme-2-Dark": "#f27313"
+   },
+   "bg/state/primary-press": {
+    "Theme-1-Light": "#111115",
+    "Theme-1-Dark": "#ffffff",
+    "Theme-2-Light": "#f27313",
+    "Theme-2-Dark": "#e35706"
+   },
+   "bg/state/primary-loading": {
+    "Theme-1-Light": "#36363a",
+    "Theme-1-Dark": "#a1a1a9",
+    "Theme-2-Light": "#f7bb77",
+    "Theme-2-Dark": "#f7bb77"
+   },
+   "bg/state/secondary": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#ffffff0a",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#ffffff0a"
+   },
+   "bg/state/secondary-hover": {
+    "Theme-1-Light": "#fafafa",
+    "Theme-1-Dark": "#ffffff14",
+    "Theme-2-Light": "#fafaf9",
+    "Theme-2-Dark": "#ffffff14"
+   },
+   "bg/state/secondary-press": {
+    "Theme-1-Light": "#f4f4f5",
+    "Theme-1-Dark": "#ffffff1a",
+    "Theme-2-Light": "#f5f5f4",
+    "Theme-2-Dark": "#ffffff1a"
+   },
+   "bg/state/secondary-loading": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#ffffff0a",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#ffffff0a"
+   },
+   "bg/state/soft": {
+    "Theme-1-Light": "#27272a0f",
+    "Theme-1-Dark": "#ffffff14",
+    "Theme-2-Light": "#27272a0f",
+    "Theme-2-Dark": "#ffffff14"
+   },
+   "bg/state/soft-hover": {
+    "Theme-1-Light": "#27272a14",
+    "Theme-1-Dark": "#ffffff1a",
+    "Theme-2-Light": "#27272a14",
+    "Theme-2-Dark": "#ffffff1a"
+   },
+   "bg/state/soft-press": {
+    "Theme-1-Light": "#27272a1a",
+    "Theme-1-Dark": "#ffffff26",
+    "Theme-2-Light": "#27272a1a",
+    "Theme-2-Dark": "#ffffff26"
+   },
+   "bg/state/soft-loading": {
+    "Theme-1-Light": "#27272a0f",
+    "Theme-1-Dark": "#ffffff14",
+    "Theme-2-Light": "#27272a0f",
+    "Theme-2-Dark": "#ffffff14"
+   },
+   "bg/state/ghost": {
+    "Theme-1-Light": "#27272a00",
+    "Theme-1-Dark": "#ffffff00",
+    "Theme-2-Light": "#27272a00",
+    "Theme-2-Dark": "#ffffff00"
+   },
+   "bg/state/ghost-hover": {
+    "Theme-1-Light": "#27272a0f",
+    "Theme-1-Dark": "#ffffff14",
+    "Theme-2-Light": "#27272a0f",
+    "Theme-2-Dark": "#ffffff14"
+   },
+   "bg/state/ghost-press": {
+    "Theme-1-Light": "#27272a14",
+    "Theme-1-Dark": "#ffffff26",
+    "Theme-2-Light": "#27272a14",
+    "Theme-2-Dark": "#ffffff26"
+   },
+   "bg/state/ghost-loading": {
+    "Theme-1-Light": "#27272a0f",
+    "Theme-1-Dark": "#ffffff14",
+    "Theme-2-Light": "#27272a0f",
+    "Theme-2-Dark": "#ffffff14"
+   },
+   "bg/state/destructive": {
+    "Theme-1-Light": "#e74341",
+    "Theme-1-Dark": "#e74341",
+    "Theme-2-Light": "#eb3e5b",
+    "Theme-2-Dark": "#eb3e5b"
+   },
+   "bg/state/destructive-hover": {
+    "Theme-1-Light": "#ed6664",
+    "Theme-1-Dark": "#ed6664",
+    "Theme-2-Light": "#f16e81",
+    "Theme-2-Dark": "#f16e81"
+   },
+   "bg/state/destructive-press": {
+    "Theme-1-Light": "#e74341",
+    "Theme-1-Dark": "#e74341",
+    "Theme-2-Light": "#eb3e5b",
+    "Theme-2-Dark": "#eb3e5b"
+   },
+   "bg/state/destructive-loading": {
+    "Theme-1-Light": "#f4a6a5",
+    "Theme-1-Dark": "#f4a6a5",
+    "Theme-2-Light": "#f49fa9",
+    "Theme-2-Dark": "#f49fa9"
+   },
+   "bg/state/disabled": {
+    "Theme-1-Light": "#27272a14",
+    "Theme-1-Dark": "#ffffff14",
+    "Theme-2-Light": "#27272a14",
+    "Theme-2-Dark": "#ffffff14"
+   },
+   "bg/badge/white": {
+    "Theme-1-Light": "#ffffff1a",
+    "Theme-1-Dark": "#27272a1a",
+    "Theme-2-Light": "#ffffff1a",
+    "Theme-2-Dark": "#ffffff1a"
+   },
+   "border/default": {
+    "Theme-1-Light": "#27272a1a",
+    "Theme-1-Dark": "#ffffff1a",
+    "Theme-2-Light": "#27272a1a",
+    "Theme-2-Dark": "#ffffff1a"
+   },
+   "border/darker": {
+    "Theme-1-Light": "#27272a26",
+    "Theme-1-Dark": "#ffffff26",
+    "Theme-2-Light": "#27272a26",
+    "Theme-2-Dark": "#ffffff26"
+   },
+   "border/white": {
+    "Theme-1-Light": "#ffffff33",
+    "Theme-1-Dark": "#ffffff33",
+    "Theme-2-Light": "#ffffff33",
+    "Theme-2-Dark": "#ffffff33"
+   },
+   "border/highlight": {
+    "Theme-1-Light": "#27272a66",
+    "Theme-1-Dark": "#ffffff66",
+    "Theme-2-Light": "#f38f3666",
+    "Theme-2-Dark": "#f38f3666"
+   },
+   "border/highlight-destructive": {
+    "Theme-1-Light": "#ee6e6c66",
+    "Theme-1-Dark": "#ee6e6c66",
+    "Theme-2-Light": "#f16e8166",
+    "Theme-2-Dark": "#f16e8166"
+   },
+   "icon/white-default": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#18181b",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#ffffff"
+   },
+   "icon/default-subtle": {
+    "Theme-1-Light": "#4e4e55",
+    "Theme-1-Dark": "#ffffffb2",
+    "Theme-2-Light": "#57534d",
+    "Theme-2-Dark": "#ffffffb2"
+   },
+   "icon/default-muted": {
+    "Theme-1-Light": "#6f6f77",
+    "Theme-1-Dark": "#ffffff80",
+    "Theme-2-Light": "#79716b",
+    "Theme-2-Dark": "#ffffff80"
+   },
+   "icon/default-disabled": {
+    "Theme-1-Light": "#27272a40",
+    "Theme-1-Dark": "#ffffff40",
+    "Theme-2-Light": "#27272a40",
+    "Theme-2-Dark": "#ffffff40"
+   }
+  }
+ },
+ "Radius": {
+  "modes": [
+   "Default",
+   "Rounded",
+   "Full",
+   "None"
+  ],
+  "vars": {
+   "none": {
+    "Default": 0,
+    "Rounded": 0,
+    "Full": 0,
+    "None": 0
+   },
+   "xs": {
+    "Default": 4,
+    "Rounded": 6,
+    "Full": 9999,
+    "None": 0
+   },
+   "full": {
+    "Default": 9999,
+    "Rounded": 9999,
+    "Full": 9999,
+    "None": 0
+   }
+  }
+ },
+ "Spacing": {
+  "modes": [
+   "Default"
+  ],
+  "vars": {
+   "none": {
+    "Default": 0
+   },
+   "2": {
+    "Default": 2
+   },
+   "4": {
+    "Default": 4
+   },
+   "6": {
+    "Default": 6
+   },
+   "8": {
+    "Default": 8
+   },
+   "10": {
+    "Default": 10
+   },
+   "12": {
+    "Default": 12
+   },
+   "14": {
+    "Default": 14
+   }
+  }
+ },
+ "Stroke": {
+  "modes": [
+   "Default"
+  ],
+  "vars": {
+   "default": {
+    "Default": 1
+   }
+  }
+ },
+ "Font Size": {
+  "modes": [
+   "Desktop",
+   "Mobile"
+  ],
+  "vars": {
+   "size/xs": {
+    "Desktop": 12,
+    "Mobile": 12
+   },
+   "size/sm": {
+    "Desktop": 14,
+    "Mobile": 14
+   },
+   "weight/medium": {
+    "Desktop": 500,
+    "Mobile": 500
+   },
+   "line-height/leading-4": {
+    "Desktop": 16,
+    "Mobile": 16
+   },
+   "line-height/leading-5": {
+    "Desktop": 20,
+    "Mobile": 20
+   }
+  }
+ },
+ "Font Family": {
+  "modes": [
+   "Font A",
+   "Font B"
+  ],
+  "vars": {
+   "body": {
+    "Font A": "Inter",
+    "Font B": "Work Sans"
+   }
+  }
+ }
+}

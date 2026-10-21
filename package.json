@@ -1,0 +1,32 @@
+{
+  "name": "@helloantek/design-system",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/tokens", "packages/css", "packages/react", "apps/storybook"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "npm run build -w @helloantek/ds-tokens && npm run build -w @helloantek/ds-react",
+    "test": "npm test -w @helloantek/ds-tokens",
+    "typecheck": "tsc -p packages/react --noEmit && tsc -p apps/storybook --noEmit",
+    "storybook": "npm run build -w @helloantek/ds-tokens && npm run dev -w @helloantek/ds-storybook",
+    "build-storybook": "npm run build -w @helloantek/ds-tokens && npm run build -w @helloantek/ds-storybook",
+    "test:storybook": "node tools/storybook-smoke.mjs",
+    "test:visual": "vite build --config tools/figma-visual/vite.config.ts && node tools/figma-visual/check.mjs",
+    "changeset": "changeset"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@changesets/cli": "2.29.7",
+    "@fontsource/inter": "5.3.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "pixelmatch": "8.0.0",
+    "playwright": "1.61.1",
+    "pngjs": "7.0.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "typescript": "5.9.3",
+    "vite": "8.3.4"
+  }
+}

@@ -1,0 +1,794 @@
+{
+ "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/button.tsx turns these properties into props.",
+ "component": "button",
+ "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+ "componentSet": "28:22033",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.06,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-primary-default-md-rounded",
+   "nodeId": "28:21985",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-secondary-default-md-rounded",
+   "nodeId": "28:21924",
+   "props": {
+    "Variant": "Default",
+    "Style": "Secondary",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-primary-loading-md-rounded",
+   "nodeId": "2097:2869",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Loading",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-primary-focus-md-rounded",
+   "nodeId": "54:1389",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Focus",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-dashed-default-md-rounded",
+   "nodeId": "28:22005",
+   "props": {
+    "Variant": "Default",
+    "Style": "Dashed",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "icon-only-primary-default-md-rounded",
+   "nodeId": "28:23315",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 36.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-primary-disabled-md-rounded",
+   "nodeId": "28:21899",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Disabled",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-default-md-rounded",
+   "nodeId": "28:21994",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-soft-default-md-rounded",
+   "nodeId": "28:22001",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-destructive-default-md-rounded",
+   "nodeId": "28:22027",
+   "props": {
+    "Variant": "Default",
+    "Style": "Destructive",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-muted-default-md-rounded",
+   "nodeId": "28:21986",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost Muted",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-primary-default-lg-rounded",
+   "nodeId": "28:22032",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "lg",
+    "Shape": "Rounded"
+   },
+   "nodeW": 151.0,
+   "nodeH": 40.0
+  },
+  {
+   "slug": "icon-only-primary-default-lg-rounded",
+   "nodeId": "28:23308",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "lg",
+    "Shape": "Rounded"
+   },
+   "nodeW": 40.0,
+   "nodeH": 40.0
+  },
+  {
+   "slug": "default-primary-default-md-pill",
+   "nodeId": "2097:4487",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Pill"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "icon-only-primary-loading-md-rounded",
+   "nodeId": "2097:2876",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Primary",
+    "State": "Loading",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 36.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-primary-default-sm-rounded",
+   "nodeId": "28:22025",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "sm",
+    "Shape": "Rounded"
+   },
+   "nodeW": 133.0,
+   "nodeH": 32.0
+  },
+  {
+   "slug": "icon-only-primary-default-sm-rounded",
+   "nodeId": "28:23322",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "sm",
+    "Shape": "Rounded"
+   },
+   "nodeW": 32.0,
+   "nodeH": 32.0
+  },
+  {
+   "slug": "default-primary-default-xs-rounded",
+   "nodeId": "2006:1130",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "xs",
+    "Shape": "Rounded"
+   },
+   "nodeW": 125.0,
+   "nodeH": 28.0
+  },
+  {
+   "slug": "default-primary-default-2xs-rounded",
+   "nodeId": "2006:1970",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "2xs",
+    "Shape": "Rounded"
+   },
+   "nodeW": 115.0,
+   "nodeH": 24.0
+  },
+  {
+   "slug": "icon-only-primary-default-xs-rounded",
+   "nodeId": "2006:1144",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "xs",
+    "Shape": "Rounded"
+   },
+   "nodeW": 28.0,
+   "nodeH": 28.0
+  },
+  {
+   "slug": "icon-only-primary-default-2xs-rounded",
+   "nodeId": "2006:1984",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Primary",
+    "State": "Default",
+    "Size": "2xs",
+    "Shape": "Rounded"
+   },
+   "nodeW": 24.0,
+   "nodeH": 24.0
+  },
+  {
+   "slug": "default-destructive-loading-md-rounded",
+   "nodeId": "2097:2878",
+   "props": {
+    "Variant": "Default",
+    "Style": "Destructive",
+    "State": "Loading",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-destructive-focus-md-rounded",
+   "nodeId": "54:1398",
+   "props": {
+    "Variant": "Default",
+    "Style": "Destructive",
+    "State": "Focus",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "icon-only-destructive-default-md-rounded",
+   "nodeId": "28:23350",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Destructive",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 36.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-secondary-default-md-pill",
+   "nodeId": "2097:4758",
+   "props": {
+    "Variant": "Default",
+    "Style": "Secondary",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Pill"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-secondary-loading-md-rounded",
+   "nodeId": "2097:2887",
+   "props": {
+    "Variant": "Default",
+    "Style": "Secondary",
+    "State": "Loading",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-secondary-focus-md-rounded",
+   "nodeId": "54:1407",
+   "props": {
+    "Variant": "Default",
+    "Style": "Secondary",
+    "State": "Focus",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "icon-only-secondary-default-md-rounded",
+   "nodeId": "28:23385",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Secondary",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 36.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-dashed-loading-md-rounded",
+   "nodeId": "2097:2896",
+   "props": {
+    "Variant": "Default",
+    "Style": "Dashed",
+    "State": "Loading",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-dashed-focus-md-rounded",
+   "nodeId": "54:1416",
+   "props": {
+    "Variant": "Default",
+    "Style": "Dashed",
+    "State": "Focus",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "icon-only-dashed-default-md-rounded",
+   "nodeId": "28:23420",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Dashed",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 36.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-soft-loading-md-rounded",
+   "nodeId": "2097:2905",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "State": "Loading",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-soft-focus-md-rounded",
+   "nodeId": "54:1425",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "State": "Focus",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "icon-only-soft-default-md-rounded",
+   "nodeId": "28:23455",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Soft",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 36.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-loading-md-rounded",
+   "nodeId": "2097:2914",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost",
+    "State": "Loading",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-focus-md-rounded",
+   "nodeId": "54:1434",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost",
+    "State": "Focus",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "icon-only-ghost-default-md-rounded",
+   "nodeId": "28:23490",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Ghost",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 36.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-muted-loading-md-rounded",
+   "nodeId": "2097:2923",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost Muted",
+    "State": "Loading",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-muted-focus-md-rounded",
+   "nodeId": "54:1443",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost Muted",
+    "State": "Focus",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "icon-only-ghost-muted-default-md-rounded",
+   "nodeId": "28:23525",
+   "props": {
+    "Variant": "Icon only",
+    "Style": "Ghost Muted",
+    "State": "Default",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 36.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-disabled-md-rounded",
+   "nodeId": "28:21968",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost",
+    "State": "Disabled",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-muted-disabled-md-rounded",
+   "nodeId": "28:21963",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost Muted",
+    "State": "Disabled",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-hover-md-rounded",
+   "nodeId": "28:21970",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost",
+    "State": "Hover",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-muted-hover-md-rounded",
+   "nodeId": "28:21957",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost Muted",
+    "State": "Hover",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-press-md-rounded",
+   "nodeId": "28:21951",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost",
+    "State": "Press",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-ghost-muted-press-md-rounded",
+   "nodeId": "28:21944",
+   "props": {
+    "Variant": "Default",
+    "Style": "Ghost Muted",
+    "State": "Press",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-soft-hover-md-rounded",
+   "nodeId": "28:22020",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "State": "Hover",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-soft-press-md-rounded",
+   "nodeId": "28:21947",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "State": "Press",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-soft-disabled-md-rounded",
+   "nodeId": "28:21933",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "State": "Disabled",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-secondary-hover-md-rounded",
+   "nodeId": "28:21927",
+   "props": {
+    "Variant": "Default",
+    "Style": "Secondary",
+    "State": "Hover",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-primary-hover-md-rounded",
+   "nodeId": "28:21989",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Hover",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-destructive-hover-md-rounded",
+   "nodeId": "28:21953",
+   "props": {
+    "Variant": "Default",
+    "Style": "Destructive",
+    "State": "Hover",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-secondary-press-md-rounded",
+   "nodeId": "28:22014",
+   "props": {
+    "Variant": "Default",
+    "Style": "Secondary",
+    "State": "Press",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-dashed-hover-md-rounded",
+   "nodeId": "28:22002",
+   "props": {
+    "Variant": "Default",
+    "Style": "Dashed",
+    "State": "Hover",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-secondary-disabled-md-rounded",
+   "nodeId": "28:21911",
+   "props": {
+    "Variant": "Default",
+    "Style": "Secondary",
+    "State": "Disabled",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-primary-press-md-rounded",
+   "nodeId": "28:21974",
+   "props": {
+    "Variant": "Default",
+    "Style": "Primary",
+    "State": "Press",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-destructive-press-md-rounded",
+   "nodeId": "28:21906",
+   "props": {
+    "Variant": "Default",
+    "Style": "Destructive",
+    "State": "Press",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-dashed-press-md-rounded",
+   "nodeId": "28:22017",
+   "props": {
+    "Variant": "Default",
+    "Style": "Dashed",
+    "State": "Press",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-destructive-disabled-md-rounded",
+   "nodeId": "28:22007",
+   "props": {
+    "Variant": "Default",
+    "Style": "Destructive",
+    "State": "Disabled",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  },
+  {
+   "slug": "default-dashed-disabled-md-rounded",
+   "nodeId": "28:21981",
+   "props": {
+    "Variant": "Default",
+    "Style": "Dashed",
+    "State": "Disabled",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 143.0,
+   "nodeH": 36.0
+  }
+ ]
+}

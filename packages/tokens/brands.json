@@ -1,0 +1,19 @@
+{
+  "$comment": "A brand picks one mode per Figma collection. Every brand shares the same components; only tokens differ.",
+  "brands": {
+    "theme-1": {
+      "label": "Theme 1",
+      "Themes": { "light": "Theme-1-Light", "dark": "Theme-1-Dark" },
+      "Radius": "Default",
+      "Font Family": "Font A",
+      "Font Size": "Desktop"
+    },
+    "theme-2": {
+      "label": "Theme 2",
+      "Themes": { "light": "Theme-2-Light", "dark": "Theme-2-Dark" },
+      "Radius": "Default",
+      "Font Family": "Font A",
+      "Font Size": "Desktop"
+    }
+  }
+}

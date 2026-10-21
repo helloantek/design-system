@@ -1,0 +1,20 @@
+{
+  "name": "@helloantek/ds-storybook",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "storybook build -o storybook-static --quiet"
+  },
+  "dependencies": {
+    "@helloantek/ds-css": "*",
+    "@helloantek/ds-react": "*",
+    "@helloantek/ds-tokens": "*"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "10.6.3",
+    "@storybook/addon-docs": "10.6.3",
+    "@storybook/react-vite": "10.6.3",
+    "storybook": "10.6.3"
+  }
+}

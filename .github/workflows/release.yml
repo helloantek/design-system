@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+
+concurrency: release-${{ github.ref }}
+
+jobs:
+  release:
+    # Publishing is opt-in: set the repository variable RELEASE_ENABLED=true when packages should go to GitHub Packages.
+    if: vars.RELEASE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: '@helloantek'
+      - run: npm ci
+      - run: npm run build
+      # Opens a "Version packages" PR from pending changesets; merging it publishes to GitHub Packages.
+      - uses: changesets/action@v1
+        with:
+          publish: npx changeset publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
