@@ -1,0 +1,639 @@
+{
+ "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/input.tsx turns these properties into props. Only the implemented Variants are listed.",
+ "component": "input",
+ "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+ "componentSet": "3780:4518",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.06,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-default-lg-placeholder",
+   "nodeId": "3790:11305",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-default-lg-active",
+   "nodeId": "3790:11804",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-default-lg-filled",
+   "nodeId": "3790:11674",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-default-lg-failed",
+   "nodeId": "3790:11329",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-default-lg-disabled",
+   "nodeId": "3790:11317",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Disabled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-shadow-lg-placeholder",
+   "nodeId": "3780:4506",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-shadow-lg-active",
+   "nodeId": "3780:4752",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-shadow-lg-filled",
+   "nodeId": "3780:5810",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-shadow-lg-failed",
+   "nodeId": "3783:6706",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-shadow-lg-disabled",
+   "nodeId": "3783:7105",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Disabled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-soft-lg-placeholder",
+   "nodeId": "3784:15205",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-soft-lg-active",
+   "nodeId": "3784:15655",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-soft-lg-filled",
+   "nodeId": "3784:15538",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-soft-lg-failed",
+   "nodeId": "3784:15229",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-soft-lg-disabled",
+   "nodeId": "3784:15217",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Disabled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-default-sm-placeholder",
+   "nodeId": "3790:11936",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "default-default-sm-active",
+   "nodeId": "3790:12435",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Active"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "default-default-sm-filled",
+   "nodeId": "3790:12305",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "default-default-sm-failed",
+   "nodeId": "3790:11960",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "default-default-sm-disabled",
+   "nodeId": "3790:11948",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Disabled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "shortcut-default-lg-placeholder",
+   "nodeId": "3790:11341",
+   "props": {
+    "Variant": "Shortcut",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shortcut-default-lg-active",
+   "nodeId": "3790:11817",
+   "props": {
+    "Variant": "Shortcut",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shortcut-default-lg-filled",
+   "nodeId": "3790:11686",
+   "props": {
+    "Variant": "Shortcut",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shortcut-default-lg-failed",
+   "nodeId": "3790:11365",
+   "props": {
+    "Variant": "Shortcut",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shortcut-default-lg-disabled",
+   "nodeId": "3790:11353",
+   "props": {
+    "Variant": "Shortcut",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Disabled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "add-on-default-lg-placeholder",
+   "nodeId": "3790:18882",
+   "props": {
+    "Variant": "Add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "add-on-default-lg-active",
+   "nodeId": "3790:18987",
+   "props": {
+    "Variant": "Add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "add-on-default-lg-filled",
+   "nodeId": "3790:18960",
+   "props": {
+    "Variant": "Add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "add-on-default-lg-failed",
+   "nodeId": "3790:18934",
+   "props": {
+    "Variant": "Add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "add-on-default-lg-disabled",
+   "nodeId": "3790:18908",
+   "props": {
+    "Variant": "Add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Disabled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "inline-add-on-default-lg-placeholder",
+   "nodeId": "3791:5804",
+   "props": {
+    "Variant": "Inline add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "inline-add-on-default-lg-active",
+   "nodeId": "3791:5909",
+   "props": {
+    "Variant": "Inline add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "inline-add-on-default-lg-filled",
+   "nodeId": "3791:5882",
+   "props": {
+    "Variant": "Inline add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "inline-add-on-default-lg-failed",
+   "nodeId": "3791:5856",
+   "props": {
+    "Variant": "Inline add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "inline-add-on-default-lg-disabled",
+   "nodeId": "3791:5830",
+   "props": {
+    "Variant": "Inline add-on",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Disabled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tail-button-default-lg-placeholder",
+   "nodeId": "3790:11488",
+   "props": {
+    "Variant": "Tail button",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tail-button-default-lg-active",
+   "nodeId": "3790:11870",
+   "props": {
+    "Variant": "Tail button",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tail-button-default-lg-filled",
+   "nodeId": "3790:11741",
+   "props": {
+    "Variant": "Tail button",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tail-button-default-lg-failed",
+   "nodeId": "3790:11516",
+   "props": {
+    "Variant": "Tail button",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tail-button-default-lg-disabled",
+   "nodeId": "3790:11502",
+   "props": {
+    "Variant": "Tail button",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Disabled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shortcut-default-sm-placeholder",
+   "nodeId": "3790:11972",
+   "props": {
+    "Variant": "Shortcut",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "add-on-default-sm-placeholder",
+   "nodeId": "3790:19014",
+   "props": {
+    "Variant": "Add-on",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "inline-add-on-default-sm-placeholder",
+   "nodeId": "3791:5936",
+   "props": {
+    "Variant": "Inline add-on",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "tail-button-default-sm-placeholder",
+   "nodeId": "3790:12119",
+   "props": {
+    "Variant": "Tail button",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "shortcut-shadow-lg-placeholder",
+   "nodeId": "3780:4516",
+   "props": {
+    "Variant": "Shortcut",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "add-on-shadow-lg-placeholder",
+   "nodeId": "3790:18869",
+   "props": {
+    "Variant": "Add-on",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "inline-add-on-shadow-lg-placeholder",
+   "nodeId": "3791:5791",
+   "props": {
+    "Variant": "Inline add-on",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tail-button-shadow-lg-placeholder",
+   "nodeId": "3780:4512",
+   "props": {
+    "Variant": "Tail button",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shortcut-soft-lg-placeholder",
+   "nodeId": "3784:15241",
+   "props": {
+    "Variant": "Shortcut",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "add-on-soft-lg-placeholder",
+   "nodeId": "3790:19133",
+   "props": {
+    "Variant": "Add-on",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "inline-add-on-soft-lg-placeholder",
+   "nodeId": "3791:6055",
+   "props": {
+    "Variant": "Inline add-on",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tail-button-soft-lg-placeholder",
+   "nodeId": "3784:15370",
+   "props": {
+    "Variant": "Tail button",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  }
+ ]
+}

@@ -46,6 +46,9 @@ function crop(png, x, y, w, h) {
 }
 
 // Align the reference inside the capture (centred on the element, then +/- SEARCH px) and keep the best match.
+// Two metrics at the best alignment:
+//   mismatch — pixelmatch threshold 0.1: structure (text, icons, borders); tolerant of anti-aliasing.
+//   tint     — pixelmatch threshold 0.03: also catches subtle fills (e.g. a 6% background) that 0.1 ignores.
 function compare(ref, capture, box) {
   const { width: w, height: h } = ref;
   const cx = PAD + box.width / 2 - w / 2, cy = PAD + box.height / 2 - h / 2;
@@ -58,7 +61,8 @@ function compare(ref, capture, box) {
       if (!best || n < best.n) best = { n, diff, cand };
     }
   }
-  return { mismatch: best.n / (w * h), diff: best.diff, cand: best.cand };
+  const tint = pixelmatch(ref.data, best.cand.data, null, w, h, { threshold: 0.03, includeAA: false });
+  return { mismatch: best.n / (w * h), tint: tint / (w * h), diff: best.diff, cand: best.cand };
 }
 
 function sideBySide(...pngs) {
@@ -80,7 +84,7 @@ const page = await (await browser.newContext({ deviceScaleFactor: 1, viewport: {
 const results = [];
 for (const component of components) {
   const manifest = JSON.parse(readFileSync(join(here, 'references', component, 'manifest.json')));
-  const { maxMismatch, maxSizeDelta } = manifest.thresholds;
+  const { maxMismatch, maxTint, maxSizeDelta } = manifest.thresholds;
   for (const entry of manifest.entries) {
     const params = new URLSearchParams({ component, brand: manifest.brand, scheme: manifest.scheme, props: JSON.stringify(entry.props) });
     await page.goto(`http://localhost:4179/?${params}`);
@@ -93,7 +97,13 @@ for (const component of components) {
       await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
       await page.mouse.down();
     }
-    if (state === 'Focus') await page.keyboard.press('Tab');
+    if (state === 'Focus' || state === 'Active') {
+      await page.keyboard.press('Tab');
+      // Fail loudly instead of silently comparing an unfocused render.
+      await page.waitForFunction(() => document.activeElement && document.activeElement !== document.body);
+    }
+    // Let the browser repaint after the interaction before taking the screenshot.
+    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
     const shot = await page.screenshot({
       clip: { x: box.x - PAD, y: box.y - PAD, width: box.width + PAD * 2, height: box.height + PAD * 2 },
       animations: 'disabled',
@@ -106,9 +116,10 @@ for (const component of components) {
     const diffFile = `${component}--${entry.slug}.png`;
     writeFileSync(join(out, 'diff', diffFile), PNG.sync.write(sideBySide(ref, r.cand, r.diff)));
     const sizeDelta = Math.max(Math.abs(box.width - entry.nodeW), Math.abs(box.height - entry.nodeH));
-    const pass = r.mismatch <= maxMismatch && sizeDelta <= maxSizeDelta;
-    results.push({ component, slug: entry.slug, nodeId: entry.nodeId, mismatch: r.mismatch, size: [box.width, box.height], figmaSize: [entry.nodeW, entry.nodeH], sizeDelta, pass, diffFile });
-    console.log(`${pass ? 'ok  ' : 'FAIL'} ${component}/${entry.slug.padEnd(42)} ${(r.mismatch * 100).toFixed(1).padStart(5)}%  Δsize ${sizeDelta.toFixed(1)}px`);
+    const pass = r.mismatch <= maxMismatch && r.tint <= maxTint && sizeDelta <= maxSizeDelta;
+    results.push({ component, slug: entry.slug, nodeId: entry.nodeId, mismatch: r.mismatch, tint: r.tint, size: [box.width, box.height], figmaSize: [entry.nodeW, entry.nodeH], sizeDelta, pass, diffFile });
+    const pct = (v) => `${(v * 100).toFixed(1).padStart(5)}%`;
+    console.log(`${pass ? 'ok  ' : 'FAIL'} ${component}/${entry.slug.padEnd(42)} mismatch ${pct(r.mismatch)}  tint ${pct(r.tint)}  Δsize ${sizeDelta.toFixed(1)}px`);
   }
 }
 await browser.close();
@@ -118,14 +129,14 @@ const failed = results.filter((r) => !r.pass);
 writeFileSync(join(out, 'results.json'), JSON.stringify(results, null, 1));
 const rows = results
   .sort((a, b) => b.mismatch - a.mismatch)
-  .map((r) => `<tr class="${r.pass ? '' : 'fail'}"><td>${r.component}/${r.slug}</td><td>${(r.mismatch * 100).toFixed(1)}%</td><td>${r.size.map((v) => v.toFixed(1)).join('×')} / ${r.figmaSize.join('×')}</td><td><img src="diff/${r.diffFile}"></td></tr>`)
+  .map((r) => `<tr class="${r.pass ? '' : 'fail'}"><td>${r.component}/${r.slug}</td><td>${(r.mismatch * 100).toFixed(1)}%</td><td>${(r.tint * 100).toFixed(1)}%</td><td>${r.size.map((v) => v.toFixed(1)).join('×')} / ${r.figmaSize.join('×')}</td><td><img src="diff/${r.diffFile}"></td></tr>`)
   .join('\n');
 writeFileSync(
   join(out, 'report.html'),
   `<!doctype html><meta charset="utf-8"><title>Figma visual check</title>
 <style>body{font:14px system-ui;margin:24px}td{padding:6px 12px;border-bottom:1px solid #eee}img{image-rendering:pixelated;height:60px}.fail{background:#fee}</style>
 <h1>Figma visual check</h1><p>${results.length - failed.length}/${results.length} pass. Columns in each image: Figma · code · diff.</p>
-<table><tr><th>Variant</th><th>Pixel mismatch</th><th>Size (code / Figma)</th><th>Figma · code · diff</th></tr>${rows}</table>`,
+<table><tr><th>Variant</th><th>Mismatch</th><th>Tint</th><th>Size (code / Figma)</th><th>Figma · code · diff</th></tr>${rows}</table>`,
 );
 console.log(`\n${results.length - failed.length}/${results.length} variants within thresholds. Report: tools/figma-visual/out/report.html`);
 process.exit(failed.length ? 1 : 0);

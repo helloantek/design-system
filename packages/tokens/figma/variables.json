@@ -233,6 +233,54 @@
     "Theme-1-Dark": "#ffffff40",
     "Theme-2-Light": "#27272a40",
     "Theme-2-Dark": "#ffffff40"
+   },
+   "text/destructive": {
+    "Theme-1-Light": "#d42422",
+    "Theme-1-Dark": "#ed6664",
+    "Theme-2-Light": "#d91a45",
+    "Theme-2-Dark": "#f16e81"
+   },
+   "bg/input": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#ffffff0f",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#ffffff0f"
+   },
+   "bg/input-soft": {
+    "Theme-1-Light": "#27272a0f",
+    "Theme-1-Dark": "#ffffff14",
+    "Theme-2-Light": "#27272a0f",
+    "Theme-2-Dark": "#ffffff14"
+   },
+   "bg/input-disabled": {
+    "Theme-1-Light": "#27272a0f",
+    "Theme-1-Dark": "#ffffff26",
+    "Theme-2-Light": "#27272a0f",
+    "Theme-2-Dark": "#ffffff26"
+   },
+   "border/accent": {
+    "Theme-1-Light": "#111115",
+    "Theme-1-Dark": "#ffffff",
+    "Theme-2-Light": "#24211e",
+    "Theme-2-Dark": "#ffffff"
+   },
+   "border/destructive": {
+    "Theme-1-Light": "#e74341",
+    "Theme-1-Dark": "#ed6664",
+    "Theme-2-Light": "#eb3e5b",
+    "Theme-2-Dark": "#f16e81"
+   },
+   "border/input-highlight": {
+    "Theme-1-Light": "#27272a66",
+    "Theme-1-Dark": "#ffffff73",
+    "Theme-2-Light": "#f38f3666",
+    "Theme-2-Dark": "#f38f3666"
+   },
+   "icon/destructive": {
+    "Theme-1-Light": "#e74341",
+    "Theme-1-Dark": "#f4a6a5",
+    "Theme-2-Light": "#eb3e5b",
+    "Theme-2-Dark": "#f49fa9"
    }
   }
  },
@@ -330,6 +378,10 @@
    "line-height/leading-5": {
     "Desktop": 20,
     "Mobile": 20
+   },
+   "weight/normal": {
+    "Desktop": 400,
+    "Mobile": 400
    }
   }
  },

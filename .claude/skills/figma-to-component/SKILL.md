@@ -42,4 +42,9 @@ Parse the URL: `figma.com/design/<fileKey>/…?node-id=<a>-<b>` → nodeId `<a>:
 - **Loading states in Figma keep the default width** — keep the content in the layout (hidden) and overlay spinner + label.
 - **The container's proxy may block `www.figma.com`**, so asset/screenshot URLs fail with 403. Export SVGs with `use_figma` (`node.exportAsync({ format: 'SVG_STRING' })`) and screenshots with `enableBase64Response`. Ask the user to allow the domain in the environment's network settings if it is needed often.
 - **`use_figma` returns at most 48 KB** — never return PNG bytes from it; batch large reads.
+- **Raw MCP output for form fields uses a `<button>` root and no `<input>`.** Build on the native control.
+- **Effect colours bound to variables** (focus rings) belong in the component CSS, composed from colour tokens — a CSS variable that references other variables is resolved where it is defined, so a dark section would inherit the light colours.
+- **Interactive states in the visual check need a repaint and a real focus**; `check.mjs` waits for both. If an Active/Focus reference fails, look at the capture before changing CSS.
+- **Subtle fills (≤ 10% alpha) pass the 0.1 pixelmatch threshold** — the `tint` metric exists for them; never raise `maxTint` to make a variant pass.
+- **Don't build one component for a whole Figma set** when variants need their own behaviour; see "Decide the scope" in the playbook.
 - Contrast failures that come from the Figma palette are design findings: report them, do not change colours in code.
