@@ -81,6 +81,21 @@ const server = await preview({ configFile: join(here, 'vite.config.ts'), preview
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const page = await (await browser.newContext({ deviceScaleFactor: 1, viewport: { width: 600, height: 300 } })).newPage();
 
+// Environment fingerprint: text rendering differs between browser builds and machines, so print what this run used.
+{
+  await page.goto(`http://localhost:4179/?${new URLSearchParams({ component: 'button', props: JSON.stringify({ Variant: 'Default', Style: 'Primary', State: 'Default', Size: 'md', Shape: 'Rounded' }) })}`);
+  await page.waitForSelector('body[data-ready]');
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send('DOM.enable');
+  await cdp.send('CSS.enable');
+  const { root } = await cdp.send('DOM.getDocument', { depth: -1 });
+  const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: root.nodeId, selector: '.ds-button__label' });
+  const fonts = (await cdp.send('CSS.getPlatformFontsForNode', { nodeId })).fonts.map((f) => `${f.familyName} (${f.isCustomFont ? 'web font' : 'system'})`);
+  const width = await page.evaluate(() => document.querySelector('.ds-button__label').getBoundingClientRect().width);
+  console.log(`Environment: ${browser.version()} · label font ${fonts.join(', ')} · "Button" label box ${width.toFixed(2)} px (Figma: 49)`);
+  await cdp.detach();
+}
+
 const results = [];
 for (const component of components) {
   const manifest = JSON.parse(readFileSync(join(here, 'references', component, 'manifest.json')));
