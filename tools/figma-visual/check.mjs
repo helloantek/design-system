@@ -94,6 +94,9 @@ const page = await (await browser.newContext({ deviceScaleFactor: 1, viewport: {
   const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: root.nodeId, selector: '.ds-button__label' });
   const fonts = (await cdp.send('CSS.getPlatformFontsForNode', { nodeId })).fonts.map((f) => `${f.familyName} (${f.isCustomFont ? 'web font' : 'system'})`);
   const width = await page.evaluate(() => document.querySelector('.ds-button__label').getBoundingClientRect().width);
+  // References and thresholds are calibrated on this build (see REFERENCE_CHROMIUM_* in .github/workflows/ci.yml).
+  const REFERENCE_CHROMIUM = '141.0.7390.37';
+  if (browser.version() !== REFERENCE_CHROMIUM) console.warn(`Warning: Chromium ${browser.version()} is not the reference build ${REFERENCE_CHROMIUM}; expect ~1 point higher mismatch. Set CHROMIUM_PATH to the reference build.`);
   console.log(`Environment: ${browser.version()} · label font ${fonts.join(', ')} · "Button" label box ${width.toFixed(2)} px (Figma: 49)`);
   // Inter Medium 14px "Button" + 4px padding is 47.84px with fractional advances; whole pixels mean hinting is on.
   if (Number.isInteger(Math.round(width * 100) / 100)) throw new Error('Text is laid out on whole pixels (font hinting is on); comparisons with Figma would be off by ~1px.');

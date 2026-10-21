@@ -7,6 +7,8 @@ on:
 jobs:
   web:
     runs-on: ubuntu-latest
+    env:
+      REFERENCE_CHROMIUM_PATH: /home/runner/.cache/ms-playwright/chromium-1194/chrome-linux/chrome
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,11 +20,19 @@ jobs:
       - run: npm test
       - run: npm run typecheck
       - run: npm run build-storybook
-      - run: npx playwright install --with-deps chromium
+      # The Figma visual check is calibrated on one Chromium build: glyph rasterisation differs between versions by
+      # ~1 point of pixel mismatch. Pin it (Playwright 1.56.1 ships Chromium 141.0.7390.37, revision 1194) and pass it
+      # explicitly; bump REFERENCE_CHROMIUM_* together with a re-check of every component.
+      - name: Install reference Chromium
+        run: npx -y playwright@1.56.1 install --with-deps chromium
       - name: Stories render, axe report
         run: npm run test:storybook
+        env:
+          CHROMIUM_PATH: ${{ env.REFERENCE_CHROMIUM_PATH }}
       - name: Components match Figma
         run: npm run test:visual
+        env:
+          CHROMIUM_PATH: ${{ env.REFERENCE_CHROMIUM_PATH }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
