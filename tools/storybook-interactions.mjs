@@ -102,6 +102,22 @@ const tests = {
     await combobox.click({ force: true });
     assert.equal((await state()).expanded, 'false');
   },
+  'playground form: validation, submitted data and reset': async () => {
+    await open('playground-form--sign-up');
+    const submitted = page.getByTestId('submitted');
+    await page.getByRole('button', { name: 'Create account' }).click();
+    assert.equal(await page.locator('.ds-field__caption--error').count(), 3);
+    await page.getByLabel('Name').fill('Jane Doe');
+    await page.getByLabel('Email').fill('jane@example.com');
+    await page.getByRole('combobox', { name: 'Role' }).click();
+    await page.getByRole('option', { name: 'Engineer' }).click();
+    await page.getByRole('button', { name: 'Create account' }).click();
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', plan: 'free' });
+    await page.getByRole('button', { name: 'Reset' }).click();
+    assert.equal(await page.getByRole('combobox', { name: 'Role' }).textContent(), 'Select a role', 'form reset clears the Select');
+    assert.equal(await page.getByRole('combobox', { name: 'Plan' }).textContent(), 'Free', 'and restores its defaultValue');
+    assert.equal(await submitted.count(), 0);
+  },
 };
 
 let failed = 0;

@@ -6,7 +6,8 @@ Multi-brand design system: one UI kit, many brands. See `README.md` for the arch
 - `packages/css` — component styles. BEM `ds-<component>`, `@layer ds.components`, only `var(--ds-*)` values.
 - `packages/react` — thin adapter: markup and classes, props named after Figma properties.
 - `apps/storybook` — documentation; stories live next to components in `packages/*/src`.
-- `tools/figma-visual` — pixel comparison with Figma reference renders; `tools/storybook-smoke.mjs` — every story renders, axe report.
+- `tools/figma-visual` — pixel comparison with Figma reference renders; `tools/storybook-smoke.mjs` — every story renders, axe report; `tools/storybook-interactions.mjs` — keyboard/mouse tests.
+- Previews: every pushed branch is published as a Storybook on GitHub Pages (`docs/previews.md`); `Playground/*` stories compose components for review.
 
 To build a component from Figma, use the `figma-to-component` skill and `docs/playbook.md`. It is done when `docs/definition-of-done.md` holds.
 

@@ -1,0 +1,72 @@
+name: Storybook preview
+
+# Every branch gets its own Storybook on GitHub Pages, so components can be tried before they are merged:
+#   https://helloantek.github.io/design-system/<branch-slug>/   (list of all previews at the root)
+# One-time setup: Settings → Pages → Build and deployment → "Deploy from a branch" → gh-pages, / (root).
+# See docs/previews.md.
+
+on:
+  push:
+    branches: ['**']
+  # Delete events run the workflow file from the default branch, so cleanup starts working once this is on main.
+  delete:
+  pull_request:
+    types: [opened, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  deploy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    # Only the newest push of a branch matters; other branches deploy in parallel (the script retries on conflicts).
+    concurrency:
+      group: storybook-preview-${{ github.ref_name }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build-storybook
+        env:
+          STORYBOOK_PREVIEW_LABEL: ${{ github.ref_name == 'main' && 'main' || format('preview · {0}', github.ref_name) }}
+      - name: Publish to GitHub Pages
+        run: node tools/storybook-preview.mjs publish "$BRANCH" apps/storybook/storybook-static | tee -a "$GITHUB_STEP_SUMMARY"
+        env:
+          BRANCH: ${{ github.ref_name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  remove:
+    if: github.event_name == 'delete' && github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove from GitHub Pages
+        run: node tools/storybook-preview.mjs remove "$BRANCH"
+        env:
+          BRANCH: ${{ github.event.ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Links the preview from the pull request. Forks have no preview (their pushes don't run here).
+  comment:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const branch = context.payload.pull_request.head.ref;
+            // Same folder name as tools/storybook-preview.mjs.
+            const slug = branch.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'branch';
+            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/${slug}/`;
+            const marker = '<!-- storybook-preview -->';
+            const body = `${marker}\n**Storybook preview of this branch:** ${url}\n\nUpdated on every push (a few minutes after CI starts). Try the components here before merging; the preview is removed when the branch is deleted.`;
+            const comments = await github.paginate(github.rest.issues.listComments, { ...context.repo, issue_number: context.issue.number });
+            const existing = comments.find((c) => c.body?.startsWith(marker));
+            if (existing) await github.rest.issues.updateComment({ ...context.repo, comment_id: existing.id, body });
+            else await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });

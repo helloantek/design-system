@@ -44,6 +44,10 @@ A Figma component set can bundle several components under one `Variant` property
    - Known blind spot: a soft drop shadow outside the element (Default vs Shadow style) barely moves either metric; check those variants by eye in the report.
 4. `npm run test:storybook`: no render errors; read the axe output. Components with behaviour (menus, popovers) also get keyboard and mouse tests in `tools/storybook-interactions.mjs`, which runs as part of it.
 
-## 5. Ship
+## 5. Review the preview
+
+Each push publishes a Storybook preview of the branch ([previews.md](previews.md)); the pull request links it. Ask design and product to go through its review checklist, and add the component to **Playground/Form** (or a new Playground story) when it belongs in forms or screens with other components.
+
+## 6. Ship
 
 Check [definition-of-done.md](definition-of-done.md), add a changeset (`npm run changeset`) and open a PR. CI runs the same checks.

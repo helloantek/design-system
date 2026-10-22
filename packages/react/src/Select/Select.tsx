@@ -121,6 +121,7 @@ export function Select(props: SelectProps) {
   // so the selected option is not drawn as hovered (Figma Active=True, State=Default).
   const [highlighted, setHighlighted] = useState(-1);
   const triggerRef = useRef<HTMLDivElement | null>(null);
+  const hiddenRef = useRef<HTMLInputElement | null>(null);
   const typeahead = useRef({ text: '', at: 0 });
 
   const flat = useMemo(() => options.flatMap((item) => (isSeparator(item) ? [] : isGroup(item) ? item.options : [item])), [options]);
@@ -134,6 +135,15 @@ export function Select(props: SelectProps) {
     if (typeof ref === 'function') ref(node);
     else if (ref) ref.current = node;
   };
+
+  // Like a native <select>, an uncontrolled Select goes back to defaultValue when its form is reset.
+  useEffect(() => {
+    const form = hiddenRef.current?.form;
+    if (!form) return;
+    const reset = () => setUncontrolled(defaultValue);
+    form.addEventListener('reset', reset);
+    return () => form.removeEventListener('reset', reset);
+  }, [defaultValue]);
 
   useEffect(() => {
     if (!open || highlighted < 0) return;
@@ -342,7 +352,7 @@ export function Select(props: SelectProps) {
           })}
         </div>
       </div>
-      {name !== undefined && <input type="hidden" name={name} value={value ?? ''} disabled={disabled} />}
+      {name !== undefined && <input ref={hiddenRef} type="hidden" name={name} value={value ?? ''} disabled={disabled} />}
       {help !== undefined && (
         <p id={captionId} className={invalid ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
           {help}
