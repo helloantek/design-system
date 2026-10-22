@@ -50,6 +50,7 @@ function describe(n) {
   }
   const stroke = solid('strokes' in n ? n.strokes : undefined);
   if (stroke) o.stroke = stroke;
+  if ('opacity' in n && n.opacity < 1) o.opacity = r1(n.opacity);
   return o;
 }
 

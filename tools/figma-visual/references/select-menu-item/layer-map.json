@@ -2,17 +2,69 @@
   "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (one option, group label or divider; `root` is the target itself) and how to read it. skip: spec keys not compared for this layer.",
   "layers": {
     "root": {},
-    "Container": { "selector": ".ds-select__check" },
-    "Container#1": { "selector": ".ds-select__content" },
-    "Container/VECTOR": { "selector": ".ds-select__check", "fill": "color" },
-    "lead-icon": { "selector": ".ds-select__icon" },
-    "lead-icon/VECTOR": { "selector": ".ds-select__icon", "fill": "color" },
-    "label": { "selector": ".ds-select__label", "skip": ["w"] },
-    "label/TEXT": { "selector": ".ds-select__label" },
-    "label#1/TEXT": { "selector": ".ds-select__caption" },
-    "Badge": { "selector": ".ds-select__badge", "stroke": "inset-shadow", "skip": ["w"], "$why": "The badge hugs its text, whose width follows glyph rasterisation (43.09 px in Chromium, 44 in Figma)." },
-    "Badge/TEXT": { "selector": ".ds-select__badge > span" },
-    "TEXT": { "selector": ":scope > span:first-child" },
-    "TEXT#1": { "selector": ".ds-select__group-caption" }
+    "Container": {
+      "selector": ".ds-select__check"
+    },
+    "Container#1": {
+      "selector": ".ds-select__content"
+    },
+    "Container/VECTOR": {
+      "selector": ".ds-select__check svg",
+      "fill": "color"
+    },
+    "lead-icon": {
+      "selector": ".ds-select__icon"
+    },
+    "lead-icon/VECTOR": {
+      "selector": ".ds-select__icon",
+      "fill": "color"
+    },
+    "label": {
+      "selector": ".ds-select__label",
+      "skip": [
+        "w"
+      ]
+    },
+    "label/TEXT": {
+      "selector": ".ds-select__label"
+    },
+    "label#1/TEXT": {
+      "selector": ".ds-select__caption"
+    },
+    "Badge": {
+      "selector": ".ds-select__badge",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "The badge hugs its text, whose width follows glyph rasterisation (43.09 px in Chromium, 44 in Figma)."
+    },
+    "Badge/TEXT": {
+      "selector": ".ds-select__badge > span"
+    },
+    "TEXT": {
+      "selector": ":scope > span:first-child"
+    },
+    "TEXT#1": {
+      "selector": ".ds-select__group-caption"
+    },
+    "Checkbox": {
+      "selector": ".ds-select__box",
+      "stroke": "inset-shadow"
+    },
+    "Checkbox/VECTOR": {
+      "selector": ".ds-select__box svg",
+      "fill": "color"
+    },
+    "Radio Button": {
+      "selector": ".ds-select__box",
+      "stroke": "inset-shadow"
+    },
+    "Radio Button/ELLIPSE": {
+      "selector": ".ds-select__dot"
+    },
+    "Flag": {
+      "selector": ".ds-select__media"
+    }
   }
 }

@@ -1,5 +1,6 @@
 // Compares computed styles and boxes in the browser with exact Figma layer values (references/<name>/spec.json),
-// through references/<name>/layer-map.json. Deterministic, unlike pixels: catches 1 px and colour changes on any machine.
+// through references/<name>/layer-map.json: size, padding, gap, radius, fill, stroke, opacity and text style.
+// Deterministic, unlike pixels: catches 1 px and colour changes on any machine.
 
 /** Runs in the page. Returns a list of human-readable mismatches. */
 export function compareInPage({ map, layers, target: targetSelector = '#target' }) {
@@ -70,6 +71,8 @@ export function compareInPage({ map, layers, target: targetSelector = '#target' 
         : cfg.stroke === 'inset-shadow' ? insetShadowColor(cs.boxShadow) : cs.borderTopColor;
       if (!got || !sameColor(got, expected.stroke)) fail('stroke', got, expected.stroke);
     }
+    // Only layers exported with an opacity below 1 carry the key (specs exported before it existed have none).
+    if (!skip.has('opacity') && expected.opacity !== undefined && Math.abs(parseFloat(cs.opacity) - expected.opacity) > 0.01) fail('opacity', cs.opacity, expected.opacity);
     if (expected.fs !== undefined) {
       num('fs', px(cs.fontSize), expected.fs, 0.01);
       if (!skip.has('fw') && Number(cs.fontWeight) !== expected.fw) fail('weight', cs.fontWeight, expected.fw);

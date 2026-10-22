@@ -20,6 +20,10 @@ export interface SelectOption {
   icon?: ReactNode;
   /** Figma "Badge". */
   badge?: ReactNode;
+  /** Figma Type=Country Flag (or Avatar): a 20 px picture before the label, e.g. a flag `<svg>` or an `<img>`. */
+  media?: ReactNode;
+  /** Figma Type=Default Large: a second line under the label; the icon sits in a 36 px circle. */
+  description?: ReactNode;
   disabled?: boolean;
 }
 
@@ -36,7 +40,16 @@ export interface SelectSeparator {
   type: 'separator';
 }
 
-export type SelectItem = SelectOption | SelectGroup | SelectSeparator;
+/** Figma "Select Menu Items" Type=Caption: a note in the menu, read out as the menu's description. */
+export interface SelectCaption {
+  type: 'caption';
+  label: ReactNode;
+}
+
+export type SelectItem = SelectOption | SelectGroup | SelectSeparator | SelectCaption;
+
+/** Figma "Select type": the mark of selected options. */
+export type SelectIndicator = 'check' | 'checkbox' | 'radio';
 
 /** Other props (`aria-*`, `data-*`, event handlers…) go to the combobox element. */
 interface SelectBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange' | 'role' | 'placeholder'> {
@@ -58,6 +71,8 @@ interface SelectBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children
   leadIcon?: ReactNode;
   /** Figma "❖ Tail Icon" slot. Turns red when the select is invalid. */
   tailIcon?: ReactNode;
+  /** Figma Select Menu Items "Select type": check mark (Default), Checkbox or Radio Button. */
+  indicator?: SelectIndicator;
   /** Figma State=Destructive, drawn by Figma as a disabled field. */
   disabled?: boolean;
   /** Opens the menu on first render (Figma State=Active with the menu shown). */
@@ -92,6 +107,19 @@ export type SelectProps = SelectBaseProps & (SelectSingleProps | SelectMultipleP
 
 const isSeparator = (item: SelectItem): item is SelectSeparator => 'type' in item && item.type === 'separator';
 const isGroup = (item: SelectItem): item is SelectGroup => 'options' in item;
+const isCaption = (item: SelectItem): item is SelectCaption => 'type' in item && item.type === 'caption';
+const isOption = (item: SelectItem): item is SelectOption => 'value' in item;
+
+// The check of the Figma Checkbox component (8 px glyph).
+const checkboxGlyph = (
+  <svg viewBox="0 0 8 8" fill="currentColor" aria-hidden>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M7.64368 0.141519C8.0113 0.399497 8.11064 0.922328 7.86556 1.3093L3.8656 7.62501C3.73265 7.83493 3.5173 7.97104 3.2788 7.9959C3.04029 8.02076 2.80376 7.93174 2.63429 7.75335L0.234312 5.22707C-0.078104 4.89821 -0.078104 4.36502 0.234312 4.03616C0.546728 3.7073 1.05325 3.7073 1.36567 4.03616L3.07563 5.83611L6.53429 0.375074C6.77937 -0.0118926 7.27606 -0.116459 7.64368 0.141519Z"
+    />
+  </svg>
+);
 const PAGE = 10;
 const toList = (value: string | string[] | null | undefined) => (value === undefined ? undefined : value === null ? [] : Array.isArray(value) ? value : [value]);
 
@@ -113,6 +141,7 @@ export function Select(props: SelectProps) {
     size = 'lg',
     leadIcon,
     tailIcon,
+    indicator = 'check',
     disabled = false,
     defaultOpen = false,
     name,
@@ -144,7 +173,7 @@ export function Select(props: SelectProps) {
   const hiddenRef = useRef<HTMLInputElement | null>(null);
   const typeahead = useRef({ text: '', at: 0 });
 
-  const flat = useMemo(() => options.flatMap((item) => (isSeparator(item) ? [] : isGroup(item) ? item.options : [item])), [options]);
+  const flat = useMemo(() => options.flatMap((item) => (isGroup(item) ? item.options : isOption(item) ? [item] : [])), [options]);
   const selected = flat.filter((o) => values.includes(o.value));
   // First selected option: where keyboard navigation and type-ahead start.
   const selectedIndex = flat.findIndex((o) => values.includes(o.value));
@@ -259,29 +288,56 @@ export function Select(props: SelectProps) {
   const renderOption = (option: SelectOption) => {
     const i = ++index;
     const isSelected = values.includes(option.value);
+    const large = option.description !== undefined;
+    const mark =
+      indicator === 'check' ? (
+        isSelected && <RiCheckFill />
+      ) : (
+        <span className={`ds-select__box ds-select__box--${indicator}`}>{indicator === 'checkbox' ? checkboxGlyph : <span className="ds-select__dot" />}</span>
+      );
     return (
       <div
         key={option.value}
         id={optionId(i)}
         role="option"
-        className="ds-select__option"
+        className={large ? 'ds-select__option ds-select__option--large' : 'ds-select__option'}
         aria-selected={isSelected}
         aria-disabled={option.disabled || undefined}
         data-highlighted={i === highlighted || undefined}
         onMouseMove={() => i !== highlighted && setHighlighted(enabled(i) ? i : -1)}
         onClick={() => choose(i)}
       >
-        <span className="ds-select__check" aria-hidden>
-          {isSelected && <RiCheckFill />}
-        </span>
+        {!large && (
+          <span className="ds-select__check" aria-hidden>
+            {mark}
+          </span>
+        )}
         <span className="ds-select__content">
           {option.icon && (
             <span className="ds-select__icon" aria-hidden>
               {option.icon}
             </span>
           )}
-          <span className="ds-select__label">{option.label}</span>
+          {option.media && (
+            <span className="ds-select__media" aria-hidden>
+              {option.media}
+            </span>
+          )}
+          {large ? (
+            <span className="ds-select__text">
+              <span className="ds-select__label">{option.label}</span>
+              <span className="ds-select__description">{option.description}</span>
+            </span>
+          ) : (
+            <span className="ds-select__label">{option.label}</span>
+          )}
           {option.caption !== undefined && <span className="ds-select__caption">{option.caption}</span>}
+          {/* Default Large shows the mark on the right, before the badge. */}
+          {large && (isSelected || indicator !== 'check') && (
+            <span className="ds-select__check" aria-hidden>
+              {mark}
+            </span>
+          )}
           {option.badge !== undefined && (
             <span className="ds-select__badge">
               <span>{option.badge}</span>
@@ -291,6 +347,9 @@ export function Select(props: SelectProps) {
       </div>
     );
   };
+
+  // Figma Type=Caption notes describe the menu.
+  const noteIds = options.map((item, i) => (isCaption(item) ? `${id}-note-${i}` : null)).filter(Boolean).join(' ');
 
   const triggerClasses = [
     'ds-select__trigger',
@@ -365,6 +424,7 @@ export function Select(props: SelectProps) {
           aria-labelledby={label !== undefined ? labelId : undefined}
           aria-label={label === undefined ? ariaLabel : undefined}
           aria-multiselectable={multiple || undefined}
+          aria-describedby={noteIds || undefined}
           tabIndex={-1}
           hidden={!open}
           // Keep focus on the combobox while clicking options or the scrollbar.
@@ -374,6 +434,13 @@ export function Select(props: SelectProps) {
           {options.map((item, i) => {
             // A listbox may only own options and groups, so the divider is decoration hidden from assistive technology.
             if (isSeparator(item)) return <div key={`separator-${i}`} className="ds-select__separator" aria-hidden />;
+            // Same for a caption; the listbox's aria-describedby still reads it (hidden content counts for descriptions).
+            if (isCaption(item))
+              return (
+                <div key={`note-${i}`} id={`${id}-note-${i}`} className="ds-select__note" aria-hidden>
+                  <span>{item.label}</span>
+                </div>
+              );
             if (!isGroup(item)) return renderOption(item);
             const groupLabelId = `${id}-group-${i}`;
             return (

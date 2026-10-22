@@ -97,7 +97,7 @@ Label, input and caption in one field. Covers Figma Variant = Default, Shortcut,
 
 ## Select
 
-A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Covers Figma Select Input Variant = Default and Multi-select, and Select Menu Items Type = Default, Label and Divider; the other variants, the menu search and the menu button are in the [backlog](docs/backlog.md).
+A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Covers Figma Select Input Variant = Default and Multi-select, and Select Menu Items Type = Default, Default Large, Country Flag, Label, Caption and Divider with every Select type (check, Checkbox, Radio Button); the other variants, the menu search and the menu button are in the [backlog](docs/backlog.md).
 
 ```tsx
 <Select label="Owner" placeholder="Select a user" options={users} value={owner} onValueChange={setOwner} leadIcon={<RiUser3Line />} />
@@ -127,6 +127,10 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | ↩ Placeholder | `placeholder` | |
 | Menu Items Type = Default | `options: [{ value, label, caption?, icon?, badge?, disabled? }]` | `ds-select__option` |
 | Menu Items State = Hover · Active · Disabled | highlight (mouse or keys) · selected · `disabled` | `[data-highlighted]` · `[aria-selected]` · `[aria-disabled]` |
+| Menu Items Select type = Default / Checkbox / Radio Button | `indicator`: `check` · `checkbox` · `radio` | `ds-select__check` · `ds-select__box--checkbox` · `ds-select__box--radio` |
+| Menu Items Type = Default Large | option `description` (second line; the icon sits in a 36 px circle, the check on the right) | `ds-select__option--large` |
+| Menu Items Type = Country Flag | option `media` (20 px picture, e.g. a flag `<svg>`) | `ds-select__media` |
+| Menu Items Type = Caption | `{ type: 'caption', label }` (read as the menu's description) | `ds-select__note` |
 | Menu Items Type = Label | `{ label, caption?, options }` (a group) | `ds-select__group-label` |
 | Menu Items Type = Divider | `{ type: 'separator' }` | `ds-select__separator` |
 
