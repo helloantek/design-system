@@ -142,6 +142,7 @@ npm run build-storybook && npm run test:storybook   # every story renders, axe r
 npm run test:visual      # every component matches Figma: renders (pixels) and exact layer values (report: tools/figma-visual/out/report.html)
 ```
 
+- Branches: `<kind>/<topic>`, e.g. `component/tag-input`, `fix/…`, `tokens/…`, `tooling/…`, `docs/…` (Claude prefixes `claude/`); see [branch names](docs/branches.md).
 - Try components before they are merged: every branch has a Storybook preview, plus a Playground form; see [previews](docs/previews.md).
 - New component: [playbook](docs/playbook.md), [Definition of Done](docs/definition-of-done.md), [Figma checklist](docs/figma-checklist.md). With Claude Code, the `figma-to-component` skill runs the whole path.
 - New brand: [adding a brand](docs/adding-a-brand.md).

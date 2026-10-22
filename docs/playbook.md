@@ -4,6 +4,8 @@ The path every component follows. It comes from the Button pilot (`pilot/2026-10
 
 **Rule of thumb:** Figma MCP output is a *specification of values* (sizes, spacing, colours, effects). The component is written by hand on top of tokens and verified against Figma automatically.
 
+Work on a branch named `claude/component/<name>` (or `component/<name>`), see [branches.md](branches.md); its preview is what design reviews in step 5.
+
 ## 0. Prepare Figma
 
 Go through [figma-checklist.md](figma-checklist.md) with the designer first. Most code problems start in the file.
