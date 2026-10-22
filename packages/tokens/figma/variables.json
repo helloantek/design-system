@@ -509,6 +509,12 @@
     "Theme-1-Dark": "#ea6eb3",
     "Theme-2-Light": "#b61a5c",
     "Theme-2-Dark": "#ea6eb3"
+   },
+   "icon/black-disabled": {
+    "Theme-1-Light": "#27272a59",
+    "Theme-1-Dark": "#27272a59",
+    "Theme-2-Light": "#27272a59",
+    "Theme-2-Dark": "#27272a59"
    }
   }
  },
@@ -535,6 +541,12 @@
    "full": {
     "Default": 9999,
     "Rounded": 9999,
+    "Full": 9999,
+    "None": 0
+   },
+   "sm": {
+    "Default": 6,
+    "Rounded": 8,
     "Full": 9999,
     "None": 0
    }
@@ -610,6 +622,26 @@
    "weight/normal": {
     "Desktop": 400,
     "Mobile": 400
+   },
+   "size/md": {
+    "Desktop": 16,
+    "Mobile": 16
+   },
+   "size/lg": {
+    "Desktop": 18,
+    "Mobile": 16
+   },
+   "size/xl": {
+    "Desktop": 20,
+    "Mobile": 18
+   },
+   "line-height/leading-6": {
+    "Desktop": 24,
+    "Mobile": 24
+   },
+   "line-height/leading-7": {
+    "Desktop": 28,
+    "Mobile": 24
    }
   }
  },
@@ -622,6 +654,28 @@
    "body": {
     "Font A": "Inter",
     "Font B": "Work Sans"
+   }
+  }
+ },
+ "Icon Size": {
+  "modes": [
+   "Default"
+  ],
+  "vars": {
+   "xs": {
+    "Default": 12
+   },
+   "sm": {
+    "Default": 16
+   },
+   "md": {
+    "Default": 18
+   },
+   "lg": {
+    "Default": 20
+   },
+   "xl": {
+    "Default": 24
    }
   }
  }

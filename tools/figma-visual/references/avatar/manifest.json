@@ -1,0 +1,444 @@
+{
+ "$comment": "Figma Avatar reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/avatar.tsx turns them into props. Every Variant and Size in Circular; Rounded at 2xs, sm, md, lg and 3xl (radius xs up to md, sm from lg; Initials always sm). The Ring, Top badge and Bottom badge booleans cannot be exported from a read-only file (hidden in every variant); the Status Badge has its own references.",
+ "component": "avatar",
+ "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+ "componentSet": "2725:4557",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "userpic-2xs-circular",
+   "nodeId": "2725:4243",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "2xs",
+    "Shape": "Circular"
+   },
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "userpic-xs-circular",
+   "nodeId": "2725:4524",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "xs",
+    "Shape": "Circular"
+   },
+   "nodeW": 20,
+   "nodeH": 20
+  },
+  {
+   "slug": "userpic-sm-circular",
+   "nodeId": "2725:4241",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "sm",
+    "Shape": "Circular"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "userpic-md-circular",
+   "nodeId": "2725:4292",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "md",
+    "Shape": "Circular"
+   },
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "userpic-lg-circular",
+   "nodeId": "2725:4246",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "lg",
+    "Shape": "Circular"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "userpic-xl-circular",
+   "nodeId": "2725:4428",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 48,
+   "nodeH": 48
+  },
+  {
+   "slug": "userpic-2xl-circular",
+   "nodeId": "2725:4420",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "2xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 56,
+   "nodeH": 56
+  },
+  {
+   "slug": "userpic-3xl-circular",
+   "nodeId": "2725:4251",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "3xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 64,
+   "nodeH": 64
+  },
+  {
+   "slug": "empty-2xs-circular",
+   "nodeId": "2725:4460",
+   "props": {
+    "Variant": "Empty",
+    "Size": "2xs",
+    "Shape": "Circular"
+   },
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "empty-xs-circular",
+   "nodeId": "2725:4321",
+   "props": {
+    "Variant": "Empty",
+    "Size": "xs",
+    "Shape": "Circular"
+   },
+   "nodeW": 20,
+   "nodeH": 20
+  },
+  {
+   "slug": "empty-sm-circular",
+   "nodeId": "2725:4240",
+   "props": {
+    "Variant": "Empty",
+    "Size": "sm",
+    "Shape": "Circular"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "empty-md-circular",
+   "nodeId": "2725:4244",
+   "props": {
+    "Variant": "Empty",
+    "Size": "md",
+    "Shape": "Circular"
+   },
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "empty-lg-circular",
+   "nodeId": "2725:4245",
+   "props": {
+    "Variant": "Empty",
+    "Size": "lg",
+    "Shape": "Circular"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "empty-xl-circular",
+   "nodeId": "2725:4247",
+   "props": {
+    "Variant": "Empty",
+    "Size": "xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 48,
+   "nodeH": 48
+  },
+  {
+   "slug": "empty-2xl-circular",
+   "nodeId": "2725:4447",
+   "props": {
+    "Variant": "Empty",
+    "Size": "2xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 56,
+   "nodeH": 56
+  },
+  {
+   "slug": "empty-3xl-circular",
+   "nodeId": "2725:4249",
+   "props": {
+    "Variant": "Empty",
+    "Size": "3xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 64,
+   "nodeH": 64
+  },
+  {
+   "slug": "initials-2xs-circular",
+   "nodeId": "2725:4306",
+   "props": {
+    "Variant": "Initials",
+    "Size": "2xs",
+    "Shape": "Circular"
+   },
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "initials-xs-circular",
+   "nodeId": "2725:4298",
+   "props": {
+    "Variant": "Initials",
+    "Size": "xs",
+    "Shape": "Circular"
+   },
+   "nodeW": 20,
+   "nodeH": 20
+  },
+  {
+   "slug": "initials-sm-circular",
+   "nodeId": "2725:4330",
+   "props": {
+    "Variant": "Initials",
+    "Size": "sm",
+    "Shape": "Circular"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "initials-md-circular",
+   "nodeId": "2725:4356",
+   "props": {
+    "Variant": "Initials",
+    "Size": "md",
+    "Shape": "Circular"
+   },
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "initials-lg-circular",
+   "nodeId": "2725:4385",
+   "props": {
+    "Variant": "Initials",
+    "Size": "lg",
+    "Shape": "Circular"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "initials-xl-circular",
+   "nodeId": "2725:4545",
+   "props": {
+    "Variant": "Initials",
+    "Size": "xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 48,
+   "nodeH": 48
+  },
+  {
+   "slug": "initials-2xl-circular",
+   "nodeId": "2725:4403",
+   "props": {
+    "Variant": "Initials",
+    "Size": "2xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 56,
+   "nodeH": 56
+  },
+  {
+   "slug": "initials-3xl-circular",
+   "nodeId": "2725:4492",
+   "props": {
+    "Variant": "Initials",
+    "Size": "3xl",
+    "Shape": "Circular"
+   },
+   "nodeW": 64,
+   "nodeH": 64
+  },
+  {
+   "slug": "userpic-2xs-rounded",
+   "nodeId": "2725:4237",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "2xs",
+    "Shape": "Rounded"
+   },
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "userpic-sm-rounded",
+   "nodeId": "2725:4538",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "sm",
+    "Shape": "Rounded"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "userpic-md-rounded",
+   "nodeId": "2725:4550",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "userpic-lg-rounded",
+   "nodeId": "2725:4509",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "lg",
+    "Shape": "Rounded"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "userpic-3xl-rounded",
+   "nodeId": "2725:4250",
+   "props": {
+    "Variant": "Userpic",
+    "Size": "3xl",
+    "Shape": "Rounded"
+   },
+   "nodeW": 64,
+   "nodeH": 64
+  },
+  {
+   "slug": "empty-2xs-rounded",
+   "nodeId": "2725:4378",
+   "props": {
+    "Variant": "Empty",
+    "Size": "2xs",
+    "Shape": "Rounded"
+   },
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "empty-sm-rounded",
+   "nodeId": "2725:4239",
+   "props": {
+    "Variant": "Empty",
+    "Size": "sm",
+    "Shape": "Rounded"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "empty-md-rounded",
+   "nodeId": "2725:4242",
+   "props": {
+    "Variant": "Empty",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "empty-lg-rounded",
+   "nodeId": "2725:4309",
+   "props": {
+    "Variant": "Empty",
+    "Size": "lg",
+    "Shape": "Rounded"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "empty-3xl-rounded",
+   "nodeId": "2725:4340",
+   "props": {
+    "Variant": "Empty",
+    "Size": "3xl",
+    "Shape": "Rounded"
+   },
+   "nodeW": 64,
+   "nodeH": 64
+  },
+  {
+   "slug": "initials-2xs-rounded",
+   "nodeId": "2725:4270",
+   "props": {
+    "Variant": "Initials",
+    "Size": "2xs",
+    "Shape": "Rounded"
+   },
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "initials-sm-rounded",
+   "nodeId": "2725:4408",
+   "props": {
+    "Variant": "Initials",
+    "Size": "sm",
+    "Shape": "Rounded"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "initials-md-rounded",
+   "nodeId": "2725:4552",
+   "props": {
+    "Variant": "Initials",
+    "Size": "md",
+    "Shape": "Rounded"
+   },
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "initials-lg-rounded",
+   "nodeId": "2725:4383",
+   "props": {
+    "Variant": "Initials",
+    "Size": "lg",
+    "Shape": "Rounded"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "initials-3xl-rounded",
+   "nodeId": "2725:4519",
+   "props": {
+    "Variant": "Initials",
+    "Size": "3xl",
+    "Shape": "Rounded"
+   },
+   "nodeW": 64,
+   "nodeH": 64
+  }
+ ]
+}

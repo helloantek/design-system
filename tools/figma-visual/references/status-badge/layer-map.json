@@ -1,0 +1,15 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside #target (the status badge) and how to read it.",
+  "layers": {
+    "root": {},
+    "Dot": {
+      "selector": ".ds-status-badge__mark",
+      "fill": "svg"
+    },
+    "Vector": {
+      "selector": ".ds-status-badge__mark, .ds-status-badge__content path",
+      "fill": "svg",
+      "$why": "Checkmark: the blue mark; Icon: the icon, drawn in currentColor."
+    }
+  }
+}

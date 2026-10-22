@@ -63,12 +63,13 @@ export function compareInPage({ map, layers, target: targetSelector = '#target' 
       if (Math.abs(gap - expected.g) > 0.01) fail('gap', gap, expected.g);
     }
     if (!skip.has('fill') && expected.fill) {
-      const got = cfg.fill === 'color' ? cs.color : cs.backgroundColor;
+      const got = cfg.fill === 'color' ? cs.color : cfg.fill === 'svg' ? cs.fill : cs.backgroundColor;
       if (!sameColor(got, expected.fill)) fail('fill', got, expected.fill);
     }
     if (!skip.has('stroke') && expected.stroke) {
       const got = cfg.stroke === 'before-border' ? getComputedStyle(el, '::before').borderTopColor
-        : cfg.stroke === 'inset-shadow' ? insetShadowColor(cs.boxShadow) : cs.borderTopColor;
+        : cfg.stroke === 'inset-shadow' ? insetShadowColor(cs.boxShadow)
+        : cfg.stroke === 'after-inset-shadow' ? insetShadowColor(getComputedStyle(el, '::after').boxShadow) : cs.borderTopColor;
       if (!got || !sameColor(got, expected.stroke)) fail('stroke', got, expected.stroke);
     }
     // Only layers exported with an opacity below 1 carry the key (specs exported before it existed have none).
