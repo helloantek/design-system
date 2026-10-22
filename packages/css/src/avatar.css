@@ -1,0 +1,269 @@
+/*
+ * Avatar — Figma component set "Avatar" (node 2725:4557 in file 4tiBR2hKd4yvQehtKhM9OY): every Variant (Userpic,
+ * Initials, Empty), Size (2xs–3xl) and Shape, plus the "Ring", "Top badge" and "Bottom badge" booleans.
+ * Status Badge — Figma component set "Status Badge" (node 2155:3440): Checkmark, Online, Offline, Notification, Icon,
+ * Logo. Every colour comes from @helloantek/ds-tokens; avatar sizes, the ring's corner radii and badge offsets have no
+ * variables in Figma.
+ *
+ * Markup (classes in [] are optional):
+ *   <span class="ds-avatar ds-avatar--md ds-avatar--circular [ds-avatar--initials] [ds-avatar--ring]">
+ *     <span class="ds-avatar__image">
+ *       <img…/>  |  <span class="ds-avatar__initials">SR</span>  |  <svg class="ds-avatar__placeholder"…/>
+ *     </span>
+ *     [<span class="ds-avatar__badge ds-avatar__badge--top"><span class="ds-status-badge …">…</span></span>]
+ *     [<span class="ds-avatar__badge ds-avatar__badge--bottom">…</span>]
+ *   </span>
+ *   <span class="ds-status-badge ds-status-badge--online" role="img" aria-label="Online"><svg viewBox="0 0 24 24">…</svg></span>
+ */
+
+@layer ds.components {
+  .ds-avatar {
+    /* Rounded corners: Figma uses radius/xs up to md and radius/sm from lg; Initials always use radius/sm. */
+    --avatar-radius: var(--ds-radius-full);
+
+    position: relative;
+    isolation: isolate;
+    display: inline-block;
+    flex-shrink: 0;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    vertical-align: middle;
+  }
+
+  /* Figma Size: box, initials text style, badge size and how far badges stick out (circular / rounded). */
+  .ds-avatar--2xs {
+    --avatar-size: 16px;
+    --avatar-text: var(--ds-font-size-xs);
+    --avatar-leading: var(--ds-font-line-height-leading-4);
+    --avatar-badge: 8px;
+    --avatar-badge-out: 2px;
+    --avatar-badge-out-rounded: 3px;
+    --avatar-ring-radius: 6px;
+  }
+
+  .ds-avatar--xs {
+    --avatar-size: 20px;
+    --avatar-text: var(--ds-font-size-xs);
+    --avatar-leading: var(--ds-font-line-height-leading-4);
+    --avatar-badge: 10px;
+    --avatar-badge-out: 3px;
+    --avatar-badge-out-rounded: 4px;
+    --avatar-ring-radius: 8px;
+  }
+
+  .ds-avatar--sm {
+    --avatar-size: 24px;
+    --avatar-text: var(--ds-font-size-xs);
+    --avatar-leading: var(--ds-font-line-height-leading-4);
+    --avatar-badge: var(--ds-icon-size-xs);
+    --avatar-badge-out: 3px;
+    --avatar-badge-out-rounded: 4px;
+    --avatar-ring-radius: 8px;
+  }
+
+  .ds-avatar--md {
+    --avatar-size: 32px;
+    --avatar-text: var(--ds-font-size-sm);
+    --avatar-leading: var(--ds-font-line-height-leading-5);
+    --avatar-badge: var(--ds-icon-size-xs);
+    --avatar-badge-out: 2px;
+    --avatar-badge-out-rounded: 4px;
+    --avatar-ring-radius: 10px;
+  }
+
+  .ds-avatar--lg {
+    --avatar-size: 40px;
+    --avatar-text: var(--ds-font-size-sm);
+    --avatar-leading: var(--ds-font-line-height-leading-5);
+    --avatar-badge: var(--ds-icon-size-sm);
+    --avatar-badge-out: 2px;
+    --avatar-badge-out-rounded: 2px;
+    --avatar-ring-radius: 10px;
+  }
+
+  .ds-avatar--xl {
+    --avatar-size: 48px;
+    --avatar-text: var(--ds-font-size-md);
+    --avatar-leading: var(--ds-font-line-height-leading-6);
+    --avatar-badge: var(--ds-icon-size-sm);
+    --avatar-badge-out: 2px;
+    --avatar-badge-out-rounded: 6px;
+    --avatar-ring-radius: 10px;
+  }
+
+  .ds-avatar--2xl {
+    --avatar-size: 56px;
+    --avatar-text: var(--ds-font-size-lg);
+    --avatar-leading: var(--ds-font-line-height-leading-7);
+    --avatar-badge: var(--ds-icon-size-md);
+    --avatar-badge-out: 1px;
+    --avatar-badge-out-rounded: 6px;
+    --avatar-ring-radius: 10px;
+  }
+
+  .ds-avatar--3xl {
+    --avatar-size: 64px;
+    --avatar-text: var(--ds-font-size-xl);
+    --avatar-leading: var(--ds-font-line-height-leading-7);
+    --avatar-badge: var(--ds-icon-size-lg);
+    --avatar-badge-out: 0px;
+    --avatar-badge-out-rounded: 8px;
+    --avatar-ring-radius: 10px;
+  }
+
+  /* Figma Shape */
+  .ds-avatar--rounded {
+    --avatar-radius: var(--ds-radius-xs);
+    --avatar-badge-out: var(--avatar-badge-out-rounded);
+  }
+
+  .ds-avatar--rounded:is(.ds-avatar--lg, .ds-avatar--xl, .ds-avatar--2xl, .ds-avatar--3xl, .ds-avatar--initials) {
+    --avatar-radius: var(--ds-radius-sm);
+  }
+
+  /* "Ring": a 2 px disc in the page colour behind the avatar, to separate it from what it overlaps. */
+  .ds-avatar--ring::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: -2px;
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-bg-default);
+  }
+
+  .ds-avatar--ring.ds-avatar--rounded::before {
+    border-radius: var(--avatar-ring-radius);
+  }
+
+  .ds-avatar__image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--avatar-radius);
+    background-color: var(--ds-bg-basic-gray-subtle);
+  }
+
+  /* Figma strokes are inside; an overlay keeps the stroke above the picture. */
+  .ds-avatar__image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--ds-border-default);
+    pointer-events: none;
+  }
+
+  .ds-avatar__image > img,
+  .ds-avatar__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Variant=Empty: Figma's placeholder picture, drawn with tokens so it follows the brand and colour scheme. */
+  .ds-avatar__placeholder {
+    fill: var(--ds-border-darker);
+  }
+
+  /* Variant=Initials */
+  .ds-avatar--initials .ds-avatar__image {
+    background-color: var(--ds-bg-basic-gray-accent);
+  }
+
+  .ds-avatar__initials {
+    color: var(--ds-text-white-default);
+    font-family: var(--ds-font-family-body);
+    font-size: var(--avatar-text);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--avatar-leading);
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  /* "Top badge" / "Bottom badge" */
+  .ds-avatar__badge {
+    position: absolute;
+    right: calc(-1 * var(--avatar-badge-out));
+    display: flex;
+    width: var(--avatar-badge);
+    height: var(--avatar-badge);
+  }
+
+  .ds-avatar__badge--top {
+    top: calc(-1 * var(--avatar-badge-out));
+  }
+
+  .ds-avatar__badge--bottom {
+    bottom: calc(-1 * var(--avatar-badge-out));
+  }
+
+  .ds-avatar__badge > .ds-status-badge {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Status Badge ───────────────────────────────────────────────────── */
+  /* Drawn on a 24 px grid (Figma size xl) and scaled to the slot; the white part is a ring in the page colour. */
+  .ds-status-badge {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    width: var(--ds-icon-size-xl);
+    height: var(--ds-icon-size-xl);
+    vertical-align: middle;
+  }
+
+  .ds-status-badge > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .ds-status-badge__ring {
+    fill: var(--ds-bg-default);
+  }
+
+  .ds-status-badge__mark {
+    fill: var(--status-badge-color);
+  }
+
+  .ds-status-badge--checkmark {
+    --status-badge-color: var(--ds-bg-basic-blue-accent);
+  }
+
+  .ds-status-badge--online {
+    --status-badge-color: var(--ds-bg-basic-lime-accent);
+  }
+
+  .ds-status-badge--offline {
+    --status-badge-color: var(--ds-icon-black-disabled);
+  }
+
+  .ds-status-badge--notification {
+    --status-badge-color: var(--ds-bg-basic-red-accent);
+  }
+
+  /* Icon and Logo: a 20/24 picture centred in the ring. */
+  .ds-status-badge__content {
+    position: absolute;
+    inset: calc(100% / 12);
+    display: flex;
+    overflow: hidden;
+    border-radius: var(--ds-radius-full);
+    color: var(--ds-icon-default-muted);
+  }
+
+  .ds-status-badge__content > svg,
+  .ds-status-badge__content > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

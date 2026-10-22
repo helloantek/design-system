@@ -1,0 +1,14 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside #target (the avatar) and how to read it.",
+  "layers": {
+    "root": {},
+    "image": {
+      "selector": ".ds-avatar__image",
+      "stroke": "after-inset-shadow",
+      "$why": "The inside stroke is an ::after overlay so it stays above the picture."
+    },
+    "initials": {
+      "selector": ".ds-avatar__initials"
+    }
+  }
+}

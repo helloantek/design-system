@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Badge, Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
+**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Avatar (with Status Badge), Badge, Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
 
 ## Using it in a project
 
@@ -68,6 +68,27 @@ Load the same two CSS files and use the classes; each component's markup is docu
 | State = Disabled | `disabled` | `:disabled` |
 | State = Loading | `loading` (keeps width, `aria-busy`, blocks `onClick`) | `[data-loading]` |
 | Lead Icon / Tail Icon / Badge | `leadIcon` · `tailIcon` · `badge` | `__icon` · `__badge` |
+
+## Avatar
+
+A person's picture, initials or a placeholder, with optional status badges. Covers every Figma Variant, Size and Shape, the Ring, Top badge and Bottom badge, and the Status Badge component.
+
+```tsx
+<Avatar src={user.photo} name="Sam Rivera" />
+<Avatar initials="SR" name="Sam Rivera" size="lg" shape="rounded" />
+<Avatar name="Unknown user" bottomBadge={<StatusBadge variant="offline" />} />
+<Avatar src={user.photo} name="Sam Rivera" ring topBadge={<StatusBadge variant="checkmark" />} />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Variant (Userpic, Initials, Empty) | set by the content: `src` · `initials` · neither (a picture that fails to load falls back) | `ds-avatar__image` > `img` · `ds-avatar--initials` + `ds-avatar__initials` · `ds-avatar__placeholder` |
+| Size | `size`: `2xs` · `xs` · `sm` · `md` · `lg` · `xl` · `2xl` · `3xl` | `ds-avatar--<size>` |
+| Shape | `shape`: `circular` · `rounded` | `ds-avatar--<shape>` |
+| Ring | `ring` | `ds-avatar--ring` |
+| Top badge / Bottom badge | `topBadge` · `bottomBadge` (any node, usually a `StatusBadge`) | `ds-avatar__badge--top` · `--bottom` |
+| — | `name`: the accessible name (without it the avatar is decorative) | |
+| Status Badge · Variant | `<StatusBadge variant>`: `checkmark` · `online` · `offline` · `notification` · `icon` (+ `icon`) · `logo` (+ `image`); `label` overrides the spoken name | `ds-status-badge--<variant>` |
 
 ## Badge
 
@@ -193,4 +214,8 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Badge: Border has no effect on Strong badges, except Neutral, where Strong + Border looks exactly like Soft + Border. The Style value is spelled "Srong".
 - Badge: Orange + Strong + Dot draws the dot in the badge's own colour, so it is invisible (every other colour uses white); the code uses white.
 - Badge: the Orange Soft label still draws #ba420d although its variable (orange/700) is #a73b0c; the component has not picked up the library update. The code follows the variable.
-- Badge: the Close Icon stays grey (Control buttons Style=Default) on Strong badges, where the Inverted style would match the white text.
+- Badge: the Close Icon stays grey (Control buttons Style=Default): invisible on Strong badges and faint on dark Soft colours. The code gives it the label colour and a round hover in Pill badges.
+- Avatar: Rounded uses radius/xs up to size md and radius/sm from lg, but Initials use radius/sm at every size; the ring's corners (6/8/10 px) and the badge offsets are fixed numbers that change irregularly between sizes (e.g. Rounded lg badges stick out 2 px, md and xl 4 and 6 px). The code follows Figma.
+- Avatar: in Theme-1 Dark, Initials put text/white-default (#18181b there) on bg/basic/gray-accent (#6f6f77): 3.6:1, below AA.
+- Avatar: the Empty picture is a raster image (#f4f4f5 / #d4d4d8) with no variables; the code draws it with bg/basic/gray-subtle and border/darker (#d5d5d8 on that background), so it follows the colour scheme.
+- Status Badge: Offline uses icon/black-disabled, which is the same dark grey in Dark mode, so the dot disappears on dark backgrounds.

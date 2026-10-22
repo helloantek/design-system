@@ -159,6 +159,38 @@ const tests = {
     await page.keyboard.press('Enter');
     assert.equal(await page.locator('.ds-badge').count(), 0);
   },
+  'avatar: badges and ring sit where Figma puts them; names and fallback': async () => {
+    // Figma: badge size and position per Size and Shape (x, y relative to the avatar), ring 2 px outside.
+    const figma = [
+      ['md', 'circular', 12, 22, -2, 22],
+      ['sm', 'rounded', 12, 16, -4, 16],
+      ['2xl', 'circular', 18, 39, -1, 39],
+      ['3xl', 'rounded', 20, 52, -8, 52],
+    ];
+    for (const [size, shape, badge, x, top, bottom] of figma) {
+      await page.goto(`http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=size:${size};shape:${shape};ring:!true;topBadge:!true;bottomBadge:!true`);
+      const avatar = page.locator('.ds-avatar');
+      await avatar.waitFor();
+      const a = await avatar.boundingBox();
+      const t = await page.locator('.ds-avatar__badge--top').boundingBox();
+      const b = await page.locator('.ds-avatar__badge--bottom').boundingBox();
+      const got = [t.width, t.x - a.x, t.y - a.y, b.y - a.y].map((v) => Math.round(v * 100) / 100);
+      assert.deepEqual(got, [badge, x, top, bottom], `${size} ${shape}: badge size, x, top y, bottom y`);
+      const ring = await avatar.evaluate((el) => { const s = getComputedStyle(el, '::before'); return [s.inset, s.backgroundColor]; });
+      assert.deepEqual(ring, ['-2px', 'rgb(255, 255, 255)'], 'ring: 2 px in the page colour');
+    }
+    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=bottomBadge:!true');
+    await page.getByRole('img', { name: 'Sam Rivera' }).waitFor();
+    assert.equal(await page.getByRole('img', { name: 'Online' }).count(), 1, 'the status badge is named');
+    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=variant:Initials;initials:SR');
+    assert.equal(await page.getByRole('img', { name: 'Sam Rivera' }).textContent(), 'SR', 'initials carry the name');
+    // A picture that fails to load falls back to Empty.
+    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--group&viewMode=story');
+    await page.locator('.ds-avatar').first().waitFor();
+    await page.locator('.ds-avatar img').evaluate((img) => { img.src = 'data:image/png;base64,broken'; });
+    await page.waitForFunction(() => document.querySelectorAll('.ds-avatar img').length === 0);
+    assert.equal(await page.getByRole('img', { name: 'Sam Rivera' }).locator('.ds-avatar__placeholder').count(), 1);
+  },
   'playground form: validation, submitted data and reset': async () => {
     await open('playground-form--sign-up');
     const submitted = page.getByTestId('submitted');

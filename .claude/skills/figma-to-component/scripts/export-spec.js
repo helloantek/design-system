@@ -20,7 +20,9 @@ const solid = async (paints, node) => {
   const bound = p.boundVariables && p.boundVariables.color;
   const variable = bound && (await figma.variables.getVariableByIdAsync(bound.id));
   const value = variable ? variable.resolveForConsumer(node).value : null;
-  return value && typeof value === 'object' && 'r' in value ? hex(value, (value.a ?? 1) * (p.opacity ?? 1)) : hex(p.color, p.opacity ?? 1);
+  // Figma copies a bound colour's alpha into the paint's opacity, so the variable's alpha alone is what it draws
+  // (multiplying both turned Avatar's 10% stroke into 1%).
+  return value && typeof value === 'object' && 'r' in value ? hex(value, value.a ?? 1) : hex(p.color, p.opacity ?? 1);
 };
 const r1 = (v) => Math.round(v * 100) / 100;
 

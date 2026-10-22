@@ -16,7 +16,7 @@ const camel = (s) => slug(s).replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase()).
 const pascal = (s) => camel(s).replace(/^_?(.)/, (m) => m.toUpperCase());
 
 // CSS variable prefix per Figma collection.
-const PREFIX = { Themes: '', Radius: 'radius-', Spacing: 'space-', Stroke: 'stroke-', 'Font Size': 'font-', 'Font Family': 'font-family-' };
+const PREFIX = { Themes: '', Radius: 'radius-', Spacing: 'space-', Stroke: 'stroke-', 'Font Size': 'font-', 'Icon Size': 'icon-size-', 'Font Family': 'font-family-' };
 
 /** Resolve one brand into { color: {light, dark}, dimension, fontWeight, fontFamily, effect }. */
 export function resolveBrand(variables, effects, brand) {
@@ -32,7 +32,7 @@ export function resolveBrand(variables, effects, brand) {
   for (const scheme of ['light', 'dark']) {
     for (const [name, value] of Object.entries(pick('Themes', brand.Themes[scheme]))) out.color[scheme][name] = value;
   }
-  for (const collection of ['Radius', 'Spacing', 'Stroke', 'Font Size']) {
+  for (const collection of ['Radius', 'Spacing', 'Stroke', 'Font Size', 'Icon Size']) {
     for (const [name, value] of Object.entries(pick(collection, modeOf(collection)))) {
       const key = `${PREFIX[collection]}${name}`;
       if (/weight/.test(name)) out.fontWeight[key] = value;

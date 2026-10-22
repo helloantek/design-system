@@ -1,0 +1,60 @@
+{
+ "$comment": "Figma Status Badge reference renders (24 px, 1x PNG, exported with get_screenshot). Logo is left out: its picture is a sample brand logo.",
+ "component": "status-badge",
+ "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+ "componentSet": "2155:3440",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "checkmark",
+   "nodeId": "2155:3439",
+   "props": {
+    "Variant": "Checkmark"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "online",
+   "nodeId": "2155:3438",
+   "props": {
+    "Variant": "Online"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "offline",
+   "nodeId": "2155:3435",
+   "props": {
+    "Variant": "Offline"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "notification",
+   "nodeId": "2155:3436",
+   "props": {
+    "Variant": "Notification"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "icon",
+   "nodeId": "3869:44528",
+   "props": {
+    "Variant": "Icon"
+   },
+   "nodeW": 24,
+   "nodeH": 24
+  }
+ ]
+}
