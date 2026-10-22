@@ -65,7 +65,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
 
 const grid = (columns: number): CSSProperties => ({
   display: 'grid',
-  gridTemplateColumns: `100px repeat(${columns}, auto)`,
+  gridTemplateColumns: `140px repeat(${columns}, auto)`,
   gap: 12,
   alignItems: 'center',
   justifyItems: 'start',
@@ -74,7 +74,7 @@ const grid = (columns: number): CSSProperties => ({
   color: 'var(--ds-text-muted)',
 });
 
-/** Every Figma Color in Soft (with and without Border) and Strong. */
+/** Every Figma Color in Soft (with and without Border) and Strong, with and without the Close Icon. */
 export const Colors: StoryObj = {
   render: () => (
     <div style={grid(10)}>
@@ -87,6 +87,8 @@ export const Colors: StoryObj = {
           ['Soft', { variant: 'soft' }],
           ['Soft + Border', { variant: 'soft', border: true }],
           ['Strong', { variant: 'strong' }],
+          ['Soft + Close Icon', { variant: 'soft', onRemove: () => {} }],
+          ['Strong + Close Icon', { variant: 'strong', onRemove: () => {} }],
         ] as const
       ).map(([title, props]) => (
         <div key={title} style={{ display: 'contents' }}>
