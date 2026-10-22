@@ -10,6 +10,7 @@
  *     [<span class="ds-badge__lead ds-badge__lead--image"><span class="ds-badge__image"><img…/></span></span>]  Variant=Image
  *     <span class="ds-badge__label">Label</span>
  *     [<button class="ds-badge__remove" type="button" aria-label="Remove Label"><svg…close…/></button>]
+ *      (or <span class="ds-badge__remove" aria-hidden="true"> inside another control, e.g. Select tags)
  *   </span>
  * Figma "Style" Soft / Srong (sic) = --soft / --strong.
  */

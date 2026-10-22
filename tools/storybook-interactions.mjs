@@ -150,6 +150,38 @@ const tests = {
     const describedBy = await large.getAttribute('aria-describedby');
     assert.equal(await page.locator(`[id="${describedBy}"]`).textContent(), 'Billed yearly. You can change the plan at any time.');
   },
+  'select tags: badges show the values; × and Backspace remove them without nested buttons': async () => {
+    await open('components-select--playground', 'multiple:!true;tags:!true');
+    const tags = () => page.locator('.ds-select__tags .ds-badge__label').allTextContents();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('Escape');
+    assert.deepEqual(await tags(), ['Alex Jhonson', 'Simon Alt', 'Emma Thompson']);
+    assert.equal(await combobox.locator('button, [tabindex]').count(), 0, 'no focusable element inside the combobox');
+    // × removes that value and leaves the menu closed and the focus on the combobox.
+    await page.locator('.ds-select__tags .ds-badge', { hasText: 'Simon Alt' }).locator('.ds-badge__remove').click();
+    assert.deepEqual(await tags(), ['Alex Jhonson', 'Emma Thompson']);
+    assert.equal(await combobox.getAttribute('aria-expanded'), 'false', '× does not open the menu');
+    assert.equal(await page.locator('.ds-select__status').textContent(), 'Simon Alt removed', 'the removal is announced');
+    // Backspace removes the last value, open or closed.
+    await combobox.focus();
+    await page.keyboard.press('Backspace');
+    assert.deepEqual(await tags(), ['Alex Jhonson']);
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Backspace');
+    assert.equal(await page.locator('.ds-select__tags').count(), 0);
+    assert.equal((await state()).value, 'Select a user', 'the placeholder returns');
+    // Disabled: no × at all.
+    await open('components-select--tags');
+    const disabled = page.locator('.ds-select').nth(2);
+    assert.equal(await disabled.locator('.ds-badge').count(), 2);
+    assert.equal(await disabled.locator('.ds-badge__remove').count(), 0, 'a disabled select has no ×');
+  },
   'badge: the close icon is a named button that removes the badge': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-badge--playground&viewMode=story&args=closeIcon:!true;label:Design');
     const remove = page.getByRole('button', { name: 'Remove Design' });

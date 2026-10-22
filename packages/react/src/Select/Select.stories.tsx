@@ -35,7 +35,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `Implements the Figma component sets **Select Input**, **Select Menu** and **Select Menu Items** ([open in Figma](${FIGMA_URL})): Select Input Variant = Default and Multi-select, and menu items of Type = Default, Default Large, Country Flag, Label, Caption and Divider in every Select type. Figma "Style" → \`variant\`, "Size" → \`size\`; Active is the focused trigger, Failed is \`error\`, Destructive (drawn as a disabled field in Figma) is \`disabled\`. Keyboard: arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab and type-ahead, as in the WAI-ARIA select-only combobox. **Playground** builds the menu from item controls; **MenuItem** shows one item with its Figma properties. Tags and Avatar variants, the menu search and the menu footer button are in the backlog.`,
+        component: `Implements the Figma component sets **Select Input**, **Select Menu** and **Select Menu Items** ([open in Figma](${FIGMA_URL})): Select Input Variant = Default, Multi-select and Tags, and menu items of Type = Default, Default Large, Country Flag, Label, Caption and Divider in every Select type. Figma "Style" → \`variant\`, "Size" → \`size\`; Active is the focused trigger, Failed is \`error\`, Destructive (drawn as a disabled field in Figma) is \`disabled\`. Keyboard: arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab and type-ahead, as in the WAI-ARIA select-only combobox. **Playground** builds the menu from item controls; **MenuItem** shows one item with its Figma properties. The Avatar variant, the menu search and the menu footer button are in the backlog.`,
       },
     },
   },
@@ -59,6 +59,7 @@ type PlaygroundArgs = {
   leadIcon: boolean;
   tailIcon: boolean;
   multiple: boolean;
+  tags: boolean;
   indicator: SelectIndicator;
   itemType: ItemType;
   itemIcon: boolean;
@@ -116,6 +117,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     leadIcon: true,
     tailIcon: true,
     multiple: false,
+    tags: false,
     indicator: 'check',
     itemType: 'Default',
     itemIcon: false,
@@ -138,6 +140,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     leadIcon: { table: { category: 'Field' } },
     tailIcon: { table: { category: 'Field' } },
     multiple: { description: 'Figma Variant=Multi-select: pick several options', table: { category: 'Field' } },
+    tags: { description: 'Figma Variant=Tags: values as removable badges (× or Backspace)', if: { arg: 'multiple' }, table: { category: 'Field' } },
     indicator: { control: 'inline-radio', options: ['check', 'checkbox', 'radio'], description: 'Figma Select type: Default, Checkbox, Radio Button', table: { category: 'Menu items' } },
     itemType: { control: 'inline-radio', options: ['Default', 'Default Large', 'Country Flag'], description: 'Figma Select Menu Items Type', table: { category: 'Menu items' } },
     // Only Type=Default has a Lead Icon slot; Default Large shows its icon circle and Country Flag its flag there.
@@ -166,7 +169,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
       leadIcon: args.leadIcon ? <RiUser3Line /> : undefined,
       tailIcon: args.tailIcon ? <RiInformationFill /> : undefined,
     };
-    return args.multiple ? <Select {...common} multiple value={values} onValueChange={setValues} /> : <Select {...common} value={value} onValueChange={setValue} />;
+    return args.multiple ? <Select {...common} multiple tags={args.tags} value={values} onValueChange={setValues} /> : <Select {...common} value={value} onValueChange={setValue} />;
   },
 };
 
@@ -316,6 +319,17 @@ export const MultiSelect: StoryObj = {
   decorators: single,
   render: () => (
     <Select {...field} label="Reviewers" caption="Pick everyone who should approve" multiple defaultValue={['simon-alt', 'michael-davis', 'ryan-parker']} />
+  ),
+};
+
+/** Figma Variant=Tags: each value is a removable badge. × removes it with the mouse; Backspace removes the last one; the menu toggles any. Tags wrap when they do not fit. */
+export const Tags: StoryObj = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 24, width: 320 }}>
+      <Select {...field} label="Reviewers" caption="Pick everyone who should approve" multiple tags defaultValue={['simon-alt', 'michael-davis']} />
+      <Select {...field} label="Many reviewers" multiple tags defaultValue={['alex-jhonson', 'simon-alt', 'emma-thompson', 'michael-davis', 'kate-roberts']} />
+      <Select {...field} label="Disabled" multiple tags defaultValue={['simon-alt', 'michael-davis']} disabled />
+    </div>
   ),
 };
 

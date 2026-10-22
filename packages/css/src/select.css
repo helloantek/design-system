@@ -14,6 +14,7 @@
  *         <span class="ds-select__main">
  *           [<span class="ds-select__icon" aria-hidden="true"><svg…/></span>]
  *           <span class="ds-select__value [ds-select__value--placeholder]">Select a user</span>
+ *           (Variant=Tags: <span class="ds-select__tags"><span class="ds-badge … ds-badge--border">…</span>…</span>)
  *         </span>
  *         [<span class="ds-select__icon ds-select__icon--tail" aria-hidden="true"><svg…/></span>]
  *         <span class="ds-select__icon" aria-hidden="true"><svg…expand…/></span>
@@ -36,6 +37,7 @@
  *         <div class="ds-select__note" id="n" aria-hidden="true"><span>Caption</span></div>   (listbox aria-describedby="n")
  *       </div>
  *     </div>
+ *     [<span class="ds-select__status" aria-live="polite">Simon Alt removed</span>]   (Variant=Tags)
  *     <p class="ds-field__caption">Caption text</p>
  *   </div>
  * Select type=Checkbox / Radio Button: the check slot holds
@@ -146,6 +148,31 @@
     font-weight: var(--ds-font-weight-normal);
     line-height: var(--ds-font-line-height-leading-5);
     text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Figma Variant=Tags: sm Neutral Soft badges with a border and Close Icon, 4 px apart, in the label's padding.
+     Figma keeps them on one clipped row; the code wraps them so every value stays visible and removable. */
+  .ds-select__tags {
+    display: flex;
+    flex: 1 1 0;
+    flex-wrap: wrap;
+    gap: var(--ds-space-4);
+    min-width: 0;
+    padding: 0 var(--ds-space-4);
+  }
+
+  .ds-select__trigger--disabled .ds-select__tags .ds-badge {
+    opacity: 0.5;
+  }
+
+  /* Announces removed tags to screen readers; takes no space. */
+  .ds-select__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
     white-space: nowrap;
   }
 

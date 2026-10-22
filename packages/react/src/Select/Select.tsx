@@ -89,6 +89,7 @@ interface SelectBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children
 /** One value (Figma Variant=Default). */
 interface SelectSingleProps {
   multiple?: false;
+  tags?: never;
   /** Selected value (controlled). `null` shows the placeholder. */
   value?: string | null;
   /** Initially selected value (uncontrolled). */
@@ -99,6 +100,11 @@ interface SelectSingleProps {
 /** Several values (Figma Variant=Multi-select): options toggle and the menu stays open; the trigger lists the labels. */
 interface SelectMultipleProps {
   multiple: true;
+  /**
+   * Figma Variant=Tags: the trigger shows each value as a removable badge (× with the mouse, Backspace removes the
+   * last one). Tags wrap onto more rows when they do not fit.
+   */
+  tags?: boolean;
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
@@ -133,6 +139,7 @@ export function Select(props: SelectProps) {
     value: _value,
     defaultValue: _defaultValue,
     onValueChange: _onValueChange,
+    tags = false,
     placeholder,
     label,
     'aria-label': ariaLabel,
@@ -173,6 +180,8 @@ export function Select(props: SelectProps) {
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const hiddenRef = useRef<HTMLInputElement | null>(null);
   const typeahead = useRef({ text: '', at: 0 });
+  // Tags: what was removed, announced through a live region (the combobox's own text changes silently).
+  const [status, setStatus] = useState('');
 
   const flat = useMemo(() => options.flatMap((item) => (isGroup(item) ? item.options : isOption(item) ? [item] : [])), [options]);
   const selected = flat.filter((o) => values.includes(o.value));
@@ -224,6 +233,10 @@ export function Select(props: SelectProps) {
     if (props.multiple) props.onValueChange?.(next);
     else if (next[0] !== values[0]) props.onValueChange?.(next[0]);
   };
+  const remove = (option: SelectOption) => {
+    update(values.filter((v) => v !== option.value));
+    setStatus(`${option.label} removed`);
+  };
   // Single: select and close. Multiple: toggle and keep the menu open.
   const choose = (index: number) => {
     if (!enabled(index)) return;
@@ -260,7 +273,8 @@ export function Select(props: SelectProps) {
     const printable = key.length === 1 && !event.ctrlKey && !event.metaKey && !altKey;
     if (!printable) typeahead.current.text = '';
     let handled = true;
-    if (!open) {
+    if (tags && (key === 'Backspace' || key === 'Delete') && selected.length) remove(selected[selected.length - 1]);
+    else if (!open) {
       if (key === 'ArrowDown' || key === 'ArrowUp' || key === 'Enter' || key === ' ') openMenu(enabled(selectedIndex) ? selectedIndex : first());
       else if (key === 'Home') openMenu(first());
       else if (key === 'End') openMenu(last());
@@ -401,9 +415,19 @@ export function Select(props: SelectProps) {
                 {leadIcon}
               </span>
             )}
-            <span className={selected.length ? 'ds-select__value' : 'ds-select__value ds-select__value--placeholder'}>
-              {selected.length ? selected.map((o) => o.label).join(', ') : placeholder}
-            </span>
+            {tags && selected.length ? (
+              <span className="ds-select__tags">
+                {selected.map((o) => (
+                  <Badge key={o.value} border removeButton={false} onRemove={disabled ? undefined : () => remove(o)}>
+                    {o.label}
+                  </Badge>
+                ))}
+              </span>
+            ) : (
+              <span className={selected.length ? 'ds-select__value' : 'ds-select__value ds-select__value--placeholder'}>
+                {selected.length ? selected.map((o) => o.label).join(', ') : placeholder}
+              </span>
+            )}
           </span>
           {tailIcon && (
             <span className="ds-select__icon ds-select__icon--tail" aria-hidden>
@@ -458,6 +482,11 @@ export function Select(props: SelectProps) {
           <input ref={hiddenRef} type="hidden" name={multiple ? undefined : name} value={values[0] ?? ''} disabled={disabled} />
           {multiple && values.map((v) => <input key={v} type="hidden" name={name} value={v} disabled={disabled} />)}
         </>
+      )}
+      {tags && (
+        <span className="ds-select__status" aria-live="polite">
+          {status}
+        </span>
       )}
       {help !== undefined && (
         <p id={captionId} className={invalid ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
