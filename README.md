@@ -163,7 +163,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | Size | `size`: `lg` · `sm` | `ds-field--<size>` |
 | State = Placeholder / Filled | `placeholder` / `value` · `defaultValue` | `ds-select__value--placeholder` |
 | Variant = Multi-select | `multiple` (`value`/`defaultValue` are arrays; options toggle and the menu stays open; the trigger lists the labels) | `[aria-multiselectable]` on the menu |
-| Variant = Tags | `multiple tags`: each value is a `Badge` (sm, Neutral, Soft, Border, Close Icon). × removes it with the mouse, Backspace/Delete removes the last one, the menu toggles any; removals are announced. Tags wrap when they do not fit (Figma clips one row). No buttons inside the combobox: the × is a pointer target only. | `ds-select__tags` · `ds-select__status` |
+| Variant = Tags | `multiple tags`: each value is a `Badge` (sm, Neutral, Soft, Border, Close Icon). × removes it with the mouse, Backspace/Delete removes the last one, the menu toggles any; removals are announced. Tags that do not fit wrap onto more rows (default), or with `tagsOverflow="count"` stay on one row with a "+N" badge (its tooltip and screen-reader text name the hidden values); Figma clips one row. No buttons inside the combobox: the × is a pointer target only. | `ds-select__tags` · `--count` · `ds-select__more` · `ds-select__status` |
 | State = Active | focus (the menu opens on click or keys) | `:focus` |
 | State = Failed | `error` (replaces the caption, sets `aria-invalid`) | `ds-select__trigger--invalid` |
 | State = Destructive (drawn as disabled) | `disabled` | `ds-select__trigger--disabled` |

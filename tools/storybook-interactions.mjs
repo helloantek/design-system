@@ -176,9 +176,25 @@ const tests = {
     await page.keyboard.press('Backspace');
     assert.equal(await page.locator('.ds-select__tags').count(), 0);
     assert.equal((await state()).value, 'Select a user', 'the placeholder returns');
-    // Disabled: no × at all.
+    // tagsOverflow="count": one row, the rest in "+N", named for screen readers; removing makes room.
     await open('components-select--tags');
-    const disabled = page.locator('.ds-select').nth(2);
+    const counted = page.locator('.ds-select').nth(2);
+    const visible = await counted.locator('.ds-select__tags > .ds-badge:not(.ds-select__more) .ds-badge__label').allTextContents();
+    const more = counted.locator('.ds-select__more');
+    assert.ok(visible.length >= 1 && visible.length < 5, `some tags fit (${visible.length})`);
+    assert.equal(await more.locator('[aria-hidden]').textContent(), `+${5 - visible.length}`);
+    const names = ['Alex Jhonson', 'Simon Alt', 'Emma Thompson', 'Michael Davis', 'Kate Roberts'];
+    assert.equal(await more.locator('.ds-select__hidden').textContent(), `and ${5 - visible.length} more: ${names.slice(visible.length).join(', ')}`);
+    // One row, and the counter ends inside the row's padding box (nothing clipped).
+    const row = await counted.locator('.ds-select__tags').evaluate((el) => {
+      const r = el.getBoundingClientRect(), m = el.querySelector('.ds-select__more').getBoundingClientRect();
+      return [r.height, m.right <= r.right - parseFloat(getComputedStyle(el).paddingRight) + 0.5];
+    });
+    assert.deepEqual(row, [20, true], 'one row, nothing clipped');
+    await counted.locator('.ds-select__tags .ds-badge__remove').first().click();
+    assert.equal(await counted.locator('.ds-select__tags > .ds-badge:not(.ds-select__more)').count() + Number((await more.count()) ? (await more.locator('[aria-hidden]').textContent()).slice(1) : 0), 4, 'shown + counted = values left');
+    // Disabled: no × at all.
+    const disabled = page.locator('.ds-select').nth(3);
     assert.equal(await disabled.locator('.ds-badge').count(), 2);
     assert.equal(await disabled.locator('.ds-badge__remove').count(), 0, 'a disabled select has no ×');
   },

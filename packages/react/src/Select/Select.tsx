@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode, type Ref } from 'react';
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode, type Ref } from 'react';
 import { RiCheckFill, RiExpandUpDownFill } from '@remixicon/react';
 import { Badge } from '../Badge';
 
@@ -90,6 +90,7 @@ interface SelectBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children
 interface SelectSingleProps {
   multiple?: false;
   tags?: never;
+  tagsOverflow?: never;
   /** Selected value (controlled). `null` shows the placeholder. */
   value?: string | null;
   /** Initially selected value (uncontrolled). */
@@ -102,9 +103,11 @@ interface SelectMultipleProps {
   multiple: true;
   /**
    * Figma Variant=Tags: the trigger shows each value as a removable badge (× with the mouse, Backspace removes the
-   * last one). Tags wrap onto more rows when they do not fit.
+   * last one).
    */
   tags?: boolean;
+  /** Tags that do not fit: `wrap` onto more rows (default), or keep one row and `count` the rest in a "+N" badge. */
+  tagsOverflow?: 'wrap' | 'count';
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
@@ -140,6 +143,7 @@ export function Select(props: SelectProps) {
     defaultValue: _defaultValue,
     onValueChange: _onValueChange,
     tags = false,
+    tagsOverflow = 'wrap',
     placeholder,
     label,
     'aria-label': ariaLabel,
@@ -188,6 +192,40 @@ export function Select(props: SelectProps) {
   // First selected option: where keyboard navigation and type-ahead start.
   const selectedIndex = flat.findIndex((o) => values.includes(o.value));
   const invalid = error !== undefined && error !== null && error !== false;
+
+  // Tags with tagsOverflow="count": how many badges fit on one row next to the "+N" badge, measured on an
+  // invisible copy of every badge (and of the widest counter) whenever the values or the row's width change.
+  const counting = tags && tagsOverflow === 'count';
+  const rowRef = useRef<HTMLSpanElement | null>(null);
+  const measureRef = useRef<HTMLSpanElement | null>(null);
+  const [fit, setFit] = useState(Infinity);
+  const selectedKey = selected.map((o) => o.value).join('\n');
+  useLayoutEffect(() => {
+    const row = rowRef.current, measure = measureRef.current;
+    if (!counting || !row || !measure) return;
+    const compute = () => {
+      const style = getComputedStyle(row);
+      const room = row.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      const gap = parseFloat(style.columnGap) || 0;
+      const [counter, ...badges] = Array.from(measure.children).map((el) => el.getBoundingClientRect().width).reverse();
+      badges.reverse();
+      let used = 0, count = 0;
+      for (; count < badges.length; count++) {
+        const next = used + (count ? gap : 0) + badges[count];
+        const rest = count < badges.length - 1 ? gap + counter : 0;
+        if (next + rest > room) break;
+        used = next;
+      }
+      setFit(count);
+    };
+    compute();
+    const observer = new ResizeObserver(compute);
+    observer.observe(row);
+    observer.observe(measure);
+    return () => observer.disconnect();
+  }, [counting, selectedKey]);
+  const shown = counting ? selected.slice(0, fit) : selected;
+  const hidden = counting ? selected.slice(fit) : [];
   const help = invalid ? error : caption;
 
   const setRef = (node: HTMLDivElement | null) => {
@@ -416,12 +454,28 @@ export function Select(props: SelectProps) {
               </span>
             )}
             {tags && selected.length ? (
-              <span className="ds-select__tags">
-                {selected.map((o) => (
+              <span ref={rowRef} className={counting ? 'ds-select__tags ds-select__tags--count' : 'ds-select__tags'}>
+                {shown.map((o) => (
                   <Badge key={o.value} border removeButton={false} onRemove={disabled ? undefined : () => remove(o)}>
                     {o.label}
                   </Badge>
                 ))}
+                {hidden.length > 0 && (
+                  <Badge border className="ds-select__more" title={hidden.map((o) => o.label).join(', ')}>
+                    <span aria-hidden>+{hidden.length}</span>
+                    <span className="ds-select__hidden">{`and ${hidden.length} more: ${hidden.map((o) => o.label).join(', ')}`}</span>
+                  </Badge>
+                )}
+                {counting && (
+                  <span ref={measureRef} className="ds-select__measure" aria-hidden>
+                    {selected.map((o) => (
+                      <Badge key={o.value} border removeButton={false} onRemove={disabled ? undefined : () => {}}>
+                        {o.label}
+                      </Badge>
+                    ))}
+                    <Badge border>+{selected.length}</Badge>
+                  </span>
+                )}
               </span>
             ) : (
               <span className={selected.length ? 'ds-select__value' : 'ds-select__value ds-select__value--placeholder'}>

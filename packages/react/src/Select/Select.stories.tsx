@@ -60,6 +60,7 @@ type PlaygroundArgs = {
   tailIcon: boolean;
   multiple: boolean;
   tags: boolean;
+  tagsOverflow: 'wrap' | 'count';
   indicator: SelectIndicator;
   itemType: ItemType;
   itemIcon: boolean;
@@ -118,6 +119,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     tailIcon: true,
     multiple: false,
     tags: false,
+    tagsOverflow: 'wrap',
     indicator: 'check',
     itemType: 'Default',
     itemIcon: false,
@@ -141,6 +143,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     tailIcon: { table: { category: 'Field' } },
     multiple: { description: 'Figma Variant=Multi-select: pick several options', table: { category: 'Field' } },
     tags: { description: 'Figma Variant=Tags: values as removable badges (× or Backspace)', if: { arg: 'multiple' }, table: { category: 'Field' } },
+    tagsOverflow: { control: 'inline-radio', options: ['wrap', 'count'], description: 'Tags that do not fit: wrap onto more rows, or one row and "+N"', if: { arg: 'tags' }, table: { category: 'Field' } },
     indicator: { control: 'inline-radio', options: ['check', 'checkbox', 'radio'], description: 'Figma Select type: Default, Checkbox, Radio Button', table: { category: 'Menu items' } },
     itemType: { control: 'inline-radio', options: ['Default', 'Default Large', 'Country Flag'], description: 'Figma Select Menu Items Type', table: { category: 'Menu items' } },
     // Only Type=Default has a Lead Icon slot; Default Large shows its icon circle and Country Flag its flag there.
@@ -169,7 +172,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
       leadIcon: args.leadIcon ? <RiUser3Line /> : undefined,
       tailIcon: args.tailIcon ? <RiInformationFill /> : undefined,
     };
-    return args.multiple ? <Select {...common} multiple tags={args.tags} value={values} onValueChange={setValues} /> : <Select {...common} value={value} onValueChange={setValue} />;
+    return args.multiple ? <Select {...common} multiple tags={args.tags} tagsOverflow={args.tagsOverflow} value={values} onValueChange={setValues} /> : <Select {...common} value={value} onValueChange={setValue} />;
   },
 };
 
@@ -322,12 +325,13 @@ export const MultiSelect: StoryObj = {
   ),
 };
 
-/** Figma Variant=Tags: each value is a removable badge. × removes it with the mouse; Backspace removes the last one; the menu toggles any. Tags wrap when they do not fit. */
+/** Figma Variant=Tags: each value is a removable badge. × removes it with the mouse; Backspace removes the last one; the menu toggles any. Tags that do not fit wrap (default) or, with `tagsOverflow="count"`, stay on one row with a "+N" badge (hover it for the names). */
 export const Tags: StoryObj = {
   render: () => (
     <div style={{ display: 'grid', gap: 24, width: 320 }}>
       <Select {...field} label="Reviewers" caption="Pick everyone who should approve" multiple tags defaultValue={['simon-alt', 'michael-davis']} />
-      <Select {...field} label="Many reviewers" multiple tags defaultValue={['alex-jhonson', 'simon-alt', 'emma-thompson', 'michael-davis', 'kate-roberts']} />
+      <Select {...field} label="Many reviewers · wrap" multiple tags defaultValue={['alex-jhonson', 'simon-alt', 'emma-thompson', 'michael-davis', 'kate-roberts']} />
+      <Select {...field} label="Many reviewers · +N" multiple tags tagsOverflow="count" defaultValue={['alex-jhonson', 'simon-alt', 'emma-thompson', 'michael-davis', 'kate-roberts']} />
       <Select {...field} label="Disabled" multiple tags defaultValue={['simon-alt', 'michael-davis']} disabled />
     </div>
   ),

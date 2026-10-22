@@ -14,7 +14,9 @@
  *         <span class="ds-select__main">
  *           [<span class="ds-select__icon" aria-hidden="true"><svg…/></span>]
  *           <span class="ds-select__value [ds-select__value--placeholder]">Select a user</span>
- *           (Variant=Tags: <span class="ds-select__tags"><span class="ds-badge … ds-badge--border">…</span>…</span>)
+ *           (Variant=Tags: <span class="ds-select__tags [ds-select__tags--count]"><span class="ds-badge … ds-badge--border">…</span>…
+ *            [<span class="ds-badge … ds-select__more"><span aria-hidden="true">+2</span><span class="ds-select__hidden">and 2 more: …</span></span>]
+ *            [<span class="ds-select__measure" aria-hidden="true">…every tag and the counter, invisible…</span>]</span>)
  *         </span>
  *         [<span class="ds-select__icon ds-select__icon--tail" aria-hidden="true"><svg…/></span>]
  *         <span class="ds-select__icon" aria-hidden="true"><svg…expand…/></span>
@@ -166,7 +168,26 @@
     opacity: 0.5;
   }
 
-  /* Announces removed tags to screen readers; takes no space. */
+  /* tagsOverflow="count": one row; the badges that do not fit become a "+N" badge (not in Figma, styled like a tag). */
+  .ds-select__tags--count {
+    position: relative;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  /* An invisible copy of every tag, measured to decide how many fit. */
+  .ds-select__measure {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    gap: inherit;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Announces removed tags to screen readers, and names the tags behind "+N"; takes no space. */
+  .ds-select__hidden,
   .ds-select__status {
     position: absolute;
     width: 1px;
