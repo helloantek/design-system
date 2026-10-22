@@ -97,10 +97,11 @@ Label, input and caption in one field. Covers Figma Variant = Default, Shortcut,
 
 ## Select
 
-A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Covers Figma Select Input Variant = Default and Select Menu Items Type = Default, Label and Divider; the other variants, the menu search and the menu button are in the [backlog](docs/backlog.md).
+A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Covers Figma Select Input Variant = Default and Multi-select, and Select Menu Items Type = Default, Label and Divider; the other variants, the menu search and the menu button are in the [backlog](docs/backlog.md).
 
 ```tsx
 <Select label="Owner" placeholder="Select a user" options={users} value={owner} onValueChange={setOwner} leadIcon={<RiUser3Line />} />
+<Select label="Reviewers" options={users} multiple value={reviewers} onValueChange={setReviewers} />
 <Select
   label="Region"
   name="region"
@@ -117,6 +118,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | Style | `variant`: `default` · `shadow` · `soft` | `ds-select__trigger--<variant>` |
 | Size | `size`: `lg` · `sm` | `ds-field--<size>` |
 | State = Placeholder / Filled | `placeholder` / `value` · `defaultValue` | `ds-select__value--placeholder` |
+| Variant = Multi-select | `multiple` (`value`/`defaultValue` are arrays; options toggle and the menu stays open; the trigger lists the labels) | `[aria-multiselectable]` on the menu |
 | State = Active | focus (the menu opens on click or keys) | `:focus` |
 | State = Failed | `error` (replaces the caption, sets `aria-invalid`) | `ds-select__trigger--invalid` |
 | State = Destructive (drawn as disabled) | `disabled` | `ds-select__trigger--disabled` |
@@ -128,7 +130,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | Menu Items Type = Label | `{ label, caption?, options }` (a group) | `ds-select__group-label` |
 | Menu Items Type = Divider | `{ type: 'separator' }` | `ds-select__separator` |
 
-Forms: `name` submits the value through a hidden input, and resetting the form restores `defaultValue`. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
+Forms: `name` submits the value through a hidden input (one per value with `multiple`, read them with `formData.getAll(name)`), and resetting the form restores `defaultValue`. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
 
 ## Working on the design system
 

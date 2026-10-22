@@ -39,14 +39,9 @@ export interface SelectSeparator {
 export type SelectItem = SelectOption | SelectGroup | SelectSeparator;
 
 /** Other props (`aria-*`, `data-*`, event handlers…) go to the combobox element. */
-export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange' | 'role' | 'placeholder'> {
+interface SelectBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange' | 'role' | 'placeholder'> {
   ref?: Ref<HTMLDivElement>;
   options: SelectItem[];
-  /** Selected value (controlled). `null` shows the placeholder. */
-  value?: string | null;
-  /** Initially selected value (uncontrolled). */
-  defaultValue?: string | null;
-  onValueChange?: (value: string) => void;
   /** Figma "↩ Placeholder". */
   placeholder?: string;
   /** Figma "Label". Names the combobox and the listbox. */
@@ -67,7 +62,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, 'child
   disabled?: boolean;
   /** Opens the menu on first render (Figma State=Active with the menu shown). */
   defaultOpen?: boolean;
-  /** Form field name: the value is submitted through a hidden input. */
+  /** Form field name: the value is submitted through a hidden input (one per value with `multiple`). */
   name?: string;
   required?: boolean;
   id?: string;
@@ -75,17 +70,40 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLDivElement>, 'child
   className?: string;
 }
 
+/** One value (Figma Variant=Default). */
+interface SelectSingleProps {
+  multiple?: false;
+  /** Selected value (controlled). `null` shows the placeholder. */
+  value?: string | null;
+  /** Initially selected value (uncontrolled). */
+  defaultValue?: string | null;
+  onValueChange?: (value: string) => void;
+}
+
+/** Several values (Figma Variant=Multi-select): options toggle and the menu stays open; the trigger lists the labels. */
+interface SelectMultipleProps {
+  multiple: true;
+  value?: string[];
+  defaultValue?: string[];
+  onValueChange?: (value: string[]) => void;
+}
+
+export type SelectProps = SelectBaseProps & (SelectSingleProps | SelectMultipleProps);
+
 const isSeparator = (item: SelectItem): item is SelectSeparator => 'type' in item && item.type === 'separator';
 const isGroup = (item: SelectItem): item is SelectGroup => 'options' in item;
 const PAGE = 10;
+const toList = (value: string | string[] | null | undefined) => (value === undefined ? undefined : value === null ? [] : Array.isArray(value) ? value : [value]);
 
 export function Select(props: SelectProps) {
   const {
     ref,
     options,
-    value: valueProp,
-    defaultValue = null,
-    onValueChange,
+    multiple = false,
+    // Kept out of `rest`; read through `props`, where `multiple` narrows their types.
+    value: _value,
+    defaultValue: _defaultValue,
+    onValueChange: _onValueChange,
     placeholder,
     label,
     'aria-label': ariaLabel,
@@ -114,8 +132,10 @@ export function Select(props: SelectProps) {
   const captionId = `${id}-caption`;
   const optionId = (index: number) => `${id}-option-${index}`;
 
-  const [uncontrolled, setUncontrolled] = useState(defaultValue);
-  const value = valueProp !== undefined ? valueProp : uncontrolled;
+  // Values are kept as a list in both modes.
+  const defaults = toList(props.defaultValue) ?? [];
+  const [uncontrolled, setUncontrolled] = useState(defaults);
+  const values = toList(props.value) ?? uncontrolled;
   const [open, setOpen] = useState(defaultOpen && !disabled);
   // Index into `flat` of the option with visual focus, or -1. Opening with the mouse highlights nothing,
   // so the selected option is not drawn as hovered (Figma Active=True, State=Default).
@@ -125,8 +145,9 @@ export function Select(props: SelectProps) {
   const typeahead = useRef({ text: '', at: 0 });
 
   const flat = useMemo(() => options.flatMap((item) => (isSeparator(item) ? [] : isGroup(item) ? item.options : [item])), [options]);
-  const selectedIndex = flat.findIndex((o) => o.value === value);
-  const selected = selectedIndex >= 0 ? flat[selectedIndex] : undefined;
+  const selected = flat.filter((o) => values.includes(o.value));
+  // First selected option: where keyboard navigation and type-ahead start.
+  const selectedIndex = flat.findIndex((o) => values.includes(o.value));
   const invalid = error !== undefined && error !== null && error !== false;
   const help = invalid ? error : caption;
 
@@ -137,13 +158,14 @@ export function Select(props: SelectProps) {
   };
 
   // Like a native <select>, an uncontrolled Select goes back to defaultValue when its form is reset.
+  const defaultsKey = defaults.join('\n'); // `defaults` is a new array on every render
   useEffect(() => {
     const form = hiddenRef.current?.form;
     if (!form) return;
-    const reset = () => setUncontrolled(defaultValue);
+    const reset = () => setUncontrolled(defaults);
     form.addEventListener('reset', reset);
     return () => form.removeEventListener('reset', reset);
-  }, [defaultValue]);
+  }, [defaultsKey]);
 
   useEffect(() => {
     if (!open || highlighted < 0) return;
@@ -167,12 +189,22 @@ export function Select(props: SelectProps) {
     setOpen(false);
     setHighlighted(-1);
   };
+  const update = (next: string[]) => {
+    if (props.value === undefined) setUncontrolled(next);
+    if (props.multiple) props.onValueChange?.(next);
+    else if (next[0] !== values[0]) props.onValueChange?.(next[0]);
+  };
+  // Single: select and close. Multiple: toggle and keep the menu open.
   const choose = (index: number) => {
     if (!enabled(index)) return;
-    const next = flat[index].value;
-    if (valueProp === undefined) setUncontrolled(next);
-    if (next !== value) onValueChange?.(next);
-    close();
+    const value = flat[index].value;
+    if (!multiple) {
+      update([value]);
+      close();
+      return;
+    }
+    update(values.includes(value) ? values.filter((v) => v !== value) : flat.filter((o) => o.value === value || values.includes(o.value)).map((o) => o.value));
+    setHighlighted(index);
   };
 
   // Type-ahead: characters typed within 500 ms form one search (any other key starts a new one);
@@ -204,7 +236,7 @@ export function Select(props: SelectProps) {
       else if (key === 'End') openMenu(last());
       else if (printable) search(key);
       else handled = false;
-    } else if (altKey && key === 'ArrowUp') choose(current);
+    } else if (altKey && key === 'ArrowUp') (multiple ? close() : choose(current));
     else if (key === 'ArrowDown') setHighlighted(current < 0 ? first() : move(current, 1));
     else if (key === 'ArrowUp') setHighlighted(current < 0 ? last() : move(current, -1));
     else if (key === 'Home') setHighlighted(first());
@@ -213,8 +245,9 @@ export function Select(props: SelectProps) {
     else if (key === 'PageUp') setHighlighted(move(Math.max(current - PAGE, -1), 1));
     else if (key === 'Enter' || key === ' ') (highlighted >= 0 ? choose(highlighted) : close());
     else if (key === 'Escape') close();
+    // Tab picks the highlighted option of a single select (as the APG example does); a multiple select just closes.
     else if (key === 'Tab') {
-      if (highlighted >= 0) choose(highlighted);
+      if (highlighted >= 0 && !multiple) choose(highlighted);
       else close();
       handled = false;
     } else if (printable) search(key);
@@ -225,7 +258,7 @@ export function Select(props: SelectProps) {
   let index = -1;
   const renderOption = (option: SelectOption) => {
     const i = ++index;
-    const isSelected = option.value === value;
+    const isSelected = values.includes(option.value);
     return (
       <div
         key={option.value}
@@ -312,7 +345,9 @@ export function Select(props: SelectProps) {
                 {leadIcon}
               </span>
             )}
-            <span className={selected ? 'ds-select__value' : 'ds-select__value ds-select__value--placeholder'}>{selected ? selected.label : placeholder}</span>
+            <span className={selected.length ? 'ds-select__value' : 'ds-select__value ds-select__value--placeholder'}>
+              {selected.length ? selected.map((o) => o.label).join(', ') : placeholder}
+            </span>
           </span>
           {tailIcon && (
             <span className="ds-select__icon ds-select__icon--tail" aria-hidden>
@@ -329,6 +364,7 @@ export function Select(props: SelectProps) {
           className="ds-select__menu"
           aria-labelledby={label !== undefined ? labelId : undefined}
           aria-label={label === undefined ? ariaLabel : undefined}
+          aria-multiselectable={multiple || undefined}
           tabIndex={-1}
           hidden={!open}
           // Keep focus on the combobox while clicking options or the scrollbar.
@@ -352,7 +388,13 @@ export function Select(props: SelectProps) {
           })}
         </div>
       </div>
-      {name !== undefined && <input ref={hiddenRef} type="hidden" name={name} value={value ?? ''} disabled={disabled} />}
+      {name !== undefined && (
+        // One input carries the form reset listener even with nothing selected; a multiple select adds one per value.
+        <>
+          <input ref={hiddenRef} type="hidden" name={multiple ? undefined : name} value={values[0] ?? ''} disabled={disabled} />
+          {multiple && values.map((v) => <input key={v} type="hidden" name={name} value={v} disabled={disabled} />)}
+        </>
+      )}
       {help !== undefined && (
         <p id={captionId} className={invalid ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
           {help}

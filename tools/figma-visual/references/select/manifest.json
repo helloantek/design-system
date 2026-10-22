@@ -1,5 +1,5 @@
 {
- "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/select.tsx turns these properties into props. Only Variant=Default is implemented. `target` (optional) is the element compared instead of #target.",
+ "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/select.tsx turns these properties into props. Variant=Default and Multi-select are implemented (Multi-select differs from Default only when Filled). `target` (optional) is the element compared instead of #target.",
  "component": "select",
  "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
  "componentSet": "3817:45118",
@@ -379,6 +379,78 @@
     "Style": "Soft",
     "Size": "sm",
     "State": "Destructive"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "multi-default-lg-filled",
+   "nodeId": "3817:45101",
+   "props": {
+    "Variant": "Multi-select",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "multi-shadow-lg-filled",
+   "nodeId": "3817:59897",
+   "props": {
+    "Variant": "Multi-select",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "multi-soft-lg-filled",
+   "nodeId": "3817:66589",
+   "props": {
+    "Variant": "Multi-select",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "multi-default-sm-filled",
+   "nodeId": "3817:51547",
+   "props": {
+    "Variant": "Multi-select",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "multi-shadow-sm-filled",
+   "nodeId": "3817:59911",
+   "props": {
+    "Variant": "Multi-select",
+    "Style": "Shadow",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "multi-soft-sm-filled",
+   "nodeId": "3817:66603",
+   "props": {
+    "Variant": "Multi-select",
+    "Style": "Soft",
+    "Size": "sm",
+    "State": "Filled"
    },
    "nodeW": 320,
    "nodeH": 84
