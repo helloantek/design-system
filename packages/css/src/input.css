@@ -1,0 +1,305 @@
+/*
+ * Input — Figma component set "Input" (node 3780:4518 in file 4tiBR2hKd4yvQehtKhM9OY).
+ * Covers Figma Variant = Default, Shortcut, Add-on, Inline add-on and Tail button, in every Style, Size and State.
+ * Every value comes from @helloantek/ds-tokens; load one brand's token CSS before this file.
+ *
+ * Markup (classes in [] are optional):
+ *   <div class="ds-field ds-field--lg">
+ *     <label class="ds-field__label" for="email">Label</label>
+ *     <div class="ds-input ds-input--default [ds-input--invalid] [ds-input--disabled]">
+ *       [<span class="ds-input__addon">https://</span>]
+ *       <div class="ds-input__control">
+ *         [<span class="ds-input__affix">https://</span>]
+ *         <div class="ds-input__main">
+ *           [<span class="ds-input__icon" aria-hidden="true"><svg…/></span>]
+ *           <input class="ds-input__native" id="email" placeholder="mail@domain.com">
+ *         </div>
+ *         [<span class="ds-input__affix ds-input__affix--end">.com</span>]
+ *         [<span class="ds-input__icon ds-input__icon--tail" aria-hidden="true"><svg…/></span>]
+ *         [<kbd class="ds-input__shortcut">/</kbd>]
+ *       </div>
+ *       [<span class="ds-input__addon ds-input__addon--end">.com</span>]
+ *       [<button class="ds-input__action" type="button">Send</button>]
+ *     </div>
+ *     <p class="ds-field__caption">Caption text</p>
+ *   </div>
+ * Figma states: Placeholder / Filled = empty / filled input, Active = :focus-within,
+ * Failed = .ds-input--invalid (+ .ds-field__caption--error), Disabled = .ds-input--disabled + disabled input.
+ */
+
+@layer ds.components {
+  /* ── Field: label + input + caption ─────────────────────────────────── */
+
+  .ds-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-8);
+    min-width: 0;
+    font-family: var(--ds-font-family-body);
+  }
+
+  .ds-field__label {
+    color: var(--ds-text-default);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-5);
+  }
+
+  .ds-field__caption {
+    margin: 0;
+    color: var(--ds-text-muted);
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-font-line-height-leading-4);
+  }
+
+  .ds-field__caption--error {
+    color: var(--ds-text-destructive);
+  }
+
+  /* ── Input box (Figma "Container") ──────────────────────────────────── */
+
+  .ds-input {
+    --input-stroke: var(--ds-border-darker);
+    --input-shadow: 0 0 #0000;
+    --input-pad-y: var(--ds-space-8);
+    --input-icon: var(--ds-icon-default-muted);
+    --input-tail-icon: var(--input-icon);
+
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--input-bg);
+    /* Figma strokes are inside and do not change the size, so the stroke is an inset shadow. */
+    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--input-stroke), var(--input-shadow);
+    font-family: var(--ds-font-family-body);
+    cursor: text;
+  }
+
+  .ds-field--sm .ds-input,
+  .ds-input--sm {
+    --input-pad-y: var(--ds-space-6);
+  }
+
+  /* Figma Style */
+  .ds-input--default {
+    --input-bg: var(--ds-bg-input);
+  }
+
+  .ds-input--shadow {
+    --input-bg: var(--ds-bg-input);
+    --input-shadow: var(--ds-shadow-components-default);
+  }
+
+  .ds-input--soft {
+    --input-bg: var(--ds-bg-input-soft);
+    --input-stroke: transparent;
+  }
+
+  /* Figma State=Failed. Default and Soft get a local shadow in Figma; Shadow keeps its own. */
+  .ds-input--invalid {
+    --input-stroke: var(--ds-border-destructive);
+    --input-tail-icon: var(--ds-icon-destructive);
+  }
+
+  .ds-input--invalid.ds-input--default,
+  .ds-input--invalid.ds-input--soft {
+    --input-shadow: var(--ds-shadow-input-failed);
+  }
+
+  /* Figma State=Active (Figma effect style components/input-focus). An invalid input keeps its red stroke. */
+  .ds-input:focus-within {
+    --input-bg: var(--ds-bg-input);
+    box-shadow: 0 0 0 3px var(--ds-border-default), inset 0 0 0 var(--ds-stroke-default) var(--ds-border-input-highlight);
+  }
+
+  .ds-input--invalid:focus-within {
+    box-shadow: 0 0 0 3px var(--ds-border-default), inset 0 0 0 var(--ds-stroke-default) var(--ds-border-destructive);
+  }
+
+  /* Figma State=Disabled */
+  .ds-input--disabled {
+    --input-bg: var(--ds-bg-input-disabled);
+    --input-stroke: var(--ds-border-default);
+    --input-shadow: 0 0 #0000;
+    --input-icon: var(--ds-icon-default-disabled);
+    --input-tail-icon: var(--ds-icon-default-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-input--disabled.ds-input--soft {
+    --input-stroke: transparent;
+  }
+
+  /* ── Parts ──────────────────────────────────────────────────────────── */
+
+  .ds-input__control {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: var(--ds-space-6);
+    min-width: 0;
+    padding: var(--input-pad-y) var(--ds-space-8);
+  }
+
+  .ds-input__main {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: var(--ds-space-2);
+    min-width: 0;
+  }
+
+  .ds-input__native {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0 var(--ds-space-4);
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--ds-text-default);
+    caret-color: var(--ds-border-accent);
+    font: inherit;
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-font-line-height-leading-5);
+  }
+
+  .ds-input__native::placeholder {
+    color: var(--ds-text-muted);
+    opacity: 1;
+  }
+
+  .ds-input__native:disabled,
+  .ds-input__native:disabled::placeholder {
+    color: var(--ds-text-hint);
+    cursor: not-allowed;
+  }
+
+  .ds-input__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: var(--input-icon);
+  }
+
+  .ds-input__icon > svg,
+  .ds-input__icon > img {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+
+  .ds-input__icon--tail {
+    color: var(--input-tail-icon);
+  }
+
+  /* Figma Variant=Inline add-on */
+  .ds-input__affix {
+    flex-shrink: 0;
+    padding-left: var(--ds-space-4);
+    color: var(--ds-text-muted);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-5);
+    white-space: nowrap;
+  }
+
+  .ds-input__affix--end {
+    padding-right: var(--ds-space-4);
+    padding-left: 0;
+  }
+
+  /* Figma Variant=Add-on */
+  .ds-input__addon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: var(--input-pad-y) var(--ds-space-12);
+    box-shadow: inset calc(-1 * var(--ds-stroke-default)) 0 0 var(--input-addon-stroke, var(--ds-border-darker));
+    color: var(--ds-text-muted);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-5);
+    white-space: nowrap;
+  }
+
+  .ds-input__addon--end {
+    box-shadow: inset var(--ds-stroke-default) 0 0 var(--input-addon-stroke, var(--ds-border-darker));
+  }
+
+  /* Figma Variant=Shortcut */
+  .ds-input__shortcut {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    min-width: 20px;
+    padding: 0 var(--ds-space-4);
+    border-radius: var(--ds-radius-xs);
+    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--ds-border-default);
+    color: var(--ds-text-muted);
+    font-family: inherit;
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-4);
+  }
+
+  /* Figma Variant=Tail button: a ghost button joined to the input, with a divider. */
+  .ds-input__action {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    margin: 0;
+    padding: var(--input-pad-y) var(--ds-space-12);
+    border: 0;
+    background-color: var(--ds-bg-state-ghost);
+    box-shadow: inset var(--ds-stroke-default) 0 0 var(--input-addon-stroke, var(--ds-border-darker));
+    color: var(--ds-text-default);
+    font: inherit;
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-5);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ds-input__action:hover:not(:disabled) {
+    background-color: var(--ds-bg-state-ghost-hover);
+  }
+
+  .ds-input__action:active:not(:disabled) {
+    background-color: var(--ds-bg-state-ghost-press);
+  }
+
+  .ds-input__action:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--ds-border-input-highlight);
+  }
+
+  /* Disabled parts */
+  .ds-input--disabled {
+    --input-addon-stroke: var(--ds-border-default);
+  }
+
+  .ds-input--disabled .ds-input__affix,
+  .ds-input--disabled .ds-input__addon,
+  .ds-input--disabled .ds-input__shortcut,
+  .ds-input--disabled .ds-input__action {
+    color: var(--ds-text-hint);
+  }
+
+  .ds-input__action:disabled {
+    cursor: not-allowed;
+  }
+}

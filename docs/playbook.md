@@ -17,6 +17,10 @@ With the Figma MCP server (see `.claude/skills/figma-to-component/SKILL.md` for 
 3. `get_design_context` on a few representative variants → paddings, gaps, sizes, structure.
 4. New variables or modes → add them to `packages/tokens/figma/variables.json`, new effect styles to `effects.json`.
 
+### Decide the scope
+
+A Figma component set can bundle several components under one `Variant` property. Implement the variants that are the same element with extras (icons, affixes, a joined button) as one component; turn variants that need their own behaviour (a dropdown, tag entry, a number stepper, a file picker) into separate components that compose with it, and list them in [backlog.md](backlog.md). One "mega-component" per Figma set is harder to use and to test.
+
 ## 2. Write the component
 
 - **CSS first, in `packages/css/src/<component>.css`.** BEM classes `ds-<component>`, `__part`, `--modifier`, inside `@layer ds.components`. Only `var(--ds-*)` values; no hex, no raw px except icon box sizes taken from Figma.
@@ -33,7 +37,10 @@ With the Figma MCP server (see `.claude/skills/figma-to-component/SKILL.md` for 
 
 1. Export reference renders for the important variants (all states of the default size, every size, every shape) into `tools/figma-visual/references/<component>/` with a `manifest.json`.
 2. Add a renderer in `tools/figma-visual/renderers/`.
-3. `npm run test:visual -- <component>`: every variant must be within 6% pixel mismatch and 2 px of the Figma size. Open `tools/figma-visual/out/report.html` for anything close to the limit.
+3. `npm run test:visual -- <component>`: every variant must be within the manifest thresholds — **mismatch** (structure, pixelmatch 0.1) ≤ 6%, **tint** (subtle fills, pixelmatch 0.03) ≤ 10%, size within 2 px. Open `tools/figma-visual/out/report.html` for anything close to a limit.
+   - Prove the check can fail: break one value (a padding, a background) and confirm the affected variants go red, then revert.
+   - Pixel metrics are coarse: rasterisation differs between machines by ~2 points, so the limits leave that margin and **do not catch 1 px padding or radius changes** (measured: padding +1 px and radius 4→6 px both pass; a 2 px gap change is caught by the size check). Check exact values with the Figma spec when you change spacing.
+   - Known blind spot: a soft drop shadow outside the element (Default vs Shadow style) barely moves either metric; check those variants by eye in the report.
 4. `npm run test:storybook`: no render errors; read the axe output.
 
 ## 5. Ship

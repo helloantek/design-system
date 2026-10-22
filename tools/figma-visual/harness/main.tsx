@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@helloantek/ds-tokens/css/scoped/theme-1.css';
 import '@helloantek/ds-tokens/css/scoped/theme-2.css';

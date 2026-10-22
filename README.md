@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Button. **Brands:** `theme-1`, `theme-2`.
+**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Button, Input. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
 
 ## Using it in a project
 
@@ -30,6 +30,7 @@ npm i @helloantek/ds-tokens @helloantek/ds-css @helloantek/ds-react @fontsource/
 
 ```tsx
 // once, at the app root
+import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
 import '@helloantek/ds-tokens/css/theme-1.css'; // the project's brand
 import '@helloantek/ds-css';
@@ -68,6 +69,32 @@ Load the same two CSS files and use the classes; each component's markup is docu
 | State = Loading | `loading` (keeps width, `aria-busy`, blocks `onClick`) | `[data-loading]` |
 | Lead Icon / Tail Icon / Badge | `leadIcon` · `tailIcon` · `badge` | `__icon` · `__badge` |
 
+## Input
+
+Label, input and caption in one field. Covers Figma Variant = Default, Shortcut, Add-on, Inline add-on and Tail button; the remaining Figma variants are separate components ([backlog](docs/backlog.md)).
+
+```tsx
+<Input label="Email" caption="We never share it" placeholder="mail@domain.com" leadIcon={<RiAtLine />} />
+<Input label="Website" addonBefore="https://" addonAfter=".com" />
+<Input label="Invite" placeholder="mail@domain.com" action={<InputAction onClick={send}>Send</InputAction>} />
+<Input label="Email" error="Enter a valid address" />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Style | `variant`: `default` · `shadow` · `soft` | `ds-input--<variant>` |
+| Size | `size`: `lg` · `sm` | `ds-field--<size>` |
+| State = Placeholder / Filled | `placeholder` / `value` | native |
+| State = Active | focus | `:focus-within` |
+| State = Failed | `error` (replaces the caption, sets `aria-invalid`) | `ds-input--invalid` · `ds-field__caption--error` |
+| State = Disabled | `disabled` | `ds-input--disabled` |
+| Label · Caption | `label` · `caption` (wired with `for` / `aria-describedby`) | `ds-field__label` · `ds-field__caption` |
+| Lead Icon · Tail Icon | `leadIcon` · `tailIcon` | `ds-input__icon` |
+| Variant = Shortcut | `shortcut` (also `aria-keyshortcuts`) | `ds-input__shortcut` |
+| Variant = Inline add-on | `prefix` · `suffix` | `ds-input__affix` |
+| Variant = Add-on | `addonBefore` · `addonAfter` | `ds-input__addon` |
+| Variant = Tail button | `action={<InputAction>…</InputAction>}` | `ds-input__action` |
+
 ## Working on the design system
 
 ```sh
@@ -91,3 +118,5 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Theme-2 Primary's text shadow lowers contrast to 3.25:1.
 - Ghost Muted icon-only changes icon colour on hover.
 - The `Tooltip` property has no layer.
+- Input: State=Failed adds a local shadow in Style=Default and Soft that those styles have nowhere else; the label row has an empty 78 px "Tail" frame with no property.
+- Input: disabled prefix/suffix text is 1.83:1 (WCAG exempts disabled controls, but axe reports it).
