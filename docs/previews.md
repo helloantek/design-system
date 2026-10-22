@@ -4,9 +4,9 @@ Every component starts on a branch and reaches the design system only when its p
 
 | Where | What it is |
 |---|---|
-| `https://helloantek.github.io/design-system/` | List of all previews |
+| `https://helloantek.github.io/design-system/` | List of all previews, grouped by the kind in the branch name ([branches.md](branches.md)): new components, fixes, tokens, tooling, docs |
 | `https://helloantek.github.io/design-system/main/` | `main`: what the design system ships |
-| `https://helloantek.github.io/design-system/<branch>/` | One branch (`claude/select-component` → `claude-select-component/`); the pull request links it in a comment |
+| `https://helloantek.github.io/design-system/<branch>/` | One branch (`claude/component/tag-input` → `claude-component-tag-input/`); the pull request links it in a comment |
 
 The sidebar title says which build you are looking at (`helloantek DS · preview · <branch>`).
 

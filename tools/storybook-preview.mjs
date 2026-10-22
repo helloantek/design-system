@@ -42,18 +42,30 @@ function writeIndex(dir) {
     .filter((d) => d.isDirectory() && existsSync(join(dir, d.name, 'preview.json')))
     .map((d) => ({ slug: d.name, ...JSON.parse(readFileSync(join(dir, d.name, 'preview.json'), 'utf8')) }))
     .sort((a, b) => (a.branch === 'main' ? -1 : b.branch === 'main' ? 1 : b.updated.localeCompare(a.updated)));
-  const rows = previews
-    .map((p) => `<li><a href="${escape(p.slug)}/">${escape(p.branch)}</a>${p.branch === 'main' ? ' <b>stable</b>' : ''}<span>${escape(p.updated.slice(0, 16).replace('T', ' '))} UTC · ${escape(p.sha.slice(0, 7))}</span></li>`)
+  // Grouped by the kind in the branch name (docs/branches.md): [claude/]<kind>/<topic>.
+  const kindOf = (name) => (name === 'main' ? 'main' : (name.replace(/^claude\//, '').match(/^([a-z]+)\//) ?? [])[1]);
+  const groups = [
+    ['main', 'Stable'],
+    ['component', 'New components'],
+    ['fix', 'Fixes'],
+    ['tokens', 'Tokens and brands'],
+    ['tooling', 'Tooling'],
+    ['docs', 'Docs'],
+  ];
+  const known = new Set(groups.map(([kind]) => kind));
+  const item = (p) => `<li><a href="${escape(p.slug)}/">${escape(p.branch)}</a><span>${escape(p.updated.slice(0, 16).replace('T', ' '))} UTC · ${escape(p.sha.slice(0, 7))}</span></li>`;
+  const rows = [...groups, [undefined, 'Other branches']]
+    .map(([kind, title]) => [title, previews.filter((p) => (kind ? kindOf(p.branch) === kind : !known.has(kindOf(p.branch))))])
+    .filter(([, list]) => list.length)
+    .map(([title, list]) => `<h2>${title}</h2>\n<ul>\n${list.map(item).join('\n')}\n</ul>`)
     .join('\n');
   writeFileSync(
     join(dir, 'index.html'),
     `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Design system previews</title>
-<style>body{font:15px/1.5 system-ui,sans-serif;max-width:720px;margin:40px auto;padding:0 16px;color:#111}li{margin:8px 0;list-style:none}span{color:#777;margin-left:12px;font-size:13px}b{font-size:12px;background:#e7f6ec;color:#17663a;padding:1px 6px;border-radius:4px}</style>
+<style>body{font:15px/1.5 system-ui,sans-serif;max-width:720px;margin:40px auto;padding:0 16px;color:#111}h2{font-size:15px;margin:28px 0 4px;color:#555}ul{padding:0;margin:0}li{margin:8px 0;list-style:none}span{color:#777;margin-left:12px;font-size:13px}</style>
 <h1>Design system previews</h1>
-<p>One Storybook per branch. <b>main</b> is what the design system ships; every other entry is work in review and can change or disappear.</p>
-<ul>
-${rows}
-</ul>`,
+<p>One Storybook per branch. <b>main</b> is what the design system ships; every other entry is work in review and can change or disappear. Branch names: <code>[claude/]&lt;kind&gt;/&lt;topic&gt;</code>.</p>
+${rows}`,
   );
 }
 

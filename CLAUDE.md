@@ -11,6 +11,8 @@ Multi-brand design system: one UI kit, many brands. See `README.md` for the arch
 
 To build a component from Figma, use the `figma-to-component` skill and `docs/playbook.md`. It is done when `docs/definition-of-done.md` holds.
 
+Branches: `claude/<kind>/<topic>` with kind `component`, `fix`, `tokens`, `tooling` or `docs` (`docs/branches.md`), e.g. `claude/component/tag-input`. One change per branch.
+
 Before pushing: `npm run build && npm test && npm run typecheck && npm run build-storybook && npm run test:storybook && npm run test:visual`.
 The visual check is calibrated on Chromium 141.0.7390.37 (`npx -y playwright@1.56.1 install chromium`, then `CHROMIUM_PATH=~/.cache/ms-playwright/chromium-1194/chrome-linux/chrome`); in cloud sessions it is preinstalled at `/opt/pw-browsers/chromium`.
 User-facing changes need a changeset (`npm run changeset`).

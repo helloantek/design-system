@@ -7,6 +7,8 @@ description: Build or update a design-system component from a Figma component se
 
 Follow `docs/playbook.md`; this skill adds the exact tool calls and the traps found in the Button pilot. Done means `docs/definition-of-done.md` holds.
 
+Branch: `claude/component/<name>` from `main` (`docs/branches.md`).
+
 ## 1. Read the component set
 
 Parse the URL: `figma.com/design/<fileKey>/…?node-id=<a>-<b>` → nodeId `<a>:<b>`. The link should point at the **component set**.
