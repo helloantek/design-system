@@ -56,6 +56,7 @@ type PlaygroundArgs = {
   leadIcon: boolean;
   tailIcon: boolean;
   groups: boolean;
+  multiple: boolean;
 };
 
 export const Playground: StoryObj<PlaygroundArgs> = {
@@ -70,26 +71,26 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     leadIcon: true,
     tailIcon: true,
     groups: false,
+    multiple: false,
   },
   decorators: single,
   argTypes: {
     variant: { control: 'inline-radio', options: variants },
     size: { control: 'inline-radio', options: sizes },
     groups: { description: 'Show a group label, captions, a badge, a disabled option and a divider' },
+    multiple: { description: 'Figma Variant=Multi-select: pick several options' },
   },
-  render: function Render({ leadIcon, tailIcon, error, groups, ...props }) {
+  render: function Render({ leadIcon, tailIcon, error, groups, multiple, ...props }) {
     const [value, setValue] = useState<string | null>(null);
-    return (
-      <Select
-        {...props}
-        options={groups ? rich : users}
-        value={value}
-        onValueChange={setValue}
-        error={error || undefined}
-        leadIcon={leadIcon ? <RiUser3Line /> : undefined}
-        tailIcon={tailIcon ? <RiInformationFill /> : undefined}
-      />
-    );
+    const [values, setValues] = useState<string[]>([]);
+    const common = {
+      ...props,
+      options: groups ? rich : users,
+      error: error || undefined,
+      leadIcon: leadIcon ? <RiUser3Line /> : undefined,
+      tailIcon: tailIcon ? <RiInformationFill /> : undefined,
+    };
+    return multiple ? <Select {...common} multiple value={values} onValueChange={setValues} /> : <Select {...common} value={value} onValueChange={setValue} />;
   },
 };
 
@@ -131,6 +132,14 @@ export const Sizes: StoryObj = {
         <Select key={size} {...field} size={size} label={size} caption="Caption text" />
       ))}
     </div>
+  ),
+};
+
+/** Figma Variant=Multi-select: options toggle, the menu stays open and the trigger lists the selected labels. */
+export const MultiSelect: StoryObj = {
+  decorators: single,
+  render: () => (
+    <Select {...field} label="Reviewers" caption="Pick everyone who should approve" multiple defaultValue={['simon-alt', 'michael-davis', 'ryan-parker']} />
   ),
 };
 

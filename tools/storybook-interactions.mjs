@@ -102,6 +102,27 @@ const tests = {
     await combobox.click({ force: true });
     assert.equal((await state()).expanded, 'false');
   },
+  'select multiple: options toggle, menu stays open, trigger lists labels': async () => {
+    await open('components-select--playground', 'multiple:!true');
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await listbox.getAttribute('aria-multiselectable'), 'true');
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press(' ');
+    assert.equal((await state()).expanded, 'true', 'the menu stays open while picking');
+    assert.equal((await state()).value, 'Alex Jhonson, Emma Thompson');
+    await page.getByRole('option', { name: 'Simon Alt' }).click();
+    assert.equal((await state()).value, 'Alex Jhonson, Simon Alt, Emma Thompson', 'labels follow the option order');
+    await page.keyboard.press('Home');
+    await page.keyboard.press('Enter');
+    assert.equal((await state()).value, 'Simon Alt, Emma Thompson', 'picking a selected option removes it');
+    assert.deepEqual(await page.locator('[role="option"][aria-selected="true"]').allTextContents(), ['Simon Alt', 'Emma Thompson']);
+    await page.keyboard.press('Tab');
+    assert.equal(await listbox.isVisible(), false);
+    assert.equal((await state()).value, 'Simon Alt, Emma Thompson', 'Tab closes without changing the selection');
+  },
   'playground form: validation, submitted data and reset': async () => {
     await open('playground-form--sign-up');
     const submitted = page.getByTestId('submitted');
@@ -112,10 +133,16 @@ const tests = {
     await page.getByRole('combobox', { name: 'Role' }).click();
     await page.getByRole('option', { name: 'Engineer' }).click();
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', plan: 'free' });
+    await page.getByRole('combobox', { name: 'Teams' }).click();
+    await page.getByRole('option', { name: 'Web' }).click();
+    await page.getByRole('option', { name: 'Design' }).click();
+    await page.keyboard.press('Escape');
+    await page.getByRole('button', { name: 'Create account' }).click();
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', plan: 'free', teams: ['web', 'design'] });
     await page.getByRole('button', { name: 'Reset' }).click();
     assert.equal(await page.getByRole('combobox', { name: 'Role' }).textContent(), 'Select a role', 'form reset clears the Select');
     assert.equal(await page.getByRole('combobox', { name: 'Plan' }).textContent(), 'Free', 'and restores its defaultValue');
+    assert.equal(await page.getByRole('combobox', { name: 'Teams' }).textContent(), 'Select teams');
     assert.equal(await submitted.count(), 0);
   },
 };

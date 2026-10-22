@@ -14,6 +14,13 @@ const roles: SelectItem[] = [
   { value: 'pm', label: 'Product manager' },
 ];
 
+const teams: SelectItem[] = [
+  { value: 'web', label: 'Web' },
+  { value: 'ios', label: 'iOS' },
+  { value: 'android', label: 'Android' },
+  { value: 'design', label: 'Design' },
+];
+
 const plans: SelectItem[] = [
   {
     label: 'Plans',
@@ -53,12 +60,14 @@ export const SignUp: StoryObj<Args> = {
   },
   render: function Render({ variant, size, disabled }) {
     const [errors, setErrors] = useState<Errors>({});
-    const [submitted, setSubmitted] = useState<Record<string, FormDataEntryValue> | null>(null);
+    const [submitted, setSubmitted] = useState<Record<string, FormDataEntryValue | FormDataEntryValue[]> | null>(null);
     const field = { variant, size, disabled };
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const data = Object.fromEntries(new FormData(event.currentTarget));
+      const form = new FormData(event.currentTarget);
+      // A multiple Select submits one entry per value.
+      const data: Record<string, FormDataEntryValue | FormDataEntryValue[]> = { ...Object.fromEntries(form), teams: form.getAll('teams') };
       const next: Errors = {};
       if (!String(data.name ?? '').trim()) next.name = 'Enter your name';
       if (!/^\S+@\S+\.\S+$/.test(String(data.email ?? ''))) next.email = 'Enter a valid email address';
@@ -72,6 +81,7 @@ export const SignUp: StoryObj<Args> = {
         <Input {...field} name="name" label="Name" placeholder="Jane Doe" leadIcon={<RiUser3Line />} error={errors.name} />
         <Input {...field} name="email" type="email" label="Email" placeholder="mail@domain.com" leadIcon={<RiAtLine />} caption="We never share it" error={errors.email} />
         <Select {...field} name="role" label="Role" placeholder="Select a role" options={roles} error={errors.role} />
+        <Select {...field} name="teams" label="Teams" placeholder="Select teams" options={teams} multiple caption="Pick all that apply" />
         <Select {...field} name="plan" label="Plan" placeholder="Select a plan" options={plans} defaultValue="free" caption="You can change it later" />
         <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
           <Button type="reset" variant="ghost" size={size === 'sm' ? 'sm' : 'md'} disabled={disabled} onClick={() => {
