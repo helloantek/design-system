@@ -140,8 +140,10 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     multiple: { description: 'Figma Variant=Multi-select: pick several options', table: { category: 'Field' } },
     indicator: { control: 'inline-radio', options: ['check', 'checkbox', 'radio'], description: 'Figma Select type: Default, Checkbox, Radio Button', table: { category: 'Menu items' } },
     itemType: { control: 'inline-radio', options: ['Default', 'Default Large', 'Country Flag'], description: 'Figma Select Menu Items Type', table: { category: 'Menu items' } },
-    itemIcon: { name: 'Lead Icon', description: 'Figma "Lead Icon" (Default Large always has one)', table: { category: 'Menu items' } },
-    itemSupporterText: { name: 'Supporter text', description: 'Figma "Supporter text": muted text after the label', table: { category: 'Menu items' } },
+    // Only Type=Default has a Lead Icon slot; Default Large shows its icon circle and Country Flag its flag there.
+    itemIcon: { name: 'Lead Icon', description: 'Figma "Lead Icon" (Type=Default only)', if: { arg: 'itemType', eq: 'Default' }, table: { category: 'Menu items' } },
+    // Default Large shows the role as its second line instead.
+    itemSupporterText: { name: 'Supporter text', description: 'Figma "Supporter text": muted text after the label', if: { arg: 'itemType', neq: 'Default Large' }, table: { category: 'Menu items' } },
     itemBadge: { name: 'Badge', description: 'Figma "Badge" (on the second option)', table: { category: 'Menu items' } },
     disabledItem: { name: 'Disabled option', description: 'Figma State=Disabled (on the fourth option)', table: { category: 'Menu items' } },
     groups: { name: 'Group labels', description: 'Figma Type=Label', table: { category: 'Menu items' } },
@@ -205,7 +207,7 @@ export const MenuItem: StoryObj<MenuItemArgs> = {
     selectType: { name: 'Select type', control: 'inline-radio', options: ['Default', 'Checkbox', 'Radio Button'] },
     state: { name: 'State', control: 'inline-radio', options: ['Default', 'Disabled'], description: 'Hover the item for State=Hover' },
     active: { name: 'Active', description: 'Selected' },
-    leadIcon: { name: 'Lead Icon' },
+    leadIcon: { name: 'Lead Icon', description: 'Type=Default only', if: { arg: 'type', eq: 'Default' } },
     label: { name: '↩ Label' },
     supporterText: { name: 'Supporter text' },
     supporterTextValue: { name: '↩ Supporter text' },
