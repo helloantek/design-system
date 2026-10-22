@@ -25,7 +25,7 @@
  *             [<span class="ds-select__icon" aria-hidden="true"><svg…/></span>]
  *             <span class="ds-select__label">Simon Alt</span>
  *             [<span class="ds-select__caption">Caption</span>]
- *             [<span class="ds-select__badge"><span>Label</span></span>]
+ *             [<span class="ds-badge ds-badge--sm ds-badge--neutral ds-badge--soft ds-badge--border">…</span>]   (badge.css)
  *           </span>
  *         </div>
  *         <div role="group" aria-labelledby="g">
@@ -279,24 +279,6 @@
     color: var(--ds-text-hint);
   }
 
-  /* Figma "Badge" (Size=sm, Color=Neutral, Style=Soft, Border=True). */
-  .ds-select__badge {
-    display: inline-flex;
-    flex-shrink: 0;
-    padding: var(--ds-space-2);
-    border-radius: var(--ds-radius-xs);
-    background-color: var(--ds-bg-badge-default);
-    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--ds-border-default);
-  }
-
-  .ds-select__badge > span {
-    padding: 0 var(--ds-space-4);
-    color: var(--ds-text-subtle);
-    font-size: var(--ds-font-size-xs);
-    font-weight: var(--ds-font-weight-medium);
-    line-height: var(--ds-font-line-height-leading-4);
-  }
-
   /* Type=Label: a group heading with an optional caption on the right. */
   .ds-select__group-label {
     display: flex;
@@ -359,7 +341,7 @@
     opacity: 0.3;
   }
 
-  .ds-select__option[aria-disabled='true'] .ds-select__badge {
+  .ds-select__option[aria-disabled='true'] .ds-badge {
     opacity: 0.5;
   }
 

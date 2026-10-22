@@ -329,6 +329,186 @@
     "Theme-1-Dark": "#18181b",
     "Theme-2-Light": "#f5f5f4",
     "Theme-2-Dark": "#24211e"
+   },
+   "bg/badge/gray": {
+    "Theme-1-Light": "#27272a0f",
+    "Theme-1-Dark": "#ffffff1a",
+    "Theme-2-Light": "#27272a0f",
+    "Theme-2-Dark": "#ffffff1a"
+   },
+   "bg/badge/red": {
+    "Theme-1-Light": "#ee6e6c1a",
+    "Theme-1-Dark": "#ee6e6c1a",
+    "Theme-2-Light": "#ee6e6c1a",
+    "Theme-2-Dark": "#ee6e6c1a"
+   },
+   "bg/badge/orange": {
+    "Theme-1-Light": "#f38f361a",
+    "Theme-1-Dark": "#f38f361a",
+    "Theme-2-Light": "#f38f361a",
+    "Theme-2-Dark": "#f38f361a"
+   },
+   "bg/badge/lime": {
+    "Theme-1-Light": "#abe4351a",
+    "Theme-1-Dark": "#abe4351a",
+    "Theme-2-Light": "#abe4351a",
+    "Theme-2-Dark": "#abe4351a"
+   },
+   "bg/badge/green": {
+    "Theme-1-Light": "#66dc7e1a",
+    "Theme-1-Dark": "#66dc7e1a",
+    "Theme-2-Light": "#66dc7e1a",
+    "Theme-2-Dark": "#66dc7e1a"
+   },
+   "bg/badge/cyan": {
+    "Theme-1-Light": "#4ad0ef1a",
+    "Theme-1-Dark": "#4ad0ef1a",
+    "Theme-2-Light": "#4ad0ef1a",
+    "Theme-2-Dark": "#4ad0ef1a"
+   },
+   "bg/badge/blue": {
+    "Theme-1-Light": "#65a0fd1a",
+    "Theme-1-Dark": "#65a0fd1a",
+    "Theme-2-Light": "#65a0fd1a",
+    "Theme-2-Dark": "#65a0fd1a"
+   },
+   "bg/badge/violet": {
+    "Theme-1-Light": "#a185fd1a",
+    "Theme-1-Dark": "#a185fd1a",
+    "Theme-2-Light": "#a185fd1a",
+    "Theme-2-Dark": "#a185fd1a"
+   },
+   "bg/badge/fuchsia": {
+    "Theme-1-Light": "#dd72fa1a",
+    "Theme-1-Dark": "#dd72fa1a",
+    "Theme-2-Light": "#dd72fa1a",
+    "Theme-2-Dark": "#dd72fa1a"
+   },
+   "bg/badge/pink": {
+    "Theme-1-Light": "#ea6eb31a",
+    "Theme-1-Dark": "#ea6eb31a",
+    "Theme-2-Light": "#ea6eb31a",
+    "Theme-2-Dark": "#ea6eb31a"
+   },
+   "bg/basic/gray-accent": {
+    "Theme-1-Light": "#6f6f77",
+    "Theme-1-Dark": "#6f6f77",
+    "Theme-2-Light": "#79716b",
+    "Theme-2-Dark": "#79716b"
+   },
+   "bg/basic/gray-strong": {
+    "Theme-1-Light": "#36363a",
+    "Theme-1-Dark": "#a1a1a9",
+    "Theme-2-Light": "#44403b",
+    "Theme-2-Dark": "#a6a09b"
+   },
+   "bg/basic/red-accent": {
+    "Theme-1-Light": "#e74341",
+    "Theme-1-Dark": "#e74341",
+    "Theme-2-Light": "#e74341",
+    "Theme-2-Dark": "#e74341"
+   },
+   "bg/basic/red-strong": {
+    "Theme-1-Light": "#b11e1b",
+    "Theme-1-Dark": "#ed6664",
+    "Theme-2-Light": "#b11e1b",
+    "Theme-2-Dark": "#ed6664"
+   },
+   "bg/basic/orange-accent": {
+    "Theme-1-Light": "#f27313",
+    "Theme-1-Dark": "#f27313",
+    "Theme-2-Light": "#f27313",
+    "Theme-2-Dark": "#f27313"
+   },
+   "bg/basic/orange-strong": {
+    "Theme-1-Light": "#a73b0c",
+    "Theme-1-Dark": "#f38f36",
+    "Theme-2-Light": "#a73b0c",
+    "Theme-2-Dark": "#f38f36"
+   },
+   "bg/basic/lime-accent": {
+    "Theme-1-Light": "#90cd22",
+    "Theme-1-Dark": "#90cd22",
+    "Theme-2-Light": "#90cd22",
+    "Theme-2-Dark": "#90cd22"
+   },
+   "bg/basic/lime-strong": {
+    "Theme-1-Light": "#557c18",
+    "Theme-1-Dark": "#abe435",
+    "Theme-2-Light": "#557c18",
+    "Theme-2-Dark": "#abe435"
+   },
+   "bg/basic/green-accent": {
+    "Theme-1-Light": "#4fc660",
+    "Theme-1-Dark": "#4fc660",
+    "Theme-2-Light": "#4fc660",
+    "Theme-2-Dark": "#4fc660"
+   },
+   "bg/basic/green-strong": {
+    "Theme-1-Light": "#33803f",
+    "Theme-1-Dark": "#66dc7e",
+    "Theme-2-Light": "#33803f",
+    "Theme-2-Dark": "#66dc7e"
+   },
+   "bg/basic/cyan-accent": {
+    "Theme-1-Light": "#3eb5d7",
+    "Theme-1-Dark": "#3eb5d7",
+    "Theme-2-Light": "#3eb5d7",
+    "Theme-2-Dark": "#3eb5d7"
+   },
+   "bg/basic/cyan-strong": {
+    "Theme-1-Light": "#297392",
+    "Theme-1-Dark": "#4ad0ef",
+    "Theme-2-Light": "#297392",
+    "Theme-2-Dark": "#4ad0ef"
+   },
+   "bg/basic/blue-accent": {
+    "Theme-1-Light": "#437dfc",
+    "Theme-1-Dark": "#437dfc",
+    "Theme-2-Light": "#437dfc",
+    "Theme-2-Dark": "#437dfc"
+   },
+   "bg/basic/blue-strong": {
+    "Theme-1-Light": "#2147dd",
+    "Theme-1-Dark": "#65a0fd",
+    "Theme-2-Light": "#2147dd",
+    "Theme-2-Dark": "#65a0fd"
+   },
+   "bg/basic/violet-accent": {
+    "Theme-1-Light": "#8655fd",
+    "Theme-1-Dark": "#8655fd",
+    "Theme-2-Light": "#8655fd",
+    "Theme-2-Dark": "#8655fd"
+   },
+   "bg/basic/violet-strong": {
+    "Theme-1-Light": "#6717de",
+    "Theme-1-Dark": "#a185fd",
+    "Theme-2-Light": "#6717de",
+    "Theme-2-Dark": "#a185fd"
+   },
+   "bg/basic/fuchsia-accent": {
+    "Theme-1-Light": "#cf3ff3",
+    "Theme-1-Dark": "#cf3ff3",
+    "Theme-2-Light": "#cf3ff3",
+    "Theme-2-Dark": "#cf3ff3"
+   },
+   "bg/basic/fuchsia-strong": {
+    "Theme-1-Light": "#9a15b1",
+    "Theme-1-Dark": "#dd72fa",
+    "Theme-2-Light": "#9a15b1",
+    "Theme-2-Dark": "#dd72fa"
+   },
+   "bg/basic/pink-accent": {
+    "Theme-1-Light": "#e34798",
+    "Theme-1-Dark": "#e34798",
+    "Theme-2-Light": "#e34798",
+    "Theme-2-Dark": "#e34798"
+   },
+   "bg/basic/pink-strong": {
+    "Theme-1-Light": "#b61a5c",
+    "Theme-1-Dark": "#ea6eb3",
+    "Theme-2-Light": "#b61a5c",
+    "Theme-2-Dark": "#ea6eb3"
    }
   }
  },

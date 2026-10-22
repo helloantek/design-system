@@ -1,0 +1,250 @@
+/*
+ * Badge — Figma component set "Badge" (node 3994:37188 in file 4tiBR2hKd4yvQehtKhM9OY).
+ * Every Variant (Default, Icon, Image, Dot), Size, Color, Shape, Border and Style, plus the "Close Icon" button
+ * (Figma component "Control buttons", Style=Default, Size=sm). Every value comes from @helloantek/ds-tokens.
+ *
+ * Markup (classes in [] are optional):
+ *   <span class="ds-badge ds-badge--sm ds-badge--neutral ds-badge--soft [ds-badge--border] [ds-badge--pill]">
+ *     [<span class="ds-badge__lead" aria-hidden="true"><svg…/></span>]                       Variant=Icon
+ *     [<span class="ds-badge__lead" aria-hidden="true"><span class="ds-badge__dot"></span></span>]   Variant=Dot
+ *     [<span class="ds-badge__lead ds-badge__lead--image"><span class="ds-badge__image"><img…/></span></span>]  Variant=Image
+ *     <span class="ds-badge__label">Label</span>
+ *     [<button class="ds-badge__remove" type="button" aria-label="Remove Label"><svg…close…/></button>]
+ *   </span>
+ * Figma "Style" Soft / Srong (sic) = --soft / --strong.
+ */
+
+@layer ds.components {
+  .ds-badge {
+    --badge-bg: var(--badge-soft-bg);
+    --badge-fg: var(--badge-soft-fg);
+    --badge-icon: var(--badge-soft-icon, var(--badge-soft-fg));
+    --badge-dot: var(--badge-accent);
+    --badge-stroke: transparent;
+
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: var(--badge-pad);
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--badge-bg);
+    /* Figma strokes are inside and do not change the size, so the stroke is an inset shadow. */
+    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--badge-stroke);
+    color: var(--badge-fg);
+    font-family: var(--ds-font-family-body);
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-4);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  /* Figma Size */
+  .ds-badge--sm {
+    --badge-pad: var(--ds-space-2);
+    --badge-icon-size: 12px;
+    --badge-dot-size: 6px;
+  }
+
+  .ds-badge--lg {
+    --badge-pad: var(--ds-space-4);
+    --badge-icon-size: 14px;
+    --badge-dot-size: 8px;
+  }
+
+  /* Figma Shape */
+  .ds-badge--pill {
+    border-radius: var(--ds-radius-full);
+  }
+
+  /* Figma Style */
+  .ds-badge--strong {
+    --badge-bg: var(--badge-accent);
+    --badge-fg: var(--ds-text-white-default);
+    --badge-icon: var(--ds-text-white-default);
+    --badge-dot: var(--ds-icon-white-default);
+  }
+
+  /* Figma Border: only Soft badges get a stroke. */
+  .ds-badge--soft.ds-badge--border {
+    --badge-stroke: var(--ds-border-default);
+  }
+
+  /* Figma Color. Soft: tinted background, strong text. Strong: accent background, white text. */
+  .ds-badge--neutral {
+    --badge-soft-bg: var(--ds-bg-badge-gray);
+    --badge-soft-fg: var(--ds-text-subtle);
+    --badge-soft-icon: var(--ds-icon-default-muted);
+    --badge-accent: var(--ds-bg-basic-gray-accent);
+  }
+
+  .ds-badge--neutral.ds-badge--border {
+    --badge-soft-bg: var(--ds-bg-badge-default);
+  }
+
+  /* Figma draws Neutral + Strong + Border like Neutral + Soft + Border. */
+  .ds-badge--neutral.ds-badge--strong.ds-badge--border {
+    --badge-bg: var(--badge-soft-bg);
+    --badge-fg: var(--badge-soft-fg);
+    --badge-icon: var(--badge-soft-icon);
+    --badge-dot: var(--badge-accent);
+    --badge-stroke: var(--ds-border-default);
+  }
+
+  .ds-badge--red {
+    --badge-soft-bg: var(--ds-bg-badge-red);
+    --badge-soft-fg: var(--ds-bg-basic-red-strong);
+    --badge-accent: var(--ds-bg-basic-red-accent);
+  }
+
+  .ds-badge--orange {
+    --badge-soft-bg: var(--ds-bg-badge-orange);
+    --badge-soft-fg: var(--ds-bg-basic-orange-strong);
+    --badge-accent: var(--ds-bg-basic-orange-accent);
+  }
+
+  .ds-badge--lime {
+    --badge-soft-bg: var(--ds-bg-badge-lime);
+    --badge-soft-fg: var(--ds-bg-basic-lime-strong);
+    --badge-accent: var(--ds-bg-basic-lime-accent);
+  }
+
+  .ds-badge--green {
+    --badge-soft-bg: var(--ds-bg-badge-green);
+    --badge-soft-fg: var(--ds-bg-basic-green-strong);
+    --badge-accent: var(--ds-bg-basic-green-accent);
+  }
+
+  .ds-badge--cyan {
+    --badge-soft-bg: var(--ds-bg-badge-cyan);
+    --badge-soft-fg: var(--ds-bg-basic-cyan-strong);
+    --badge-accent: var(--ds-bg-basic-cyan-accent);
+  }
+
+  .ds-badge--blue {
+    --badge-soft-bg: var(--ds-bg-badge-blue);
+    --badge-soft-fg: var(--ds-bg-basic-blue-strong);
+    --badge-accent: var(--ds-bg-basic-blue-accent);
+  }
+
+  .ds-badge--violet {
+    --badge-soft-bg: var(--ds-bg-badge-violet);
+    --badge-soft-fg: var(--ds-bg-basic-violet-strong);
+    --badge-accent: var(--ds-bg-basic-violet-accent);
+  }
+
+  .ds-badge--fuchsia {
+    --badge-soft-bg: var(--ds-bg-badge-fuchsia);
+    --badge-soft-fg: var(--ds-bg-basic-fuchsia-strong);
+    --badge-accent: var(--ds-bg-basic-fuchsia-accent);
+  }
+
+  .ds-badge--pink {
+    --badge-soft-bg: var(--ds-bg-badge-pink);
+    --badge-soft-fg: var(--ds-bg-basic-pink-strong);
+    --badge-accent: var(--ds-bg-basic-pink-accent);
+  }
+
+  /* ── Parts ──────────────────────────────────────────────────────────── */
+
+  .ds-badge__label {
+    padding: 0 var(--ds-space-4);
+  }
+
+  /* Variant=Icon, Dot and Image: a 16 px slot before the label; Icon and Dot pull the label 2 px closer. */
+  .ds-badge__lead {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    color: var(--badge-icon);
+  }
+
+  /* Figma pads the picture slot by 1 px (no variable). */
+  .ds-badge__lead--image {
+    box-sizing: border-box;
+    padding: 1px;
+  }
+
+  .ds-badge__lead + .ds-badge__label {
+    padding-left: var(--ds-space-2);
+  }
+
+  .ds-badge__lead--image + .ds-badge__label {
+    padding-left: var(--ds-space-4);
+  }
+
+  .ds-badge__lead > svg {
+    display: block;
+    width: var(--badge-icon-size);
+    height: var(--badge-icon-size);
+  }
+
+  .ds-badge__dot {
+    width: var(--badge-dot-size);
+    height: var(--badge-dot-size);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--badge-dot);
+  }
+
+  /* Figma draws the picture with a fixed 2 px radius (no variable) and a 0.5 px inside stroke. */
+  .ds-badge__image {
+    position: relative;
+    display: block;
+    width: var(--badge-icon-size);
+    height: var(--badge-icon-size);
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .ds-badge__image > img,
+  .ds-badge__image > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ds-badge__image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 0.5px var(--ds-border-darker);
+  }
+
+  /* "Close Icon": Figma "Control buttons" (Style=Default, Size=sm), 16 px with a 14 px icon. */
+  .ds-badge__remove {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    background-color: var(--ds-bg-state-ghost);
+    color: var(--ds-icon-default-muted);
+    cursor: pointer;
+  }
+
+  .ds-badge__remove:hover {
+    background-color: var(--ds-bg-state-ghost-hover);
+  }
+
+  .ds-badge__remove:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--ds-border-highlight);
+  }
+
+  .ds-badge__remove > svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+  }
+}

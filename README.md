@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
+**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Badge, Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
 
 ## Using it in a project
 
@@ -68,6 +68,28 @@ Load the same two CSS files and use the classes; each component's markup is docu
 | State = Disabled | `disabled` | `:disabled` |
 | State = Loading | `loading` (keeps width, `aria-busy`, blocks `onClick`) | `[data-loading]` |
 | Lead Icon / Tail Icon / Badge | `leadIcon` · `tailIcon` · `badge` | `__icon` · `__badge` |
+
+## Badge
+
+A short label: status, category, count or a removable value. Covers every Figma Variant, Size, Color, Shape, Border and Style, and the Close Icon.
+
+```tsx
+<Badge color="green">Active</Badge>
+<Badge color="blue" variant="strong" dot>New</Badge>
+<Badge border icon={<RiUser3Fill />}>Owner</Badge>
+<Badge border onRemove={() => removeTag('design')}>Design</Badge>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Style (Soft, Srong) | `variant`: `soft` · `strong` | `ds-badge--soft` · `ds-badge--strong` |
+| Size | `size`: `sm` · `lg` | `ds-badge--<size>` |
+| Color | `color`: `neutral` · `red` · `orange` · `lime` · `green` · `cyan` · `blue` · `violet` · `fuchsia` · `pink` | `ds-badge--<color>` |
+| Shape | `shape`: `rounded` · `pill` | `ds-badge--pill` |
+| Border | `border` (Soft badges only) | `ds-badge--border` |
+| Variant = Icon / Dot / Image | `icon` · `dot` · `image` | `ds-badge__lead` · `ds-badge__dot` · `ds-badge__image` |
+| ↩ Label | `children` | `ds-badge__label` |
+| Close Icon | `onRemove` (+ `removeLabel`, default "Remove <label>") | `ds-badge__remove` |
 
 ## Input
 
@@ -167,3 +189,8 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Select: State=Failed has no extra shadow in Style=Default and Soft, while Input does; one of the two is likely unintended.
 - Select: the Active variant shows the placeholder while its menu has "Simon Alt" checked.
 - Select Menu Items Type=Divider: the line is centred on a half pixel, so Figma renders it as two faint rows; the code draws one crisp row.
+- Badge: Strong badges put white text on the accent colour, below WCAG AA's 4.5:1 for every colour but Neutral (Lime 1.91, Green 2.19, Cyan 2.38, Orange 2.9, Fuchsia 3.71, Pink 3.73, Blue 3.76, Red 3.97, Violet 4.43).
+- Badge: Border has no effect on Strong badges, except Neutral, where Strong + Border looks exactly like Soft + Border. The Style value is spelled "Srong".
+- Badge: Orange + Strong + Dot draws the dot in the badge's own colour, so it is invisible (every other colour uses white); the code uses white.
+- Badge: the Orange Soft label still draws #ba420d although its variable (orange/700) is #a73b0c; the component has not picked up the library update. The code follows the variable.
+- Badge: the Close Icon stays grey (Control buttons Style=Default) on Strong badges, where the Inverted style would match the white text.

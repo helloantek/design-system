@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode, type Ref } from 'react';
 import { RiCheckFill, RiExpandUpDownFill } from '@remixicon/react';
+import { Badge } from '../Badge';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-select*); this component renders the markup and the
 // WAI-ARIA select-only combobox behaviour (https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
@@ -18,7 +19,7 @@ export interface SelectOption {
   caption?: ReactNode;
   /** Figma "❖ Lead Icon". Icons should use `currentColor`. */
   icon?: ReactNode;
-  /** Figma "Badge". */
+  /** Figma "Badge": rendered as `<Badge border>` (Size=sm, Color=Neutral, Style=Soft, Border=True). */
   badge?: ReactNode;
   /** Figma Type=Country Flag (or Avatar): a 20 px picture before the label, e.g. a flag `<svg>` or an `<img>`. */
   media?: ReactNode;
@@ -338,11 +339,7 @@ export function Select(props: SelectProps) {
               {mark}
             </span>
           )}
-          {option.badge !== undefined && (
-            <span className="ds-select__badge">
-              <span>{option.badge}</span>
-            </span>
-          )}
+          {option.badge !== undefined && <Badge border>{option.badge}</Badge>}
         </span>
       </div>
     );
