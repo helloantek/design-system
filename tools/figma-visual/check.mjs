@@ -47,10 +47,45 @@ function crop(png, x, y, w, h) {
   return o;
 }
 
+// Squared YIQ distance between two RGB pixels, as pixelmatch measures it (0 … 35215).
+function delta(a, i, b, j) {
+  const dr = a[i] - b[j], dg = a[i + 1] - b[j + 1], db = a[i + 2] - b[j + 2];
+  const y = dr * 0.29889531 + dg * 0.58662247 + db * 0.11448223;
+  const iq = dr * 0.59597799 - dg * 0.2741761 - db * 0.32180189;
+  const q = dr * 0.21147017 - dg * 0.52261711 + db * 0.31114694;
+  return 0.5053 * y * y + 0.299 * iq * iq + 0.1957 * q * q;
+}
+
+// A pixel differs when its colour lies outside the colour range of the other image's 3×3 neighbourhood (per channel),
+// in both directions. Glyph anti-aliasing and sub-pixel text advances (which differ between machines, e.g. CI vs
+// local) only blend neighbouring colours, so they no longer count; a wrong or missing fill, border, icon or text
+// still does. Exact geometry (padding, gaps, sizes, font) is the spec check's job, not the pixels'.
+function differs(a, b, w, h, threshold) {
+  const max = 35215 * threshold * threshold;
+  const c = [0, 0, 0];
+  const outside = (src, dst, x, y) => {
+    const i = (y * w + x) * 4;
+    for (let k = 0; k < 3; k++) {
+      let lo = 255, hi = 0;
+      for (let ny = Math.max(0, y - 1); ny <= Math.min(h - 1, y + 1); ny++)
+        for (let nx = Math.max(0, x - 1); nx <= Math.min(w - 1, x + 1); nx++) {
+          const v = dst[(ny * w + nx) * 4 + k];
+          if (v < lo) lo = v;
+          if (v > hi) hi = v;
+        }
+      c[k] = Math.min(hi, Math.max(lo, src[i + k]));
+    }
+    return delta(src, i, c, 0) > max;
+  };
+  const out = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) out[y * w + x] = outside(a, b, x, y) || outside(b, a, x, y) ? 1 : 0;
+  return out;
+}
+
 // Align the reference inside the capture (centred on the element, then +/- SEARCH px) and keep the best match.
-// Two metrics at the best alignment:
-//   mismatch — pixelmatch threshold 0.1: structure (text, icons, borders); tolerant of anti-aliasing.
-//   tint     — pixelmatch threshold 0.03: also catches subtle fills (e.g. a 6% background) that 0.1 ignores.
+// Two metrics at the best alignment, both 1 px tolerant (see differs()):
+//   mismatch — threshold 0.1: structure (text, icons, borders).
+//   tint     — threshold 0.03: also catches subtle fills (e.g. a 6% background) that 0.1 ignores.
 function compare(ref, capture, box) {
   const { width: w, height: h } = ref;
   const cx = PAD + box.width / 2 - w / 2, cy = PAD + box.height / 2 - h / 2;
@@ -58,13 +93,20 @@ function compare(ref, capture, box) {
   for (let dy = -SEARCH; dy <= SEARCH; dy++) {
     for (let dx = -SEARCH; dx <= SEARCH; dx++) {
       const cand = crop(capture, Math.round(cx + dx), Math.round(cy + dy), w, h);
-      const diff = new PNG({ width: w, height: h });
-      const n = pixelmatch(ref.data, cand.data, diff.data, w, h, { threshold: 0.1, includeAA: false });
-      if (!best || n < best.n) best = { n, diff, cand };
+      const n = pixelmatch(ref.data, cand.data, null, w, h, { threshold: 0.1, includeAA: false });
+      if (!best || n < best.n) best = { n, cand };
     }
   }
-  const tint = pixelmatch(ref.data, best.cand.data, null, w, h, { threshold: 0.03, includeAA: false });
-  return { mismatch: best.n / (w * h), tint: tint / (w * h), diff: best.diff, cand: best.cand };
+  const strong = differs(ref.data, best.cand.data, w, h, 0.1);
+  const subtle = differs(ref.data, best.cand.data, w, h, 0.03);
+  // Diff image: red = mismatch, orange = tint only, faded reference elsewhere.
+  const diff = new PNG({ width: w, height: h });
+  for (let p = 0; p < w * h; p++) {
+    const g = 255 - (255 - (ref.data[p * 4] * 0.3 + ref.data[p * 4 + 1] * 0.59 + ref.data[p * 4 + 2] * 0.11)) * 0.1;
+    diff.data.set(strong[p] ? [255, 0, 0, 255] : subtle[p] ? [255, 160, 0, 255] : [g, g, g, 255], p * 4);
+  }
+  const count = (m) => m.reduce((s, v) => s + v, 0) / (w * h);
+  return { mismatch: count(strong), tint: count(subtle), diff, cand: best.cand };
 }
 
 function sideBySide(...pngs) {

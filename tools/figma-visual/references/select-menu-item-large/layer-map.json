@@ -32,7 +32,7 @@
       "fill": "color"
     },
     "Badge": {
-      "selector": ".ds-select__badge",
+      "selector": ".ds-badge",
       "stroke": "inset-shadow",
       "skip": [
         "w"
@@ -40,7 +40,7 @@
       "$why": "The badge hugs its text, whose width follows glyph rasterisation."
     },
     "Badge/TEXT": {
-      "selector": ".ds-select__badge > span"
+      "selector": ".ds-badge__label"
     }
   }
 }

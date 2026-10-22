@@ -1,0 +1,535 @@
+{
+ "$comment": "Figma Badge reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/badge.tsx turns them into props. Every Color in both Styles, every Variant and Size, Border and Shape. The Close Icon boolean cannot be exported from a read-only file (its instances are hidden in every variant).",
+ "component": "badge",
+ "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+ "componentSet": "3994:37188",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-sm-neutral-soft",
+   "nodeId": "3994:48414",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-neutral-strong",
+   "nodeId": "13134:132873",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-red-soft",
+   "nodeId": "3994:48420",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Red",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-red-strong",
+   "nodeId": "13134:132953",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Red",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-orange-soft",
+   "nodeId": "3994:48426",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Orange",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20,
+   "pixels": false,
+   "$why": "The Figma render is stale: the label layer still draws its cached #ba420d although its variable bg/basic/orange-strong (Colors/orange/700) is #a73b0c (the component has not picked up the library update). The code follows the variable; the spec, exported through the variable, is checked exactly."
+  },
+  {
+   "slug": "default-sm-orange-strong",
+   "nodeId": "13134:133033",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Orange",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-lime-soft",
+   "nodeId": "3994:48450",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Lime",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-lime-strong",
+   "nodeId": "13134:133365",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Lime",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-green-soft",
+   "nodeId": "3994:48444",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Green",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-green-strong",
+   "nodeId": "13134:133285",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Green",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-cyan-soft",
+   "nodeId": "3994:48432",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Cyan",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-cyan-strong",
+   "nodeId": "13134:133113",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Cyan",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-blue-soft",
+   "nodeId": "3994:48438",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Blue",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-blue-strong",
+   "nodeId": "13134:133205",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Blue",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-violet-soft",
+   "nodeId": "3994:48456",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Violet",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-violet-strong",
+   "nodeId": "13134:133445",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Violet",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-fuchsia-soft",
+   "nodeId": "3994:48462",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Fuchsia",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-fuchsia-strong",
+   "nodeId": "13134:133525",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Fuchsia",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-pink-soft",
+   "nodeId": "3994:48468",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Pink",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-pink-strong",
+   "nodeId": "13134:133593",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Pink",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-neutral-soft-border",
+   "nodeId": "3994:48234",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-lg-neutral-soft-border",
+   "nodeId": "3994:47874",
+   "props": {
+    "Variant": "Default",
+    "Size": "lg",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 48,
+   "nodeH": 24
+  },
+  {
+   "slug": "default-lg-blue-strong",
+   "nodeId": "13134:133153",
+   "props": {
+    "Variant": "Default",
+    "Size": "lg",
+    "Color": "Blue",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 48,
+   "nodeH": 24
+  },
+  {
+   "slug": "default-sm-blue-soft-border",
+   "nodeId": "3994:48258",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Blue",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-sm-neutral-strong-border",
+   "nodeId": "13134:132853",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Srong"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  },
+  {
+   "slug": "icon-sm-neutral-soft-border",
+   "nodeId": "3994:37131",
+   "props": {
+    "Variant": "Icon",
+    "Size": "sm",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 58,
+   "nodeH": 20
+  },
+  {
+   "slug": "icon-lg-neutral-soft-border",
+   "nodeId": "3994:37145",
+   "props": {
+    "Variant": "Icon",
+    "Size": "lg",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 62,
+   "nodeH": 24
+  },
+  {
+   "slug": "icon-sm-red-soft",
+   "nodeId": "3994:38033",
+   "props": {
+    "Variant": "Icon",
+    "Size": "sm",
+    "Color": "Red",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 58,
+   "nodeH": 20
+  },
+  {
+   "slug": "icon-sm-red-strong",
+   "nodeId": "13134:132941",
+   "props": {
+    "Variant": "Icon",
+    "Size": "sm",
+    "Color": "Red",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 58,
+   "nodeH": 20
+  },
+  {
+   "slug": "dot-sm-neutral-soft-border",
+   "nodeId": "3994:37155",
+   "props": {
+    "Variant": "Dot",
+    "Size": "sm",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 58,
+   "nodeH": 20
+  },
+  {
+   "slug": "dot-lg-neutral-soft-border",
+   "nodeId": "3994:37158",
+   "props": {
+    "Variant": "Dot",
+    "Size": "lg",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 62,
+   "nodeH": 24
+  },
+  {
+   "slug": "dot-sm-blue-soft",
+   "nodeId": "3994:37949",
+   "props": {
+    "Variant": "Dot",
+    "Size": "sm",
+    "Color": "Blue",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 58,
+   "nodeH": 20
+  },
+  {
+   "slug": "dot-sm-blue-strong",
+   "nodeId": "13134:132597",
+   "props": {
+    "Variant": "Dot",
+    "Size": "sm",
+    "Color": "Blue",
+    "Shape": "Rounded",
+    "Border": "False",
+    "Style": "Srong"
+   },
+   "nodeW": 58,
+   "nodeH": 20
+  },
+  {
+   "slug": "dot-lg-blue-soft-pill",
+   "nodeId": "3994:50110",
+   "props": {
+    "Variant": "Dot",
+    "Size": "lg",
+    "Color": "Blue",
+    "Shape": "Pill",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 62,
+   "nodeH": 24
+  },
+  {
+   "slug": "image-sm-neutral-soft-border",
+   "nodeId": "3994:37187",
+   "props": {
+    "Variant": "Image",
+    "Size": "sm",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 60,
+   "nodeH": 20
+  },
+  {
+   "slug": "image-lg-neutral-soft-border",
+   "nodeId": "3994:37175",
+   "props": {
+    "Variant": "Image",
+    "Size": "lg",
+    "Color": "Neutral",
+    "Shape": "Rounded",
+    "Border": "True",
+    "Style": "Soft"
+   },
+   "nodeW": 64,
+   "nodeH": 24
+  },
+  {
+   "slug": "default-sm-green-soft-pill",
+   "nodeId": "3994:50466",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Color": "Green",
+    "Shape": "Pill",
+    "Border": "False",
+    "Style": "Soft"
+   },
+   "nodeW": 44,
+   "nodeH": 20
+  }
+ ]
+}

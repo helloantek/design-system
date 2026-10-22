@@ -1,0 +1,39 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside #target (the badge) and how to read it.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "root is the badge itself (#target). It hugs its label, whose width follows glyph rasterisation; the manifest's size check (\u00b12 px) still covers it."
+    },
+    "Frame": {
+      "selector": ".ds-badge__label",
+      "skip": [
+        "w"
+      ],
+      "$why": "The label frame hugs its text, whose width follows glyph rasterisation."
+    },
+    "Frame/TEXT": {
+      "selector": ".ds-badge__label"
+    },
+    "Container": {
+      "selector": ".ds-badge__lead"
+    },
+    "Container/VECTOR": {
+      "selector": ".ds-badge__lead",
+      "fill": "color"
+    },
+    "dot": {
+      "selector": ".ds-badge__dot"
+    },
+    "Image": {
+      "selector": ".ds-badge__image",
+      "skip": [
+        "stroke"
+      ],
+      "$why": "The picture's 0.5 px stroke is an ::after overlay (an inset shadow on an <img> is drawn under the picture)."
+    }
+  }
+}

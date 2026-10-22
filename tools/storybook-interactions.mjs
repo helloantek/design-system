@@ -150,6 +150,15 @@ const tests = {
     const describedBy = await large.getAttribute('aria-describedby');
     assert.equal(await page.locator(`[id="${describedBy}"]`).textContent(), 'Billed yearly. You can change the plan at any time.');
   },
+  'badge: the close icon is a named button that removes the badge': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-badge--playground&viewMode=story&args=closeIcon:!true;label:Design');
+    const remove = page.getByRole('button', { name: 'Remove Design' });
+    await remove.waitFor();
+    await page.keyboard.press('Tab');
+    assert.equal(await remove.evaluate((el) => document.activeElement === el), true, 'reachable with Tab');
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('.ds-badge').count(), 0);
+  },
   'playground form: validation, submitted data and reset': async () => {
     await open('playground-form--sign-up');
     const submitted = page.getByTestId('submitted');
