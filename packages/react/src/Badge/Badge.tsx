@@ -32,6 +32,11 @@ export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color
   onRemove?: () => void;
   /** Accessible name of the remove button. Defaults to "Remove <label>" for a text label. */
   removeLabel?: string;
+  /**
+   * `false` draws the Close Icon as a pointer target instead of a button, for badges inside another control
+   * (e.g. Select tags) where a nested button is not allowed and the keyboard removes values another way.
+   */
+  removeButton?: boolean;
 }
 
 export function Badge({
@@ -47,6 +52,7 @@ export function Badge({
   dot = false,
   onRemove,
   removeLabel,
+  removeButton = true,
   className,
   ...rest
 }: BadgeProps) {
@@ -69,7 +75,19 @@ export function Badge({
         </span>
       ) : null}
       <span className="ds-badge__label">{children}</span>
-      {onRemove && (
+      {onRemove && !removeButton && (
+        <span
+          className="ds-badge__remove"
+          aria-hidden
+          onClick={(event) => {
+            event.stopPropagation();
+            onRemove();
+          }}
+        >
+          <RiCloseFill />
+        </span>
+      )}
+      {onRemove && removeButton && (
         <button type="button" className="ds-badge__remove" aria-label={removeLabel ?? (typeof children === 'string' ? `Remove ${children}` : 'Remove')} onClick={onRemove}>
           <RiCloseFill aria-hidden />
         </button>

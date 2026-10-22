@@ -8,9 +8,14 @@ import type { Renderer } from './types';
 const options = ['Alex Jhonson', 'Simon Alt', 'Emma Thompson', 'Michael Davis', 'Ryan Parker'].map((label) => ({ value: label, label }));
 
 export const renderSelect: Renderer = (p) => {
-  if (p.Variant !== 'Default' && p.Variant !== 'Multi-select') throw new Error(`Select variant "${p.Variant}" is not implemented`);
+  if (!['Default', 'Multi-select', 'Tags'].includes(p.Variant)) throw new Error(`Select variant "${p.Variant}" is not implemented`);
   const filled = p.State === 'Filled';
-  const value = p.Variant === 'Multi-select' ? { multiple: true as const, defaultValue: filled ? ['Simon Alt', 'Michael Davis', 'Ryan Parker'] : [] } : { defaultValue: filled ? 'Simon Alt' : undefined };
+  const value =
+    p.Variant === 'Multi-select'
+      ? { multiple: true as const, defaultValue: filled ? ['Simon Alt', 'Michael Davis', 'Ryan Parker'] : [] }
+      : p.Variant === 'Tags'
+        ? { multiple: true as const, tags: true, defaultValue: filled ? ['Simon Alt', 'Michael Davis'] : [] }
+        : { defaultValue: filled ? 'Simon Alt' : undefined };
   return (
     <div id="target" style={{ width: 320 }}>
       <Select

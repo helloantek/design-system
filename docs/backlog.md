@@ -5,7 +5,6 @@ Figma variants that are not implemented yet, and the component each one becomes.
 | Figma source | Becomes | Notes |
 |---|---|---|
 | Input · Variant = Lead dropdown, Tail dropdown | `Select` composed into `Input` as an add-on | `Select` exists; needs a compact trigger without the field box. |
-| Select Input · Variant = Tags | `Select multiple` showing the values as removable `Badge`s | `Badge` with `onRemove` exists. The × buttons must not sit inside the combobox element (nested interactive); keyboard removal with Backspace. |
 | Select Input · Variant = Avatar; Select Menu Items · Type = Avatar | `Avatar` in the option `media` slot (and in the trigger for the selected option) | `Avatar` exists. The `media` slot, its 8 px label padding and the 30% disabled fade already exist (Country Flag uses them). |
 | `Checkbox`, `Radio Button` (Figma sets, Style=With shadow) | Form controls | Select draws the same boxes as indicators (`ds-select__box`, tokens `bg/checkbox/*`, `shadow/checkbox*`); the components should share those tokens. |
 | Select Menu · Search Input, Empty State; Menu Search Input | `Select` with `searchable` (combobox with listbox popup) | Filtering changes the ARIA pattern: focus moves to the search input. |

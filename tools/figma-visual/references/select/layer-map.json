@@ -5,12 +5,13 @@
     "Input Label/TEXT": { "selector": ".ds-field__label" },
     "Container/Container": { "selector": ".ds-select__trigger", "stroke": "inset-shadow" },
     "container": { "selector": ".ds-select__main", "skip": ["w"] },
-    "label": { "selector": ".ds-select__value", "skip": ["w"] },
-    "label/TEXT": { "selector": ".ds-select__value" },
+    "label": { "selector": ".ds-select__value, .ds-select__tags", "skip": ["w"], "$why": "Variant=Tags: the badges' row (.ds-select__tags) in the label frame." },
+    "label/TEXT": { "selector": ".ds-select__value, .ds-select__tags .ds-badge__label" },
     "lead-icon": { "selector": ".ds-select__main > .ds-select__icon" },
     "lead-icon/VECTOR": { "selector": ".ds-select__main > .ds-select__icon", "fill": "color" },
     "tail-icon/VECTOR": { "selector": ".ds-select__icon--tail", "fill": "color" },
     "expand/VECTOR": { "selector": ".ds-select__trigger > .ds-select__icon:last-child", "fill": "color" },
-    "Input Caption Text/TEXT": { "selector": ".ds-field__caption" }
+    "Input Caption Text/TEXT": { "selector": ".ds-field__caption" },
+    "Badge": { "selector": ".ds-select__tags .ds-badge", "stroke": "inset-shadow", "skip": ["w"], "$why": "Variant=Tags: the first value's badge; it hugs its label, whose width follows glyph rasterisation." }
   }
 }

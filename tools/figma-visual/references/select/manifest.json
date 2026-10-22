@@ -1,5 +1,5 @@
 {
- "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/select.tsx turns these properties into props. Variant=Default and Multi-select are implemented (Multi-select differs from Default only when Filled). `target` (optional) is the element compared instead of #target.",
+ "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/select.tsx turns these properties into props. Variant=Default and Multi-select are implemented (Multi-select differs from Default only when Filled). `target` (optional) is the element compared instead of #target. Variant=Tags is referenced in State=Filled only: its other states are drawn exactly like Variant=Default.",
  "component": "select",
  "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
  "componentSet": "3817:45118",
@@ -449,6 +449,78 @@
    "props": {
     "Variant": "Multi-select",
     "Style": "Soft",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "tags-default-lg-filled",
+   "nodeId": "3817:45114",
+   "props": {
+    "Variant": "Tags",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tags-soft-lg-filled",
+   "nodeId": "3817:66361",
+   "props": {
+    "Variant": "Tags",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tags-shadow-lg-filled",
+   "nodeId": "3817:59669",
+   "props": {
+    "Variant": "Tags",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "tags-default-sm-filled",
+   "nodeId": "3817:51432",
+   "props": {
+    "Variant": "Tags",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "tags-soft-sm-filled",
+   "nodeId": "3817:66376",
+   "props": {
+    "Variant": "Tags",
+    "Style": "Soft",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "tags-shadow-sm-filled",
+   "nodeId": "3817:59684",
+   "props": {
+    "Variant": "Tags",
+    "Style": "Shadow",
     "Size": "sm",
     "State": "Filled"
    },
