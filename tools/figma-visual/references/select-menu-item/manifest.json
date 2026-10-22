@@ -116,6 +116,253 @@
    "nodeH": 8,
    "pixels": false,
    "$why": "Figma centres the 1 px line on a half pixel and rasterises it as two 50% rows; the code draws one crisp row. Pixels would compare that rasterisation, so only size and the spec are checked."
+  },
+  {
+   "slug": "checkbox-default",
+   "nodeId": "3800:6545",
+   "props": {
+    "Type": "Default",
+    "Select type": "Checkbox",
+    "State": "Default",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-default-selected",
+   "nodeId": "3800:6562",
+   "props": {
+    "Type": "Default",
+    "Select type": "Checkbox",
+    "State": "Default",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-hover",
+   "nodeId": "3800:6548",
+   "props": {
+    "Type": "Default",
+    "Select type": "Checkbox",
+    "State": "Hover",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-hover-selected",
+   "nodeId": "3800:6579",
+   "props": {
+    "Type": "Default",
+    "Select type": "Checkbox",
+    "State": "Hover",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-disabled",
+   "nodeId": "3800:6596",
+   "props": {
+    "Type": "Default",
+    "Select type": "Checkbox",
+    "State": "Disabled",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-disabled-selected",
+   "nodeId": "3800:6608",
+   "props": {
+    "Type": "Default",
+    "Select type": "Checkbox",
+    "State": "Disabled",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "radio-default",
+   "nodeId": "3800:6629",
+   "props": {
+    "Type": "Default",
+    "Select type": "Radio Button",
+    "State": "Default",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "radio-default-selected",
+   "nodeId": "3800:6653",
+   "props": {
+    "Type": "Default",
+    "Select type": "Radio Button",
+    "State": "Default",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "radio-hover",
+   "nodeId": "3800:6689",
+   "props": {
+    "Type": "Default",
+    "Select type": "Radio Button",
+    "State": "Hover",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "radio-hover-selected",
+   "nodeId": "3800:6677",
+   "props": {
+    "Type": "Default",
+    "Select type": "Radio Button",
+    "State": "Hover",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "radio-disabled",
+   "nodeId": "3800:6641",
+   "props": {
+    "Type": "Default",
+    "Select type": "Radio Button",
+    "State": "Disabled",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "radio-disabled-selected",
+   "nodeId": "3800:6665",
+   "props": {
+    "Type": "Default",
+    "Select type": "Radio Button",
+    "State": "Disabled",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "country-default",
+   "nodeId": "3817:71555",
+   "props": {
+    "Type": "Country Flag",
+    "Select type": "Default",
+    "State": "Default",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "country-default-selected",
+   "nodeId": "3817:71601",
+   "props": {
+    "Type": "Country Flag",
+    "Select type": "Default",
+    "State": "Default",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "country-hover",
+   "nodeId": "3817:71673",
+   "props": {
+    "Type": "Country Flag",
+    "Select type": "Default",
+    "State": "Hover",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "country-hover-selected",
+   "nodeId": "3817:71649",
+   "props": {
+    "Type": "Country Flag",
+    "Select type": "Default",
+    "State": "Hover",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "country-disabled",
+   "nodeId": "3817:71578",
+   "props": {
+    "Type": "Country Flag",
+    "Select type": "Default",
+    "State": "Disabled",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "country-disabled-selected",
+   "nodeId": "3817:71625",
+   "props": {
+    "Type": "Country Flag",
+    "Select type": "Default",
+    "State": "Disabled",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32
+  },
+  {
+   "slug": "caption",
+   "nodeId": "3877:26712",
+   "props": {
+    "Type": "Caption",
+    "Select type": "Default",
+    "State": "Default",
+    "Active": "False"
+   },
+   "target": ".ds-select__note",
+   "nodeW": 320,
+   "nodeH": 28
   }
  ]
 }

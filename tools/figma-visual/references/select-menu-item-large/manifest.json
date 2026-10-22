@@ -1,0 +1,93 @@
+{
+ "$comment": "Figma \"Select Menu Items\" Type=Default Large references: the item's inner row (layer Container, 312 px), rendered inside an open Select by renderers/select-menu-item.tsx. A folder of its own because its layers (Container = content, Container#1 = check) differ from the 32 px items.",
+ "component": "select-menu-item-large",
+ "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+ "componentSet": "3803:8920",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "large-default",
+   "nodeId": "13089:84216",
+   "props": {
+    "Type": "Default Large",
+    "Select type": "Default",
+    "State": "Default",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 54
+  },
+  {
+   "slug": "large-default-selected",
+   "nodeId": "13089:84238",
+   "props": {
+    "Type": "Default Large",
+    "Select type": "Default",
+    "State": "Default",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 54
+  },
+  {
+   "slug": "large-hover",
+   "nodeId": "13089:84274",
+   "props": {
+    "Type": "Default Large",
+    "Select type": "Default",
+    "State": "Hover",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 54
+  },
+  {
+   "slug": "large-hover-selected",
+   "nodeId": "13089:84262",
+   "props": {
+    "Type": "Default Large",
+    "Select type": "Default",
+    "State": "Hover",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 54
+  },
+  {
+   "slug": "large-disabled",
+   "nodeId": "13089:84227",
+   "props": {
+    "Type": "Default Large",
+    "Select type": "Default",
+    "State": "Disabled",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 54
+  },
+  {
+   "slug": "large-disabled-selected",
+   "nodeId": "13089:84250",
+   "props": {
+    "Type": "Default Large",
+    "Select type": "Default",
+    "State": "Disabled",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 54
+  }
+ ]
+}

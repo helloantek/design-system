@@ -10,4 +10,5 @@ export const renderers: Record<string, Renderer> = {
   input: renderInput,
   select: renderSelect,
   'select-menu-item': renderSelectMenuItem,
+  'select-menu-item-large': renderSelectMenuItem,
 };

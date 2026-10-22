@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type CSSProperties, type ReactNode } from 'react';
-import { RiGlobalLine, RiInformationFill, RiUser3Line } from '@remixicon/react';
+import { RiBuildingLine, RiGlobalLine, RiInformationFill, RiRocketLine, RiUser3Line } from '@remixicon/react';
 import brands from '@helloantek/ds-tokens/brands.json';
-import { Select, type SelectItem, type SelectSize, type SelectVariant } from './Select';
+import { Select, type SelectIndicator, type SelectItem, type SelectSize, type SelectVariant } from './Select';
+import { FlagUnitedStates } from './Select.fixtures';
 
 const FIGMA_URL = 'https://www.figma.com/design/4tiBR2hKd4yvQehtKhM9OY?node-id=3817-74026';
 
@@ -57,6 +58,7 @@ type PlaygroundArgs = {
   tailIcon: boolean;
   groups: boolean;
   multiple: boolean;
+  indicator: SelectIndicator;
 };
 
 export const Playground: StoryObj<PlaygroundArgs> = {
@@ -72,6 +74,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     tailIcon: true,
     groups: false,
     multiple: false,
+    indicator: 'check',
   },
   decorators: single,
   argTypes: {
@@ -79,6 +82,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     size: { control: 'inline-radio', options: sizes },
     groups: { description: 'Show a group label, captions, a badge, a disabled option and a divider' },
     multiple: { description: 'Figma Variant=Multi-select: pick several options' },
+    indicator: { control: 'inline-radio', options: ['check', 'checkbox', 'radio'], description: 'Figma Select type: Default, Checkbox, Radio Button' },
   },
   render: function Render({ leadIcon, tailIcon, error, groups, multiple, ...props }) {
     const [value, setValue] = useState<string | null>(null);
@@ -136,6 +140,33 @@ export const Sizes: StoryObj = {
 };
 
 /** Figma Variant=Multi-select: options toggle, the menu stays open and the trigger lists the selected labels. */
+const plans: SelectItem[] = [
+  { type: 'caption', label: 'Billed yearly. You can change the plan at any time.' },
+  { value: 'starter', label: 'Starter', description: 'For individuals', icon: <RiRocketLine /> },
+  { value: 'team', label: 'Team', description: 'Up to 20 people', icon: <RiUser3Line />, badge: 'Popular' },
+  { value: 'enterprise', label: 'Enterprise', description: 'Contact sales', icon: <RiBuildingLine />, disabled: true },
+];
+
+const countries: SelectItem[] = [
+  { value: 'us', label: 'United States', caption: 'USD', media: <FlagUnitedStates /> },
+  { value: 'us-east', label: 'US East region', caption: 'Virginia', media: <FlagUnitedStates /> },
+  { value: 'us-west', label: 'US West region', caption: 'Oregon', media: <FlagUnitedStates />, disabled: true },
+];
+
+const column = { display: 'grid', gap: 24, gridTemplateColumns: 'repeat(4, 280px)', paddingBottom: 260, alignItems: 'start' } satisfies CSSProperties;
+
+/** Every Figma "Select Menu Items" type and Select type, each in an open menu: Checkbox, Radio Button, Country Flag, Default Large with a Caption. */
+export const MenuItemTypes: StoryObj = {
+  render: () => (
+    <div style={column}>
+      <Select options={users} label="Checkbox" indicator="checkbox" multiple defaultValue={['simon-alt', 'emma-thompson']} defaultOpen />
+      <Select options={users} label="Radio Button" indicator="radio" defaultValue="simon-alt" defaultOpen />
+      <Select options={countries} label="Country Flag" defaultValue="us" defaultOpen />
+      <Select options={plans} label="Default Large" defaultValue="team" defaultOpen />
+    </div>
+  ),
+};
+
 export const MultiSelect: StoryObj = {
   decorators: single,
   render: () => (

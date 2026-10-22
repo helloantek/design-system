@@ -293,6 +293,42 @@
     "Theme-1-Dark": "#ffffff1a",
     "Theme-2-Light": "#ffffff",
     "Theme-2-Dark": "#ffffff1a"
+   },
+   "bg/checkbox/default": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#222225",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#ffffff0f"
+   },
+   "bg/checkbox/active": {
+    "Theme-1-Light": "#18181b",
+    "Theme-1-Dark": "#fafafa",
+    "Theme-2-Light": "#f27313",
+    "Theme-2-Dark": "#f27313"
+   },
+   "bg/checkbox/active-hover": {
+    "Theme-1-Light": "#111115",
+    "Theme-1-Dark": "#a1a1a9",
+    "Theme-2-Light": "#f38f36",
+    "Theme-2-Dark": "#f38f36"
+   },
+   "bg/checkbox/disabled": {
+    "Theme-1-Light": "#27272a0f",
+    "Theme-1-Dark": "#ffffff0f",
+    "Theme-2-Light": "#27272a0f",
+    "Theme-2-Dark": "#ffffff0f"
+   },
+   "border/strong": {
+    "Theme-1-Light": "#27272a40",
+    "Theme-1-Dark": "#ffffff40",
+    "Theme-2-Light": "#27272a40",
+    "Theme-2-Dark": "#ffffff40"
+   },
+   "bg/basic/gray-subtle": {
+    "Theme-1-Light": "#f4f4f5",
+    "Theme-1-Dark": "#18181b",
+    "Theme-2-Light": "#f5f5f4",
+    "Theme-2-Dark": "#24211e"
    }
   }
  },

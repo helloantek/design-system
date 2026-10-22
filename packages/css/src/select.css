@@ -33,10 +33,18 @@
  *           …options…
  *         </div>
  *         <div class="ds-select__separator" aria-hidden="true"></div>
+ *         <div class="ds-select__note" id="n" aria-hidden="true"><span>Caption</span></div>   (listbox aria-describedby="n")
  *       </div>
  *     </div>
  *     <p class="ds-field__caption">Caption text</p>
  *   </div>
+ * Select type=Checkbox / Radio Button: the check slot holds
+ *     <span class="ds-select__box ds-select__box--checkbox"><svg…check…/></span> or
+ *     <span class="ds-select__box ds-select__box--radio"><span class="ds-select__dot"></span></span>
+ * Type=Country Flag: <span class="ds-select__media"><svg…flag…/></span> before the label.
+ * Type=Default Large: .ds-select__option--large, no check slot; the content holds the icon, then
+ *     <span class="ds-select__text"><span class="ds-select__label">…</span><span class="ds-select__description">…</span></span>,
+ *     then the check slot (when selected) and the badge.
  * Figma states: Placeholder / Filled = no value / a value, Active = focused trigger, Failed = --invalid,
  * Destructive = --disabled (Figma draws it as a disabled field). Menu item Hover = [data-highlighted] or :hover.
  */
@@ -316,5 +324,181 @@
     height: 0;
     padding: var(--ds-space-4) 0;
     background: linear-gradient(var(--ds-border-default), var(--ds-border-default)) center / 100% var(--ds-stroke-default) no-repeat;
+  }
+
+  /* Type=Caption: a note in the menu (the listbox refers to it with aria-describedby). */
+  .ds-select__note {
+    padding: var(--ds-space-4) var(--ds-space-12);
+    color: var(--ds-text-muted);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-font-line-height-leading-5);
+  }
+
+  /* Type=Country Flag (and Avatar): a 20 px picture before the label, which then has 8 px on the left. */
+  .ds-select__media {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .ds-select__media > svg,
+  .ds-select__media > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ds-select__media + .ds-select__label {
+    padding-left: var(--ds-space-8);
+  }
+
+  /* Figma fades the picture of a disabled option to 30% and its badge to 50%. */
+  .ds-select__option[aria-disabled='true'] .ds-select__media {
+    opacity: 0.3;
+  }
+
+  .ds-select__option[aria-disabled='true'] .ds-select__badge {
+    opacity: 0.5;
+  }
+
+  /* Select type=Checkbox and Radio Button: a 16 px box in the indicator slot instead of the check mark.
+     Same values as the Figma Checkbox / Radio Button components (Style=With shadow). */
+  .ds-select__box {
+    --select-box-stroke: var(--ds-border-darker);
+    --select-box-glyph: transparent;
+
+    position: relative;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--ds-bg-checkbox-default);
+    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--select-box-stroke), var(--ds-shadow-checkbox);
+    color: var(--select-box-glyph);
+  }
+
+  .ds-select__box--radio {
+    border-radius: var(--ds-radius-full);
+  }
+
+  .ds-select__box > svg {
+    display: block;
+    width: 8px;
+    height: 8px;
+  }
+
+  .ds-select__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--ds-radius-full);
+    background-color: currentColor;
+  }
+
+  /* Hover on an unselected option previews the mark. */
+  .ds-select__option[data-highlighted]:not([aria-selected='true']) .ds-select__box,
+  .ds-select__option:hover:not([aria-disabled='true'], [aria-selected='true']) .ds-select__box {
+    --select-box-stroke: var(--ds-border-strong);
+    --select-box-glyph: var(--ds-icon-default-disabled);
+  }
+
+  .ds-select__option[data-highlighted]:not([aria-selected='true']) .ds-select__box--radio,
+  .ds-select__option:hover:not([aria-disabled='true'], [aria-selected='true']) .ds-select__box--radio {
+    --select-box-glyph: var(--ds-bg-basic-gray-subtle);
+  }
+
+  .ds-select__option[aria-selected='true'] .ds-select__box {
+    --select-box-glyph: var(--ds-icon-white-default);
+    background-color: var(--ds-bg-checkbox-active);
+    box-shadow: none;
+  }
+
+  .ds-select__option[aria-selected='true'] .ds-select__box--radio {
+    box-shadow: var(--ds-shadow-checkbox);
+  }
+
+  /* Figma draws the highlight on a frame inset by 1 px. */
+  .ds-select__option[aria-selected='true'] .ds-select__box::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    box-shadow: var(--ds-shadow-checkbox-highlight);
+  }
+
+  .ds-select__option[aria-selected='true'][data-highlighted] .ds-select__box,
+  .ds-select__option[aria-selected='true']:hover:not([aria-disabled='true']) .ds-select__box {
+    background-color: var(--ds-bg-checkbox-active-hover);
+  }
+
+  .ds-select__option[aria-disabled='true'] .ds-select__box {
+    --select-box-stroke: var(--ds-border-default);
+    --select-box-glyph: transparent;
+    background-color: var(--ds-bg-checkbox-disabled);
+    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--select-box-stroke);
+  }
+
+  .ds-select__option[aria-disabled='true'][aria-selected='true'] .ds-select__box {
+    --select-box-glyph: var(--ds-icon-default-disabled);
+  }
+
+  .ds-select__option[aria-disabled='true'] .ds-select__box::after {
+    content: none;
+  }
+
+  /* Type=Default Large: a 36 px icon circle, label and description on two lines, the check mark on the right. */
+  .ds-select__option--large {
+    padding: var(--ds-space-6) var(--ds-space-8);
+  }
+
+  .ds-select__option--large .ds-select__content {
+    gap: var(--ds-space-6);
+  }
+
+  .ds-select__option--large .ds-select__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-bg-state-soft);
+  }
+
+  /* Figma drops the circle on hover and keeps the icon muted (not disabled) on disabled options. */
+  .ds-select__option--large[data-highlighted] .ds-select__icon,
+  .ds-select__option--large:hover:not([aria-disabled='true']) .ds-select__icon {
+    background-color: transparent;
+  }
+
+  .ds-select__option--large[aria-disabled='true'] .ds-select__icon {
+    color: var(--ds-icon-default-muted);
+  }
+
+  .ds-select__text {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    min-width: 0;
+    padding: 0 var(--ds-space-4);
+  }
+
+  .ds-select__text > .ds-select__label {
+    flex: none;
+    padding: 0;
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-select__description {
+    color: var(--ds-text-subtle);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-font-line-height-leading-5);
+  }
+
+  .ds-select__option[aria-disabled='true'] .ds-select__description {
+    color: var(--ds-text-hint);
   }
 }

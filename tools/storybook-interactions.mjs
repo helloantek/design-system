@@ -123,6 +123,21 @@ const tests = {
     assert.equal(await listbox.isVisible(), false);
     assert.equal((await state()).value, 'Simon Alt, Emma Thompson', 'Tab closes without changing the selection');
   },
+  'select menu item types: boxes, flags, large options and a caption that describes the menu': async () => {
+    await open('components-select--menu-item-types');
+    const menus = page.getByRole('listbox');
+    assert.equal(await menus.count(), 4);
+    const [checkbox, radio, country, large] = [0, 1, 2, 3].map((i) => menus.nth(i));
+    assert.equal(await checkbox.locator('.ds-select__box--checkbox').count(), 7, 'every option shows a checkbox');
+    assert.deepEqual(await checkbox.locator('[aria-selected="true"]').allTextContents(), ['Simon Alt', 'Emma Thompson']);
+    assert.equal(await radio.locator('.ds-select__box--radio').count(), 7);
+    assert.equal(await country.locator('.ds-select__media svg').count(), 3);
+    // Large options read as label + description; the caption is the listbox description, not an option.
+    assert.equal(await large.getByRole('option').count(), 3);
+    assert.equal(await large.getByRole('option', { name: 'Team Up to 20 people Popular' }).getAttribute('aria-selected'), 'true');
+    const describedBy = await large.getAttribute('aria-describedby');
+    assert.equal(await page.locator(`[id="${describedBy}"]`).textContent(), 'Billed yearly. You can change the plan at any time.');
+  },
   'playground form: validation, submitted data and reset': async () => {
     await open('playground-form--sign-up');
     const submitted = page.getByTestId('submitted');
