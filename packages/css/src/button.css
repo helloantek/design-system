@@ -222,6 +222,7 @@
   }
 
   .ds-button--icon-only {
+    --btn-gap: 0px;
     --btn-icon-size: var(--btn-icon-only-size);
     --btn-icon: var(--btn-icon-only, var(--btn-icon-default));
     width: var(--btn-box);

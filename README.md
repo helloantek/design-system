@@ -104,7 +104,7 @@ npm run build            # tokens + React package
 npm test                 # token generator tests
 npm run typecheck
 npm run build-storybook && npm run test:storybook   # every story renders; axe report
-npm run test:visual      # every component matches its Figma renders (report: tools/figma-visual/out/report.html)
+npm run test:visual      # every component matches Figma: renders (pixels) and exact layer values (report: tools/figma-visual/out/report.html)
 ```
 
 - New component: [playbook](docs/playbook.md), [Definition of Done](docs/definition-of-done.md), [Figma checklist](docs/figma-checklist.md). With Claude Code, the `figma-to-component` skill runs the whole path.
