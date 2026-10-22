@@ -89,6 +89,7 @@ export const Colors: StoryObj = {
           ['Strong', { variant: 'strong' }],
           ['Soft + Close Icon', { variant: 'soft', onRemove: () => {} }],
           ['Strong + Close Icon', { variant: 'strong', onRemove: () => {} }],
+          ['Pill + Close Icon', { variant: 'soft', shape: 'pill', onRemove: () => {} }],
         ] as const
       ).map(([title, props]) => (
         <div key={title} style={{ display: 'contents' }}>

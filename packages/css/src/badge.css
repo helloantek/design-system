@@ -234,6 +234,11 @@
     cursor: pointer;
   }
 
+  /* Pill: a round button stays clear of the rounded end of the badge. */
+  .ds-badge--pill .ds-badge__remove {
+    border-radius: var(--ds-radius-full);
+  }
+
   .ds-badge__remove:hover {
     background-color: var(--ds-bg-state-ghost-hover);
   }
