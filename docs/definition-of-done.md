@@ -15,6 +15,7 @@ A component is ready for other projects when all of these hold:
 
 **Accessibility**
 - [ ] Keyboard: focusable, operable with Enter/Space (or the element's native keys), visible `:focus-visible`.
+- [ ] Custom widgets (no native element) follow their WAI-ARIA pattern and have keyboard/mouse tests in `tools/storybook-interactions.mjs`.
 - [ ] Accessible name required by the types where there is no visible text.
 - [ ] Disabled and busy states are announced (`disabled`, `aria-busy`, `aria-disabled`).
 - [ ] axe is clean, or each remaining finding is a known design-token issue reported to design.

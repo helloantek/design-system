@@ -1,0 +1,16 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer. Field entries start at the Select Input variant; Active entries start at its trigger box (layer Container/Container), which is their `root`.",
+  "layers": {
+    "root": { "stroke": "inset-shadow" },
+    "Input Label/TEXT": { "selector": ".ds-field__label" },
+    "Container/Container": { "selector": ".ds-select__trigger", "stroke": "inset-shadow" },
+    "container": { "selector": ".ds-select__main", "skip": ["w"] },
+    "label": { "selector": ".ds-select__value", "skip": ["w"] },
+    "label/TEXT": { "selector": ".ds-select__value" },
+    "lead-icon": { "selector": ".ds-select__main > .ds-select__icon" },
+    "lead-icon/VECTOR": { "selector": ".ds-select__main > .ds-select__icon", "fill": "color" },
+    "tail-icon/VECTOR": { "selector": ".ds-select__icon--tail", "fill": "color" },
+    "expand/VECTOR": { "selector": ".ds-select__trigger > .ds-select__icon:last-child", "fill": "color" },
+    "Input Caption Text/TEXT": { "selector": ".ds-field__caption" }
+  }
+}

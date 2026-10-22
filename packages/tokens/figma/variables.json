@@ -281,6 +281,18 @@
     "Theme-1-Dark": "#f4a6a5",
     "Theme-2-Light": "#eb3e5b",
     "Theme-2-Dark": "#f49fa9"
+   },
+   "bg/card": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#222225",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#301108"
+   },
+   "bg/badge/default": {
+    "Theme-1-Light": "#ffffff",
+    "Theme-1-Dark": "#ffffff1a",
+    "Theme-2-Light": "#ffffff",
+    "Theme-2-Dark": "#ffffff1a"
    }
   }
  },

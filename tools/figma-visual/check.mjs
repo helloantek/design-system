@@ -117,7 +117,9 @@ for (const component of components) {
     const params = new URLSearchParams({ component, brand: manifest.brand, scheme: manifest.scheme, props: JSON.stringify(entry.props) });
     await page.goto(`http://localhost:4179/?${params}`);
     await page.waitForSelector('body[data-ready]');
-    const el = page.locator('#target');
+    // An entry may compare a part of the render (e.g. one menu option) instead of the whole #target.
+    const target = entry.target ?? '#target';
+    const el = page.locator(target).first();
     const box = await el.boundingBox();
     const state = entry.props.State;
     if (state === 'Hover') await el.hover();
@@ -138,7 +140,7 @@ for (const component of components) {
     });
     // Exact values (while Hover/Press/Focus is still active).
     const expected = spec && layersFor(spec, entry.nodeId);
-    const specIssues = expected ? await page.evaluate(compareInPage, { map: layerMap, layers: expected }) : spec ? [`no spec for ${entry.nodeId}`] : [];
+    const specIssues = expected ? await page.evaluate(compareInPage, { map: layerMap, layers: expected, target }) : spec ? [`no spec for ${entry.nodeId}`] : [];
     if (state === 'Press') await page.mouse.up();
     await page.mouse.move(0, 0);
 
@@ -147,10 +149,12 @@ for (const component of components) {
     const diffFile = `${component}--${entry.slug}.png`;
     writeFileSync(join(out, 'diff', diffFile), PNG.sync.write(sideBySide(ref, r.cand, r.diff)));
     const sizeDelta = Math.max(Math.abs(box.width - entry.nodeW), Math.abs(box.height - entry.nodeH));
-    const pass = r.mismatch <= maxMismatch && r.tint <= maxTint && sizeDelta <= maxSizeDelta && specIssues.length === 0;
+    // `pixels: false` (with a `$why` in the manifest) leaves a variant to the size and spec checks.
+    const pixelsOk = entry.pixels === false || (r.mismatch <= maxMismatch && r.tint <= maxTint);
+    const pass = pixelsOk && sizeDelta <= maxSizeDelta && specIssues.length === 0;
     results.push({ component, slug: entry.slug, nodeId: entry.nodeId, mismatch: r.mismatch, tint: r.tint, specIssues, size: [box.width, box.height], figmaSize: [entry.nodeW, entry.nodeH], sizeDelta, pass, diffFile });
     const pct = (v) => `${(v * 100).toFixed(1).padStart(5)}%`;
-    console.log(`${pass ? 'ok  ' : 'FAIL'} ${component}/${entry.slug.padEnd(42)} mismatch ${pct(r.mismatch)}  tint ${pct(r.tint)}  Δsize ${sizeDelta.toFixed(1)}px  spec ${specIssues.length ? `${specIssues.length} off` : 'exact'}`);
+    console.log(`${pass ? 'ok  ' : 'FAIL'} ${component}/${entry.slug.padEnd(42)} mismatch ${pct(r.mismatch)}  tint ${pct(r.tint)}${entry.pixels === false ? ' (not gated)' : ''}  Δsize ${sizeDelta.toFixed(1)}px  spec ${specIssues.length ? `${specIssues.length} off` : 'exact'}`);
     for (const issue of specIssues.slice(0, 4)) console.log(`       ${issue}`);
   }
 }

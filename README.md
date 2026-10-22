@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Button, Input. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
+**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
 
 ## Using it in a project
 
@@ -95,6 +95,41 @@ Label, input and caption in one field. Covers Figma Variant = Default, Shortcut,
 | Variant = Add-on | `addonBefore` · `addonAfter` | `ds-input__addon` |
 | Variant = Tail button | `action={<InputAction>…</InputAction>}` | `ds-input__action` |
 
+## Select
+
+A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Covers Figma Select Input Variant = Default and Select Menu Items Type = Default, Label and Divider; the other variants, the menu search and the menu button are in the [backlog](docs/backlog.md).
+
+```tsx
+<Select label="Owner" placeholder="Select a user" options={users} value={owner} onValueChange={setOwner} leadIcon={<RiUser3Line />} />
+<Select
+  label="Region"
+  name="region"
+  options={[
+    { label: 'Regions', caption: '3', options: [{ value: 'eu', label: 'Europe', caption: 'EU', badge: 'Default' }, { value: 'us', label: 'North America' }] },
+    { type: 'separator' },
+    { value: 'global', label: 'Global', icon: <RiGlobalLine /> },
+  ]}
+/>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Style | `variant`: `default` · `shadow` · `soft` | `ds-select__trigger--<variant>` |
+| Size | `size`: `lg` · `sm` | `ds-field--<size>` |
+| State = Placeholder / Filled | `placeholder` / `value` · `defaultValue` | `ds-select__value--placeholder` |
+| State = Active | focus (the menu opens on click or keys) | `:focus` |
+| State = Failed | `error` (replaces the caption, sets `aria-invalid`) | `ds-select__trigger--invalid` |
+| State = Destructive (drawn as disabled) | `disabled` | `ds-select__trigger--disabled` |
+| Label · Caption | `label` · `caption` (wired with `aria-labelledby` / `aria-describedby`) | `ds-field__label` · `ds-field__caption` |
+| ❖ Lead Icon · ❖ Tail Icon | `leadIcon` · `tailIcon` | `ds-select__icon` |
+| ↩ Placeholder | `placeholder` | |
+| Menu Items Type = Default | `options: [{ value, label, caption?, icon?, badge?, disabled? }]` | `ds-select__option` |
+| Menu Items State = Hover · Active · Disabled | highlight (mouse or keys) · selected · `disabled` | `[data-highlighted]` · `[aria-selected]` · `[aria-disabled]` |
+| Menu Items Type = Label | `{ label, caption?, options }` (a group) | `ds-select__group-label` |
+| Menu Items Type = Divider | `{ type: 'separator' }` | `ds-select__separator` |
+
+Forms: `name` submits the value through a hidden input. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
+
 ## Working on the design system
 
 ```sh
@@ -103,7 +138,7 @@ npm run storybook        # http://localhost:6006
 npm run build            # tokens + React package
 npm test                 # token generator tests
 npm run typecheck
-npm run build-storybook && npm run test:storybook   # every story renders; axe report
+npm run build-storybook && npm run test:storybook   # every story renders, axe report, keyboard/mouse behaviour
 npm run test:visual      # every component matches Figma: renders (pixels) and exact layer values (report: tools/figma-visual/out/report.html)
 ```
 
@@ -120,3 +155,7 @@ These come from the Figma palette, not the code (details in the pilot report):
 - The `Tooltip` property has no layer.
 - Input: State=Failed adds a local shadow in Style=Default and Soft that those styles have nowhere else; the label row has an empty 78 px "Tail" frame with no property.
 - Input: disabled prefix/suffix text is 1.83:1 (WCAG exempts disabled controls, but axe reports it).
+- Select: State=Destructive is drawn as a disabled field (grey background, hint text), not as an error; Failed is the error state. The name invites misuse.
+- Select: State=Failed has no extra shadow in Style=Default and Soft, while Input does; one of the two is likely unintended.
+- Select: the Active variant shows the placeholder while its menu has "Simon Alt" checked.
+- Select Menu Items Type=Divider: the line is centred on a half pixel, so Figma renders it as two faint rows; the code draws one crisp row.
