@@ -128,7 +128,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | Menu Items Type = Label | `{ label, caption?, options }` (a group) | `ds-select__group-label` |
 | Menu Items Type = Divider | `{ type: 'separator' }` | `ds-select__separator` |
 
-Forms: `name` submits the value through a hidden input. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
+Forms: `name` submits the value through a hidden input, and resetting the form restores `defaultValue`. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
 
 ## Working on the design system
 
@@ -142,6 +142,7 @@ npm run build-storybook && npm run test:storybook   # every story renders, axe r
 npm run test:visual      # every component matches Figma: renders (pixels) and exact layer values (report: tools/figma-visual/out/report.html)
 ```
 
+- Try components before they are merged: every branch has a Storybook preview, plus a Playground form; see [previews](docs/previews.md).
 - New component: [playbook](docs/playbook.md), [Definition of Done](docs/definition-of-done.md), [Figma checklist](docs/figma-checklist.md). With Claude Code, the `figma-to-component` skill runs the whole path.
 - New brand: [adding a brand](docs/adding-a-brand.md).
 - Releases: add a changeset (`npm run changeset`); merging the "Version packages" PR publishes. Publishing is off until the repository variable `RELEASE_ENABLED` is set to `true` (Settings → Secrets and variables → Actions → Variables).
