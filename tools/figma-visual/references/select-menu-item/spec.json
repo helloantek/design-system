@@ -1,0 +1,10 @@
+{"$comment":"Exact Figma layer values per variant (Theme-1-Light), exported with .claude/skills/figma-to-component/scripts/export-spec.js. layers is a pool of unique specs; variants maps nodeId -> layer path -> pool index.",
+"layers":[{"fs":14,"fw":500,"color":"#111115","lh":20},{"w":20,"h":20,"p":[0,0,0,0],"g":0},{"fs":12,"fw":400,"color":"#6f6f77","lh":16},{"fs":14,"fw":400,"color":"#27272a4d","lh":20},{"fill":"#27272a40"},{"fs":14,"fw":400,"color":"#111115","lh":20},{"w":312,"h":32,"r":4,"p":[6,6,6,6],"g":6,"fill":"#27272a00"},{"w":274,"h":20,"p":[0,0,0,0],"g":2},{"fill":"#4e4e55"},{"w":144,"h":20,"p":[0,4,0,4],"g":0},{"fs":14,"fw":400,"color":"#6f6f77","lh":20},{"w":44,"h":20,"r":4,"p":[2,2,2,2],"g":0,"fill":"#ffffff","stroke":"#27272a1a"},{"fs":12,"fw":500,"color":"#4e4e55","lh":16},{"w":312,"h":32,"r":4,"p":[6,6,6,6],"g":6,"fill":"#27272a0f"},{"fs":14,"fw":500,"color":"#27272a4d","lh":20},{"w":320,"h":24,"p":[4,12,4,12],"g":8},{"w":320,"h":8,"p":[4,0,4,0],"g":8}],
+"variants":{"3800:6807":{"root":6,"Container":1,"Container#1":7,"lead-icon":1,"lead-icon/VECTOR":8,"label":9,"label/TEXT":5,"label#1/TEXT":10,"Badge":11,"Badge/TEXT":12},
+"3800:6831":{"root":6,"Container":1,"Container#1":7,"lead-icon":1,"lead-icon/VECTOR":8,"label":9,"label/TEXT":0,"label#1/TEXT":10,"Badge":11,"Badge/TEXT":12,"Container/VECTOR":8},
+"3800:6867":{"root":13,"Container":1,"Container#1":7,"lead-icon":1,"lead-icon/VECTOR":8,"label":9,"label/TEXT":5,"label#1/TEXT":10,"Badge":11,"Badge/TEXT":12},
+"3800:6855":{"root":13,"Container":1,"Container#1":7,"lead-icon":1,"lead-icon/VECTOR":8,"label":9,"label/TEXT":0,"label#1/TEXT":10,"Badge":11,"Badge/TEXT":12,"Container/VECTOR":8},
+"3800:6819":{"root":6,"Container":1,"Container#1":7,"lead-icon":1,"lead-icon/VECTOR":4,"label":9,"label/TEXT":3,"label#1/TEXT":3,"Badge":11,"Badge/TEXT":12},
+"3800:6843":{"root":6,"Container":1,"Container#1":7,"lead-icon":1,"lead-icon/VECTOR":4,"label":9,"label/TEXT":14,"label#1/TEXT":3,"Badge":11,"Badge/TEXT":12,"Container/VECTOR":4},
+"3877:24178":{"root":15,"TEXT":12,"TEXT#1":2},
+"3877:26719":{"root":16}}}

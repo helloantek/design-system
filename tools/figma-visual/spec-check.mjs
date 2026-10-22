@@ -2,8 +2,8 @@
 // through references/<name>/layer-map.json. Deterministic, unlike pixels: catches 1 px and colour changes on any machine.
 
 /** Runs in the page. Returns a list of human-readable mismatches. */
-export function compareInPage({ map, layers }) {
-  const target = document.getElementById('target');
+export function compareInPage({ map, layers, target: targetSelector = '#target' }) {
+  const target = document.querySelector(targetSelector);
   const px = (v) => parseFloat(v) || 0;
   const parseColor = (s) => {
     const m = s.match(/rgba?\(([^)]+)\)/);
@@ -56,7 +56,8 @@ export function compareInPage({ map, layers }) {
       const got = [cs.paddingTop, cs.paddingRight, cs.paddingBottom, cs.paddingLeft].map(px);
       if (got.some((v, i) => Math.abs(v - expected.p[i]) > 0.01)) fail('padding', got.join(' '), expected.p.join(' '));
     }
-    if (!skip.has('g') && expected.g !== undefined && expected.p) {
+    // A gap only matters between two children; Figma keeps one on single-child frames (e.g. a divider line).
+    if (!skip.has('g') && expected.g !== undefined && expected.p && el.children.length > 1) {
       const gap = px(cs.flexDirection.startsWith('column') ? cs.rowGap : cs.columnGap);
       if (Math.abs(gap - expected.g) > 0.01) fail('gap', gap, expected.g);
     }

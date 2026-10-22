@@ -1,0 +1,320 @@
+/*
+ * Select — Figma component sets "Select Input" (3817:45118), "Select Menu" (3811:40144) and
+ * "Select Menu Items" (3803:8920) in file 4tiBR2hKd4yvQehtKhM9OY.
+ * Covers Select Input Variant=Default in every Style, Size and State, and menu items of Type=Default, Label and Divider
+ * with Select type=Default. Every value comes from @helloantek/ds-tokens; load one brand's token CSS before this file.
+ * The label and caption reuse .ds-field from input.css.
+ *
+ * Markup (classes in [] are optional; ARIA follows the WAI-ARIA select-only combobox pattern):
+ *   <div class="ds-field ds-field--lg ds-select">
+ *     <label class="ds-field__label" id="l">Label</label>
+ *     <div class="ds-select__anchor">
+ *       <div class="ds-select__trigger ds-select__trigger--default [ds-select__trigger--invalid] [ds-select__trigger--disabled]"
+ *            role="combobox" tabindex="0" aria-labelledby="l" aria-haspopup="listbox" aria-expanded="true" aria-controls="m">
+ *         <span class="ds-select__main">
+ *           [<span class="ds-select__icon" aria-hidden="true"><svg…/></span>]
+ *           <span class="ds-select__value [ds-select__value--placeholder]">Select a user</span>
+ *         </span>
+ *         [<span class="ds-select__icon ds-select__icon--tail" aria-hidden="true"><svg…/></span>]
+ *         <span class="ds-select__icon" aria-hidden="true"><svg…expand…/></span>
+ *       </div>
+ *       <div class="ds-select__menu" id="m" role="listbox" aria-labelledby="l">
+ *         <div class="ds-select__option" role="option" aria-selected="true" [aria-disabled="true"] [data-highlighted]>
+ *           <span class="ds-select__check" aria-hidden="true"><svg…check…/></span>
+ *           <span class="ds-select__content">
+ *             [<span class="ds-select__icon" aria-hidden="true"><svg…/></span>]
+ *             <span class="ds-select__label">Simon Alt</span>
+ *             [<span class="ds-select__caption">Caption</span>]
+ *             [<span class="ds-select__badge"><span>Label</span></span>]
+ *           </span>
+ *         </div>
+ *         <div role="group" aria-labelledby="g">
+ *           <div class="ds-select__group-label" id="g" role="presentation"><span>Label</span>[<span class="ds-select__group-caption">Caption</span>]</div>
+ *           …options…
+ *         </div>
+ *         <div class="ds-select__separator" aria-hidden="true"></div>
+ *       </div>
+ *     </div>
+ *     <p class="ds-field__caption">Caption text</p>
+ *   </div>
+ * Figma states: Placeholder / Filled = no value / a value, Active = focused trigger, Failed = --invalid,
+ * Destructive = --disabled (Figma draws it as a disabled field). Menu item Hover = [data-highlighted] or :hover.
+ */
+
+@layer ds.components {
+  .ds-select__anchor {
+    position: relative;
+  }
+
+  /* ── Trigger (Figma "Container") ────────────────────────────────────── */
+
+  .ds-select__trigger {
+    --select-stroke: var(--ds-border-darker);
+    --select-shadow: 0 0 #0000;
+    --select-pad-y: var(--ds-space-8);
+    --select-icon: var(--ds-icon-default-muted);
+    --select-tail-icon: var(--select-icon);
+
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-6);
+    width: 100%;
+    padding: var(--select-pad-y) var(--ds-space-8);
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    background-color: var(--select-bg);
+    /* Figma strokes are inside and do not change the size, so the stroke is an inset shadow. */
+    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--select-stroke), var(--select-shadow);
+    font-family: var(--ds-font-family-body);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ds-field--sm .ds-select__trigger {
+    --select-pad-y: var(--ds-space-6);
+  }
+
+  /* Figma Style */
+  .ds-select__trigger--default {
+    --select-bg: var(--ds-bg-input);
+  }
+
+  .ds-select__trigger--shadow {
+    --select-bg: var(--ds-bg-input);
+    --select-shadow: var(--ds-shadow-components-default);
+  }
+
+  .ds-select__trigger--soft {
+    --select-bg: var(--ds-bg-input-soft);
+    --select-stroke: transparent;
+  }
+
+  /* Figma State=Failed: red stroke in every Style (Soft included), red tail icon. */
+  .ds-select__trigger--invalid {
+    --select-stroke: var(--ds-border-destructive);
+    --select-tail-icon: var(--ds-icon-destructive);
+  }
+
+  /* Figma State=Active (effect style components/input-focus). An invalid select keeps its red stroke. */
+  .ds-select__trigger:focus {
+    --select-bg: var(--ds-bg-input);
+    box-shadow: 0 0 0 3px var(--ds-border-default), inset 0 0 0 var(--ds-stroke-default) var(--ds-border-input-highlight);
+  }
+
+  .ds-select__trigger--invalid:focus {
+    box-shadow: 0 0 0 3px var(--ds-border-default), inset 0 0 0 var(--ds-stroke-default) var(--ds-border-destructive);
+  }
+
+  /* Figma State=Destructive, which Figma draws as a disabled field. */
+  .ds-select__trigger--disabled {
+    --select-bg: var(--ds-bg-input-disabled);
+    --select-stroke: var(--ds-border-default);
+    --select-shadow: 0 0 #0000;
+    --select-icon: var(--ds-icon-default-disabled);
+    --select-tail-icon: var(--ds-icon-default-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-select__trigger--disabled.ds-select__trigger--soft {
+    --select-stroke: transparent;
+  }
+
+  .ds-select__main {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: var(--ds-space-2);
+    min-width: 0;
+  }
+
+  .ds-select__value {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0 var(--ds-space-4);
+    color: var(--ds-text-default);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-font-line-height-leading-5);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-select__value--placeholder {
+    color: var(--ds-text-subtle);
+  }
+
+  .ds-select__trigger--disabled .ds-select__value {
+    color: var(--ds-text-hint);
+  }
+
+  .ds-select__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: var(--select-icon);
+  }
+
+  .ds-select__icon > svg,
+  .ds-select__icon > img,
+  .ds-select__check > svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+
+  .ds-select__icon--tail {
+    color: var(--select-tail-icon);
+  }
+
+  /* ── Menu (Figma "Select Menu") ─────────────────────────────────────── */
+
+  .ds-select__menu {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + var(--ds-space-6));
+    right: 0;
+    left: 0;
+    box-sizing: border-box;
+    /* Nine 32 px options plus the menu padding, as in the Figma menu; override --select-menu-max-height per use. */
+    max-height: var(--select-menu-max-height, 296px);
+    padding: var(--ds-space-4) 0;
+    overflow-y: auto;
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--ds-bg-card);
+    /* Figma effect style shadows/modal-sm: a 1 px ring bound to border/default plus a soft shadow. */
+    box-shadow: 0 0 0 var(--ds-stroke-default) var(--ds-border-default), var(--ds-shadow-modal-sm);
+    font-family: var(--ds-font-family-body);
+    outline: none;
+  }
+
+  .ds-select__menu[hidden] {
+    display: none;
+  }
+
+  /* ── Menu items (Figma "Select Menu Items") ─────────────────────────── */
+
+  /* Type=Default. Figma pads the item row 4 px on each side; the margin does the same. */
+  .ds-select__option {
+    --select-icon: var(--ds-icon-default-subtle);
+
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-6);
+    margin: 0 var(--ds-space-4);
+    padding: var(--ds-space-6);
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--ds-bg-state-ghost);
+    cursor: pointer;
+  }
+
+  .ds-select__option[data-highlighted],
+  .ds-select__option:hover:not([aria-disabled='true']) {
+    background-color: var(--ds-bg-state-ghost-hover);
+  }
+
+  .ds-select__option[aria-disabled='true'] {
+    --select-icon: var(--ds-icon-default-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-select__check {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: var(--select-icon);
+  }
+
+  .ds-select__content {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: var(--ds-space-2);
+    min-width: 0;
+  }
+
+  .ds-select__label,
+  .ds-select__caption {
+    padding: 0 var(--ds-space-4);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-font-line-height-leading-5);
+    white-space: nowrap;
+  }
+
+  .ds-select__label {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-text-default);
+    text-overflow: ellipsis;
+  }
+
+  .ds-select__option[aria-selected='true'] .ds-select__label {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-select__caption {
+    flex-shrink: 0;
+    color: var(--ds-text-muted);
+  }
+
+  .ds-select__option[aria-disabled='true'] .ds-select__label,
+  .ds-select__option[aria-disabled='true'] .ds-select__caption {
+    color: var(--ds-text-hint);
+  }
+
+  /* Figma "Badge" (Size=sm, Color=Neutral, Style=Soft, Border=True). */
+  .ds-select__badge {
+    display: inline-flex;
+    flex-shrink: 0;
+    padding: var(--ds-space-2);
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--ds-bg-badge-default);
+    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--ds-border-default);
+  }
+
+  .ds-select__badge > span {
+    padding: 0 var(--ds-space-4);
+    color: var(--ds-text-subtle);
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-4);
+  }
+
+  /* Type=Label: a group heading with an optional caption on the right. */
+  .ds-select__group-label {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-8);
+    padding: var(--ds-space-4) var(--ds-space-12);
+    color: var(--ds-text-subtle);
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-4);
+  }
+
+  .ds-select__group-label > :first-child {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .ds-select__group-caption {
+    color: var(--ds-text-muted);
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  /* Type=Divider: a 1 px line centred in an 8 px row. */
+  .ds-select__separator {
+    height: 0;
+    padding: var(--ds-space-4) 0;
+    background: linear-gradient(var(--ds-border-default), var(--ds-border-default)) center / 100% var(--ds-stroke-default) no-repeat;
+  }
+}

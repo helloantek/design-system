@@ -1,0 +1,387 @@
+{
+ "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/select.tsx turns these properties into props. Only Variant=Default is implemented. `target` (optional) is the element compared instead of #target.",
+ "component": "select",
+ "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
+ "componentSet": "3817:45118",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-lg-placeholder",
+   "nodeId": "3817:45117",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-lg-active",
+   "nodeId": "3817:43173",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "target": ".ds-select__trigger",
+   "nodeW": 320,
+   "nodeH": 36,
+   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+  },
+  {
+   "slug": "default-lg-filled",
+   "nodeId": "3817:45116",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-lg-failed",
+   "nodeId": "3817:45110",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-lg-destructive",
+   "nodeId": "3817:45112",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Destructive"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shadow-lg-placeholder",
+   "nodeId": "3817:59529",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shadow-lg-active",
+   "nodeId": "3817:59786",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "target": ".ds-select__trigger",
+   "nodeW": 320,
+   "nodeH": 36,
+   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+  },
+  {
+   "slug": "shadow-lg-filled",
+   "nodeId": "3817:59585",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shadow-lg-failed",
+   "nodeId": "3817:59813",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "shadow-lg-destructive",
+   "nodeId": "3817:59557",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Destructive"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "soft-lg-placeholder",
+   "nodeId": "3817:66221",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "soft-lg-active",
+   "nodeId": "3817:66478",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Active"
+   },
+   "target": ".ds-select__trigger",
+   "nodeW": 320,
+   "nodeH": 36,
+   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+  },
+  {
+   "slug": "soft-lg-filled",
+   "nodeId": "3817:66277",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "soft-lg-failed",
+   "nodeId": "3817:66505",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "soft-lg-destructive",
+   "nodeId": "3817:66249",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Destructive"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "default-sm-placeholder",
+   "nodeId": "3817:51362",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "default-sm-active",
+   "nodeId": "3817:51492",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Active"
+   },
+   "target": ".ds-select__trigger",
+   "nodeW": 320,
+   "nodeH": 32,
+   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+  },
+  {
+   "slug": "default-sm-filled",
+   "nodeId": "3817:51390",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "default-sm-failed",
+   "nodeId": "3817:51505",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "default-sm-destructive",
+   "nodeId": "3817:51376",
+   "props": {
+    "Variant": "Default",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Destructive"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "shadow-sm-placeholder",
+   "nodeId": "3817:59543",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "sm",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "shadow-sm-active",
+   "nodeId": "3817:59801",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "sm",
+    "State": "Active"
+   },
+   "target": ".ds-select__trigger",
+   "nodeW": 320,
+   "nodeH": 32,
+   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+  },
+  {
+   "slug": "shadow-sm-filled",
+   "nodeId": "3817:59599",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "shadow-sm-failed",
+   "nodeId": "3817:59827",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "sm",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "shadow-sm-destructive",
+   "nodeId": "3817:59571",
+   "props": {
+    "Variant": "Default",
+    "Style": "Shadow",
+    "Size": "sm",
+    "State": "Destructive"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "soft-sm-placeholder",
+   "nodeId": "3817:66235",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "sm",
+    "State": "Placeholder"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "soft-sm-active",
+   "nodeId": "3817:66493",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "sm",
+    "State": "Active"
+   },
+   "target": ".ds-select__trigger",
+   "nodeW": 320,
+   "nodeH": 32,
+   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+  },
+  {
+   "slug": "soft-sm-filled",
+   "nodeId": "3817:66291",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "soft-sm-failed",
+   "nodeId": "3817:66519",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "sm",
+    "State": "Failed"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "soft-sm-destructive",
+   "nodeId": "3817:66263",
+   "props": {
+    "Variant": "Default",
+    "Style": "Soft",
+    "Size": "sm",
+    "State": "Destructive"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  }
+ ]
+}

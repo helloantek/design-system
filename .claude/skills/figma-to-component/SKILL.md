@@ -51,4 +51,8 @@ Parse the URL: `figma.com/design/<fileKey>/…?node-id=<a>-<b>` → nodeId `<a>:
 - **Pixels miss 1 px spacing, radius and weight changes**; the spec check catches them. A spec mismatch is a real difference from Figma even when the render looks identical (e.g. icon-only buttons had a 6 px `gap` that Figma doesn't).
 - **Subtle fills (≤ 10% alpha) pass the 0.1 pixelmatch threshold** — the `tint` metric exists for them; never raise `maxTint` to make a variant pass.
 - **Don't build one component for a whole Figma set** when variants need their own behaviour; see "Decide the scope" in the playbook.
+- **Figma draws open menus over the field.** A variant like Select State=Active includes the open menu, which covers the caption. Take the reference of the trigger box (its node id via `use_figma`) and give the manifest entry `"target"`; the same for menu items (reference the inner row, render the item inside an open menu).
+- **State names can lie.** Select State=Destructive is drawn as a disabled field; read the styles per variant, not the names, and report the name.
+- **Reading layers by name is case-sensitive and depth-first**: `container` ≠ `Container`, and a layer map key means the same element in every entry of the component, so use different paths (e.g. `root` vs `Container/Container`) when entries start at different layers.
+- **A listbox may only own options and groups** (axe `aria-required-children`): dividers are decoration (`aria-hidden`), group labels go inside the group as `role="presentation"`.
 - Contrast failures that come from the Figma palette are design findings: report them, do not change colours in code.

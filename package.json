@@ -10,7 +10,7 @@
     "typecheck": "tsc -p packages/react --noEmit && tsc -p apps/storybook --noEmit",
     "storybook": "npm run build -w @helloantek/ds-tokens && npm run dev -w @helloantek/ds-storybook",
     "build-storybook": "npm run build -w @helloantek/ds-tokens && npm run build -w @helloantek/ds-storybook",
-    "test:storybook": "node tools/storybook-smoke.mjs",
+    "test:storybook": "node tools/storybook-smoke.mjs && node tools/storybook-interactions.mjs",
     "test:visual": "vite build --config tools/figma-visual/vite.config.ts && node tools/figma-visual/check.mjs",
     "changeset": "changeset"
   },
