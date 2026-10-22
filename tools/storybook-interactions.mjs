@@ -82,18 +82,30 @@ const tests = {
     await page.locator('.ds-field__label').click();
     assert.equal((await state()).focused, true);
   },
-  'select: disabled options are skipped and cannot be picked': async () => {
-    await open('components-select--playground', 'groups:!true');
+  'select: disabled options are skipped and cannot be picked; groups and caption from Playground controls': async () => {
+    await open('components-select--playground', 'disabledItem:!true;groups:!true;menuCaption:Pick+the+owner');
     await page.keyboard.press('Tab');
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('ArrowDown');
-    assert.equal((await state()).active, 'North America');
     await page.keyboard.press('ArrowDown');
-    assert.equal((await state()).active, 'Global', 'skips the disabled Asia Pacific');
-    await page.locator('[role="option"]', { hasText: 'Asia Pacific' }).click({ force: true });
+    assert.equal((await state()).active, 'Emma Thompson');
+    await page.keyboard.press('ArrowDown');
+    assert.equal((await state()).active, 'Kate Roberts', 'skips the disabled Michael Davis');
+    await page.locator('[role="option"]', { hasText: 'Michael Davis' }).click({ force: true });
     assert.equal((await state()).expanded, 'true');
     assert.equal((await state()).value, 'Select a user');
-    assert.equal(await page.locator('[role="group"]').getAttribute('aria-labelledby').then((id) => page.locator(`[id="${id}"]`).textContent()), 'Regions3');
+    const groups = page.locator('[role="group"]');
+    assert.equal(await groups.count(), 2);
+    assert.equal(await page.locator(`[id="${await groups.first().getAttribute('aria-labelledby')}"]`).textContent(), 'Design3');
+    assert.equal(await page.locator(`[id="${await listbox.getAttribute('aria-describedby')}"]`).textContent(), 'Pick the owner');
+  },
+  'select: MenuItem story follows the Figma item properties': async () => {
+    await open('components-select--menu-item', 'type:Default+Large;selectType:Checkbox;active:!true;state:Disabled');
+    const item = page.locator('[role="option"]').nth(1);
+    assert.equal(await item.getAttribute('aria-selected'), 'true');
+    assert.equal(await item.getAttribute('aria-disabled'), 'true');
+    assert.equal(await item.locator('.ds-select__description').textContent(), 'The quick brown fox jumps over a lazy dog.');
+    assert.equal(await item.locator('.ds-select__box--checkbox').count(), 1);
   },
   'select: disabled select is not focusable and does not open': async () => {
     await open('components-select--playground', 'disabled:!true');
