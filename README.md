@@ -140,7 +140,7 @@ Label, input and caption in one field. Covers Figma Variant = Default, Shortcut,
 
 ## Select
 
-A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Covers Figma Select Input Variant = Default, Multi-select and Tags, and Select Menu Items Type = Default, Default Large, Country Flag, Label, Caption and Divider with every Select type (check, Checkbox, Radio Button); the other variants, the menu search and the menu button are in the [backlog](docs/backlog.md).
+A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Covers Figma Select Input Variant = Default, Multi-select, Tags and Avatar, and Select Menu Items Type = Default, Default Large, Country Flag, Label, Caption and Divider with every Select type (check, Checkbox, Radio Button); the other variants, the menu search and the menu button are in the [backlog](docs/backlog.md).
 
 ```tsx
 <Select label="Owner" placeholder="Select a user" options={users} value={owner} onValueChange={setOwner} leadIcon={<RiUser3Line />} />
@@ -163,6 +163,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | Size | `size`: `lg` · `sm` | `ds-field--<size>` |
 | State = Placeholder / Filled | `placeholder` / `value` · `defaultValue` | `ds-select__value--placeholder` |
 | Variant = Multi-select | `multiple` (`value`/`defaultValue` are arrays; options toggle and the menu stays open; the trigger lists the labels) | `[aria-multiselectable]` on the menu |
+| Variant = Avatar; Menu Items Type = Avatar | option `media: <Avatar size="xs" shape="rounded" …/>`; a single select shows the selected option's `media` in place of the lead icon (also for flags) | `ds-select__media` in the option and the trigger |
 | Variant = Tags | `multiple tags`: each value is a `Badge` (sm, Neutral, Soft, Border, Close Icon). × removes it with the mouse, Backspace/Delete removes the last one, the menu toggles any; removals are announced. Tags that do not fit wrap onto more rows (default), or with `tagsOverflow="count"` stay on one row with a "+N" badge (its tooltip and screen-reader text name the hidden values); Figma clips one row. No buttons inside the combobox: the × is a pointer target only. | `ds-select__tags` · `--count` · `ds-select__more` · `ds-select__status` |
 | State = Active | focus (the menu opens on click or keys) | `:focus` |
 | State = Failed | `error` (replaces the caption, sets `aria-invalid`) | `ds-select__trigger--invalid` |
@@ -221,4 +222,5 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Avatar: in Theme-1 Dark, Initials put text/white-default (#18181b there) on bg/basic/gray-accent (#6f6f77): 3.6:1, below AA.
 - Avatar: the Empty picture is a raster image (#f4f4f5 / #d4d4d8) with no variables; the code draws it with bg/basic/gray-subtle and border/darker (#d5d5d8 on that background), so it follows the colour scheme.
 - Select Tags: the Active variant's menu shows Avatar items (Figma reuses the Avatar menu), and the tags sit on one clipped row, so values past the field width disappear; the code wraps them.
+- Select Menu Items Type=Avatar: the item overrides its Avatar's fill to bg/basic/gray-contrast (#18181b), which the Avatar component has no property for; the code uses the Avatar's own bg/basic/gray-accent.
 - Status Badge: Offline uses icon/black-disabled, which is the same dark grey in Dark mode, so the dot disappears on dark backgrounds.

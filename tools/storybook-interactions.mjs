@@ -198,6 +198,28 @@ const tests = {
     assert.equal(await disabled.locator('.ds-badge').count(), 2);
     assert.equal(await disabled.locator('.ds-badge__remove').count(), 0, 'a disabled select has no ×');
   },
+  'select avatar: the field shows the selected option\'s avatar instead of the lead icon': async () => {
+    await open('components-select--with-avatars');
+    const owner = page.locator('.ds-select').first();
+    const lead = () => owner.locator('.ds-select__main > :first-child').getAttribute('class');
+    assert.equal(await lead(), 'ds-select__media');
+    assert.equal(await owner.locator('.ds-select__main .ds-avatar img').count(), 1, 'Simon Alt has a picture');
+    await owner.getByRole('combobox').click();
+    await owner.getByRole('option', { name: 'Kate Roberts' }).click();
+    assert.equal(await owner.locator('.ds-select__main .ds-avatar__initials').textContent(), 'K');
+    assert.equal(await owner.locator('.ds-select__value').textContent(), 'Kate Roberts');
+    // Empty field: the lead icon; the menu still shows avatars.
+    const empty = page.locator('.ds-select').nth(1);
+    assert.equal(await empty.locator('.ds-select__main > :first-child').getAttribute('class'), 'ds-select__icon');
+    await empty.getByRole('combobox').click();
+    assert.equal(await empty.locator('[role="option"] .ds-avatar').count(), 7);
+    // A multiple select keeps its lead icon.
+    await open('components-select--playground', 'multiple:!true;itemType:Avatar');
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('.ds-select__main > :first-child').first().getAttribute('class'), 'ds-select__icon');
+  },
   'badge: the close icon is a named button that removes the badge': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-badge--playground&viewMode=story&args=closeIcon:!true;label:Design');
     const remove = page.getByRole('button', { name: 'Remove Design' });

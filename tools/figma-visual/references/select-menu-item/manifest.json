@@ -365,6 +365,90 @@
    "nodeH": 28,
    "pixels": false,
    "$why": "The reference is one 296 px line of text and nothing else, so pixels only compare glyph rasterisation, which differs between machines on the same Chromium build (tint 6.9% in the dev container, 11.0% on the CI runner). Size, padding, font and colour are checked exactly by the spec."
+  },
+  {
+   "slug": "avatar-default",
+   "nodeId": "3800:6927",
+   "props": {
+    "Type": "Avatar",
+    "Select type": "Default",
+    "State": "Default",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32,
+   "$why": "Figma overrides this item's Avatar fill to bg/basic/gray-contrast (#18181b); the Avatar component (and the code) uses bg/basic/gray-accent. The 20 px square is ~4% of the pixels; reported to design."
+  },
+  {
+   "slug": "avatar-default-selected",
+   "nodeId": "3800:6973",
+   "props": {
+    "Type": "Avatar",
+    "Select type": "Default",
+    "State": "Default",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32,
+   "$why": "Figma overrides this item's Avatar fill to bg/basic/gray-contrast (#18181b); the Avatar component (and the code) uses bg/basic/gray-accent. The 20 px square is ~4% of the pixels; reported to design."
+  },
+  {
+   "slug": "avatar-hover",
+   "nodeId": "3800:7045",
+   "props": {
+    "Type": "Avatar",
+    "Select type": "Default",
+    "State": "Hover",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32,
+   "$why": "Figma overrides this item's Avatar fill to bg/basic/gray-contrast (#18181b); the Avatar component (and the code) uses bg/basic/gray-accent. The 20 px square is ~4% of the pixels; reported to design."
+  },
+  {
+   "slug": "avatar-hover-selected",
+   "nodeId": "3800:7021",
+   "props": {
+    "Type": "Avatar",
+    "Select type": "Default",
+    "State": "Hover",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32,
+   "$why": "Figma overrides this item's Avatar fill to bg/basic/gray-contrast (#18181b); the Avatar component (and the code) uses bg/basic/gray-accent. The 20 px square is ~4% of the pixels; reported to design."
+  },
+  {
+   "slug": "avatar-disabled",
+   "nodeId": "3800:6950",
+   "props": {
+    "Type": "Avatar",
+    "Select type": "Default",
+    "State": "Disabled",
+    "Active": "False"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32,
+   "$why": "Figma overrides this item's Avatar fill to bg/basic/gray-contrast (#18181b); the Avatar component (and the code) uses bg/basic/gray-accent. The 20 px square is ~4% of the pixels; reported to design."
+  },
+  {
+   "slug": "avatar-disabled-selected",
+   "nodeId": "3800:6997",
+   "props": {
+    "Type": "Avatar",
+    "Select type": "Default",
+    "State": "Disabled",
+    "Active": "True"
+   },
+   "target": ".ds-select__option",
+   "nodeW": 312,
+   "nodeH": 32,
+   "$why": "Figma overrides this item's Avatar fill to bg/basic/gray-contrast (#18181b); the Avatar component (and the code) uses bg/basic/gray-accent. The 20 px square is ~4% of the pixels; reported to design."
   }
  ]
 }
