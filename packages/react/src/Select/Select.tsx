@@ -21,7 +21,11 @@ export interface SelectOption {
   icon?: ReactNode;
   /** Figma "Badge": rendered as `<Badge border>` (Size=sm, Color=Neutral, Style=Soft, Border=True). */
   badge?: ReactNode;
-  /** Figma Type=Country Flag (or Avatar): a 20 px picture before the label, e.g. a flag `<svg>` or an `<img>`. */
+  /**
+   * Figma Type=Country Flag or Avatar: a 20 px picture before the label, e.g. a flag `<svg>` or
+   * `<Avatar size="xs" shape="rounded" …/>`. A single select also shows it in the trigger for the selected option
+   * (Figma Select Input Variant=Avatar).
+   */
   media?: ReactNode;
   /** Figma Type=Default Large: a second line under the label; the icon sits in a 36 px circle. */
   description?: ReactNode;
@@ -224,6 +228,8 @@ export function Select(props: SelectProps) {
     observer.observe(measure);
     return () => observer.disconnect();
   }, [counting, selectedKey]);
+  // Figma Variant=Avatar: a single select shows the selected option's picture (e.g. an Avatar) instead of the lead icon.
+  const leadMedia = !multiple ? selected[0]?.media : undefined;
   const shown = counting ? selected.slice(0, fit) : selected;
   const hidden = counting ? selected.slice(fit) : [];
   const help = invalid ? error : caption;
@@ -448,10 +454,16 @@ export function Select(props: SelectProps) {
           }}
         >
           <span className="ds-select__main">
-            {leadIcon && (
-              <span className="ds-select__icon" aria-hidden>
-                {leadIcon}
+            {leadMedia ? (
+              <span className="ds-select__media" aria-hidden>
+                {leadMedia}
               </span>
+            ) : (
+              leadIcon && (
+                <span className="ds-select__icon" aria-hidden>
+                  {leadIcon}
+                </span>
+              )
             )}
             {tags && selected.length ? (
               <span ref={rowRef} className={counting ? 'ds-select__tags ds-select__tags--count' : 'ds-select__tags'}>

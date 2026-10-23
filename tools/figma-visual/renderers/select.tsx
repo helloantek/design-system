@@ -1,5 +1,6 @@
 import { RiInformationFill, RiUser3Line } from '@remixicon/react';
-import { Select, type SelectSize, type SelectVariant } from '@helloantek/ds-react';
+import { Avatar, Select, type SelectSize, type SelectVariant } from '@helloantek/ds-react';
+import { avatarImage } from '../../../packages/react/src/Avatar/Avatar.fixtures';
 import type { Renderer } from './types';
 
 // Maps Figma Select Input properties to props, with the sample texts used in the Figma file.
@@ -8,7 +9,7 @@ import type { Renderer } from './types';
 const options = ['Alex Jhonson', 'Simon Alt', 'Emma Thompson', 'Michael Davis', 'Ryan Parker'].map((label) => ({ value: label, label }));
 
 export const renderSelect: Renderer = (p) => {
-  if (!['Default', 'Multi-select', 'Tags'].includes(p.Variant)) throw new Error(`Select variant "${p.Variant}" is not implemented`);
+  if (!['Default', 'Multi-select', 'Tags', 'Avatar'].includes(p.Variant)) throw new Error(`Select variant "${p.Variant}" is not implemented`);
   const filled = p.State === 'Filled';
   const value =
     p.Variant === 'Multi-select'
@@ -20,7 +21,8 @@ export const renderSelect: Renderer = (p) => {
     <div id="target" style={{ width: 320 }}>
       <Select
         {...value}
-        options={options}
+        // Variant=Avatar: every option has an avatar; Figma's sample shows Simon Alt's picture.
+        options={p.Variant === 'Avatar' ? options.map((o) => ({ ...o, media: <Avatar size="xs" shape="rounded" src={avatarImage} /> })) : options}
         label="Label"
         caption={p.State === 'Failed' ? undefined : 'Caption text'}
         error={p.State === 'Failed' ? 'Error message' : undefined}

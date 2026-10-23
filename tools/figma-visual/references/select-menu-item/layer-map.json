@@ -65,6 +65,9 @@
     },
     "Flag": {
       "selector": ".ds-select__media"
+    },
+    "Avatar": {
+      "selector": ".ds-select__media"
     }
   }
 }

@@ -45,7 +45,8 @@
  * Select type=Checkbox / Radio Button: the check slot holds
  *     <span class="ds-select__box ds-select__box--checkbox"><svg…check…/></span> or
  *     <span class="ds-select__box ds-select__box--radio"><span class="ds-select__dot"></span></span>
- * Type=Country Flag: <span class="ds-select__media"><svg…flag…/></span> before the label.
+ * Type=Country Flag / Avatar: <span class="ds-select__media"><svg…flag…/> | <span class="ds-avatar …">…</span></span> before the
+ *     label; a single select repeats the selected option's media in the trigger, in place of the lead icon.
  * Type=Default Large: .ds-select__option--large, no check slot; the content holds the icon, then
  *     <span class="ds-select__text"><span class="ds-select__label">…</span><span class="ds-select__description">…</span></span>,
  *     then the check slot (when selected) and the badge.
@@ -380,8 +381,15 @@
     height: 100%;
   }
 
-  .ds-select__media + .ds-select__label {
+  .ds-select__media + .ds-select__label,
+  .ds-select__media + .ds-select__value {
     padding-left: var(--ds-space-8);
+  }
+
+  /* Figma Select Input Variant=Avatar: the selected option's picture replaces the lead icon. A disabled field fades
+     it like a disabled option (Figma draws Destructive with the placeholder only). */
+  .ds-select__trigger--disabled .ds-select__media {
+    opacity: 0.3;
   }
 
   /* Figma fades the picture of a disabled option to 30% and its badge to 50%. */
