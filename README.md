@@ -148,7 +148,7 @@ Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group*
 
 ## Select
 
-A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Covers Figma Select Input Variant = Default, Multi-select, Tags and Avatar, and Select Menu Items Type = Default, Default Large, Country Flag, Label, Caption and Divider with every Select type (check, Checkbox, Radio Button); the other variants, the menu search and the menu button are in the [backlog](docs/backlog.md).
+A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Sort UI 2.0 **Select**, **Select Item**, **Select Label**, **Select Separator** and **Select Content**, with the **Checkbox** and **Radio** components for `indicator`. Multi-select, tags, avatars and flags, captions, badges, notes and descriptions are ours; they wear the 2.0 look. The menu search and the menu button are in the [backlog](docs/backlog.md).
 
 ```tsx
 <Select label="Owner" placeholder="Select a user" options={users} value={owner} onValueChange={setOwner} leadIcon={<RiUser3Line />} />
@@ -167,26 +167,26 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 
 | Figma property | React prop | CSS class |
 |---|---|---|
-| Style | `variant`: `default` · `shadow` · `soft` | `ds-select__trigger--<variant>` |
-| Size | `size`: `lg` · `sm` | `ds-field--<size>` |
-| State = Placeholder / Filled | `placeholder` / `value` · `defaultValue` | `ds-select__value--placeholder` |
-| Variant = Multi-select | `multiple` (`value`/`defaultValue` are arrays; options toggle and the menu stays open; the trigger lists the labels) | `[aria-multiselectable]` on the menu |
-| Variant = Avatar; Menu Items Type = Avatar | option `media: <Avatar size="xs" shape="rounded" …/>`; a single select shows the selected option's `media` in place of the lead icon (also for flags) | `ds-select__media` in the option and the trigger |
-| Variant = Tags | `multiple tags`: each value is a `Badge` (sm, Neutral, Soft, Border, Close Icon). × removes it with the mouse, Backspace/Delete removes the last one, the menu toggles any; removals are announced. Tags that do not fit wrap onto more rows (default), or with `tagsOverflow="count"` stay on one row with a "+N" badge (its tooltip and screen-reader text name the hidden values); Figma clips one row. No buttons inside the combobox: the × is a pointer target only. | `ds-select__tags` · `--count` · `ds-select__more` · `ds-select__status` |
-| State = Active | focus (the menu opens on click or keys) | `:focus` |
-| State = Failed | `error` (replaces the caption, sets `aria-invalid`) | `ds-select__trigger--invalid` |
-| State = Destructive (drawn as disabled) | `disabled` | `ds-select__trigger--disabled` |
-| Label · Caption | `label` · `caption` (wired with `aria-labelledby` / `aria-describedby`) | `ds-field__label` · `ds-field__caption` |
-| ❖ Lead Icon · ❖ Tail Icon | `leadIcon` · `tailIcon` | `ds-select__icon` |
-| ↩ Placeholder | `placeholder` | |
-| Menu Items Type = Default | `options: [{ value, label, caption?, icon?, badge?, disabled? }]` | `ds-select__option` |
-| Menu Items State = Hover · Active · Disabled | highlight (mouse or keys) · selected · `disabled` | `[data-highlighted]` · `[aria-selected]` · `[aria-disabled]` |
-| Menu Items Select type = Default / Checkbox / Radio Button | `indicator`: `check` · `checkbox` · `radio` | `ds-select__check` · `ds-select__box--checkbox` · `ds-select__box--radio` |
-| Menu Items Type = Default Large | option `description` (second line; the icon sits in a 36 px circle, the check on the right) | `ds-select__option--large` |
-| Menu Items Type = Country Flag | option `media` (20 px picture, e.g. a flag `<svg>`) | `ds-select__media` |
-| Menu Items Type = Caption | `{ type: 'caption', label }` (read as the menu's description) | `ds-select__note` |
-| Menu Items Type = Label | `{ label, caption?, options }` (a group) | `ds-select__group-label` |
-| Menu Items Type = Divider | `{ type: 'separator' }` | `ds-select__separator` |
+| Size | `size`: `xl` (40 px) · `lg` (36 px) · `default` (32 px, the default) · `sm` (28 px); the same heights as Button's and Input's sizes of the same name | `ds-field--<size>` |
+| — (one style in 2.0) | `variant`: `default` · `shadow` (+ Shadow/xs) · `soft` (borderless, tinted) | `ds-select__trigger--<variant>` |
+| Value = Placeholder / Filled | `placeholder` / `value` · `defaultValue` | `ds-select__value--placeholder` |
+| State = Focus | focus (the menu opens on click or keys) | `:focus` |
+| State = Invalid · Field Error | `error` (replaces the description, sets `aria-invalid`, label turns red) | `ds-select__trigger--invalid` |
+| State = Disabled | `disabled` (field and label at 50 %) | `ds-select__trigger--disabled` |
+| Field Label · Description | `label` · `caption` (wired with `aria-labelledby` / `aria-describedby`) | `ds-field__label` · `ds-field__caption` |
+| Leading icon | `leadIcon`; `tailIcon` sits before the chevron | `ds-select__icon` |
+| Placeholder | `placeholder` | |
+| Select Item | `options: [{ value, label, caption?, icon?, badge?, disabled? }]` | `ds-select__option` |
+| Select Item State = Highlighted · Disabled; Selected | highlight (mouse or keys) · `disabled`; selected (check mark on the right) | `[data-highlighted]` · `[aria-disabled]` · `[aria-selected]` |
+| Select Item Description | option `description` (second line, 12 px muted) | `ds-select__text` · `ds-select__description` |
+| Select Label | `{ label, caption?, options }` (a group) | `ds-select__group-label` |
+| Select Separator | `{ type: 'separator' }` | `ds-select__separator` |
+| Select Content | the menu (popover, 14 px radius, Surface/Popover shadow) | `ds-select__menu` |
+| Checkbox · Radio | `indicator`: `check` (default) · `checkbox` · `radio` | `ds-select__check` · `ds-select__box--checkbox` · `ds-select__box--radio` |
+| — | `multiple` (`value`/`defaultValue` are arrays; options toggle and the menu stays open; the trigger lists the labels) | `[aria-multiselectable]` on the menu |
+| — | `multiple tags`: each value is a `Badge` (sm, Neutral, Soft, Border, Close Icon). × removes it with the mouse, Backspace/Delete removes the last one, the menu toggles any; removals are announced. Tags that do not fit wrap onto more rows (default), or with `tagsOverflow="count"` stay on one row with a "+N" badge (its tooltip and screen-reader text name the hidden values). No buttons inside the combobox: the × is a pointer target only. | `ds-select__tags` · `--count` · `ds-select__more` · `ds-select__status` |
+| — | option `media` (20 px picture: `<Avatar size="xs" shape="rounded" …/>`, a flag `<svg>`); a single select shows the selected option's `media` in place of the lead icon | `ds-select__media` in the option and the trigger |
+| — | `{ type: 'caption', label }`: a note in the menu (read as the menu's description) | `ds-select__note` |
 
 Forms: `name` submits the value through a hidden input (one per value with `multiple`, read them with `formData.getAll(name)`), and resetting the form restores `defaultValue`. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
 
@@ -219,10 +219,10 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Input (2.0): Input Group's prefix/suffix text is 13 px in the component but 14 px in the demo frames; the code follows the component.
 - Input (2.0): Input Group Filled + Invalid keeps the value black, while Input Filled + Invalid turns it red; the code follows Input. Field Invalid shows the description and the error together; `error` replaces the description, as before.
 - Input (2.0): disabled prefix/suffix text (muted at 50 %) is 2.1:1 (WCAG exempts disabled controls, but axe reports it).
-- Select: State=Destructive is drawn as a disabled field (grey background, hint text), not as an error; Failed is the error state. The name invites misuse.
-- Select: State=Failed has no extra shadow in Style=Default and Soft, while Input does; one of the two is likely unintended.
-- Select: the Active variant shows the placeholder while its menu has "Simon Alt" checked.
-- Select Menu Items Type=Divider: the line is centred on a half pixel, so Figma renders it as two faint rows; the code draws one crisp row.
+- Select (2.0): State=Invalid's stroke and ring are bound to Tailwind class names, as in Input; unlike Input, the value stays black.
+- Select (2.0): Select Item reserves the check mark's 16 px in a 32 px right padding when not selected; the code keeps an empty 16 px slot, which looks the same.
+- Select (2.0): Size=sm uses an 8 px radius, the other sizes 10 px; Input has no sm.
+- Select (2.0): a disabled field's label at 50 % (Field State=Disabled) is 3.69:1. axe reports it for Select, whose combobox is not a native control, but not for Input, whose label belongs to a disabled input.
 - Badge: Strong badges put white text on the accent colour, below WCAG AA's 4.5:1 for every colour but Neutral (Lime 1.91, Green 2.19, Cyan 2.38, Orange 2.9, Fuchsia 3.71, Pink 3.73, Blue 3.76, Red 3.97, Violet 4.43).
 - Badge: Border has no effect on Strong badges, except Neutral, where Strong + Border looks exactly like Soft + Border. The Style value is spelled "Srong".
 - Badge: Orange + Strong + Dot draws the dot in the badge's own colour, so it is invisible (every other colour uses white); the code uses white.
@@ -231,7 +231,5 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Avatar: Rounded uses radius/xs up to size md and radius/sm from lg, but Initials use radius/sm at every size; the ring's corners (6/8/10 px) and the badge offsets are fixed numbers that change irregularly between sizes (e.g. Rounded lg badges stick out 2 px, md and xl 4 and 6 px). The code follows Figma.
 - Avatar: in Theme-1 Dark, Initials put text/white-default (#18181b there) on bg/basic/gray-accent (#6f6f77): 3.6:1, below AA.
 - Avatar: the Empty picture is a raster image (#f4f4f5 / #d4d4d8) with no variables; the code draws it with bg/basic/gray-subtle and border/darker (#d5d5d8 on that background), so it follows the colour scheme.
-- Select Tags: the Active variant's menu shows Avatar items (Figma reuses the Avatar menu), and the tags sit on one clipped row, so values past the field width disappear; the code wraps them.
-- Select Menu Items Type=Avatar: the item overrides its Avatar's fill to bg/basic/gray-contrast (#18181b), which the Avatar component has no property for; the code uses the Avatar's own bg/basic/gray-accent.
 - Button (2.0): Variant=Default draws Hover exactly like Default, so the primary button gives no hover feedback; in Focus the Default variant drops its inset highlight and Outline drops its control shadow (local effects instead of the effect styles).
 - Status Badge: Offline uses icon/black-disabled, which is the same dark grey in Dark mode, so the dot disappears on dark backgrounds.

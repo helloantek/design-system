@@ -2,8 +2,7 @@ import { renderAvatar, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
 import { renderButton } from './button';
 import { renderInput } from './input';
-import { renderSelect } from './select';
-import { renderSelectMenuItem } from './select-menu-item';
+import { renderSelect, renderSelectItem } from './select';
 import type { Renderer } from './types';
 
 // One renderer per component folder in ../references.
@@ -13,7 +12,6 @@ export const renderers: Record<string, Renderer> = {
   button: renderButton,
   input: renderInput,
   select: renderSelect,
-  'select-menu-item': renderSelectMenuItem,
-  'select-menu-item-large': renderSelectMenuItem,
+  'select-item': renderSelectItem,
   'status-badge': renderStatusBadge,
 };

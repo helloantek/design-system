@@ -1,12 +1,11 @@
 /*
- * Select — Figma component sets "Select Input" (3817:45118), "Select Menu" (3811:40144) and
- * "Select Menu Items" (3803:8920) in file 4tiBR2hKd4yvQehtKhM9OY.
- * Covers Select Input Variant=Default in every Style, Size and State, and menu items of Type=Default, Label and Divider
- * with Select type=Default. Every value comes from @helloantek/ds-tokens; load one brand's token CSS before this file.
- * The label and caption reuse .ds-field from input.css, kept at Sort UI 1.3 below until Select moves to 2.0.
+ * Select — Sort UI 2.0 component sets "Select" (node 104:37), "Select Item" (102:44), "Select Label" (104:38),
+ * "Select Separator" (104:40) and "Select Content" (104:42) in file 4JnqgEbdlnKgiFrfmiwEZw; the Checkbox (121:29) and
+ * Radio (121:64) components for indicator="checkbox" / "radio". Values are Sort UI 2.0 tokens.
+ * The label and description reuse .ds-field from input.css. Framework-agnostic: any markup with these classes works.
  *
  * Markup (classes in [] are optional; ARIA follows the WAI-ARIA select-only combobox pattern):
- *   <div class="ds-field ds-field--lg ds-select">
+ *   <div class="ds-field ds-field--default ds-select">
  *     <label class="ds-field__label" id="l">Label</label>
  *     <div class="ds-select__anchor">
  *       <div class="ds-select__trigger ds-select__trigger--default [ds-select__trigger--invalid] [ds-select__trigger--disabled]"
@@ -19,7 +18,7 @@
  *            [<span class="ds-select__measure" aria-hidden="true">…every tag and the counter, invisible…</span>]</span>)
  *         </span>
  *         [<span class="ds-select__icon ds-select__icon--tail" aria-hidden="true"><svg…/></span>]
- *         <span class="ds-select__icon" aria-hidden="true"><svg…expand…/></span>
+ *         <span class="ds-select__icon" aria-hidden="true"><svg…chevron…/></span>
  *       </div>
  *       <div class="ds-select__menu" id="m" role="listbox" aria-labelledby="l">
  *         <div class="ds-select__option" role="option" aria-selected="true" [aria-disabled="true"] [data-highlighted]>
@@ -50,119 +49,109 @@
  * Type=Default Large: .ds-select__option--large, no check slot; the content holds the icon, then
  *     <span class="ds-select__text"><span class="ds-select__label">…</span><span class="ds-select__description">…</span></span>,
  *     then the check slot (when selected) and the badge.
- * Figma states: Placeholder / Filled = no value / a value, Active = focused trigger, Failed = --invalid,
- * Destructive = --disabled (Figma draws it as a disabled field). Menu item Hover = [data-highlighted] or :hover.
+ * Figma Size: .ds-field--sm (28 px), --default (32 px), --lg (36 px), --xl (40 px).
+ * Figma State: Focus = focused trigger, Invalid = --invalid, Disabled = --disabled. Select Item Highlighted =
+ * [data-highlighted] or :hover. Sort UI 2.0 has one field style; Shadow adds Shadow/xs and Soft is a borderless tinted field.
  */
 
 @layer ds.components {
-  /* Sort UI 1.3 label and caption: input.css styles .ds-field after Sort UI 2.0; this block goes when Select moves to 2.0. */
-  .ds-field.ds-select {
-    gap: var(--ds-space-8);
-    font-family: var(--ds-font-family-body);
-    letter-spacing: normal;
-  }
-
-  .ds-select .ds-field__label {
-    color: var(--ds-text-default);
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-medium);
-    line-height: var(--ds-font-line-height-leading-5);
-  }
-
-  .ds-select .ds-field__caption {
-    color: var(--ds-text-muted);
-    font-size: var(--ds-font-size-xs);
-    font-weight: var(--ds-font-weight-normal);
-    line-height: var(--ds-font-line-height-leading-4);
-  }
-
-  .ds-select .ds-field__caption--error {
-    color: var(--ds-text-destructive);
-  }
-
   .ds-select__anchor {
     position: relative;
   }
 
-  /* ── Trigger (Figma "Container") ────────────────────────────────────── */
+  /* ── Trigger ────────────────────────────────────────────────────────── */
 
   .ds-select__trigger {
-    --select-stroke: var(--ds-border-darker);
+    /* The Figma stroke (1 px, inside) is the first inset shadow, so it never changes the size. */
+    --select-bg: var(--ds-field);
+    --select-stroke: var(--ds-field-border);
     --select-shadow: 0 0 #0000;
-    --select-pad-y: var(--ds-space-8);
-    --select-icon: var(--ds-icon-default-muted);
+    --select-ring: 0 0 #0000;
+    --select-height: var(--ds-spacing-8);
+    --select-pad-x: var(--ds-spacing-2-5);
+    --select-chevron-pad: var(--ds-spacing-2);
+    --select-radius: var(--ds-radius-lg);
+    --select-icon: var(--ds-muted-foreground);
     --select-tail-icon: var(--select-icon);
 
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    gap: var(--ds-space-6);
+    /* Figma "Body" keeps its side padding before the chevron. */
+    gap: var(--select-pad-x);
     width: 100%;
-    padding: var(--select-pad-y) var(--ds-space-8);
-    border-radius: var(--ds-radius-xs);
+    min-height: var(--select-height);
+    /* 4 px above and below keeps wrapped tag rows off the edge; min-height sets the Figma height. */
+    padding: var(--ds-spacing-1) var(--select-chevron-pad) var(--ds-spacing-1) var(--select-pad-x);
+    border-radius: var(--select-radius);
     outline: none;
     background-color: var(--select-bg);
-    /* Figma strokes are inside and do not change the size, so the stroke is an inset shadow. */
-    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--select-stroke), var(--select-shadow);
-    font-family: var(--ds-font-family-body);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--select-stroke), var(--select-ring), var(--select-shadow);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-xs--line-height);
+    /* Figma letter spacing −0.5 %. */
+    letter-spacing: -0.005em;
     cursor: pointer;
     user-select: none;
   }
 
+  /* Figma Size: height, Body side padding and the chevron's distance from the edge. */
   .ds-field--sm .ds-select__trigger {
-    --select-pad-y: var(--ds-space-6);
+    --select-height: var(--ds-spacing-7);
+    --select-chevron-pad: var(--ds-spacing-1-5);
+    --select-radius: var(--ds-radius-md);
   }
 
-  /* Figma Style */
-  .ds-select__trigger--default {
-    --select-bg: var(--ds-bg-input);
+  .ds-field--lg .ds-select__trigger {
+    --select-height: var(--ds-spacing-9);
+    --select-pad-x: var(--ds-spacing-3);
+    --select-chevron-pad: var(--ds-spacing-2-5);
   }
 
+  .ds-field--xl .ds-select__trigger {
+    --select-height: var(--ds-spacing-10);
+    --select-pad-x: var(--ds-spacing-3);
+    --select-chevron-pad: var(--ds-spacing-3);
+  }
+
+  /* Style: Default is the Sort UI 2.0 field. */
   .ds-select__trigger--shadow {
-    --select-bg: var(--ds-bg-input);
-    --select-shadow: var(--ds-shadow-components-default);
+    --select-shadow: var(--ds-shadow-xs);
   }
 
   .ds-select__trigger--soft {
-    --select-bg: var(--ds-bg-input-soft);
+    --select-bg: var(--ds-fill-1);
     --select-stroke: transparent;
   }
 
-  /* Figma State=Failed: red stroke in every Style (Soft included), red tail icon. */
-  .ds-select__trigger--invalid {
-    --select-stroke: var(--ds-border-destructive);
-    --select-tail-icon: var(--ds-icon-destructive);
-  }
-
-  /* Figma State=Active (effect style components/input-focus). An invalid select keeps its red stroke. */
+  /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */
   .ds-select__trigger:focus {
-    --select-bg: var(--ds-bg-input);
-    box-shadow: 0 0 0 3px var(--ds-border-default), inset 0 0 0 var(--ds-stroke-default) var(--ds-border-input-highlight);
+    --select-bg: var(--ds-field);
+    --select-stroke: var(--ds-ring);
+    --select-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
   }
 
+  /* Figma State=Invalid: red stroke and ring (the value stays black). Focus keeps them. */
+  .ds-select__trigger--invalid,
   .ds-select__trigger--invalid:focus {
-    box-shadow: 0 0 0 3px var(--ds-border-default), inset 0 0 0 var(--ds-stroke-default) var(--ds-border-destructive);
+    --select-stroke: var(--ds-invalid-border);
+    --select-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-invalid-ring);
+    --select-tail-icon: var(--ds-destructive-foreground);
   }
 
-  /* Figma State=Destructive, which Figma draws as a disabled field. */
+  /* Figma State=Disabled: the whole field at 50 %. */
   .ds-select__trigger--disabled {
-    --select-bg: var(--ds-bg-input-disabled);
-    --select-stroke: var(--ds-border-default);
-    --select-shadow: 0 0 #0000;
-    --select-icon: var(--ds-icon-default-disabled);
-    --select-tail-icon: var(--ds-icon-default-disabled);
+    opacity: 0.5;
     cursor: not-allowed;
-  }
-
-  .ds-select__trigger--disabled.ds-select__trigger--soft {
-    --select-stroke: transparent;
   }
 
   .ds-select__main {
     display: flex;
     flex: 1 1 0;
     align-items: center;
-    gap: var(--ds-space-2);
+    gap: var(--ds-spacing-2);
     min-width: 0;
   }
 
@@ -170,31 +159,25 @@
     flex: 1 1 0;
     min-width: 0;
     overflow: hidden;
-    padding: 0 var(--ds-space-4);
-    color: var(--ds-text-default);
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-normal);
-    line-height: var(--ds-font-line-height-leading-5);
+    color: var(--ds-foreground);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  /* Figma Variant=Tags: sm Neutral Soft badges with a border and Close Icon, 4 px apart, in the label's padding.
-     Figma keeps them on one clipped row; the code wraps them so every value stays visible and removable. */
+  .ds-select__value--placeholder {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Tags (multiple + tags): Badges 4 px apart. They wrap so every value stays visible and removable. */
   .ds-select__tags {
     display: flex;
     flex: 1 1 0;
     flex-wrap: wrap;
-    gap: var(--ds-space-4);
+    gap: var(--ds-spacing-1);
     min-width: 0;
-    padding: 0 var(--ds-space-4);
   }
 
-  .ds-select__trigger--disabled .ds-select__tags .ds-badge {
-    opacity: 0.5;
-  }
-
-  /* tagsOverflow="count": one row; the badges that do not fit become a "+N" badge (not in Figma, styled like a tag). */
+  /* tagsOverflow="count": one row; the badges that do not fit become a "+N" badge styled like a tag. */
   .ds-select__tags--count {
     position: relative;
     flex-wrap: nowrap;
@@ -223,21 +206,12 @@
     white-space: nowrap;
   }
 
-  .ds-select__value--placeholder {
-    color: var(--ds-text-subtle);
-  }
-
-  .ds-select__trigger--disabled .ds-select__value {
-    color: var(--ds-text-hint);
-  }
-
+  /* Figma "Leading icon" and "Chevron down" (16 px, muted). */
   .ds-select__icon {
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
     color: var(--select-icon);
   }
 
@@ -245,89 +219,97 @@
   .ds-select__icon > img,
   .ds-select__check > svg {
     display: block;
-    width: 16px;
-    height: 16px;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
   }
 
   .ds-select__icon--tail {
     color: var(--select-tail-icon);
   }
 
-  /* ── Menu (Figma "Select Menu") ─────────────────────────────────────── */
+  /* ── Menu (Figma "Select Content") ──────────────────────────────────── */
 
   .ds-select__menu {
     position: absolute;
     z-index: 10;
-    top: calc(100% + var(--ds-space-6));
+    top: calc(100% + var(--ds-spacing-1-5));
     right: 0;
     left: 0;
     box-sizing: border-box;
-    /* Nine 32 px options plus the menu padding, as in the Figma menu; override --select-menu-max-height per use. */
+    /* Nine 32 px items plus the menu padding; override --select-menu-max-height per use. */
     max-height: var(--select-menu-max-height, 296px);
-    padding: var(--ds-space-4) 0;
+    padding: var(--ds-spacing-1);
     overflow-y: auto;
-    border-radius: var(--ds-radius-xs);
-    background-color: var(--ds-bg-card);
-    /* Figma effect style shadows/modal-sm: a 1 px ring bound to border/default plus a soft shadow. */
-    box-shadow: 0 0 0 var(--ds-stroke-default) var(--ds-border-default), var(--ds-shadow-modal-sm);
-    font-family: var(--ds-font-family-body);
+    border-radius: var(--ds-radius-14);
     outline: none;
+    background-color: var(--ds-popover);
+    /* Figma: a 1 px border stroke (inside) and the Surface/Popover effect style. */
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
   }
 
   .ds-select__menu[hidden] {
     display: none;
   }
 
-  /* ── Menu items (Figma "Select Menu Items") ─────────────────────────── */
+  /* ── Items (Figma "Select Item") ────────────────────────────────────── */
 
-  /* Type=Default. Figma pads the item row 4 px on each side; the margin does the same. */
   .ds-select__option {
-    --select-icon: var(--ds-icon-default-subtle);
+    --select-icon: var(--ds-muted-foreground);
 
     display: flex;
     align-items: center;
-    gap: var(--ds-space-6);
-    margin: 0 var(--ds-space-4);
-    padding: var(--ds-space-6);
-    border-radius: var(--ds-radius-xs);
-    background-color: var(--ds-bg-state-ghost);
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-lg);
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
     cursor: pointer;
   }
 
+  /* Figma State=Highlighted. */
   .ds-select__option[data-highlighted],
   .ds-select__option:hover:not([aria-disabled='true']) {
-    background-color: var(--ds-bg-state-ghost-hover);
+    background-color: var(--ds-accent);
+    color: var(--ds-accent-foreground);
   }
 
+  /* Figma State=Disabled: the whole item at 50 %. */
   .ds-select__option[aria-disabled='true'] {
-    --select-icon: var(--ds-icon-default-disabled);
+    opacity: 0.5;
     cursor: not-allowed;
   }
 
+  /* The selected mark. Figma's check mark sits on the right and keeps its 16 px when the item is not selected;
+     the Checkbox and Radio stay on the left. */
   .ds-select__check {
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
-    color: var(--select-icon);
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    color: currentColor;
+  }
+
+  .ds-select__option > .ds-select__check:not(:has(.ds-select__box)) {
+    order: 1;
   }
 
   .ds-select__content {
     display: flex;
     flex: 1 1 0;
     align-items: center;
-    gap: var(--ds-space-2);
+    gap: var(--ds-spacing-2);
     min-width: 0;
   }
 
   .ds-select__label,
   .ds-select__caption {
-    padding: 0 var(--ds-space-4);
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-normal);
-    line-height: var(--ds-font-line-height-leading-5);
     white-space: nowrap;
   }
 
@@ -335,34 +317,24 @@
     flex: 1 1 0;
     min-width: 0;
     overflow: hidden;
-    color: var(--ds-text-default);
     text-overflow: ellipsis;
-  }
-
-  .ds-select__option[aria-selected='true'] .ds-select__label {
-    font-weight: var(--ds-font-weight-medium);
   }
 
   .ds-select__caption {
     flex-shrink: 0;
-    color: var(--ds-text-muted);
+    color: var(--ds-muted-foreground);
   }
 
-  .ds-select__option[aria-disabled='true'] .ds-select__label,
-  .ds-select__option[aria-disabled='true'] .ds-select__caption {
-    color: var(--ds-text-hint);
-  }
-
-  /* Type=Label: a group heading with an optional caption on the right. */
+  /* Figma "Select Label": a group heading, with an optional caption on the right. */
   .ds-select__group-label {
     display: flex;
     align-items: center;
-    gap: var(--ds-space-8);
-    padding: var(--ds-space-4) var(--ds-space-12);
-    color: var(--ds-text-subtle);
-    font-size: var(--ds-font-size-xs);
-    font-weight: var(--ds-font-weight-medium);
-    line-height: var(--ds-font-line-height-leading-4);
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-1) var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-2xs--line-height);
   }
 
   .ds-select__group-label > :first-child {
@@ -370,33 +342,28 @@
     min-width: 0;
   }
 
-  .ds-select__group-caption {
-    color: var(--ds-text-muted);
-    font-weight: var(--ds-font-weight-normal);
-  }
-
-  /* Type=Divider: a 1 px line centred in an 8 px row. */
+  /* Figma "Select Separator": a 1 px border line in an 8 px row, across the menu padding. */
   .ds-select__separator {
     height: 0;
-    padding: var(--ds-space-4) 0;
-    background: linear-gradient(var(--ds-border-default), var(--ds-border-default)) center / 100% var(--ds-stroke-default) no-repeat;
+    margin: 0 calc(-1 * var(--ds-spacing-1));
+    padding: var(--ds-spacing-1) 0;
+    background: linear-gradient(var(--ds-border), var(--ds-border)) center / 100% var(--ds-stroke-width-1) no-repeat;
   }
 
-  /* Type=Caption: a note in the menu (the listbox refers to it with aria-describedby). */
+  /* A note in the menu (the listbox refers to it with aria-describedby), styled like the Select Label. */
   .ds-select__note {
-    padding: var(--ds-space-4) var(--ds-space-12);
-    color: var(--ds-text-muted);
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-normal);
-    line-height: var(--ds-font-line-height-leading-5);
+    padding: var(--ds-spacing-1) var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
   }
 
-  /* Type=Country Flag (and Avatar): a 20 px picture before the label, which then has 8 px on the left. */
+  /* A 20 px picture (flag, avatar) before the label. */
   .ds-select__media {
     display: inline-flex;
     flex-shrink: 0;
-    width: 20px;
-    height: 20px;
+    width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
   }
 
   .ds-select__media > svg,
@@ -406,43 +373,18 @@
     height: 100%;
   }
 
-  .ds-select__media + .ds-select__label,
-  .ds-select__media + .ds-select__value {
-    padding-left: var(--ds-space-8);
-  }
-
-  /* Figma Select Input Variant=Avatar: the selected option's picture replaces the lead icon. A disabled field fades
-     it like a disabled option (Figma draws Destructive with the placeholder only). */
-  .ds-select__trigger--disabled .ds-select__media {
-    opacity: 0.3;
-  }
-
-  /* Figma fades the picture of a disabled option to 30% and its badge to 50%. */
-  .ds-select__option[aria-disabled='true'] .ds-select__media {
-    opacity: 0.3;
-  }
-
-  .ds-select__option[aria-disabled='true'] .ds-badge {
-    opacity: 0.5;
-  }
-
-  /* Select type=Checkbox and Radio Button: a 16 px box in the indicator slot instead of the check mark.
-     Same values as the Figma Checkbox / Radio Button components (Style=With shadow). */
+  /* indicator="checkbox" / "radio": Sort UI 2.0 Checkbox and Radio, 16 px. */
   .ds-select__box {
-    --select-box-stroke: var(--ds-border-darker);
-    --select-box-glyph: transparent;
-
-    position: relative;
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
-    border-radius: var(--ds-radius-xs);
-    background-color: var(--ds-bg-checkbox-default);
-    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--select-box-stroke), var(--ds-shadow-checkbox);
-    color: var(--select-box-glyph);
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    /* Figma's Checkbox radius is 5 px, between the xs (4) and sm (6) tokens. */
+    border-radius: calc(var(--ds-radius-xs) + 1px);
+    background-color: var(--ds-fill-3);
+    color: transparent;
   }
 
   .ds-select__box--radio {
@@ -451,117 +393,39 @@
 
   .ds-select__box > svg {
     display: block;
-    width: 8px;
-    height: 8px;
+    width: 14px;
+    height: 14px;
   }
 
   .ds-select__dot {
-    width: 6px;
-    height: 6px;
+    width: var(--ds-spacing-2);
+    height: var(--ds-spacing-2);
     border-radius: var(--ds-radius-full);
     background-color: currentColor;
   }
 
-  /* Hover on an unselected option previews the mark. */
-  .ds-select__option[data-highlighted]:not([aria-selected='true']) .ds-select__box,
-  .ds-select__option:hover:not([aria-disabled='true'], [aria-selected='true']) .ds-select__box {
-    --select-box-stroke: var(--ds-border-strong);
-    --select-box-glyph: var(--ds-icon-default-disabled);
-  }
-
-  .ds-select__option[data-highlighted]:not([aria-selected='true']) .ds-select__box--radio,
-  .ds-select__option:hover:not([aria-disabled='true'], [aria-selected='true']) .ds-select__box--radio {
-    --select-box-glyph: var(--ds-bg-basic-gray-subtle);
-  }
-
   .ds-select__option[aria-selected='true'] .ds-select__box {
-    --select-box-glyph: var(--ds-icon-white-default);
-    background-color: var(--ds-bg-checkbox-active);
-    box-shadow: none;
+    background-color: var(--ds-primary);
+    color: var(--ds-primary-foreground);
   }
 
-  .ds-select__option[aria-selected='true'] .ds-select__box--radio {
-    box-shadow: var(--ds-shadow-checkbox);
-  }
-
-  /* Figma draws the highlight on a frame inset by 1 px. */
-  .ds-select__option[aria-selected='true'] .ds-select__box::after {
-    content: '';
-    position: absolute;
-    inset: 1px;
-    border-radius: inherit;
-    box-shadow: var(--ds-shadow-checkbox-highlight);
-  }
-
-  .ds-select__option[aria-selected='true'][data-highlighted] .ds-select__box,
-  .ds-select__option[aria-selected='true']:hover:not([aria-disabled='true']) .ds-select__box {
-    background-color: var(--ds-bg-checkbox-active-hover);
-  }
-
-  .ds-select__option[aria-disabled='true'] .ds-select__box {
-    --select-box-stroke: var(--ds-border-default);
-    --select-box-glyph: transparent;
-    background-color: var(--ds-bg-checkbox-disabled);
-    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--select-box-stroke);
-  }
-
-  .ds-select__option[aria-disabled='true'][aria-selected='true'] .ds-select__box {
-    --select-box-glyph: var(--ds-icon-default-disabled);
-  }
-
-  .ds-select__option[aria-disabled='true'] .ds-select__box::after {
-    content: none;
-  }
-
-  /* Type=Default Large: a 36 px icon circle, label and description on two lines, the check mark on the right. */
-  .ds-select__option--large {
-    padding: var(--ds-space-6) var(--ds-space-8);
-  }
-
-  .ds-select__option--large .ds-select__content {
-    gap: var(--ds-space-6);
-  }
-
-  .ds-select__option--large .ds-select__icon {
-    width: 36px;
-    height: 36px;
-    border-radius: var(--ds-radius-full);
-    background-color: var(--ds-bg-state-soft);
-  }
-
-  /* Figma drops the circle on hover and keeps the icon muted (not disabled) on disabled options. */
-  .ds-select__option--large[data-highlighted] .ds-select__icon,
-  .ds-select__option--large:hover:not([aria-disabled='true']) .ds-select__icon {
-    background-color: transparent;
-  }
-
-  .ds-select__option--large[aria-disabled='true'] .ds-select__icon {
-    color: var(--ds-icon-default-muted);
-  }
-
+  /* An item with a description (Figma Select Item "Description"): label and description on two lines, the icon
+     beside them, the mark on the right. */
   .ds-select__text {
     display: flex;
     flex: 1 1 0;
     flex-direction: column;
-    gap: var(--ds-space-2);
+    gap: var(--ds-spacing-0-5);
     min-width: 0;
-    padding: 0 var(--ds-space-4);
   }
 
   .ds-select__text > .ds-select__label {
     flex: none;
-    padding: 0;
-    font-weight: var(--ds-font-weight-medium);
   }
 
   .ds-select__description {
-    color: var(--ds-text-subtle);
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-normal);
-    line-height: var(--ds-font-line-height-leading-5);
-  }
-
-  .ds-select__option[aria-disabled='true'] .ds-select__description {
-    color: var(--ds-text-hint);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
   }
 }

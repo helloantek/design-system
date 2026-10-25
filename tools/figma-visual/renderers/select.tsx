@@ -1,38 +1,64 @@
-import { RiInformationFill, RiUser3Line } from '@remixicon/react';
-import { Avatar, Select, type SelectSize, type SelectVariant } from '@helloantek/ds-react';
-import { avatarImage } from '../../../packages/react/src/Avatar/Avatar.fixtures';
+import { Select, type SelectItem, type SelectSize } from '@helloantek/ds-react';
+import { useLayoutEffect, useRef } from 'react';
 import type { Renderer } from './types';
 
-// Maps Figma Select Input properties to props, with the sample texts used in the Figma file.
-// Active is produced by focusing the trigger in check.mjs (the manifest compares the trigger box only).
-// Destructive is drawn by Figma as a disabled field. The field is 320 px wide in Figma.
-const options = ['Alex Jhonson', 'Simon Alt', 'Emma Thompson', 'Michael Davis', 'Ryan Parker'].map((label) => ({ value: label, label }));
+// Maps Sort UI 2.0 Select, Select Item and Select Content properties to props, with the sample texts of the Figma file.
+// Select entries measure the trigger (the manifest's target); Focus comes from focusing it in check.mjs.
+const value = { value: 'value', label: 'Value' };
 
 export const renderSelect: Renderer = (p) => {
-  if (!['Default', 'Multi-select', 'Tags', 'Avatar'].includes(p.Variant)) throw new Error(`Select variant "${p.Variant}" is not implemented`);
-  const filled = p.State === 'Filled';
-  const value =
-    p.Variant === 'Multi-select'
-      ? { multiple: true as const, defaultValue: filled ? ['Simon Alt', 'Michael Davis', 'Ryan Parker'] : [] }
-      : p.Variant === 'Tags'
-        ? { multiple: true as const, tags: true, defaultValue: filled ? ['Simon Alt', 'Michael Davis'] : [] }
-        : { defaultValue: filled ? 'Simon Alt' : undefined };
+  if (p.Kind !== 'Select') throw new Error(`Select kind "${p.Kind}" is not implemented`);
   return (
-    <div id="target" style={{ width: 320 }}>
+    <div id="target" style={{ width: 280 }}>
       <Select
-        {...value}
-        // Variant=Avatar: every option has an avatar; Figma's sample shows Simon Alt's picture.
-        options={p.Variant === 'Avatar' ? options.map((o) => ({ ...o, media: <Avatar size="xs" shape="rounded" src={avatarImage} /> })) : options}
-        label="Label"
-        caption={p.State === 'Failed' ? undefined : 'Caption text'}
-        error={p.State === 'Failed' ? 'Error message' : undefined}
-        variant={p.Style.toLowerCase() as SelectVariant}
+        aria-label="Select"
+        options={[value]}
         size={p.Size as SelectSize}
-        placeholder="Select a user"
-        disabled={p.State === 'Destructive'}
-        leadIcon={<RiUser3Line />}
-        tailIcon={<RiInformationFill />}
+        placeholder="Select…"
+        defaultValue={p.Value === 'Filled' ? 'value' : undefined}
+        error={p.State === 'Invalid' ? 'Error message' : undefined}
+        disabled={p.State === 'Disabled'}
       />
     </div>
   );
+};
+
+/** Highlights an option the way the mouse does (Figma State=Highlighted), so the render needs no pointer. */
+function Highlight({ label, children }: { label?: string; children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (!label) return;
+    const option = [...(ref.current?.querySelectorAll('[role="option"]') ?? [])].find((o) => o.textContent === label);
+    option?.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+  }, [label]);
+  return <div ref={ref}>{children}</div>;
+}
+
+// Select Item: one option in an open 280 px menu (the item is 272 px inside its 4 px padding).
+// Select Content: Figma's sample menu.
+export const renderSelectItem: Renderer = (p) => {
+  if (p.Kind === 'Select Item') {
+    return (
+      <div id="target" style={{ width: 280 }}>
+        <Highlight label={p.State === 'Highlighted' ? 'Item' : undefined}>
+          <Select aria-label="Menu" options={[{ value: 'item', label: 'Item', disabled: p.State === 'Disabled' }]} defaultValue={p.Selected === 'True' ? 'item' : undefined} defaultOpen />
+        </Highlight>
+      </div>
+    );
+  }
+  if (p.Kind === 'Select Content') {
+    const options: SelectItem[] = [
+      { label: 'Group', options: ['Stable', 'Beta', 'Canary'].map((label) => ({ value: label.toLowerCase(), label })) },
+      { type: 'separator' },
+      { value: 'nightly', label: 'Nightly (paused)', disabled: true },
+    ];
+    return (
+      <div id="target" style={{ width: 280 }}>
+        <Highlight label="Beta">
+          <Select aria-label="Channel" options={options} defaultValue="stable" defaultOpen />
+        </Highlight>
+      </div>
+    );
+  }
+  throw new Error(`Select item kind "${p.Kind}" is not implemented`);
 };

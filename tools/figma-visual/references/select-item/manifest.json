@@ -1,0 +1,97 @@
+{
+ "$comment": "Sort UI 2.0 Select Item (every State and Selected; Highlighted is the option under the mouse, set by renderers/select.tsx) and Select Content (Figma's sample menu with a Select Label, a Select Separator and a disabled item), each rendered in an open Select. content.png is cropped to the menu's own 280 \u00d7 168 box (Figma's export adds the shadow's margin).",
+ "component": "select-item",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "102:44",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "item-default",
+   "nodeId": "102:2",
+   "props": {
+    "Kind": "Select Item",
+    "State": "Default",
+    "Selected": "False"
+   },
+   "target": "#target .ds-select__option",
+   "nodeW": 272,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-default-selected",
+   "nodeId": "102:9",
+   "props": {
+    "Kind": "Select Item",
+    "State": "Default",
+    "Selected": "True"
+   },
+   "target": "#target .ds-select__option",
+   "nodeW": 272,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-highlighted",
+   "nodeId": "102:16",
+   "props": {
+    "Kind": "Select Item",
+    "State": "Highlighted",
+    "Selected": "False"
+   },
+   "target": "#target .ds-select__option",
+   "nodeW": 272,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-highlighted-selected",
+   "nodeId": "102:23",
+   "props": {
+    "Kind": "Select Item",
+    "State": "Highlighted",
+    "Selected": "True"
+   },
+   "target": "#target .ds-select__option",
+   "nodeW": 272,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-disabled",
+   "nodeId": "102:30",
+   "props": {
+    "Kind": "Select Item",
+    "State": "Disabled",
+    "Selected": "False"
+   },
+   "target": "#target .ds-select__option",
+   "nodeW": 272,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-disabled-selected",
+   "nodeId": "102:37",
+   "props": {
+    "Kind": "Select Item",
+    "State": "Disabled",
+    "Selected": "True"
+   },
+   "target": "#target .ds-select__option",
+   "nodeW": 272,
+   "nodeH": 32
+  },
+  {
+   "slug": "content",
+   "nodeId": "104:42",
+   "props": {
+    "Kind": "Select Content"
+   },
+   "target": "#target .ds-select__menu",
+   "nodeW": 280,
+   "nodeH": 168
+  }
+ ]
+}

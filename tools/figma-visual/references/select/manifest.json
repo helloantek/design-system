@@ -1,8 +1,8 @@
 {
- "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/select.tsx turns these properties into props. Variant=Default and Multi-select are implemented (Multi-select differs from Default only when Filled). `target` (optional) is the element compared instead of #target. Variant=Tags is referenced in State=Filled only: its other states are drawn exactly like Variant=Default. Variant=Avatar is referenced in State=Filled only (the selected person's avatar replaces the lead icon); its other states are drawn like Variant=Default.",
+ "$comment": "Sort UI 2.0 Select reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/select.tsx turns them into props. Every Size, Value and State of the trigger (the entries measure .ds-select__trigger, so the error text under it is not compared).",
  "component": "select",
- "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
- "componentSet": "3817:45118",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "104:37",
  "brand": "theme-1",
  "scheme": "light",
  "thresholds": {
@@ -12,592 +12,420 @@
  },
  "entries": [
   {
-   "slug": "default-lg-placeholder",
-   "nodeId": "3817:45117",
+   "slug": "sm-placeholder-default",
+   "nodeId": "103:5",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "default-lg-active",
-   "nodeId": "3817:43173",
-   "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Active"
-   },
-   "target": ".ds-select__trigger",
-   "nodeW": 320,
-   "nodeH": 36,
-   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
-  },
-  {
-   "slug": "default-lg-filled",
-   "nodeId": "3817:45116",
-   "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "default-lg-failed",
-   "nodeId": "3817:45110",
-   "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "default-lg-destructive",
-   "nodeId": "3817:45112",
-   "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Destructive"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "shadow-lg-placeholder",
-   "nodeId": "3817:59529",
-   "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "shadow-lg-active",
-   "nodeId": "3817:59786",
-   "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Active"
-   },
-   "target": ".ds-select__trigger",
-   "nodeW": 320,
-   "nodeH": 36,
-   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
-  },
-  {
-   "slug": "shadow-lg-filled",
-   "nodeId": "3817:59585",
-   "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "shadow-lg-failed",
-   "nodeId": "3817:59813",
-   "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "shadow-lg-destructive",
-   "nodeId": "3817:59557",
-   "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Destructive"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "soft-lg-placeholder",
-   "nodeId": "3817:66221",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "soft-lg-active",
-   "nodeId": "3817:66478",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Active"
-   },
-   "target": ".ds-select__trigger",
-   "nodeW": 320,
-   "nodeH": 36,
-   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
-  },
-  {
-   "slug": "soft-lg-filled",
-   "nodeId": "3817:66277",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "soft-lg-failed",
-   "nodeId": "3817:66505",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "soft-lg-destructive",
-   "nodeId": "3817:66249",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Destructive"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "default-sm-placeholder",
-   "nodeId": "3817:51362",
-   "props": {
-    "Variant": "Default",
-    "Style": "Default",
+    "Kind": "Select",
     "Size": "sm",
-    "State": "Placeholder"
+    "Value": "Placeholder",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 28
   },
   {
-   "slug": "default-sm-active",
-   "nodeId": "3817:51492",
+   "slug": "sm-placeholder-focus",
+   "nodeId": "103:14",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
+    "Kind": "Select",
     "Size": "sm",
-    "State": "Active"
+    "Value": "Placeholder",
+    "State": "Focus"
    },
-   "target": ".ds-select__trigger",
-   "nodeW": 320,
-   "nodeH": 32,
-   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 28
   },
   {
-   "slug": "default-sm-filled",
-   "nodeId": "3817:51390",
+   "slug": "sm-placeholder-disabled",
+   "nodeId": "103:23",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
+    "Kind": "Select",
     "Size": "sm",
-    "State": "Filled"
+    "Value": "Placeholder",
+    "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 28
   },
   {
-   "slug": "default-sm-failed",
-   "nodeId": "3817:51505",
+   "slug": "sm-placeholder-invalid",
+   "nodeId": "103:32",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
+    "Kind": "Select",
     "Size": "sm",
-    "State": "Failed"
+    "Value": "Placeholder",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 28
   },
   {
-   "slug": "default-sm-destructive",
-   "nodeId": "3817:51376",
+   "slug": "sm-filled-default",
+   "nodeId": "103:41",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
+    "Kind": "Select",
     "Size": "sm",
-    "State": "Destructive"
+    "Value": "Filled",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 28
   },
   {
-   "slug": "shadow-sm-placeholder",
-   "nodeId": "3817:59543",
+   "slug": "sm-filled-focus",
+   "nodeId": "103:50",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
+    "Kind": "Select",
     "Size": "sm",
-    "State": "Placeholder"
+    "Value": "Filled",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 28
   },
   {
-   "slug": "shadow-sm-active",
-   "nodeId": "3817:59801",
+   "slug": "sm-filled-disabled",
+   "nodeId": "103:59",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
+    "Kind": "Select",
     "Size": "sm",
-    "State": "Active"
+    "Value": "Filled",
+    "State": "Disabled"
    },
-   "target": ".ds-select__trigger",
-   "nodeW": 320,
-   "nodeH": 32,
-   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 28
   },
   {
-   "slug": "shadow-sm-filled",
-   "nodeId": "3817:59599",
+   "slug": "sm-filled-invalid",
+   "nodeId": "103:68",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
+    "Kind": "Select",
     "Size": "sm",
-    "State": "Filled"
+    "Value": "Filled",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 28
   },
   {
-   "slug": "shadow-sm-failed",
-   "nodeId": "3817:59827",
+   "slug": "default-placeholder-default",
+   "nodeId": "103:77",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "sm",
-    "State": "Failed"
+    "Kind": "Select",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "shadow-sm-destructive",
-   "nodeId": "3817:59571",
+   "slug": "default-placeholder-focus",
+   "nodeId": "103:86",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "sm",
-    "State": "Destructive"
+    "Kind": "Select",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "soft-sm-placeholder",
-   "nodeId": "3817:66235",
+   "slug": "default-placeholder-disabled",
+   "nodeId": "103:95",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "sm",
-    "State": "Placeholder"
+    "Kind": "Select",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "soft-sm-active",
-   "nodeId": "3817:66493",
+   "slug": "default-placeholder-invalid",
+   "nodeId": "103:104",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "sm",
-    "State": "Active"
+    "Kind": "Select",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Invalid"
    },
-   "target": ".ds-select__trigger",
-   "nodeW": 320,
-   "nodeH": 32,
-   "$why": "Figma draws the open menu over the caption in State=Active, so the reference is the trigger box (layer Container/Container) and the code is focused, not opened."
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "soft-sm-filled",
-   "nodeId": "3817:66291",
+   "slug": "default-filled-default",
+   "nodeId": "103:113",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "sm",
-    "State": "Filled"
+    "Kind": "Select",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "soft-sm-failed",
-   "nodeId": "3817:66519",
+   "slug": "default-filled-focus",
+   "nodeId": "103:122",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "sm",
-    "State": "Failed"
+    "Kind": "Select",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "soft-sm-destructive",
-   "nodeId": "3817:66263",
+   "slug": "default-filled-disabled",
+   "nodeId": "103:131",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "sm",
-    "State": "Destructive"
+    "Kind": "Select",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "multi-default-lg-filled",
-   "nodeId": "3817:45101",
+   "slug": "default-filled-invalid",
+   "nodeId": "103:140",
    "props": {
-    "Variant": "Multi-select",
-    "Style": "Default",
+    "Kind": "Select",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 32
+  },
+  {
+   "slug": "lg-placeholder-default",
+   "nodeId": "103:149",
+   "props": {
+    "Kind": "Select",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Placeholder",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "multi-shadow-lg-filled",
-   "nodeId": "3817:59897",
+   "slug": "lg-placeholder-focus",
+   "nodeId": "103:158",
    "props": {
-    "Variant": "Multi-select",
-    "Style": "Shadow",
+    "Kind": "Select",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Placeholder",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "multi-soft-lg-filled",
-   "nodeId": "3817:66589",
+   "slug": "lg-placeholder-disabled",
+   "nodeId": "103:167",
    "props": {
-    "Variant": "Multi-select",
-    "Style": "Soft",
+    "Kind": "Select",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Placeholder",
+    "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "multi-default-sm-filled",
-   "nodeId": "3817:51547",
+   "slug": "lg-placeholder-invalid",
+   "nodeId": "103:176",
    "props": {
-    "Variant": "Multi-select",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "multi-shadow-sm-filled",
-   "nodeId": "3817:59911",
-   "props": {
-    "Variant": "Multi-select",
-    "Style": "Shadow",
-    "Size": "sm",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "multi-soft-sm-filled",
-   "nodeId": "3817:66603",
-   "props": {
-    "Variant": "Multi-select",
-    "Style": "Soft",
-    "Size": "sm",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "tags-default-lg-filled",
-   "nodeId": "3817:45114",
-   "props": {
-    "Variant": "Tags",
-    "Style": "Default",
+    "Kind": "Select",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Placeholder",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "tags-soft-lg-filled",
-   "nodeId": "3817:66361",
+   "slug": "lg-filled-default",
+   "nodeId": "103:185",
    "props": {
-    "Variant": "Tags",
-    "Style": "Soft",
+    "Kind": "Select",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Filled",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "tags-shadow-lg-filled",
-   "nodeId": "3817:59669",
+   "slug": "lg-filled-focus",
+   "nodeId": "103:194",
    "props": {
-    "Variant": "Tags",
-    "Style": "Shadow",
+    "Kind": "Select",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Filled",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "tags-default-sm-filled",
-   "nodeId": "3817:51432",
+   "slug": "lg-filled-disabled",
+   "nodeId": "103:203",
    "props": {
-    "Variant": "Tags",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "tags-soft-sm-filled",
-   "nodeId": "3817:66376",
-   "props": {
-    "Variant": "Tags",
-    "Style": "Soft",
-    "Size": "sm",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "tags-shadow-sm-filled",
-   "nodeId": "3817:59684",
-   "props": {
-    "Variant": "Tags",
-    "Style": "Shadow",
-    "Size": "sm",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "avatar-default-lg-filled",
-   "nodeId": "3817:45106",
-   "props": {
-    "Variant": "Avatar",
-    "Style": "Default",
+    "Kind": "Select",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Filled",
+    "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "avatar-soft-lg-filled",
-   "nodeId": "3817:66447",
+   "slug": "lg-filled-invalid",
+   "nodeId": "103:212",
    "props": {
-    "Variant": "Avatar",
-    "Style": "Soft",
+    "Kind": "Select",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Filled",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "avatar-shadow-lg-filled",
-   "nodeId": "3817:59755",
+   "slug": "xl-placeholder-default",
+   "nodeId": "103:221",
    "props": {
-    "Variant": "Avatar",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Filled"
+    "Kind": "Select",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 40
   },
   {
-   "slug": "avatar-default-sm-filled",
-   "nodeId": "3817:51475",
+   "slug": "xl-placeholder-focus",
+   "nodeId": "103:230",
    "props": {
-    "Variant": "Avatar",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Filled"
+    "Kind": "Select",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 40
   },
   {
-   "slug": "avatar-soft-sm-filled",
-   "nodeId": "3817:66461",
+   "slug": "xl-placeholder-disabled",
+   "nodeId": "103:239",
    "props": {
-    "Variant": "Avatar",
-    "Style": "Soft",
-    "Size": "sm",
-    "State": "Filled"
+    "Kind": "Select",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 40
   },
   {
-   "slug": "avatar-shadow-sm-filled",
-   "nodeId": "3817:59769",
+   "slug": "xl-placeholder-invalid",
+   "nodeId": "103:248",
    "props": {
-    "Variant": "Avatar",
-    "Style": "Shadow",
-    "Size": "sm",
-    "State": "Filled"
+    "Kind": "Select",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "xl-filled-default",
+   "nodeId": "103:257",
+   "props": {
+    "Kind": "Select",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "xl-filled-focus",
+   "nodeId": "103:266",
+   "props": {
+    "Kind": "Select",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Focus"
+   },
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "xl-filled-disabled",
+   "nodeId": "103:275",
+   "props": {
+    "Kind": "Select",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "xl-filled-invalid",
+   "nodeId": "103:284",
+   "props": {
+    "Kind": "Select",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-select__trigger",
+   "nodeW": 280,
+   "nodeH": 40
   }
  ]
 }

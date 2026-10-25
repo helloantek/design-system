@@ -50,11 +50,11 @@
     line-height: var(--ds-text-sm--line-height);
   }
 
-  .ds-field:has(.ds-input--invalid) .ds-field__label {
+  .ds-field:has(.ds-input--invalid, .ds-select__trigger--invalid) .ds-field__label {
     color: var(--ds-destructive-foreground);
   }
 
-  .ds-field:has(.ds-input--disabled) .ds-field__label {
+  .ds-field:has(.ds-input--disabled, .ds-select__trigger--disabled) .ds-field__label {
     opacity: 0.5;
   }
 
