@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, readFileSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { build, resolveBrand, rgba, toCss, toKotlin } from '../scripts/build.mjs';
+import { build, mergeTokens, resolveBrand, resolveSortUi2, rgba, toCss, toKotlin } from '../scripts/build.mjs';
 
 const variables = JSON.parse(readFileSync(new URL('../figma/variables.json', import.meta.url)));
 const { effects } = JSON.parse(readFileSync(new URL('../figma/effects.json', import.meta.url)));
@@ -48,4 +48,35 @@ test('builds every platform for every brand', () => {
   assert.deepEqual(readdirSync(join(out, 'ios')).sort(), ['DSColor.swift', 'Theme1Tokens.swift', 'Theme2Tokens.swift']);
   assert.deepEqual(readdirSync(join(out, 'android')).sort(), ['Theme1Tokens.kt', 'Theme2Tokens.kt']);
   assert.match(readFileSync(join(out, 'css/scoped/theme-2.css'), 'utf8'), /\[data-ds-brand="theme-2"\] \{/);
+});
+
+// Sort UI 2.0 (figma/sort-ui-2), added to every brand while components migrate from 1.3.
+const v2vars = JSON.parse(readFileSync(new URL('../figma/sort-ui-2/variables.json', import.meta.url)));
+const v2effects = JSON.parse(readFileSync(new URL('../figma/sort-ui-2/effects.json', import.meta.url))).effects;
+
+test('Sort UI 2.0: names follow Figma code syntax, composites are resolved', () => {
+  const v2 = resolveSortUi2(v2vars, v2effects);
+  assert.equal(v2.color.light['muted-foreground'], '#626262');
+  assert.equal(v2.color.dark['muted-foreground'], '#a1a1a1');
+  assert.equal(v2.color.light['alpha-foreground-10'], '#0a0a0a1a', 'colour × opacity');
+  assert.equal(v2.color.dark['palette-blue-tint'], '#2b7fff40');
+  assert.equal(v2.dimension['text-xs'], 13);
+  assert.equal(v2.dimension['text-xs--line-height'], 20);
+  assert.equal(v2.dimension['spacing-0-5'], 2);
+  assert.equal(v2.dimension.spacing, 4, 'the unit of calc(var(--spacing) * n)');
+  assert.equal(v2.fontWeight['font-weight-semibold'], 600);
+  assert.equal(v2.effect['ease-out'], 'cubic-bezier(0, 0, 0.2, 1)');
+  assert.equal(v2.effect['duration-150'], '150ms');
+  assert.equal(v2.effect['opacity-5'], '0.05');
+  assert.match(v2.effect['surface-dialog'], /^0px 20px 25px -5px #00000012/);
+});
+
+test('Sort UI 2.0 sits next to 1.3; a shared name must keep its value', () => {
+  const css = toCss(mergeTokens(resolveBrand(variables, effects, brand), resolveSortUi2(v2vars, v2effects)), { selector: ':root', darkSelector: '[data-ds-scheme="dark"]' });
+  assert.match(css, /:root \{[^}]*--ds-background: #fcfcfc;[^}]*--ds-text-xs--line-height: 20px;/);
+  assert.match(css, /\[data-ds-scheme="dark"\] \{[^}]*--ds-background: #0a0a0a;/);
+  assert.match(css, /--ds-bg-state-primary: #111115;/, '1.3 tokens stay');
+  assert.equal(css.match(/--ds-radius-xs:/g).length, 1, 'radius-xs is defined once');
+  const clash = { color: { light: {}, dark: {} }, dimension: { 'radius-xs': 5 }, fontWeight: {}, fontFamily: {}, effect: {} };
+  assert.throws(() => mergeTokens(resolveBrand(variables, effects, brand), clash), /--ds-radius-xs \(dimension\) is 4 in 1.3 and 5/);
 });
