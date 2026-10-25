@@ -181,7 +181,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | Select Item Description | option `description` (second line, 12 px muted) | `ds-select__text` · `ds-select__description` |
 | Select Label | `{ label, caption?, options }` (a group) | `ds-select__group-label` |
 | Select Separator | `{ type: 'separator' }` | `ds-select__separator` |
-| Select Content | the menu (popover, 14 px radius, Surface/Popover shadow) | `ds-select__menu` |
+| Select Content | the menu (popover, 8 px radius, Surface/Popover shadow) | `ds-select__menu` |
 | Checkbox · Radio | `indicator`: `check` (default) · `checkbox` · `radio` | `ds-select__check` · `ds-select__box--checkbox` · `ds-select__box--radio` |
 | — | `multiple` (`value`/`defaultValue` are arrays; options toggle and the menu stays open; the trigger lists the labels) | `[aria-multiselectable]` on the menu |
 | — | `multiple tags`: each value is a `Badge` (sm, Neutral, Soft, Border, Close Icon). × removes it with the mouse, Backspace/Delete removes the last one, the menu toggles any; removals are announced. Tags that do not fit wrap onto more rows (default), or with `tagsOverflow="count"` stay on one row with a "+N" badge (its tooltip and screen-reader text name the hidden values). No buttons inside the combobox: the × is a pointer target only. | `ds-select__tags` · `--count` · `ds-select__more` · `ds-select__status` |
@@ -221,7 +221,7 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Input (2.0): disabled prefix/suffix text (muted at 50 %) is 2.1:1 (WCAG exempts disabled controls, but axe reports it).
 - Select (2.0): State=Invalid's stroke and ring are bound to Tailwind class names, as in Input; unlike Input, the value stays black.
 - Select (2.0): Select Item reserves the check mark's 16 px in a 32 px right padding when not selected; the code keeps an empty 16 px slot, which looks the same.
-- Select (2.0): Size=sm uses an 8 px radius, the other sizes 10 px; Input has no sm.
+- Radius (2.0): Figma gives Button 8 px, Input and Select 10 px (Select sm 8 px), the Select menu 14 px and its items 10 px. The design system uses one control radius: Button, Input, Select and the menu are 8 px, and what sits inside a 4 px inset takes 8 − 4 = 4 px (menu items, the Input's action button). Figma should follow.
 - Select (2.0): a disabled field's label at 50 % (Field State=Disabled) is 3.69:1. axe reports it for Select, whose combobox is not a native control, but not for Input, whose label belongs to a disabled input.
 - Badge: Strong badges put white text on the accent colour, below WCAG AA's 4.5:1 for every colour but Neutral (Lime 1.91, Green 2.19, Cyan 2.38, Orange 2.9, Fuchsia 3.71, Pink 3.73, Blue 3.76, Red 3.97, Violet 4.43).
 - Badge: Border has no effect on Strong badges, except Neutral, where Strong + Border looks exactly like Soft + Border. The Style value is spelled "Srong".

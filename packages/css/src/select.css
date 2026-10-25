@@ -70,7 +70,6 @@
     --select-height: var(--ds-spacing-8);
     --select-pad-x: var(--ds-spacing-2-5);
     --select-chevron-pad: var(--ds-spacing-2);
-    --select-radius: var(--ds-radius-lg);
     --select-icon: var(--ds-muted-foreground);
     --select-tail-icon: var(--select-icon);
 
@@ -83,7 +82,8 @@
     min-height: var(--select-height);
     /* 4 px above and below keeps wrapped tag rows off the edge; min-height sets the Figma height. */
     padding: var(--ds-spacing-1) var(--select-chevron-pad) var(--ds-spacing-1) var(--select-pad-x);
-    border-radius: var(--select-radius);
+    /* 8 px like Button and Input (Figma draws 10 px, 8 px in sm). */
+    border-radius: var(--ds-radius-md);
     outline: none;
     background-color: var(--select-bg);
     box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--select-stroke), var(--select-ring), var(--select-shadow);
@@ -101,7 +101,6 @@
   .ds-field--sm .ds-select__trigger {
     --select-height: var(--ds-spacing-7);
     --select-chevron-pad: var(--ds-spacing-1-5);
-    --select-radius: var(--ds-radius-md);
   }
 
   .ds-field--lg .ds-select__trigger {
@@ -240,7 +239,8 @@
     max-height: var(--select-menu-max-height, 296px);
     padding: var(--ds-spacing-1);
     overflow-y: auto;
-    border-radius: var(--ds-radius-14);
+    /* 8 px like the field (Figma draws 14 px); the items inside the 4 px padding take 8 − 4 = 4 px. */
+    border-radius: var(--ds-radius-md);
     outline: none;
     background-color: var(--ds-popover);
     /* Figma: a 1 px border stroke (inside) and the Surface/Popover effect style. */
@@ -263,7 +263,7 @@
     align-items: center;
     gap: var(--ds-spacing-2);
     padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
-    border-radius: var(--ds-radius-lg);
+    border-radius: var(--ds-radius-xs);
     color: var(--ds-foreground);
     font-size: var(--ds-text-sm);
     font-weight: var(--ds-font-weight-normal);
