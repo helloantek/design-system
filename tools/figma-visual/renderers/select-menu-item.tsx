@@ -1,5 +1,5 @@
 import { RiGlobalLine } from '@remixicon/react';
-import { Select, type SelectIndicator, type SelectItem, type SelectOption } from '@helloantek/ds-react';
+import { Avatar, Select, type SelectIndicator, type SelectItem, type SelectOption } from '@helloantek/ds-react';
 import { FlagUnitedStates } from '../../../packages/react/src/Select/Select.fixtures';
 import type { Renderer } from './types';
 
@@ -14,11 +14,13 @@ export const renderSelectMenuItem: Renderer = (p) => {
       ? { ...base, caption: 'Caption', icon: <RiGlobalLine /> }
       : p.Type === 'Country Flag'
         ? { ...base, label: 'United States', caption: 'Caption', media: <FlagUnitedStates /> }
-        : p.Type === 'Default Large'
-          ? { ...base, description: 'Caption', icon: <RiGlobalLine /> }
-          : p.Type === 'Caption'
-            ? base
-            : undefined;
+        : p.Type === 'Avatar'
+          ? { ...base, caption: 'Caption', media: <Avatar size="xs" shape="rounded" initials="S" /> }
+          : p.Type === 'Default Large'
+            ? { ...base, description: 'Caption', icon: <RiGlobalLine /> }
+            : p.Type === 'Caption'
+              ? base
+              : undefined;
   if (!option) throw new Error(`Select Menu Items type "${p.Type}" is not implemented`);
   const items: SelectItem[] =
     p.Type === 'Label'

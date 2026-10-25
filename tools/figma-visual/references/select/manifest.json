@@ -1,5 +1,5 @@
 {
- "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/select.tsx turns these properties into props. Variant=Default and Multi-select are implemented (Multi-select differs from Default only when Filled). `target` (optional) is the element compared instead of #target. Variant=Tags is referenced in State=Filled only: its other states are drawn exactly like Variant=Default.",
+ "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/select.tsx turns these properties into props. Variant=Default and Multi-select are implemented (Multi-select differs from Default only when Filled). `target` (optional) is the element compared instead of #target. Variant=Tags is referenced in State=Filled only: its other states are drawn exactly like Variant=Default. Variant=Avatar is referenced in State=Filled only (the selected person's avatar replaces the lead icon); its other states are drawn like Variant=Default.",
  "component": "select",
  "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
  "componentSet": "3817:45118",
@@ -520,6 +520,78 @@
    "nodeId": "3817:59684",
    "props": {
     "Variant": "Tags",
+    "Style": "Shadow",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "avatar-default-lg-filled",
+   "nodeId": "3817:45106",
+   "props": {
+    "Variant": "Avatar",
+    "Style": "Default",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "avatar-soft-lg-filled",
+   "nodeId": "3817:66447",
+   "props": {
+    "Variant": "Avatar",
+    "Style": "Soft",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "avatar-shadow-lg-filled",
+   "nodeId": "3817:59755",
+   "props": {
+    "Variant": "Avatar",
+    "Style": "Shadow",
+    "Size": "lg",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "avatar-default-sm-filled",
+   "nodeId": "3817:51475",
+   "props": {
+    "Variant": "Avatar",
+    "Style": "Default",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "avatar-soft-sm-filled",
+   "nodeId": "3817:66461",
+   "props": {
+    "Variant": "Avatar",
+    "Style": "Soft",
+    "Size": "sm",
+    "State": "Filled"
+   },
+   "nodeW": 320,
+   "nodeH": 84
+  },
+  {
+   "slug": "avatar-shadow-sm-filled",
+   "nodeId": "3817:59769",
+   "props": {
+    "Variant": "Avatar",
     "Style": "Shadow",
     "Size": "sm",
     "State": "Filled"

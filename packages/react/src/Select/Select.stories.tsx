@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import { RiBuildingLine, RiGlobalLine, RiInformationFill, RiRocketLine, RiUser3Line } from '@remixicon/react';
 import brands from '@helloantek/ds-tokens/brands.json';
+import { Avatar } from '../Avatar';
+import { avatarImage } from '../Avatar/Avatar.fixtures';
 import { Select, type SelectIndicator, type SelectItem, type SelectSize, type SelectVariant } from './Select';
 import { FlagUnitedStates } from './Select.fixtures';
 
@@ -35,7 +37,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `Implements the Figma component sets **Select Input**, **Select Menu** and **Select Menu Items** ([open in Figma](${FIGMA_URL})): Select Input Variant = Default, Multi-select and Tags, and menu items of Type = Default, Default Large, Country Flag, Label, Caption and Divider in every Select type. Figma "Style" → \`variant\`, "Size" → \`size\`; Active is the focused trigger, Failed is \`error\`, Destructive (drawn as a disabled field in Figma) is \`disabled\`. Keyboard: arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab and type-ahead, as in the WAI-ARIA select-only combobox. **Playground** builds the menu from item controls; **MenuItem** shows one item with its Figma properties. The Avatar variant, the menu search and the menu footer button are in the backlog.`,
+        component: `Implements the Figma component sets **Select Input**, **Select Menu** and **Select Menu Items** ([open in Figma](${FIGMA_URL})): Select Input Variant = Default, Multi-select, Tags and Avatar, and menu items of Type = Default, Default Large, Avatar, Country Flag, Label, Caption and Divider in every Select type. Figma "Style" → \`variant\`, "Size" → \`size\`; Active is the focused trigger, Failed is \`error\`, Destructive (drawn as a disabled field in Figma) is \`disabled\`. Keyboard: arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab and type-ahead, as in the WAI-ARIA select-only combobox. **Playground** builds the menu from item controls; **MenuItem** shows one item with its Figma properties. The menu search and the menu footer button are in the backlog.`,
       },
     },
   },
@@ -46,7 +48,10 @@ const single = [(Story: () => ReactNode) => <div style={{ width: 320, paddingBot
 
 export default meta;
 
-type ItemType = 'Default' | 'Default Large' | 'Country Flag';
+type ItemType = 'Default' | 'Default Large' | 'Avatar' | 'Country Flag';
+
+// Figma Type=Avatar: Simon Alt has a picture, the others one initial (Figma shows one letter up to size md).
+const personAvatar = (name: string, i: number) => <Avatar size="xs" shape="rounded" src={i === 1 ? avatarImage : undefined} initials={name[0]} />;
 
 type PlaygroundArgs = {
   label: string;
@@ -88,7 +93,7 @@ function playgroundItems(args: PlaygroundArgs): SelectItem[] {
     value: name.toLowerCase().replace(' ', '-'),
     label: name,
     icon: args.itemType === 'Default Large' || (args.itemType === 'Default' && args.itemIcon) ? <RiUser3Line /> : undefined,
-    media: args.itemType === 'Country Flag' ? <FlagUnitedStates /> : undefined,
+    media: args.itemType === 'Country Flag' ? <FlagUnitedStates /> : args.itemType === 'Avatar' ? personAvatar(name, i) : undefined,
     description: args.itemType === 'Default Large' ? role : undefined,
     caption: args.itemSupporterText && args.itemType !== 'Default Large' ? role : undefined,
     badge: args.itemBadge && i === 1 ? 'Admin' : undefined,
@@ -145,7 +150,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     tags: { description: 'Figma Variant=Tags: values as removable badges (× or Backspace)', if: { arg: 'multiple' }, table: { category: 'Field' } },
     tagsOverflow: { control: 'inline-radio', options: ['wrap', 'count'], description: 'Tags that do not fit: wrap onto more rows, or one row and "+N"', if: { arg: 'tags' }, table: { category: 'Field' } },
     indicator: { control: 'inline-radio', options: ['check', 'checkbox', 'radio'], description: 'Figma Select type: Default, Checkbox, Radio Button', table: { category: 'Menu items' } },
-    itemType: { control: 'inline-radio', options: ['Default', 'Default Large', 'Country Flag'], description: 'Figma Select Menu Items Type', table: { category: 'Menu items' } },
+    itemType: { control: 'inline-radio', options: ['Default', 'Default Large', 'Avatar', 'Country Flag'], description: 'Figma Select Menu Items Type (Avatar also shows the selected avatar in the field: Select Input Variant=Avatar)', table: { category: 'Menu items' } },
     // Only Type=Default has a Lead Icon slot; Default Large shows its icon circle and Country Flag its flag there.
     itemIcon: { name: 'Lead Icon', description: 'Figma "Lead Icon" (Type=Default only)', if: { arg: 'itemType', eq: 'Default' }, table: { category: 'Menu items' } },
     // Default Large shows the role as its second line instead.
@@ -177,7 +182,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
 };
 
 type MenuItemArgs = {
-  type: 'Default' | 'Default Large' | 'Country Flag' | 'Label' | 'Caption' | 'Divider';
+  type: 'Default' | 'Default Large' | 'Avatar' | 'Country Flag' | 'Label' | 'Caption' | 'Divider';
   selectType: 'Default' | 'Checkbox' | 'Radio Button';
   state: 'Default' | 'Disabled';
   active: boolean;
@@ -209,7 +214,7 @@ export const MenuItem: StoryObj<MenuItemArgs> = {
     caption: 'The quick brown fox jumps over a lazy dog.',
   },
   argTypes: {
-    type: { name: 'Type', control: 'select', options: ['Default', 'Default Large', 'Country Flag', 'Label', 'Caption', 'Divider'] },
+    type: { name: 'Type', control: 'select', options: ['Default', 'Default Large', 'Avatar', 'Country Flag', 'Label', 'Caption', 'Divider'] },
     selectType: { name: 'Select type', control: 'inline-radio', options: ['Default', 'Checkbox', 'Radio Button'] },
     state: { name: 'State', control: 'inline-radio', options: ['Default', 'Disabled'], description: 'Hover the item for State=Hover' },
     active: { name: 'Active', description: 'Selected' },
@@ -227,7 +232,7 @@ export const MenuItem: StoryObj<MenuItemArgs> = {
       value: 'item',
       label: a.label,
       icon: a.type === 'Default Large' || (a.type === 'Default' && a.leadIcon) ? <RiGlobalLine /> : undefined,
-      media: a.type === 'Country Flag' ? <FlagUnitedStates /> : undefined,
+      media: a.type === 'Country Flag' ? <FlagUnitedStates /> : a.type === 'Avatar' ? <Avatar size="xs" shape="rounded" initials="S" /> : undefined,
       description: a.type === 'Default Large' ? a.caption : undefined,
       caption: a.supporterText && a.type !== 'Default Large' ? a.supporterTextValue : undefined,
       badge: a.badge ? a.badgeText : undefined,
@@ -335,6 +340,21 @@ export const Tags: StoryObj = {
       <Select {...field} label="Disabled" multiple tags defaultValue={['simon-alt', 'michael-davis']} disabled />
     </div>
   ),
+};
+
+/** Figma Select Input Variant=Avatar: options carry an Avatar (`media`), and the field shows the selected person's avatar instead of the lead icon. */
+export const WithAvatars: StoryObj = {
+  name: 'Avatar',
+  render: () => {
+    const people = users.map((u, i) => ('value' in u ? { ...u, media: personAvatar(u.label, i) } : u));
+    return (
+      <div style={{ display: 'grid', gap: 24, width: 320 }}>
+        <Select {...field} options={people} label="Owner" caption="Who answers for this project" defaultValue="simon-alt" />
+        <Select {...field} options={people} label="Owner (empty)" />
+        <Select {...field} options={people} label="Disabled" defaultValue="emma-thompson" disabled />
+      </div>
+    );
+  },
 };
 
 /** The open menu with every implemented item type: group label, options with icon, caption and badge, a disabled option, a divider. */

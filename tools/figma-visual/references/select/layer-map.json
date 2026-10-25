@@ -12,6 +12,7 @@
     "tail-icon/VECTOR": { "selector": ".ds-select__icon--tail", "fill": "color" },
     "expand/VECTOR": { "selector": ".ds-select__trigger > .ds-select__icon:last-child", "fill": "color" },
     "Input Caption Text/TEXT": { "selector": ".ds-field__caption" },
+    "Avatar": { "selector": ".ds-select__main > .ds-select__media" },
     "Badge": { "selector": ".ds-select__tags .ds-badge", "stroke": "inset-shadow", "skip": ["w"], "$why": "Variant=Tags: the first value's badge; it hugs its label, whose width follows glyph rasterisation." }
   }
 }
