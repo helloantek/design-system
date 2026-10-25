@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY`. **Components:** Avatar (with Status Badge), Badge, Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
+**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY` (Sort UI 1.3), moving to Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`) in stages; see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Status Badge), Badge, Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
 
 ## Using it in a project
 

@@ -11,8 +11,9 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => JSON.parse(readFileSync(join(root, file), 'utf8'));
 
-export const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const camel = (s) => slug(s).replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase()).replace(/^(\d)/, '_$1');
+// Keeps hyphens, so Sort UI 2.0 names like `text-xs--line-height` survive as in Figma's code syntax.
+export const slug = (s) => s.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+const camel = (s) => slug(s).replace(/-+([a-z0-9])/g, (_, c) => c.toUpperCase()).replace(/^(\d)/, '_$1');
 const pascal = (s) => camel(s).replace(/^_?(.)/, (m) => m.toUpperCase());
 
 // CSS variable prefix per Figma collection.
@@ -42,6 +43,58 @@ export function resolveBrand(variables, effects, brand) {
   for (const [name, value] of Object.entries(pick('Font Family', modeOf('Font Family')))) out.fontFamily[`${PREFIX['Font Family']}${name}`] = value;
   for (const [name, value] of Object.entries(effects)) out.effect[name] = value;
   return out;
+}
+
+// ── Sort UI 2.0 ──────────────────────────────────────────────────────────────────────────────────────────────────
+// Figma file 4JnqgEbdlnKgiFrfmiwEZw (figma/sort-ui-2/). Its names follow Figma's WEB code syntax (shadcn/Tailwind):
+// `colors/muted-foreground` → --ds-muted-foreground, `size/xs` → --ds-text-xs, `radius/lg` → --ds-radius-lg,
+// `spacing/2` → --ds-spacing-2 (Figma: calc(var(--spacing) * 2); --ds-spacing is the 4 px unit). One theme, Light and
+// Dark; every brand gets the same values while the 1.3 tokens are migrated away.
+const WEIGHTS = { Regular: 400, Medium: 500, 'Semi Bold': 600, Bold: 700 };
+
+/** CSS name of a Sort UI 2.0 variable: its code syntax when Figma has one, else its path. */
+export const v2Name = (path, entry) => entry.css ?? path.replace(/^colors\//, '').replace(/\//g, '-');
+
+/** Resolve Sort UI 2.0 into the same shape as resolveBrand(). Opacity and Motion are CSS-only, like effects. */
+export function resolveSortUi2(variables, effects) {
+  const out = { color: { light: {}, dark: {} }, dimension: {}, fontWeight: {}, fontFamily: {}, effect: {} };
+  const one = (entry) => Object.values(entry.values)[0];
+  for (const [path, entry] of Object.entries(variables.Themes.vars)) {
+    out.color.light[v2Name(path, entry)] = entry.values.Light;
+    out.color.dark[v2Name(path, entry)] = entry.values.Dark;
+  }
+  for (const collection of ['Radius', 'Spacing']) {
+    for (const [path, entry] of Object.entries(variables[collection].vars)) out.dimension[v2Name(path, entry)] = one(entry);
+  }
+  out.dimension.spacing = variables.Spacing.vars['spacing/1'].values.Value;
+  for (const [path, entry] of Object.entries(variables.Typography.vars)) {
+    const value = one(entry);
+    if (path.startsWith('font/')) out.fontFamily[v2Name(path, entry)] = value;
+    else if (path.startsWith('weight/')) out.fontWeight[v2Name(path, entry)] = WEIGHTS[value] ?? value;
+    else out.dimension[v2Name(path, entry)] = value;
+  }
+  for (const [path, entry] of Object.entries(variables.Opacity.vars)) out.effect[v2Name(path, entry)] = `${one(entry) / 100}`;
+  for (const [path, entry] of Object.entries(variables.Motion.vars)) {
+    const value = one(entry);
+    out.effect[v2Name(path, entry)] = typeof value === 'number' ? `${Math.round(value * 1000)}ms` : value;
+  }
+  for (const [name, value] of Object.entries(effects)) out.effect[slug(name)] = value;
+  return out;
+}
+
+/** Adds Sort UI 2.0 tokens to a brand's 1.3 tokens. A name both define must have the same value. */
+export function mergeTokens(base, extra) {
+  const merge = (into, from, group) => {
+    const bySlug = new Map(Object.keys(into).map((k) => [slug(k), k]));
+    for (const [name, value] of Object.entries(from)) {
+      const existing = bySlug.get(slug(name));
+      if (existing === undefined) into[name] = value;
+      else if (into[existing] !== value) throw new Error(`Token --ds-${slug(name)} (${group}) is ${into[existing]} in 1.3 and ${value} in Sort UI 2.0`);
+    }
+  };
+  for (const scheme of ['light', 'dark']) merge(base.color[scheme], extra.color[scheme], `color ${scheme}`);
+  for (const group of ['dimension', 'fontWeight', 'fontFamily', 'effect']) merge(base[group], extra[group], group);
+  return base;
 }
 
 const cssVar = (name) => `--ds-${slug(name)}`;
@@ -185,13 +238,14 @@ ${fonts}
 export function build(outDir = join(root, 'dist')) {
   const variables = read('figma/variables.json');
   const { effects } = read('figma/effects.json');
+  const v2 = resolveSortUi2(read('figma/sort-ui-2/variables.json'), read('figma/sort-ui-2/effects.json').effects);
   const { brands } = read('brands.json');
   rmSync(outDir, { recursive: true, force: true });
   for (const dir of ['css/scoped', 'js', 'ios', 'android']) mkdirSync(join(outDir, dir), { recursive: true });
 
   const header = (brand) => `/* Generated by @helloantek/ds-tokens for brand "${brand}". Do not edit by hand. */\n`;
   for (const [name, brand] of Object.entries(brands)) {
-    const t = resolveBrand(variables, effects, brand);
+    const t = mergeTokens(resolveBrand(variables, effects, brand), v2);
     const at = `[data-ds-brand="${name}"]`;
     writeFileSync(join(outDir, 'css', `${name}.css`), header(name) + toCss(t, { selector: ':root', darkSelector: '[data-ds-scheme="dark"]' }) + '\n');
     writeFileSync(join(outDir, 'css/scoped', `${name}.css`), header(name) + toCss(t, { selector: at, darkSelector: `${at}[data-ds-scheme="dark"], ${at} [data-ds-scheme="dark"]` }) + '\n');

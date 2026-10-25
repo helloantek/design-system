@@ -1,0 +1,21 @@
+{
+ "$source": {
+  "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+  "note": "Sort UI 2.0 effect styles as CSS box-shadow lists (exported with export-variables-v2.js). Colours are fixed in Figma."
+ },
+ "effects": {
+  "Shadow/2xs": "0px 2px 2px -1px #40404008, 0px 1px 1px -1px #4040400f",
+  "Shadow/xs": "0px 1px 2px 0px #0000000a",
+  "Shadow/sm": "0px 1px 3px 0px #0000000f, 0px 1px 2px -1px #0000000f",
+  "Shadow/md": "0px 4px 12px -1px #0000000f, 0px 2px 8px -2px #0000000f",
+  "Shadow/lg": "0px 10px 15px -3px #00000012, 0px 4px 6px -4px #00000012",
+  "Shadow/xl": "0px 20px 25px -5px #00000012, 0px 8px 10px -6px #00000012",
+  "Shadow/2xl": "0px 25px 50px -12px #00000033",
+  "Controls/primary-control": "0px 3px 3px -2px #00000033, inset 0px 0px 3px 0px #ffffff33, inset 0px 1px 0px 0px #ffffff33",
+  "Controls/primary-control-disabled": "0px 3px 3px -2px #00000033, inset 0px 0px 3px 0px #ffffff33, inset 0px 1px 0px 0px #ffffff80",
+  "Controls/secondary-control": "0px 2px 3px -1px #00000008, 0px 1px 2px -1px #0000000a, inset 0px 1px 0px 0px #ffffff26, inset 0px -1px 0px 0px #00000014",
+  "Surface/Dialog": "0px 20px 25px -5px #00000012, 0px 8px 10px -6px #00000012, inset 0px 1px 0px 0px #ffffff26",
+  "Surface/Card": "0px 2px 2px -1px #40404008, 0px 1px 1px -1px #4040400f, inset 0px 1px 0px 0px #ffffff26",
+  "Surface/Popover": "0px 10px 15px -3px #00000012, 0px 4px 6px -4px #00000012, inset 0px 1px 0px 0px #ffffff26"
+ }
+}
