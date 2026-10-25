@@ -1,26 +1,69 @@
 {
-  "$comment": "Figma layer path (as in spec.json) -> element inside #target and how to read it. skip: spec keys not compared for this layer.",
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-input for Input and Input Group, .ds-field for Field) and how to read it. skip: spec keys not compared for this layer.",
   "layers": {
-    "root": { "selector": ".ds-field" },
-    "Input Label/TEXT": { "selector": ".ds-field__label" },
-    "Container": { "selector": ".ds-input", "stroke": "inset-shadow" },
-    "Container/Container": { "selector": ".ds-input__control", "skip": ["w"] },
-    "Container/label": { "selector": ".ds-input__native", "skip": ["w", "g"] },
-    "Container/label/TEXT": { "selector": ".ds-input__native", "text": "placeholder-if-empty" },
-    "lead-icon": { "selector": ".ds-input__icon" },
-    "lead-icon/VECTOR": { "selector": ".ds-input__icon", "fill": "color" },
-    "tail-icon/VECTOR": { "selector": ".ds-input__icon--tail", "fill": "color" },
-    "badge": { "selector": ".ds-input__shortcut", "stroke": "inset-shadow" },
-    "badge/TEXT": { "selector": ".ds-input__shortcut" },
-    "Suffix#0": { "selector": ".ds-input__addon:not(.ds-input__addon--end)", "stroke": "inset-shadow", "skip": ["w", "g"] },
-    "Suffix#0/TEXT": { "selector": ".ds-input__addon:not(.ds-input__addon--end)" },
-    "Suffix#1": { "selector": ".ds-input__addon--end", "stroke": "inset-shadow", "skip": ["w", "g"] },
-    "Prefix#0": { "selector": ".ds-input__affix:not(.ds-input__affix--end)", "skip": ["w", "g"] },
-    "Prefix#0/TEXT": { "selector": ".ds-input__affix:not(.ds-input__affix--end)" },
-    "Prefix#1": { "selector": ".ds-input__affix--end", "skip": ["w", "g"] },
-    "divider": { "selector": ".ds-input__action", "stroke": "inset-shadow" },
-    "tail-button": { "selector": ".ds-input__action", "skip": ["w", "p", "g"], "$why": "Figma pads the button 10 px and its label frame 2 px; the CSS uses 12 px on the button alone (same rendering)." },
-    "tail-button/TEXT": { "selector": ".ds-input__action" },
-    "Input Caption Text/TEXT": { "selector": ".ds-field__caption" }
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The side padding sits on .ds-input__control (Body), not on the box. Field root (a column with an 8 px gap) is covered by its size and the pixels."
+    },
+    "Text": {
+      "selector": ".ds-input__native",
+      "text": "placeholder-if-empty"
+    },
+    "Body": {
+      "selector": ".ds-input__control",
+      "skip": [
+        "w"
+      ],
+      "$why": "The control also holds the inline text (L slot / T slot), so it is wider than Figma's Body."
+    },
+    "L slot": {
+      "selector": ".ds-input__affix:not(.ds-input__affix--end)",
+      "skip": [
+        "w",
+        "h",
+        "p",
+        "g"
+      ],
+      "$why": "The slot's 10 px edge distance is a margin on the text in code; the pixels cover the position."
+    },
+    "L slot/TEXT": {
+      "selector": ".ds-input__affix:not(.ds-input__affix--end)"
+    },
+    "T slot": {
+      "selector": ".ds-input__affix--end",
+      "skip": [
+        "w",
+        "h",
+        "p",
+        "g"
+      ],
+      "$why": "As L slot."
+    },
+    "T slot/TEXT": {
+      "selector": ".ds-input__affix--end"
+    },
+    "Legend": {
+      "selector": ".ds-field__label"
+    },
+    "Input": {
+      "selector": ".ds-input",
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "As root."
+    },
+    "Input/TEXT": {
+      "selector": ".ds-input__native",
+      "text": "placeholder-if-empty"
+    },
+    "Description": {
+      "selector": ".ds-field__caption"
+    }
   }
 }

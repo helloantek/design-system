@@ -1,8 +1,8 @@
 {
- "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/input.tsx turns these properties into props. Only the implemented Variants are listed.",
+ "$comment": "Sort UI 2.0 reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/input.tsx turns them into props. Input (82:50) and Input Group (93:2675) at Size=lg (size=\"lg\") and default (size=\"sm\") in every Value and State, and Field (133:98) Vertical Default and Disabled. Not listed: Size=xl (no such size in the API); Input Group Filled + Invalid, which keeps the value black while Input turns it red (see the README's design findings); Field Invalid, which shows the description and the error together while `error` replaces the description.",
  "component": "input",
- "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
- "componentSet": "3780:4518",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "82:50",
  "brand": "theme-1",
  "scheme": "light",
  "thresholds": {
@@ -12,629 +12,416 @@
  },
  "entries": [
   {
-   "slug": "default-default-lg-placeholder",
-   "nodeId": "3790:11305",
+   "slug": "input-default-placeholder-default",
+   "nodeId": "82:2",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Placeholder"
+    "Kind": "Input",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 32
   },
   {
-   "slug": "default-default-lg-active",
-   "nodeId": "3790:11804",
+   "slug": "input-default-placeholder-focus",
+   "nodeId": "82:4",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Active"
+    "Kind": "Input",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 32
   },
   {
-   "slug": "default-default-lg-filled",
-   "nodeId": "3790:11674",
+   "slug": "input-default-placeholder-disabled",
+   "nodeId": "82:6",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "default-default-lg-failed",
-   "nodeId": "3790:11329",
-   "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "default-default-lg-disabled",
-   "nodeId": "3790:11317",
-   "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "lg",
+    "Kind": "Input",
+    "Size": "default",
+    "Value": "Placeholder",
     "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 32
   },
   {
-   "slug": "default-shadow-lg-placeholder",
-   "nodeId": "3780:4506",
+   "slug": "input-default-placeholder-invalid",
+   "nodeId": "82:8",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Placeholder"
+    "Kind": "Input",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 32
   },
   {
-   "slug": "default-shadow-lg-active",
-   "nodeId": "3780:4752",
+   "slug": "input-default-filled-default",
+   "nodeId": "82:10",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Active"
+    "Kind": "Input",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 32
   },
   {
-   "slug": "default-shadow-lg-filled",
-   "nodeId": "3780:5810",
+   "slug": "input-default-filled-focus",
+   "nodeId": "82:12",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Filled"
+    "Kind": "Input",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 32
   },
   {
-   "slug": "default-shadow-lg-failed",
-   "nodeId": "3783:6706",
+   "slug": "input-default-filled-disabled",
+   "nodeId": "82:14",
    "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "default-shadow-lg-disabled",
-   "nodeId": "3783:7105",
-   "props": {
-    "Variant": "Default",
-    "Style": "Shadow",
-    "Size": "lg",
+    "Kind": "Input",
+    "Size": "default",
+    "Value": "Filled",
     "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 32
   },
   {
-   "slug": "default-soft-lg-placeholder",
-   "nodeId": "3784:15205",
+   "slug": "input-default-filled-invalid",
+   "nodeId": "82:16",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Placeholder"
+    "Kind": "Input",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 32
   },
   {
-   "slug": "default-soft-lg-active",
-   "nodeId": "3784:15655",
+   "slug": "input-lg-placeholder-default",
+   "nodeId": "82:18",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
+    "Kind": "Input",
     "Size": "lg",
-    "State": "Active"
+    "Value": "Placeholder",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 36
   },
   {
-   "slug": "default-soft-lg-filled",
-   "nodeId": "3784:15538",
+   "slug": "input-lg-placeholder-focus",
+   "nodeId": "82:20",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
+    "Kind": "Input",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Placeholder",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 36
   },
   {
-   "slug": "default-soft-lg-failed",
-   "nodeId": "3784:15229",
+   "slug": "input-lg-placeholder-disabled",
+   "nodeId": "82:22",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
+    "Kind": "Input",
     "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "default-soft-lg-disabled",
-   "nodeId": "3784:15217",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "Size": "lg",
+    "Value": "Placeholder",
     "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 36
   },
   {
-   "slug": "default-default-sm-placeholder",
-   "nodeId": "3790:11936",
+   "slug": "input-lg-placeholder-invalid",
+   "nodeId": "82:24",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Placeholder"
+    "Kind": "Input",
+    "Size": "lg",
+    "Value": "Placeholder",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 36
   },
   {
-   "slug": "default-default-sm-active",
-   "nodeId": "3790:12435",
+   "slug": "input-lg-filled-default",
+   "nodeId": "82:26",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Active"
+    "Kind": "Input",
+    "Size": "lg",
+    "Value": "Filled",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 36
   },
   {
-   "slug": "default-default-sm-filled",
-   "nodeId": "3790:12305",
+   "slug": "input-lg-filled-focus",
+   "nodeId": "82:28",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Filled"
+    "Kind": "Input",
+    "Size": "lg",
+    "Value": "Filled",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 36
   },
   {
-   "slug": "default-default-sm-failed",
-   "nodeId": "3790:11960",
+   "slug": "input-lg-filled-disabled",
+   "nodeId": "82:30",
    "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "default-default-sm-disabled",
-   "nodeId": "3790:11948",
-   "props": {
-    "Variant": "Default",
-    "Style": "Default",
-    "Size": "sm",
+    "Kind": "Input",
+    "Size": "lg",
+    "Value": "Filled",
     "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 84
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 36
   },
   {
-   "slug": "shortcut-default-lg-placeholder",
-   "nodeId": "3790:11341",
+   "slug": "input-lg-filled-invalid",
+   "nodeId": "82:32",
    "props": {
-    "Variant": "Shortcut",
-    "Style": "Default",
+    "Kind": "Input",
     "Size": "lg",
-    "State": "Placeholder"
+    "Value": "Filled",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 36
   },
   {
-   "slug": "shortcut-default-lg-active",
-   "nodeId": "3790:11817",
+   "slug": "group-lg-placeholder-default",
+   "nodeId": "93:3278",
    "props": {
-    "Variant": "Shortcut",
-    "Style": "Default",
+    "Kind": "Input Group",
     "Size": "lg",
-    "State": "Active"
+    "Value": "Placeholder",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "shortcut-default-lg-filled",
-   "nodeId": "3790:11686",
+   "slug": "group-default-placeholder-default",
+   "nodeId": "93:3502",
    "props": {
-    "Variant": "Shortcut",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Filled"
+    "Kind": "Input Group",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Default"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "shortcut-default-lg-failed",
-   "nodeId": "3790:11365",
+   "slug": "group-lg-placeholder-disabled",
+   "nodeId": "93:3290",
    "props": {
-    "Variant": "Shortcut",
-    "Style": "Default",
+    "Kind": "Input Group",
     "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "shortcut-default-lg-disabled",
-   "nodeId": "3790:11353",
-   "props": {
-    "Variant": "Shortcut",
-    "Style": "Default",
-    "Size": "lg",
+    "Value": "Placeholder",
     "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "add-on-default-lg-placeholder",
-   "nodeId": "3790:18882",
+   "slug": "group-default-placeholder-disabled",
+   "nodeId": "93:3514",
    "props": {
-    "Variant": "Add-on",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "add-on-default-lg-active",
-   "nodeId": "3790:18987",
-   "props": {
-    "Variant": "Add-on",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Active"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "add-on-default-lg-filled",
-   "nodeId": "3790:18960",
-   "props": {
-    "Variant": "Add-on",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "add-on-default-lg-failed",
-   "nodeId": "3790:18934",
-   "props": {
-    "Variant": "Add-on",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "add-on-default-lg-disabled",
-   "nodeId": "3790:18908",
-   "props": {
-    "Variant": "Add-on",
-    "Style": "Default",
-    "Size": "lg",
+    "Kind": "Input Group",
+    "Size": "default",
+    "Value": "Placeholder",
     "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "inline-add-on-default-lg-placeholder",
-   "nodeId": "3791:5804",
+   "slug": "group-lg-placeholder-focus",
+   "nodeId": "93:3302",
    "props": {
-    "Variant": "Inline add-on",
-    "Style": "Default",
+    "Kind": "Input Group",
     "Size": "lg",
-    "State": "Placeholder"
+    "Value": "Placeholder",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "inline-add-on-default-lg-active",
-   "nodeId": "3791:5909",
+   "slug": "group-default-placeholder-focus",
+   "nodeId": "93:3526",
    "props": {
-    "Variant": "Inline add-on",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Active"
+    "Kind": "Input Group",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Focus"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "inline-add-on-default-lg-filled",
-   "nodeId": "3791:5882",
+   "slug": "group-lg-placeholder-invalid",
+   "nodeId": "93:3314",
    "props": {
-    "Variant": "Inline add-on",
-    "Style": "Default",
+    "Kind": "Input Group",
     "Size": "lg",
-    "State": "Filled"
+    "Value": "Placeholder",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "inline-add-on-default-lg-failed",
-   "nodeId": "3791:5856",
+   "slug": "group-default-placeholder-invalid",
+   "nodeId": "93:3538",
    "props": {
-    "Variant": "Inline add-on",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Failed"
+    "Kind": "Input Group",
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Invalid"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 32
   },
   {
-   "slug": "inline-add-on-default-lg-disabled",
-   "nodeId": "3791:5830",
+   "slug": "group-lg-filled-default",
+   "nodeId": "93:3326",
    "props": {
-    "Variant": "Inline add-on",
-    "Style": "Default",
+    "Kind": "Input Group",
     "Size": "lg",
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 36
+  },
+  {
+   "slug": "group-default-filled-default",
+   "nodeId": "93:3550",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 32
+  },
+  {
+   "slug": "group-lg-filled-disabled",
+   "nodeId": "93:3338",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "lg",
+    "Value": "Filled",
     "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 88
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 36
   },
   {
-   "slug": "tail-button-default-lg-placeholder",
-   "nodeId": "3790:11488",
+   "slug": "group-default-filled-disabled",
+   "nodeId": "93:3562",
    "props": {
-    "Variant": "Tail button",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "tail-button-default-lg-active",
-   "nodeId": "3790:11870",
-   "props": {
-    "Variant": "Tail button",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Active"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "tail-button-default-lg-filled",
-   "nodeId": "3790:11741",
-   "props": {
-    "Variant": "Tail button",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Filled"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "tail-button-default-lg-failed",
-   "nodeId": "3790:11516",
-   "props": {
-    "Variant": "Tail button",
-    "Style": "Default",
-    "Size": "lg",
-    "State": "Failed"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "tail-button-default-lg-disabled",
-   "nodeId": "3790:11502",
-   "props": {
-    "Variant": "Tail button",
-    "Style": "Default",
-    "Size": "lg",
+    "Kind": "Input Group",
+    "Size": "default",
+    "Value": "Filled",
     "State": "Disabled"
    },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 32
+  },
+  {
+   "slug": "group-lg-filled-focus",
+   "nodeId": "93:3350",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "lg",
+    "Value": "Filled",
+    "State": "Focus"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 36
+  },
+  {
+   "slug": "group-default-filled-focus",
+   "nodeId": "93:3574",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Focus"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 32
+  },
+  {
+   "slug": "field-default",
+   "nodeId": "133:2",
+   "props": {
+    "Kind": "Field",
+    "State": "Default"
+   },
+   "target": "#target .ds-field",
    "nodeW": 320,
    "nodeH": 88
   },
   {
-   "slug": "shortcut-default-sm-placeholder",
-   "nodeId": "3790:11972",
+   "slug": "field-disabled",
+   "nodeId": "133:22",
    "props": {
-    "Variant": "Shortcut",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Placeholder"
+    "Kind": "Field",
+    "State": "Disabled"
    },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "add-on-default-sm-placeholder",
-   "nodeId": "3790:19014",
-   "props": {
-    "Variant": "Add-on",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "inline-add-on-default-sm-placeholder",
-   "nodeId": "3791:5936",
-   "props": {
-    "Variant": "Inline add-on",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "tail-button-default-sm-placeholder",
-   "nodeId": "3790:12119",
-   "props": {
-    "Variant": "Tail button",
-    "Style": "Default",
-    "Size": "sm",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 84
-  },
-  {
-   "slug": "shortcut-shadow-lg-placeholder",
-   "nodeId": "3780:4516",
-   "props": {
-    "Variant": "Shortcut",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "add-on-shadow-lg-placeholder",
-   "nodeId": "3790:18869",
-   "props": {
-    "Variant": "Add-on",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "inline-add-on-shadow-lg-placeholder",
-   "nodeId": "3791:5791",
-   "props": {
-    "Variant": "Inline add-on",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "tail-button-shadow-lg-placeholder",
-   "nodeId": "3780:4512",
-   "props": {
-    "Variant": "Tail button",
-    "Style": "Shadow",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "shortcut-soft-lg-placeholder",
-   "nodeId": "3784:15241",
-   "props": {
-    "Variant": "Shortcut",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "add-on-soft-lg-placeholder",
-   "nodeId": "3790:19133",
-   "props": {
-    "Variant": "Add-on",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "inline-add-on-soft-lg-placeholder",
-   "nodeId": "3791:6055",
-   "props": {
-    "Variant": "Inline add-on",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
-   "nodeW": 320,
-   "nodeH": 88
-  },
-  {
-   "slug": "tail-button-soft-lg-placeholder",
-   "nodeId": "3784:15370",
-   "props": {
-    "Variant": "Tail button",
-    "Style": "Soft",
-    "Size": "lg",
-    "State": "Placeholder"
-   },
+   "target": "#target .ds-field",
    "nodeW": 320,
    "nodeH": 88
   }
- ],
- "$thresholds": "Measured 2026-10-21 on Chromium 141.0.7390.37: identical code renders up to 2.2 points higher on the GitHub runner than in the cloud dev container (worst: button xs 4.8% -> 7.0%). maxMismatch keeps ~1 point above the CI maximum. Pixel metrics do not catch 1 px layout or radius changes; see docs/playbook.md."
+ ]
 }

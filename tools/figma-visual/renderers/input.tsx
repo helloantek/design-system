@@ -1,32 +1,32 @@
-import { RiAtLine, RiInformationFill } from '@remixicon/react';
-import { Input, InputAction, type InputSize, type InputVariant } from '@helloantek/ds-react';
+import { Input, type InputSize } from '@helloantek/ds-react';
 import type { Renderer } from './types';
 
-// Maps Figma Input properties to props, with the sample texts used in the Figma file.
-// Active is produced by focusing the input in check.mjs. The field is 320 px wide in Figma.
-const kinds: Record<string, { placeholder: string; filled: string; props: Record<string, unknown> }> = {
-  Default: { placeholder: 'mail@domain.com', filled: 'hey@sortui.company', props: { leadIcon: <RiAtLine />, tailIcon: <RiInformationFill /> } },
-  Shortcut: { placeholder: 'Search', filled: 'design system', props: { leadIcon: <RiAtLine />, shortcut: '/' } },
-  'Add-on': { placeholder: 'domain', filled: 'apple', props: { tailIcon: <RiInformationFill />, addonBefore: 'https://', addonAfter: '.com' } },
-  'Inline add-on': { placeholder: 'domain', filled: 'apple', props: { tailIcon: <RiInformationFill />, prefix: 'https://', suffix: '.com' } },
-  'Tail button': { placeholder: 'mail@domain.com', filled: 'hey@sortui.company', props: { leadIcon: <RiAtLine />, tailIcon: <RiInformationFill />, action: <InputAction>Send</InputAction> } },
-};
+// Maps Sort UI 2.0 Input, Input Group and Field properties to props, with the sample texts of the Figma file.
+// Figma Size=lg is size="lg", Size=default is size="sm". Focus is produced by focusing the input in check.mjs.
+// Input and Input Group entries measure .ds-input (the manifest's target), so the error text under it is not compared.
+const widths: Record<string, number> = { Input: 240, 'Input Group': 280, Field: 320 };
 
 export const renderInput: Renderer = (p) => {
-  const kind = kinds[p.Variant];
-  if (!kind) throw new Error(`Input variant "${p.Variant}" is not implemented`);
+  const width = widths[p.Kind];
+  if (!width) throw new Error(`Input kind "${p.Kind}" is not implemented`);
+  const disabled = p.State === 'Disabled';
+  if (p.Kind === 'Field') {
+    return (
+      <div id="target" style={{ width }}>
+        <Input label="Label" caption="Description" size="sm" placeholder="Placeholder" disabled={disabled} />
+      </div>
+    );
+  }
   return (
-    <div id="target" style={{ width: 320 }}>
+    <div id="target" style={{ width }}>
       <Input
-        {...kind.props}
-        label="Label"
-        caption={p.State === 'Failed' ? undefined : 'Caption text'}
-        error={p.State === 'Failed' ? 'Error message' : undefined}
-        variant={p.Style.toLowerCase() as InputVariant}
-        size={p.Size as InputSize}
-        placeholder={kind.placeholder}
-        defaultValue={p.State === 'Filled' ? kind.filled : undefined}
-        disabled={p.State === 'Disabled'}
+        size={(p.Size === 'lg' ? 'lg' : 'sm') as InputSize}
+        placeholder="Placeholder"
+        defaultValue={p.Value === 'Filled' ? 'Value' : undefined}
+        error={p.State === 'Invalid' ? 'Error message' : undefined}
+        disabled={disabled}
+        prefix={p.Kind === 'Input Group' ? 'https://' : undefined}
+        suffix={p.Kind === 'Input Group' ? '.dev' : undefined}
       />
     </div>
   );

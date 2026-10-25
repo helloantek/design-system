@@ -3,7 +3,7 @@
  * "Select Menu Items" (3803:8920) in file 4tiBR2hKd4yvQehtKhM9OY.
  * Covers Select Input Variant=Default in every Style, Size and State, and menu items of Type=Default, Label and Divider
  * with Select type=Default. Every value comes from @helloantek/ds-tokens; load one brand's token CSS before this file.
- * The label and caption reuse .ds-field from input.css.
+ * The label and caption reuse .ds-field from input.css, kept at Sort UI 1.3 below until Select moves to 2.0.
  *
  * Markup (classes in [] are optional; ARIA follows the WAI-ARIA select-only combobox pattern):
  *   <div class="ds-field ds-field--lg ds-select">
@@ -55,6 +55,31 @@
  */
 
 @layer ds.components {
+  /* Sort UI 1.3 label and caption: input.css styles .ds-field after Sort UI 2.0; this block goes when Select moves to 2.0. */
+  .ds-field.ds-select {
+    gap: var(--ds-space-8);
+    font-family: var(--ds-font-family-body);
+    letter-spacing: normal;
+  }
+
+  .ds-select .ds-field__label {
+    color: var(--ds-text-default);
+    font-size: var(--ds-font-size-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-font-line-height-leading-5);
+  }
+
+  .ds-select .ds-field__caption {
+    color: var(--ds-text-muted);
+    font-size: var(--ds-font-size-xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-font-line-height-leading-4);
+  }
+
+  .ds-select .ds-field__caption--error {
+    color: var(--ds-text-destructive);
+  }
+
   .ds-select__anchor {
     position: relative;
   }
