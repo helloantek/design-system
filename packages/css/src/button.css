@@ -182,11 +182,6 @@
       --btn-effect: var(--ds-controls-primary-control-disabled);
     }
 
-    /* Figma keeps a white sheen (35 % → 0 at 68 %) on the icon-only button; 35 % sits between the 30 % and 40 % tokens. */
-    &.ds-button--default.ds-button--icon-only {
-      --btn-bg: linear-gradient(180deg, color-mix(in srgb, var(--ds-alpha-white-30) 50%, var(--ds-alpha-white-40)) 0%, transparent 68%), var(--ds-muted-foreground);
-    }
-
     &.ds-button--outline {
       --btn-bg: var(--ds-control-hover);
     }
