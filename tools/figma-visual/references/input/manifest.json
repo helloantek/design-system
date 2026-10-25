@@ -1,5 +1,5 @@
 {
- "$comment": "Sort UI 2.0 reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/input.tsx turns them into props. Input (82:50) and Input Group (93:2675) at Size=lg (size=\"lg\") and default (size=\"sm\") in every Value and State, and Field (133:98) Vertical Default and Disabled. Not listed: Size=xl (no such size in the API); Input Group Filled + Invalid, which keeps the value black while Input turns it red (see the README's design findings); Field Invalid, which shows the description and the error together while `error` replaces the description.",
+ "$comment": "Sort UI 2.0 reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/input.tsx turns them into props. Input (82:50) and Input Group (93:2675) in every Size (xl, lg, default), Value and State, and Field (133:98) Vertical Default and Disabled. Not listed: Input Group Filled + Invalid, which keeps the value black while Input turns it red (see the README's design findings); Field Invalid, which shows the description and the error together while `error` replaces the description.",
  "component": "input",
  "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
  "componentSet": "82:50",
@@ -400,6 +400,201 @@
    "target": "#target .ds-input",
    "nodeW": 280,
    "nodeH": 32
+  },
+  {
+   "slug": "input-xl-placeholder-default",
+   "nodeId": "82:34",
+   "props": {
+    "Kind": "Input",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Default"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 40
+  },
+  {
+   "slug": "input-xl-placeholder-focus",
+   "nodeId": "82:36",
+   "props": {
+    "Kind": "Input",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Focus"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 40
+  },
+  {
+   "slug": "input-xl-placeholder-disabled",
+   "nodeId": "82:38",
+   "props": {
+    "Kind": "Input",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 40
+  },
+  {
+   "slug": "input-xl-placeholder-invalid",
+   "nodeId": "82:40",
+   "props": {
+    "Kind": "Input",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 40
+  },
+  {
+   "slug": "input-xl-filled-default",
+   "nodeId": "82:42",
+   "props": {
+    "Kind": "Input",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 40
+  },
+  {
+   "slug": "input-xl-filled-focus",
+   "nodeId": "82:44",
+   "props": {
+    "Kind": "Input",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Focus"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 40
+  },
+  {
+   "slug": "input-xl-filled-disabled",
+   "nodeId": "82:46",
+   "props": {
+    "Kind": "Input",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 40
+  },
+  {
+   "slug": "input-xl-filled-invalid",
+   "nodeId": "82:48",
+   "props": {
+    "Kind": "Input",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 240,
+   "nodeH": 40
+  },
+  {
+   "slug": "group-xl-placeholder-default",
+   "nodeId": "93:2674",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Default"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "group-xl-placeholder-disabled",
+   "nodeId": "93:2805",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "group-xl-placeholder-focus",
+   "nodeId": "93:2745",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Focus"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "group-xl-placeholder-invalid",
+   "nodeId": "93:2861",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "xl",
+    "Value": "Placeholder",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "group-xl-filled-default",
+   "nodeId": "93:2703",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "group-xl-filled-disabled",
+   "nodeId": "93:2817",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 40
+  },
+  {
+   "slug": "group-xl-filled-focus",
+   "nodeId": "93:2757",
+   "props": {
+    "Kind": "Input Group",
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Focus"
+   },
+   "target": "#target .ds-input",
+   "nodeW": 280,
+   "nodeH": 40
   },
   {
    "slug": "field-default",

@@ -4,8 +4,8 @@ import { createContext, useContext, useId, useRef, type ButtonHTMLAttributes, ty
 
 /** Sort UI 2.0 has one input style (`default`); `shadow` adds Shadow/xs, `soft` is a borderless tinted field. */
 export type InputVariant = 'default' | 'shadow' | 'soft';
-/** Figma "Size": `lg` is Size=lg (36 px), `sm` is Size=default (32 px). */
-export type InputSize = 'lg' | 'sm';
+/** Figma "Size": 40, 36 and 32 px tall, like Button's sizes of the same name. */
+export type InputSize = 'xl' | 'lg' | 'default';
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {
   ref?: Ref<HTMLInputElement>;
@@ -44,7 +44,7 @@ export function Input(props: InputProps) {
     caption,
     error,
     variant = 'default',
-    size = 'lg',
+    size = 'default',
     leadIcon,
     tailIcon,
     shortcut,

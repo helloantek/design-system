@@ -2,7 +2,7 @@ import { Input, type InputSize } from '@helloantek/ds-react';
 import type { Renderer } from './types';
 
 // Maps Sort UI 2.0 Input, Input Group and Field properties to props, with the sample texts of the Figma file.
-// Figma Size=lg is size="lg", Size=default is size="sm". Focus is produced by focusing the input in check.mjs.
+// Figma Size is size. Focus is produced by focusing the input in check.mjs.
 // Input and Input Group entries measure .ds-input (the manifest's target), so the error text under it is not compared.
 const widths: Record<string, number> = { Input: 240, 'Input Group': 280, Field: 320 };
 
@@ -13,14 +13,14 @@ export const renderInput: Renderer = (p) => {
   if (p.Kind === 'Field') {
     return (
       <div id="target" style={{ width }}>
-        <Input label="Label" caption="Description" size="sm" placeholder="Placeholder" disabled={disabled} />
+        <Input label="Label" caption="Description" size="default" placeholder="Placeholder" disabled={disabled} />
       </div>
     );
   }
   return (
     <div id="target" style={{ width }}>
       <Input
-        size={(p.Size === 'lg' ? 'lg' : 'sm') as InputSize}
+        size={p.Size as InputSize}
         placeholder="Placeholder"
         defaultValue={p.Value === 'Filled' ? 'Value' : undefined}
         error={p.State === 'Invalid' ? 'Error message' : undefined}

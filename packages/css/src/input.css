@@ -23,7 +23,8 @@
  *     </div>
  *     <p class="ds-field__caption">Caption text</p>
  *   </div>
- * Figma Input Size: .ds-field--lg is lg (36 px), .ds-field--sm is default (32 px).
+ * Figma Size: .ds-field--default (32 px, the default), .ds-field--lg (36 px), .ds-field--xl (40 px);
+ * .ds-input--<size> does the same without the field.
  * Figma State: Focus = :focus-within, Invalid = .ds-input--invalid (+ .ds-field__caption--error),
  * Disabled = .ds-input--disabled + disabled input. Value=Placeholder / Filled = empty / filled input.
  * Sort UI 2.0 has one input style; Shadow adds Shadow/xs and Soft is a borderless tinted field.
@@ -78,8 +79,9 @@
     --input-stroke: var(--ds-field-border);
     --input-shadow: 0 0 #0000;
     --input-ring: 0 0 #0000;
-    --input-height: var(--ds-spacing-9);
-    --input-pad-x: var(--ds-spacing-3);
+    --input-height: var(--ds-spacing-8);
+    --input-pad-x: var(--ds-spacing-2-5);
+    --input-affix-edge: var(--ds-spacing-2-5);
     --input-text: var(--ds-foreground);
     --input-icon: var(--ds-muted-foreground);
     --input-tail-icon: var(--input-icon);
@@ -103,11 +105,18 @@
     cursor: text;
   }
 
-  /* Figma Size=lg is 36 px with 12 px sides, Size=default 32 px with 10 px sides. */
-  .ds-field--sm .ds-input,
-  .ds-input--sm {
-    --input-height: var(--ds-spacing-8);
-    --input-pad-x: var(--ds-spacing-2-5);
+  /* Figma Size: default is 32 px with 10 px sides (above), lg 36 px with 12 px sides, xl 40 px with 12 px sides. */
+  .ds-field--lg .ds-input,
+  .ds-input--lg {
+    --input-height: var(--ds-spacing-9);
+    --input-pad-x: var(--ds-spacing-3);
+  }
+
+  .ds-field--xl .ds-input,
+  .ds-input--xl {
+    --input-height: var(--ds-spacing-10);
+    --input-pad-x: var(--ds-spacing-3);
+    --input-affix-edge: var(--ds-spacing-3);
   }
 
   /* Style: Default is the Sort UI 2.0 input. */
@@ -205,17 +214,17 @@
     color: var(--input-tail-icon);
   }
 
-  /* Input Group "L slot" / "T slot" text: 10 px from the edge, the Body's side padding from the value. */
+  /* Input Group "L slot" / "T slot" text: 10 px from the edge (12 px in xl), the Body's side padding from the value. */
   .ds-input__affix {
     flex-shrink: 0;
     margin-right: calc(var(--input-pad-x) - var(--ds-spacing-2));
-    margin-left: calc(var(--ds-spacing-2-5) - var(--input-pad-x));
+    margin-left: calc(var(--input-affix-edge) - var(--input-pad-x));
     color: var(--ds-muted-foreground);
     white-space: nowrap;
   }
 
   .ds-input__affix--end {
-    margin-right: calc(var(--ds-spacing-2-5) - var(--input-pad-x));
+    margin-right: calc(var(--input-affix-edge) - var(--input-pad-x));
     margin-left: calc(var(--input-pad-x) - var(--ds-spacing-2));
   }
 

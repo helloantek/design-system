@@ -133,7 +133,7 @@ Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group*
 
 | Figma property | React prop | CSS class |
 |---|---|---|
-| Size = lg / default | `size`: `lg` (36 px) · `sm` (32 px) | `ds-field--<size>` |
+| Size | `size`: `xl` (40 px) · `lg` (36 px) · `default` (32 px, the default); the same heights as Button's sizes of the same name | `ds-field--<size>` · `ds-input--<size>` |
 | — (one style in 2.0) | `variant`: `default` · `shadow` (+ Shadow/xs) · `soft` (borderless, tinted) | `ds-input--<variant>` |
 | Value = Placeholder / Filled | `placeholder` / `value` | native |
 | State = Focus | focus | `:focus-within` |

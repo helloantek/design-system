@@ -1,19 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
 import { RiAtLine, RiInformationFill } from '@remixicon/react';
+import { Button } from '../Button';
 import { Input, InputAction, type InputSize, type InputVariant } from './Input';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=82-50';
 
 const variants: InputVariant[] = ['default', 'shadow', 'soft'];
-const sizes: InputSize[] = ['lg', 'sm'];
+const sizes: InputSize[] = ['xl', 'lg', 'default'];
 
 const meta = {
   title: 'Components/Input',
   parameters: {
     docs: {
       description: {
-        component: `Implements the Sort UI 2.0 component sets **Input** ([open in Figma](${FIGMA_URL})), **Input Group** (icons, inline text, Kbd and the button slot) and **Field** (label, description, error). \`size\`: \`lg\` is Figma Size=lg (36 px), \`sm\` is Size=default (32 px). Focus is \`:focus-within\`, Invalid is \`error\`, Disabled is \`disabled\`. Sort UI 2.0 has a single input style: \`default\` is it, \`shadow\` adds Shadow/xs and \`soft\` is a borderless tinted field. Styles come from \`@helloantek/ds-css\`, so the same classes work outside React.`,
+        component: `Implements the Sort UI 2.0 component sets **Input** ([open in Figma](${FIGMA_URL})), **Input Group** (icons, inline text, Kbd and the button slot) and **Field** (label, description, error). \`size\` is Figma Size: \`xl\` (40 px), \`lg\` (36 px), \`default\` (32 px), the same heights as Button's sizes of the same name. Focus is \`:focus-within\`, Invalid is \`error\`, Disabled is \`disabled\`. Sort UI 2.0 has a single input style: \`default\` is it, \`shadow\` adds Shadow/xs and \`soft\` is a borderless tinted field. Styles come from \`@helloantek/ds-css\`, so the same classes work outside React.`,
       },
     },
   },
@@ -46,7 +47,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     error: '',
     placeholder: 'mail@domain.com',
     variant: 'default',
-    size: 'lg',
+    size: 'default',
     disabled: false,
     leadIcon: true,
     tailIcon: true,
@@ -126,12 +127,16 @@ export const Styles: StoryObj = {
   ),
 };
 
+/** Figma Size: 40, 36 and 32 px, next to the Button of the same size. */
 export const Sizes: StoryObj = {
   decorators: [(Story) => <div style={{ width: 'auto' }}>{Story()}</div>],
   render: () => (
-    <div style={grid(2)}>
+    <div style={{ display: 'grid', gap: 16 }}>
       {sizes.map((size) => (
-        <Input key={size} size={size} label={size} caption="Caption text" {...kinds['Tail button']} />
+        <div key={size} style={{ display: 'flex', gap: 8, alignItems: 'flex-end', width: 400 }}>
+          <Input size={size} label={size} placeholder="mail@domain.com" leadIcon={<RiAtLine />} />
+          <Button size={size}>Subscribe</Button>
+        </div>
       ))}
     </div>
   ),
