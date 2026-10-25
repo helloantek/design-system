@@ -69,7 +69,8 @@ export function compareInPage({ map, layers, target: targetSelector = '#target' 
     if (!skip.has('stroke') && expected.stroke) {
       const got = cfg.stroke === 'before-border' ? getComputedStyle(el, '::before').borderTopColor
         : cfg.stroke === 'inset-shadow' ? insetShadowColor(cs.boxShadow)
-        : cfg.stroke === 'after-inset-shadow' ? insetShadowColor(getComputedStyle(el, '::after').boxShadow) : cs.borderTopColor;
+        : cfg.stroke === 'after-inset-shadow' ? insetShadowColor(getComputedStyle(el, '::after').boxShadow)
+        : cfg.stroke === 'svg' ? cs.stroke : cs.borderTopColor;
       if (!got || !sameColor(got, expected.stroke)) fail('stroke', got, expected.stroke);
     }
     // Only layers exported with an opacity below 1 carry the key (specs exported before it existed have none).

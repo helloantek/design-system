@@ -58,16 +58,24 @@ Load the same two CSS files and use the classes; each component's markup is docu
 
 ## Button
 
+Sort UI 2.0 ([Figma `40:2125`](https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=40-2125)), built on the 2.0 tokens.
+
+```tsx
+<Button>Save</Button>
+<Button variant="outline" leadingIcon={<PlusIcon />} badge="2">Add</Button>
+<Button variant="ghost" size="sm" icon={<MoreIcon />} aria-label="More" />
+```
+
 | Figma property | React prop | CSS class |
 |---|---|---|
-| Style | `variant`: `primary` · `secondary` · `dashed` · `soft` · `ghost` · `ghost-muted` · `destructive` | `ds-button--<variant>` |
-| Size | `size`: `lg` · `md` · `sm` · `xs` · `2xs` | `ds-button--<size>` |
-| Shape | `shape`: `rounded` · `pill` | `ds-button--<shape>` |
-| Variant = Icon only | `icon` + required `aria-label` | `ds-button--icon-only` |
-| State = Hover / Press / Focus | CSS | `:hover` · `:active` · `:focus-visible` |
-| State = Disabled | `disabled` | `:disabled` |
-| State = Loading | `loading` (keeps width, `aria-busy`, blocks `onClick`) | `[data-loading]` |
-| Lead Icon / Tail Icon / Badge | `leadIcon` · `tailIcon` · `badge` | `__icon` · `__badge` |
+| Variant | `variant`: `default` · `outline` · `secondary` · `ghost` · `destructive` | `ds-button--<variant>` |
+| Size | `size`: `xl` (40) · `lg` (36) · `default` (32) · `sm` (28) · `xs` (24) | `ds-button--size-<size>` |
+| Icon only | `icon` + required `aria-label` | `ds-button--icon-only` |
+| State = Hover / Focus | CSS | `:hover` · `:focus-visible` |
+| State = Disabled | `disabled` | `:disabled` (or `aria-disabled="true"`) |
+| Leading Icon / Trailing Icon / Badge | `leadingIcon` · `trailingIcon` · `badge` | `__icon` · `__badge` |
+
+Changed from 1.3: variants `primary` → `default`, `soft`/`dashed`/`ghost-muted` are gone (closest: `secondary`, `outline`, `ghost`); sizes `lg`/`md`/`sm`/`xs`/`2xs` → `xl`/`lg`/`default`/`sm`/`xs`; `shape` (one radius now), `loading` (no Figma state; use a Spinner next to the label once it exists) and the Press state are gone; `leadIcon`/`tailIcon` → `leadingIcon`/`trailingIcon`.
 
 ## Avatar
 
@@ -223,4 +231,5 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Avatar: the Empty picture is a raster image (#f4f4f5 / #d4d4d8) with no variables; the code draws it with bg/basic/gray-subtle and border/darker (#d5d5d8 on that background), so it follows the colour scheme.
 - Select Tags: the Active variant's menu shows Avatar items (Figma reuses the Avatar menu), and the tags sit on one clipped row, so values past the field width disappear; the code wraps them.
 - Select Menu Items Type=Avatar: the item overrides its Avatar's fill to bg/basic/gray-contrast (#18181b), which the Avatar component has no property for; the code uses the Avatar's own bg/basic/gray-accent.
+- Button (2.0): Variant=Default draws Hover exactly like Default, so the primary button gives no hover feedback; in Focus the Default variant drops its inset highlight and Outline drops its control shadow (local effects instead of the effect styles).
 - Status Badge: Offline uses icon/black-disabled, which is the same dark grey in Dark mode, so the dot disappears on dark backgrounds.

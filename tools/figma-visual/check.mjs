@@ -129,7 +129,7 @@ const page = await (await browser.newContext({ deviceScaleFactor: 1, viewport: {
 
 // Environment fingerprint: text rendering differs between browser builds and machines, so print what this run used.
 {
-  await page.goto(`http://localhost:4179/?${new URLSearchParams({ component: 'button', props: JSON.stringify({ Variant: 'Default', Style: 'Primary', State: 'Default', Size: 'md', Shape: 'Rounded' }) })}`);
+  await page.goto(`http://localhost:4179/?${new URLSearchParams({ component: 'button', props: JSON.stringify({ Variant: 'Default', Size: 'default', State: 'Default', 'Icon only': 'False' }) })}`);
   await page.waitForSelector('body[data-ready]');
   const cdp = await page.context().newCDPSession(page);
   await cdp.send('DOM.enable');
@@ -141,8 +141,8 @@ const page = await (await browser.newContext({ deviceScaleFactor: 1, viewport: {
   // References and thresholds are calibrated on this build (see REFERENCE_CHROMIUM_* in .github/workflows/ci.yml).
   const REFERENCE_CHROMIUM = '141.0.7390.37';
   if (browser.version() !== REFERENCE_CHROMIUM) console.warn(`Warning: Chromium ${browser.version()} is not the reference build ${REFERENCE_CHROMIUM}; expect ~1 point higher mismatch. Set CHROMIUM_PATH to the reference build.`);
-  console.log(`Environment: ${browser.version()} · label font ${fonts.join(', ')} · "Button" label box ${width.toFixed(2)} px (Figma: 49)`);
-  // Inter Medium 14px "Button" + 4px padding is 47.84px with fractional advances; whole pixels mean hinting is on.
+  console.log(`Environment: ${browser.version()} · label font ${fonts.join(', ')} · "Button" label box ${width.toFixed(2)} px (Figma: 46)`);
+  // Inter Medium 13px "Button" (−0.5 % tracking) + 4px padding is 44.33px with fractional advances; whole pixels mean hinting is on.
   if (Number.isInteger(Math.round(width * 100) / 100)) throw new Error('Text is laid out on whole pixels (font hinting is on); comparisons with Figma would be off by ~1px.');
   await cdp.detach();
 }
