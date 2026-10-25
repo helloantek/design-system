@@ -1,27 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { RiCheckboxCircleFill } from '@remixicon/react';
 import type { CSSProperties } from 'react';
-import brands from '@helloantek/ds-tokens/brands.json';
-import { Button, type ButtonShape, type ButtonSize, type ButtonVariant } from './Button';
+import { Button, type ButtonSize, type ButtonVariant } from './Button';
+import { SquareDashed } from './Button.fixtures';
 
-const FIGMA_URL = 'https://www.figma.com/design/4tiBR2hKd4yvQehtKhM9OY?node-id=28-22033';
+const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=40-2125';
 
-const variants: ButtonVariant[] = ['primary', 'secondary', 'dashed', 'soft', 'ghost', 'ghost-muted', 'destructive'];
-const sizes: ButtonSize[] = ['lg', 'md', 'sm', 'xs', '2xs'];
-const shapes: ButtonShape[] = ['rounded', 'pill'];
+const variants: ButtonVariant[] = ['default', 'outline', 'secondary', 'ghost', 'destructive'];
+const sizes: ButtonSize[] = ['xl', 'lg', 'default', 'sm', 'xs'];
 
-// Figma's placeholder icon (Remix Icon "checkbox-circle-fill"); colour comes from the button via currentColor.
-const Icon = () => <RiCheckboxCircleFill />;
+// Sort UI 2.0's placeholder icon; its colour comes from the button via currentColor.
+const Icon = () => <SquareDashed />;
 
 type PlaygroundArgs = {
   label: string;
   variant: ButtonVariant;
   size: ButtonSize;
-  shape: ButtonShape;
-  loading: boolean;
   disabled: boolean;
-  leadIcon: boolean;
-  tailIcon: boolean;
+  leadingIcon: boolean;
+  trailingIcon: boolean;
   badge: string;
 };
 
@@ -30,7 +26,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `Implements the Figma component set **Button** ([open in Figma](${FIGMA_URL})). Figma "Style" → \`variant\`, "Size" → \`size\`, "Shape" → \`shape\`, "Variant=Icon only" → \`icon\` + \`aria-label\`. Styles come from \`@helloantek/ds-css\`, so the same classes work outside React. Hover, Press and Focus are real CSS states (\`:hover\`, \`:active\`, \`:focus-visible\`), Disabled is the native \`disabled\` attribute and Loading is the \`loading\` prop.`,
+        component: `Implements the Sort UI 2.0 component set **Button** ([open in Figma](${FIGMA_URL})): every Variant, Size, State and Icon only. Figma "Leading Icon" / "Trailing Icon" / "Badge" → \`leadingIcon\`, \`trailingIcon\`, \`badge\`; Icon only → \`icon\` + \`aria-label\`. Hover and Focus are real CSS states (\`:hover\`, \`:focus-visible\`), Disabled is the native \`disabled\` attribute. Styles come from \`@helloantek/ds-css\`, so the same classes work outside React.`,
       },
     },
   },
@@ -39,40 +35,30 @@ const meta = {
 export default meta;
 
 export const Playground: StoryObj<PlaygroundArgs> = {
-  args: {
-    label: 'Button',
-    variant: 'primary',
-    size: 'md',
-    shape: 'rounded',
-    loading: false,
-    disabled: false,
-    leadIcon: true,
-    tailIcon: true,
-    badge: '/',
-  },
+  args: { label: 'Button', variant: 'default', size: 'default', disabled: false, leadingIcon: true, trailingIcon: true, badge: '2' },
   argTypes: {
-    variant: { control: 'select', options: variants },
-    size: { control: 'inline-radio', options: sizes },
-    shape: { control: 'inline-radio', options: shapes },
+    label: { name: 'Label' },
+    variant: { name: 'Variant', control: 'select', options: variants },
+    size: { name: 'Size', control: 'inline-radio', options: sizes },
+    disabled: { description: 'Figma State=Disabled' },
+    leadingIcon: { name: 'Leading Icon' },
+    trailingIcon: { name: 'Trailing Icon' },
+    badge: { name: 'Badge', description: 'Empty hides it' },
   },
-  render: ({ label, leadIcon, tailIcon, badge, ...props }) => (
-    <Button
-      {...props}
-      leadIcon={leadIcon ? <Icon /> : undefined}
-      tailIcon={tailIcon ? <Icon /> : undefined}
-      badge={badge || undefined}
-    >
+  render: ({ label, leadingIcon, trailingIcon, badge, ...props }) => (
+    <Button {...props} leadingIcon={leadingIcon ? <Icon /> : undefined} trailingIcon={trailingIcon ? <Icon /> : undefined} badge={badge || undefined}>
       {label}
     </Button>
   ),
 };
 
-type IconOnlyArgs = Omit<PlaygroundArgs, 'label' | 'leadIcon' | 'tailIcon' | 'badge'>;
+type IconOnlyArgs = Pick<PlaygroundArgs, 'variant' | 'size' | 'disabled'>;
 
+/** Figma Icon only=True: a square button; `aria-label` names it. */
 export const IconOnly: StoryObj<IconOnlyArgs> = {
-  args: { variant: 'primary', size: 'md', shape: 'rounded', loading: false, disabled: false },
-  argTypes: Playground.argTypes,
-  render: (props) => <Button {...props} icon={<Icon />} aria-label="Confirm" />,
+  args: { variant: 'default', size: 'default', disabled: false },
+  argTypes: { variant: Playground.argTypes!.variant, size: Playground.argTypes!.size },
+  render: (props) => <Button {...props} icon={<Icon />} aria-label="Button" />,
 };
 
 const grid = (columns: number): CSSProperties => ({
@@ -80,88 +66,71 @@ const grid = (columns: number): CSSProperties => ({
   gridTemplateColumns: `repeat(${columns}, max-content)`,
   gap: 16,
   alignItems: 'center',
-  fontFamily: 'var(--ds-font-family-body)',
+  fontFamily: 'var(--ds-font-sans)',
   fontSize: 12,
-  color: 'var(--ds-text-muted)',
+  color: 'var(--ds-muted-foreground)',
 });
 
-/** Every Figma Style in its static states. Hover and press the buttons to see the interactive states. */
+/** Every Figma Variant in its static states. Hover the buttons, or Tab to them, to see Hover and Focus. */
 export const AllVariants: StoryObj = {
   render: () => (
-    <div style={grid(5)}>
+    <div style={grid(4)}>
       <span />
       <span>Default</span>
-      <span>Loading</span>
       <span>Disabled</span>
       <span>Icon only</span>
       {variants.map((variant) => (
         <div key={variant} style={{ display: 'contents' }}>
           <span>{variant}</span>
-          <Button variant={variant} leadIcon={<Icon />} tailIcon={<Icon />} badge="/">
+          <Button variant={variant} leadingIcon={<Icon />} trailingIcon={<Icon />} badge="2">
             Button
           </Button>
-          <Button variant={variant} leadIcon={<Icon />} tailIcon={<Icon />} badge="/" loading>
+          <Button variant={variant} leadingIcon={<Icon />} trailingIcon={<Icon />} badge="2" disabled>
             Button
           </Button>
-          <Button variant={variant} leadIcon={<Icon />} tailIcon={<Icon />} badge="/" disabled>
-            Button
-          </Button>
-          <Button variant={variant} icon={<Icon />} aria-label="Confirm" />
+          <Button variant={variant} icon={<Icon />} aria-label="Button" />
         </div>
       ))}
     </div>
   ),
 };
 
+/** Figma Size: 40, 36, 32, 28 and 24 px tall. */
 export const Sizes: StoryObj = {
   render: () => (
     <div style={grid(3)}>
       {sizes.map((size) => (
         <div key={size} style={{ display: 'contents' }}>
           <span>{size}</span>
-          <Button size={size} leadIcon={<Icon />} tailIcon={<Icon />} badge="/">
+          <Button size={size} leadingIcon={<Icon />} trailingIcon={<Icon />} badge="2">
             Button
           </Button>
-          <Button size={size} icon={<Icon />} aria-label="Confirm" />
+          <Button size={size} icon={<Icon />} aria-label="Button" />
         </div>
       ))}
     </div>
   ),
 };
 
-export const Shapes: StoryObj = {
-  render: () => (
-    <div style={grid(2)}>
-      {shapes.map((shape) => (
-        <Button key={shape} shape={shape} variant="secondary" leadIcon={<Icon />} badge="/">
-          {shape}
-        </Button>
-      ))}
-    </div>
-  ),
-};
-
-/** The same buttons under every brand and colour scheme, driven only by tokens. */
-export const Brands: StoryObj = {
+/** Light and Dark, driven only by tokens. */
+export const Themes: StoryObj = {
   parameters: { layout: 'fullscreen' },
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-      {Object.keys(brands).flatMap((brand) =>
-        (['light', 'dark'] as const).map((scheme) => (
-          <div key={`${brand}-${scheme}`} data-ds-brand={brand} data-ds-scheme={scheme} style={{ background: 'var(--ds-bg-default)', padding: 24 }}>
-            <div style={{ ...grid(4), marginBottom: 12 }}>
-              {brand} · {scheme}
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+      {(['light', 'dark'] as const).map((scheme) => (
+        <div key={scheme} data-ds-brand="theme-1" data-ds-scheme={scheme} style={{ background: 'var(--ds-background)', padding: 24, display: 'grid', gap: 12 }}>
+          <div style={grid(1)}>{scheme === 'light' ? 'Light' : 'Dark'}</div>
+          {[false, true].map((disabled) => (
+            <div key={String(disabled)} style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {variants.map((variant) => (
-                <Button key={variant} variant={variant} leadIcon={<Icon />}>
+                <Button key={variant} variant={variant} leadingIcon={<Icon />} badge="2" disabled={disabled}>
                   {variant}
                 </Button>
               ))}
             </div>
-          </div>
-        )),
-      )}
+          ))}
+        </div>
+      ))}
     </div>
   ),
 };

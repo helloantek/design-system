@@ -1,8 +1,8 @@
 {
- "$comment": "Figma reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each. The renderer in renderers/button.tsx turns these properties into props.",
+ "$comment": "Sort UI 2.0 Button reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/button.tsx turns them into props. Every Variant in every State at Size=default, the other Sizes, and Icon only in every Size. Default and Hover are identical in Figma for Variant=Default.",
  "component": "button",
- "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
- "componentSet": "28:22033",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "40:2125",
  "brand": "theme-1",
  "scheme": "light",
  "thresholds": {
@@ -12,785 +12,352 @@
  },
  "entries": [
   {
-   "slug": "default-primary-default-md-rounded",
-   "nodeId": "28:21985",
+   "slug": "default-default-default",
+   "nodeId": "40:2073",
    "props": {
     "Variant": "Default",
-    "Style": "Primary",
+    "Size": "default",
     "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
+    "Icon only": "False"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 126,
+   "nodeH": 32
   },
   {
-   "slug": "default-secondary-default-md-rounded",
-   "nodeId": "28:21924",
+   "slug": "default-default-hover",
+   "nodeId": "40:1944",
    "props": {
     "Variant": "Default",
-    "Style": "Secondary",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
+    "Size": "default",
+    "State": "Hover",
+    "Icon only": "False"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 126,
+   "nodeH": 32
   },
   {
-   "slug": "default-primary-loading-md-rounded",
-   "nodeId": "2097:2869",
+   "slug": "default-default-focus",
+   "nodeId": "40:2031",
    "props": {
     "Variant": "Default",
-    "Style": "Primary",
-    "State": "Loading",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-primary-focus-md-rounded",
-   "nodeId": "54:1389",
-   "props": {
-    "Variant": "Default",
-    "Style": "Primary",
+    "Size": "default",
     "State": "Focus",
-    "Size": "md",
-    "Shape": "Rounded"
+    "Icon only": "False"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 126,
+   "nodeH": 32
   },
   {
-   "slug": "default-dashed-default-md-rounded",
-   "nodeId": "28:22005",
+   "slug": "default-default-disabled",
+   "nodeId": "40:2028",
    "props": {
     "Variant": "Default",
-    "Style": "Dashed",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "icon-only-primary-default-md-rounded",
-   "nodeId": "28:23315",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Primary",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 36.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-primary-disabled-md-rounded",
-   "nodeId": "28:21899",
-   "props": {
-    "Variant": "Default",
-    "Style": "Primary",
+    "Size": "default",
     "State": "Disabled",
-    "Size": "md",
-    "Shape": "Rounded"
+    "Icon only": "False"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 126,
+   "nodeH": 32
   },
   {
-   "slug": "default-ghost-default-md-rounded",
-   "nodeId": "28:21994",
+   "slug": "outline-default-default",
+   "nodeId": "40:2084",
    "props": {
-    "Variant": "Default",
-    "Style": "Ghost",
+    "Variant": "Outline",
+    "Size": "default",
     "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
+    "Icon only": "False"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 126,
+   "nodeH": 32
   },
   {
-   "slug": "default-soft-default-md-rounded",
-   "nodeId": "28:22001",
+   "slug": "outline-default-hover",
+   "nodeId": "40:2048",
    "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
+    "Variant": "Outline",
+    "Size": "default",
+    "State": "Hover",
+    "Icon only": "False"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 126,
+   "nodeH": 32
   },
   {
-   "slug": "default-destructive-default-md-rounded",
-   "nodeId": "28:22027",
+   "slug": "outline-default-focus",
+   "nodeId": "40:2026",
    "props": {
-    "Variant": "Default",
-    "Style": "Destructive",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
+    "Variant": "Outline",
+    "Size": "default",
+    "State": "Focus",
+    "Icon only": "False"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 126,
+   "nodeH": 32
   },
   {
-   "slug": "default-ghost-muted-default-md-rounded",
-   "nodeId": "28:21986",
+   "slug": "outline-default-disabled",
+   "nodeId": "40:2065",
    "props": {
-    "Variant": "Default",
-    "Style": "Ghost Muted",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
+    "Variant": "Outline",
+    "Size": "default",
+    "State": "Disabled",
+    "Icon only": "False"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 126,
+   "nodeH": 32
   },
   {
-   "slug": "default-primary-default-lg-rounded",
-   "nodeId": "28:22032",
+   "slug": "secondary-default-default",
+   "nodeId": "40:2087",
+   "props": {
+    "Variant": "Secondary",
+    "Size": "default",
+    "State": "Default",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "secondary-default-hover",
+   "nodeId": "40:1977",
+   "props": {
+    "Variant": "Secondary",
+    "Size": "default",
+    "State": "Hover",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "secondary-default-focus",
+   "nodeId": "40:1993",
+   "props": {
+    "Variant": "Secondary",
+    "Size": "default",
+    "State": "Focus",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "secondary-default-disabled",
+   "nodeId": "40:2040",
+   "props": {
+    "Variant": "Secondary",
+    "Size": "default",
+    "State": "Disabled",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "ghost-default-default",
+   "nodeId": "40:2024",
+   "props": {
+    "Variant": "Ghost",
+    "Size": "default",
+    "State": "Default",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "ghost-default-hover",
+   "nodeId": "40:2111",
+   "props": {
+    "Variant": "Ghost",
+    "Size": "default",
+    "State": "Hover",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "ghost-default-focus",
+   "nodeId": "40:1958",
+   "props": {
+    "Variant": "Ghost",
+    "Size": "default",
+    "State": "Focus",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "ghost-default-disabled",
+   "nodeId": "40:2021",
+   "props": {
+    "Variant": "Ghost",
+    "Size": "default",
+    "State": "Disabled",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-default-default",
+   "nodeId": "40:2110",
+   "props": {
+    "Variant": "Destructive",
+    "Size": "default",
+    "State": "Default",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-default-hover",
+   "nodeId": "40:1938",
+   "props": {
+    "Variant": "Destructive",
+    "Size": "default",
+    "State": "Hover",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-default-focus",
+   "nodeId": "40:2016",
+   "props": {
+    "Variant": "Destructive",
+    "Size": "default",
+    "State": "Focus",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-default-disabled",
+   "nodeId": "40:1974",
+   "props": {
+    "Variant": "Destructive",
+    "Size": "default",
+    "State": "Disabled",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-xl-default",
+   "nodeId": "40:2093",
    "props": {
     "Variant": "Default",
-    "Style": "Primary",
+    "Size": "xl",
     "State": "Default",
+    "Icon only": "False"
+   },
+   "nodeW": 140,
+   "nodeH": 40
+  },
+  {
+   "slug": "default-lg-default",
+   "nodeId": "40:1986",
+   "props": {
+    "Variant": "Default",
     "Size": "lg",
-    "Shape": "Rounded"
+    "State": "Default",
+    "Icon only": "False"
    },
-   "nodeW": 151.0,
-   "nodeH": 40.0
+   "nodeW": 130,
+   "nodeH": 36
   },
   {
-   "slug": "icon-only-primary-default-lg-rounded",
-   "nodeId": "28:23308",
+   "slug": "default-sm-default",
+   "nodeId": "40:2123",
    "props": {
-    "Variant": "Icon only",
-    "Style": "Primary",
+    "Variant": "Default",
+    "Size": "sm",
     "State": "Default",
+    "Icon only": "False"
+   },
+   "nodeW": 126,
+   "nodeH": 28
+  },
+  {
+   "slug": "default-xs-default",
+   "nodeId": "40:2039",
+   "props": {
+    "Variant": "Default",
+    "Size": "xs",
+    "State": "Default",
+    "Icon only": "False"
+   },
+   "nodeW": 108,
+   "nodeH": 24
+  },
+  {
+   "slug": "default-xl-default-icon-only",
+   "nodeId": "40:2098",
+   "props": {
+    "Variant": "Default",
+    "Size": "xl",
+    "State": "Default",
+    "Icon only": "True"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "default-lg-default-icon-only",
+   "nodeId": "40:2071",
+   "props": {
+    "Variant": "Default",
     "Size": "lg",
-    "Shape": "Rounded"
+    "State": "Default",
+    "Icon only": "True"
    },
-   "nodeW": 40.0,
-   "nodeH": 40.0
+   "nodeW": 36,
+   "nodeH": 36
   },
   {
-   "slug": "default-primary-default-md-pill",
-   "nodeId": "2097:4487",
+   "slug": "default-default-default-icon-only",
+   "nodeId": "40:2020",
    "props": {
     "Variant": "Default",
-    "Style": "Primary",
+    "Size": "default",
     "State": "Default",
-    "Size": "md",
-    "Shape": "Pill"
+    "Icon only": "True"
    },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 32,
+   "nodeH": 32
   },
   {
-   "slug": "icon-only-primary-loading-md-rounded",
-   "nodeId": "2097:2876",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Primary",
-    "State": "Loading",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 36.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-primary-default-sm-rounded",
-   "nodeId": "28:22025",
+   "slug": "default-sm-default-icon-only",
+   "nodeId": "40:2081",
    "props": {
     "Variant": "Default",
-    "Style": "Primary",
-    "State": "Default",
     "Size": "sm",
-    "Shape": "Rounded"
-   },
-   "nodeW": 133.0,
-   "nodeH": 32.0
-  },
-  {
-   "slug": "icon-only-primary-default-sm-rounded",
-   "nodeId": "28:23322",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Primary",
     "State": "Default",
-    "Size": "sm",
-    "Shape": "Rounded"
+    "Icon only": "True"
    },
-   "nodeW": 32.0,
-   "nodeH": 32.0
+   "nodeW": 28,
+   "nodeH": 28
   },
   {
-   "slug": "default-primary-default-xs-rounded",
-   "nodeId": "2006:1130",
+   "slug": "default-xs-default-icon-only",
+   "nodeId": "40:2082",
    "props": {
     "Variant": "Default",
-    "Style": "Primary",
-    "State": "Default",
     "Size": "xs",
-    "Shape": "Rounded"
-   },
-   "nodeW": 125.0,
-   "nodeH": 28.0
-  },
-  {
-   "slug": "default-primary-default-2xs-rounded",
-   "nodeId": "2006:1970",
-   "props": {
-    "Variant": "Default",
-    "Style": "Primary",
     "State": "Default",
-    "Size": "2xs",
-    "Shape": "Rounded"
+    "Icon only": "True"
    },
-   "nodeW": 115.0,
-   "nodeH": 24.0
-  },
-  {
-   "slug": "icon-only-primary-default-xs-rounded",
-   "nodeId": "2006:1144",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Primary",
-    "State": "Default",
-    "Size": "xs",
-    "Shape": "Rounded"
-   },
-   "nodeW": 28.0,
-   "nodeH": 28.0
-  },
-  {
-   "slug": "icon-only-primary-default-2xs-rounded",
-   "nodeId": "2006:1984",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Primary",
-    "State": "Default",
-    "Size": "2xs",
-    "Shape": "Rounded"
-   },
-   "nodeW": 24.0,
-   "nodeH": 24.0
-  },
-  {
-   "slug": "default-destructive-loading-md-rounded",
-   "nodeId": "2097:2878",
-   "props": {
-    "Variant": "Default",
-    "Style": "Destructive",
-    "State": "Loading",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-destructive-focus-md-rounded",
-   "nodeId": "54:1398",
-   "props": {
-    "Variant": "Default",
-    "Style": "Destructive",
-    "State": "Focus",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "icon-only-destructive-default-md-rounded",
-   "nodeId": "28:23350",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Destructive",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 36.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-secondary-default-md-pill",
-   "nodeId": "2097:4758",
-   "props": {
-    "Variant": "Default",
-    "Style": "Secondary",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Pill"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-secondary-loading-md-rounded",
-   "nodeId": "2097:2887",
-   "props": {
-    "Variant": "Default",
-    "Style": "Secondary",
-    "State": "Loading",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-secondary-focus-md-rounded",
-   "nodeId": "54:1407",
-   "props": {
-    "Variant": "Default",
-    "Style": "Secondary",
-    "State": "Focus",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "icon-only-secondary-default-md-rounded",
-   "nodeId": "28:23385",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Secondary",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 36.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-dashed-loading-md-rounded",
-   "nodeId": "2097:2896",
-   "props": {
-    "Variant": "Default",
-    "Style": "Dashed",
-    "State": "Loading",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-dashed-focus-md-rounded",
-   "nodeId": "54:1416",
-   "props": {
-    "Variant": "Default",
-    "Style": "Dashed",
-    "State": "Focus",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "icon-only-dashed-default-md-rounded",
-   "nodeId": "28:23420",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Dashed",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 36.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-soft-loading-md-rounded",
-   "nodeId": "2097:2905",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "State": "Loading",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-soft-focus-md-rounded",
-   "nodeId": "54:1425",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "State": "Focus",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "icon-only-soft-default-md-rounded",
-   "nodeId": "28:23455",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Soft",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 36.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-loading-md-rounded",
-   "nodeId": "2097:2914",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost",
-    "State": "Loading",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-focus-md-rounded",
-   "nodeId": "54:1434",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost",
-    "State": "Focus",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "icon-only-ghost-default-md-rounded",
-   "nodeId": "28:23490",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Ghost",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 36.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-muted-loading-md-rounded",
-   "nodeId": "2097:2923",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost Muted",
-    "State": "Loading",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-muted-focus-md-rounded",
-   "nodeId": "54:1443",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost Muted",
-    "State": "Focus",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "icon-only-ghost-muted-default-md-rounded",
-   "nodeId": "28:23525",
-   "props": {
-    "Variant": "Icon only",
-    "Style": "Ghost Muted",
-    "State": "Default",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 36.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-disabled-md-rounded",
-   "nodeId": "28:21968",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost",
-    "State": "Disabled",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-muted-disabled-md-rounded",
-   "nodeId": "28:21963",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost Muted",
-    "State": "Disabled",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-hover-md-rounded",
-   "nodeId": "28:21970",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost",
-    "State": "Hover",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-muted-hover-md-rounded",
-   "nodeId": "28:21957",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost Muted",
-    "State": "Hover",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-press-md-rounded",
-   "nodeId": "28:21951",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost",
-    "State": "Press",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-ghost-muted-press-md-rounded",
-   "nodeId": "28:21944",
-   "props": {
-    "Variant": "Default",
-    "Style": "Ghost Muted",
-    "State": "Press",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-soft-hover-md-rounded",
-   "nodeId": "28:22020",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "State": "Hover",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-soft-press-md-rounded",
-   "nodeId": "28:21947",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "State": "Press",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-soft-disabled-md-rounded",
-   "nodeId": "28:21933",
-   "props": {
-    "Variant": "Default",
-    "Style": "Soft",
-    "State": "Disabled",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-secondary-hover-md-rounded",
-   "nodeId": "28:21927",
-   "props": {
-    "Variant": "Default",
-    "Style": "Secondary",
-    "State": "Hover",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-primary-hover-md-rounded",
-   "nodeId": "28:21989",
-   "props": {
-    "Variant": "Default",
-    "Style": "Primary",
-    "State": "Hover",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-destructive-hover-md-rounded",
-   "nodeId": "28:21953",
-   "props": {
-    "Variant": "Default",
-    "Style": "Destructive",
-    "State": "Hover",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-secondary-press-md-rounded",
-   "nodeId": "28:22014",
-   "props": {
-    "Variant": "Default",
-    "Style": "Secondary",
-    "State": "Press",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-dashed-hover-md-rounded",
-   "nodeId": "28:22002",
-   "props": {
-    "Variant": "Default",
-    "Style": "Dashed",
-    "State": "Hover",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-secondary-disabled-md-rounded",
-   "nodeId": "28:21911",
-   "props": {
-    "Variant": "Default",
-    "Style": "Secondary",
-    "State": "Disabled",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-primary-press-md-rounded",
-   "nodeId": "28:21974",
-   "props": {
-    "Variant": "Default",
-    "Style": "Primary",
-    "State": "Press",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-destructive-press-md-rounded",
-   "nodeId": "28:21906",
-   "props": {
-    "Variant": "Default",
-    "Style": "Destructive",
-    "State": "Press",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-dashed-press-md-rounded",
-   "nodeId": "28:22017",
-   "props": {
-    "Variant": "Default",
-    "Style": "Dashed",
-    "State": "Press",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-destructive-disabled-md-rounded",
-   "nodeId": "28:22007",
-   "props": {
-    "Variant": "Default",
-    "Style": "Destructive",
-    "State": "Disabled",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
-  },
-  {
-   "slug": "default-dashed-disabled-md-rounded",
-   "nodeId": "28:21981",
-   "props": {
-    "Variant": "Default",
-    "Style": "Dashed",
-    "State": "Disabled",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 143.0,
-   "nodeH": 36.0
+   "nodeW": 24,
+   "nodeH": 24
   }
- ],
- "$thresholds": "Measured 2026-10-21 on Chromium 141.0.7390.37: identical code renders up to 2.2 points higher on the GitHub runner than in the cloud dev container (worst: button xs 4.8% -> 7.0%). maxMismatch keeps ~1 point above the CI maximum. Pixel metrics do not catch 1 px layout or radius changes; see docs/playbook.md."
+ ]
 }

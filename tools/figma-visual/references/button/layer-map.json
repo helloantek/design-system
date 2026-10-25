@@ -1,12 +1,36 @@
 {
-  "$comment": "Figma layer path (as in spec.json) -> element inside #target and how to read it. skip: spec keys not compared for this layer. skipWidthIfHas: skip w when the element contains that selector (width follows text).",
+  "$comment": "Figma layer path (as in spec.json) -> element inside #target (the button) and how to read it.",
   "layers": {
-    "root": { "selector": "", "stroke": "before-border", "skipWidthIfHas": ".ds-button__label" },
-    "Label": { "selector": ".ds-button__label", "skip": ["w"] },
-    "Label/TEXT": { "selector": ".ds-button__label" },
-    "lead-icon": { "selector": ".ds-button__icon" },
-    "lead-icon/VECTOR": { "selector": ".ds-button__icon", "fill": "color" },
-    "badge": { "selector": ".ds-button__badge", "stroke": "inset-shadow" },
-    "badge/TEXT": { "selector": ".ds-button__badge" }
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "The button hugs its label, whose width follows glyph rasterisation; the size check (\u00b12 px) still covers it."
+    },
+    "Container": {
+      "selector": ".ds-button__label",
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "The label frame hugs its text (width follows rasterisation; the inline span is one line box tall)."
+    },
+    "Label": {
+      "selector": ".ds-button__label"
+    },
+    "badge": {
+      "selector": ".ds-button__badge"
+    },
+    "badge/TEXT": {
+      "selector": ".ds-button__badge"
+    },
+    "Leading icon": {
+      "selector": ".ds-button__icon svg"
+    },
+    "Leading icon/VECTOR": {
+      "selector": ".ds-button__icon svg",
+      "stroke": "svg"
+    }
   }
 }

@@ -84,13 +84,13 @@ export const SignUp: StoryObj<Args> = {
         <Select {...field} name="teams" label="Teams" placeholder="Select teams" options={teams} multiple caption="Pick all that apply" />
         <Select {...field} name="plan" label="Plan" placeholder="Select a plan" options={plans} defaultValue="free" caption="You can change it later" />
         <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-          <Button type="reset" variant="ghost" size={size === 'sm' ? 'sm' : 'md'} disabled={disabled} onClick={() => {
+          <Button type="reset" variant="ghost" size={size === 'sm' ? 'default' : 'lg'} disabled={disabled} onClick={() => {
               setErrors({});
               setSubmitted(null);
             }}>
             Reset
           </Button>
-          <Button type="submit" size={size === 'sm' ? 'sm' : 'md'} disabled={disabled}>
+          <Button type="submit" size={size === 'sm' ? 'default' : 'lg'} disabled={disabled}>
             Create account
           </Button>
         </div>

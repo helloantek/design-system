@@ -1,21 +1,15 @@
-import { RiCheckboxCircleFill } from '@remixicon/react';
-import { Button, type ButtonShape, type ButtonSize, type ButtonVariant } from '@helloantek/ds-react';
+import { Button, type ButtonSize, type ButtonVariant } from '@helloantek/ds-react';
+import { SquareDashed } from '../../../packages/react/src/Button/Button.fixtures';
 import type { Renderer } from './types';
 
-// Maps Figma Button properties to props. Hover/Press/Focus are produced by real input in check.mjs.
-export const renderButton: Renderer = (props) => {
-  const common = {
-    id: 'target',
-    variant: props.Style.toLowerCase().replace(' ', '-') as ButtonVariant,
-    size: props.Size as ButtonSize,
-    shape: props.Shape.toLowerCase() as ButtonShape,
-    loading: props.State === 'Loading',
-    disabled: props.State === 'Disabled',
-  };
-  return props.Variant === 'Icon only' ? (
-    <Button {...common} icon={<RiCheckboxCircleFill />} aria-label="Confirm" />
+// Maps Sort UI 2.0 Button properties to props; Figma's defaults show both icons and the badge "2".
+// Hover and Focus come from real input in check.mjs.
+export const renderButton: Renderer = (p) => {
+  const common = { id: 'target', variant: p.Variant.toLowerCase() as ButtonVariant, size: p.Size as ButtonSize, disabled: p.State === 'Disabled' };
+  return p['Icon only'] === 'True' ? (
+    <Button {...common} icon={<SquareDashed />} aria-label="Button" />
   ) : (
-    <Button {...common} leadIcon={<RiCheckboxCircleFill />} tailIcon={<RiCheckboxCircleFill />} badge="/">
+    <Button {...common} leadingIcon={<SquareDashed />} trailingIcon={<SquareDashed />} badge="2">
       Button
     </Button>
   );

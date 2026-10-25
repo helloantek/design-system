@@ -1,333 +1,234 @@
 /*
- * Button — Figma component set "Button" (node 28:22033 in file 4tiBR2hKd4yvQehtKhM9OY).
+ * Button — Sort UI 2.0 component set "Button" (node 40:2125 in file 4JnqgEbdlnKgiFrfmiwEZw).
+ * Every Variant (Default, Outline, Secondary, Ghost, Destructive), Size (xl, lg, default, sm, xs), State (Default, Hover,
+ * Focus, Disabled) and Icon only, with the Leading Icon, Trailing Icon and Badge slots. Values are Sort UI 2.0 tokens.
  * Framework-agnostic: any markup with these classes works (React, Web Components, plain HTML).
- * Every value comes from @helloantek/ds-tokens; load one brand's token CSS before this file.
  *
  * Markup:
- *   <button class="ds-button ds-button--primary ds-button--md ds-button--rounded">
- *     <span class="ds-button__icon" aria-hidden="true"><svg…/></span>
- *     <span class="ds-button__label">Label</span>
- *     <span class="ds-button__badge">/</span>
+ *   <button class="ds-button ds-button--default ds-button--size-default [ds-button--icon-only]">
+ *     [<span class="ds-button__icon" aria-hidden="true"><svg…/></span>]   Leading Icon (the only child when icon-only)
+ *     <span class="ds-button__label">Button</span>
+ *     [<span class="ds-button__badge">2</span>]
+ *     [<span class="ds-button__icon" aria-hidden="true"><svg…/></span>]   Trailing Icon
  *   </button>
- * Loading: add data-loading and aria-busy="true"; wrap the content in .ds-button__sizer and add a
- * .ds-button__loading overlay with the spinner icon and the label (keeps the width, as in Figma).
+ * Figma State=Hover is :hover, Focus is :focus-visible, Disabled is :disabled (or aria-disabled="true").
  */
 
 @layer ds.components {
   .ds-button {
-    --btn-shadow: none;
-    /* A no-op shadow: `none` is not allowed inside a box-shadow list. */
-    --btn-focus-shadow: 0 0 #0000;
-    --btn-focus-ring: var(--ds-border-highlight);
+    /* The Figma stroke (1 px, inside) is the first inset shadow, so it never changes the size. */
     --btn-stroke: transparent;
-    --btn-stroke-style: solid;
-    --btn-text-shadow: none;
-    --btn-icon: var(--btn-icon-default);
+    --btn-effect: 0 0 #0000;
+    --btn-ring: 0 0 #0000;
 
-    position: relative;
     box-sizing: border-box;
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     gap: var(--btn-gap);
-    padding: var(--btn-pad-y) var(--btn-pad-x);
+    min-height: var(--btn-height);
+    margin: 0;
+    padding: 0 var(--btn-pad-x);
     border: 0;
-    border-radius: var(--ds-radius-xs);
-    background-color: var(--btn-bg);
-    box-shadow: var(--btn-shadow);
+    border-radius: var(--ds-radius-md);
+    outline: none;
+    background: var(--btn-bg, transparent);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--btn-stroke), var(--btn-ring), var(--btn-effect);
     color: var(--btn-fg);
-    font-family: var(--ds-font-family-body);
-    font-size: var(--btn-font-size);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
     font-weight: var(--ds-font-weight-medium);
-    line-height: var(--btn-line-height);
+    line-height: var(--ds-text-xs--line-height);
+    /* Figma letter spacing −0.5 %. */
+    letter-spacing: -0.005em;
     white-space: nowrap;
     cursor: pointer;
     user-select: none;
-    -webkit-tap-highlight-color: transparent;
   }
 
-  /* Figma strokes are drawn inside the frame and do not affect layout, so they are an overlay rather than a CSS border. */
-  .ds-button::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: var(--ds-stroke-default) var(--btn-stroke-style) var(--btn-stroke);
-    border-radius: inherit;
-    pointer-events: none;
+  /* Figma Size: height, side padding, gap and icon size. Icon only is a square of the same height. */
+  .ds-button--size-xl {
+    --btn-height: var(--ds-spacing-10);
+    --btn-pad-x: var(--ds-spacing-3);
+    --btn-gap: var(--ds-spacing-1-5);
+    --btn-icon-size: var(--ds-spacing-4);
   }
 
-  .ds-button:hover:not(:disabled, [data-loading]) {
-    background-color: var(--btn-bg-hover);
+  .ds-button--size-lg {
+    --btn-height: var(--ds-spacing-9);
+    --btn-pad-x: var(--ds-spacing-2-5);
+    --btn-gap: var(--ds-spacing-1);
+    --btn-icon-size: var(--ds-spacing-4);
   }
 
-  .ds-button:active:not(:disabled, [data-loading]) {
-    background-color: var(--btn-bg-press);
+  .ds-button--size-default {
+    --btn-height: var(--ds-spacing-8);
+    --btn-pad-x: var(--ds-spacing-2);
+    --btn-gap: var(--ds-spacing-1);
+    --btn-icon-size: var(--ds-spacing-4);
   }
+
+  .ds-button--size-sm {
+    --btn-height: var(--ds-spacing-7);
+    --btn-pad-x: var(--ds-spacing-2);
+    --btn-gap: var(--ds-spacing-1);
+    --btn-icon-size: var(--ds-spacing-4);
+  }
+
+  .ds-button--size-xs {
+    --btn-height: var(--ds-spacing-6);
+    --btn-pad-x: var(--ds-spacing-1-5);
+    --btn-gap: var(--ds-spacing-0-5);
+    --btn-icon-size: var(--ds-spacing-3-5);
+  }
+
+  .ds-button--icon-only {
+    width: var(--btn-height);
+    height: var(--btn-height);
+    padding: 0;
+  }
+
+  /* ── Figma Variant ──────────────────────────────────────────────────── */
+
+  .ds-button--default {
+    --btn-bg: var(--ds-foreground);
+    --btn-fg: var(--ds-primary-foreground);
+    --btn-stroke: var(--ds-primary-border);
+    --btn-effect: var(--ds-controls-primary-control);
+    --btn-badge-bg: var(--ds-alpha-white-20);
+  }
+
+  .ds-button--outline {
+    --btn-bg: var(--ds-control);
+    --btn-fg: var(--ds-foreground);
+    --btn-stroke: var(--ds-control-border);
+    --btn-effect: var(--ds-controls-secondary-control);
+    --btn-badge-bg: var(--ds-fill-2);
+  }
+
+  .ds-button--secondary {
+    --btn-bg: var(--ds-fill-2);
+    --btn-fg: var(--ds-foreground);
+    --btn-badge-bg: var(--ds-fill-2);
+  }
+
+  .ds-button--ghost {
+    --btn-fg: var(--ds-foreground);
+    --btn-badge-bg: var(--ds-fill-2);
+  }
+
+  .ds-button--destructive {
+    --btn-fg: var(--ds-destructive-foreground);
+    --btn-stroke: var(--ds-alpha-destructive-50);
+    --btn-badge-bg: var(--ds-alpha-destructive-10);
+  }
+
+  /* ── Figma State=Hover (Default draws Hover like Default) ───────────── */
+
+  .ds-button:hover:not(:disabled, [aria-disabled='true']) {
+    &.ds-button--outline {
+      --btn-bg: var(--ds-control-hover);
+    }
+
+    &.ds-button--secondary {
+      --btn-bg: var(--ds-fill-3);
+    }
+
+    &.ds-button--ghost {
+      --btn-bg: var(--ds-fill-2);
+    }
+
+    &.ds-button--destructive {
+      --btn-bg: var(--ds-fill-1);
+    }
+  }
+
+  /* ── Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring (Figma's local effects) ── */
 
   .ds-button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 1px var(--ds-bg-default), 0 0 0 3px var(--btn-focus-ring), var(--btn-focus-shadow);
+    --btn-stroke: var(--ds-ring);
+    --btn-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
+
+    &.ds-button--default {
+      /* Figma swaps the primary-control effect for a 0.5 px border ring, the drop shadow and the inner glow. */
+      --btn-effect: 0 0 0 0.5px var(--ds-primary-border), 0 3px 3px -2px var(--ds-alpha-black-20), inset 0 0 3px 0 var(--ds-alpha-white-20);
+    }
+
+    &.ds-button--outline {
+      /* #00000014: 8 % black, between the 5 % and 10 % tokens. */
+      --btn-effect: 0 3px 3px -2px color-mix(in srgb, var(--ds-alpha-black-5) 40%, var(--ds-alpha-black-10));
+    }
+
+    &:is(.ds-button--secondary, .ds-button--ghost, .ds-button--destructive) {
+      --btn-effect: 0 0 #0000;
+    }
+
+    &.ds-button--destructive {
+      --btn-stroke: var(--ds-destructive);
+      --btn-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-destructive-20);
+    }
   }
 
-  .ds-button[data-loading] {
-    background-color: var(--btn-bg-loading);
-    color: var(--btn-fg-loading);
-    cursor: progress;
-    --btn-icon-state: var(--btn-icon-loading);
-    --btn-text-shadow: none;
-  }
+  /* ── Figma State=Disabled: the whole button at 50 % ─────────────────── */
 
-  .ds-button:disabled {
-    background-color: var(--btn-bg-disabled, var(--ds-bg-state-disabled));
-    box-shadow: none;
-    color: var(--ds-text-hint);
+  .ds-button:is(:disabled, [aria-disabled='true']) {
+    opacity: 0.5;
     cursor: not-allowed;
-    --btn-icon-state: var(--ds-icon-default-disabled);
-    --btn-badge-bg: transparent;
-    --btn-badge-stroke: var(--ds-border-default);
-    --btn-badge-fg: var(--ds-text-hint);
-    --btn-text-shadow: none;
+
+    &.ds-button--default {
+      --btn-bg: var(--ds-muted-foreground);
+      --btn-stroke: var(--ds-primary-border-disabled);
+      --btn-effect: var(--ds-controls-primary-control-disabled);
+    }
+
+    &.ds-button--outline {
+      --btn-bg: var(--ds-control-hover);
+    }
+
+    &.ds-button--destructive {
+      --btn-bg: var(--ds-fill-1);
+    }
   }
 
-  /* ── Parts ─────────────────────────────────────────────────────────────── */
+  /* ── Parts ──────────────────────────────────────────────────────────── */
 
   .ds-button__label {
-    padding: 0 var(--ds-space-2);
-    text-shadow: var(--btn-text-shadow);
+    padding: 0 var(--ds-spacing-0-5);
   }
 
   .ds-button__icon {
     display: inline-flex;
     flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ds-button__icon > svg {
+    display: block;
     width: var(--btn-icon-size);
     height: var(--btn-icon-size);
-    color: var(--btn-icon-state, var(--btn-icon));
   }
 
-  .ds-button__icon > svg,
-  .ds-button__icon > img {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
+  /* Figma "Badge": a 20 px count (16 px in xs), Text/2xs/Medium. */
   .ds-button__badge {
     box-sizing: border-box;
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    height: var(--btn-badge-size);
-    min-width: var(--btn-badge-size);
-    padding: 0 var(--ds-space-4);
+    min-width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+    padding: 0 var(--ds-spacing-1);
     border-radius: var(--ds-radius-xs);
     background-color: var(--btn-badge-bg);
-    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--btn-badge-stroke);
-    color: var(--btn-badge-fg);
-    font-size: var(--ds-font-size-xs);
-    line-height: var(--ds-font-line-height-leading-4);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
   }
 
-  /* While loading, the regular content keeps the button's width and the spinner + label sit on top (Figma keeps the width). */
-  .ds-button__sizer {
-    display: contents;
-    visibility: hidden;
-  }
-
-  .ds-button__loading {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--btn-gap);
-  }
-
-  .ds-button__spinner {
-    animation: ds-button-spin 0.8s linear infinite;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ds-button__spinner {
-      animation-duration: 2.4s;
-    }
-  }
-
-  @keyframes ds-button-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* ── Sizes ─────────────────────────────────────────────────────────────── */
-
-  .ds-button--lg {
-    --btn-pad-y: var(--ds-space-10);
-    --btn-pad-x: var(--ds-space-14);
-    --btn-gap: var(--ds-space-6);
-    --btn-icon-size: 18px;
-    --btn-box: 40px;
-    --btn-icon-only-size: 20px;
-    --btn-badge-size: 20px;
-    --btn-font-size: var(--ds-font-size-sm);
-    --btn-line-height: var(--ds-font-line-height-leading-5);
-  }
-
-  .ds-button--md {
-    --btn-pad-y: var(--ds-space-8);
-    --btn-pad-x: var(--ds-space-12);
-    --btn-gap: var(--ds-space-6);
-    --btn-icon-size: 16px;
-    --btn-box: 36px;
-    --btn-icon-only-size: 20px;
-    --btn-badge-size: 20px;
-    --btn-font-size: var(--ds-font-size-sm);
-    --btn-line-height: var(--ds-font-line-height-leading-5);
-  }
-
-  .ds-button--sm {
-    --btn-pad-y: var(--ds-space-6);
-    --btn-pad-x: var(--ds-space-10);
-    --btn-gap: var(--ds-space-4);
-    --btn-icon-size: 16px;
-    --btn-box: 32px;
-    --btn-icon-only-size: 20px;
-    --btn-badge-size: 20px;
-    --btn-font-size: var(--ds-font-size-sm);
-    --btn-line-height: var(--ds-font-line-height-leading-5);
-  }
-
-  .ds-button--xs {
-    --btn-pad-y: var(--ds-space-4);
-    --btn-pad-x: var(--ds-space-8);
-    --btn-gap: var(--ds-space-4);
-    --btn-icon-size: 16px;
-    --btn-box: 28px;
-    --btn-icon-only-size: 16px;
-    --btn-badge-size: 16px;
-    --btn-font-size: var(--ds-font-size-sm);
-    --btn-line-height: var(--ds-font-line-height-leading-5);
-  }
-
-  .ds-button--2xs {
-    --btn-pad-y: var(--ds-space-4);
-    --btn-pad-x: var(--ds-space-6);
-    --btn-gap: var(--ds-space-4);
-    --btn-icon-size: 16px;
-    --btn-box: 24px;
-    --btn-icon-only-size: 16px;
-    --btn-badge-size: 16px;
-    --btn-font-size: var(--ds-font-size-xs);
-    --btn-line-height: var(--ds-font-line-height-leading-4);
-  }
-
-  .ds-button--icon-only {
-    --btn-gap: 0px;
-    --btn-icon-size: var(--btn-icon-only-size);
-    --btn-icon: var(--btn-icon-only, var(--btn-icon-default));
-    width: var(--btn-box);
-    height: var(--btn-box);
-    padding: 0;
-  }
-
-  /* ── Shapes ────────────────────────────────────────────────────────────── */
-
-  .ds-button--rounded {
-    border-radius: var(--ds-radius-xs);
-  }
-
-  .ds-button--pill {
-    border-radius: var(--ds-radius-full);
-  }
-
-  /* ── Variants (Figma "Style") ──────────────────────────────────────────── */
-
-  .ds-button--primary,
-  .ds-button--destructive {
-    --btn-fg: var(--ds-text-white-default);
-    --btn-fg-loading: var(--ds-text-white-default);
-    --btn-icon-default: var(--ds-icon-white-default);
-    --btn-icon-loading: var(--ds-icon-white-default);
-    --btn-badge-bg: var(--ds-bg-badge-white);
-    --btn-badge-stroke: var(--ds-border-white);
-    --btn-badge-fg: var(--ds-text-white-default);
-    --btn-shadow: var(--ds-shadow-components-default);
-    --btn-focus-shadow: var(--ds-shadow-components-focus);
-  }
-
-  .ds-button--primary {
-    --btn-bg: var(--ds-bg-state-primary);
-    --btn-bg-hover: var(--ds-bg-state-primary-hover);
-    --btn-bg-press: var(--ds-bg-state-primary-press);
-    --btn-bg-loading: var(--ds-bg-state-primary-loading);
-    --btn-text-shadow: var(--ds-text-shadow-on-primary);
-  }
-
-  .ds-button--destructive {
-    --btn-bg: var(--ds-bg-state-destructive);
-    --btn-bg-hover: var(--ds-bg-state-destructive-hover);
-    --btn-bg-press: var(--ds-bg-state-destructive-press);
-    --btn-bg-loading: var(--ds-bg-state-destructive-loading);
-    --btn-focus-ring: var(--ds-border-highlight-destructive);
-  }
-
-  .ds-button--secondary,
-  .ds-button--dashed,
-  .ds-button--soft,
-  .ds-button--ghost,
-  .ds-button--ghost-muted {
-    --btn-fg: var(--ds-text-default);
-    --btn-fg-loading: var(--ds-text-muted);
-    --btn-icon-default: var(--ds-icon-default-muted);
-    --btn-icon-only: var(--ds-icon-default-subtle);
-    --btn-icon-loading: var(--ds-icon-default-muted);
-    --btn-badge-bg: transparent;
-    --btn-badge-stroke: var(--ds-border-default);
-    --btn-badge-fg: var(--ds-text-muted);
-  }
-
-  .ds-button--secondary,
-  .ds-button--dashed {
-    --btn-bg: var(--ds-bg-state-secondary);
-    --btn-bg-hover: var(--ds-bg-state-secondary-hover);
-    --btn-bg-press: var(--ds-bg-state-secondary-press);
-    --btn-bg-loading: var(--ds-bg-state-secondary-loading);
-    --btn-stroke: var(--ds-border-darker);
-  }
-
-  .ds-button--secondary {
-    --btn-shadow: var(--ds-shadow-components-default);
-    --btn-focus-shadow: var(--ds-shadow-components-focus);
-  }
-
-  .ds-button--dashed {
-    --btn-stroke-style: dashed;
-  }
-
-  .ds-button--secondary:disabled,
-  .ds-button--dashed:disabled {
-    --btn-stroke: var(--ds-border-default);
-  }
-
-  .ds-button--soft {
-    --btn-bg: var(--ds-bg-state-soft);
-    --btn-bg-hover: var(--ds-bg-state-soft-hover);
-    --btn-bg-press: var(--ds-bg-state-soft-press);
-    --btn-bg-loading: var(--ds-bg-state-soft-loading);
-    --btn-fg: var(--ds-text-subtle);
-  }
-
-  .ds-button--ghost,
-  .ds-button--ghost-muted {
-    --btn-bg: var(--ds-bg-state-ghost);
-    --btn-bg-hover: var(--ds-bg-state-ghost-hover);
-    --btn-bg-press: var(--ds-bg-state-ghost-press);
-    --btn-bg-loading: var(--ds-bg-state-ghost-loading);
-    --btn-bg-disabled: var(--ds-bg-state-ghost);
-  }
-
-  .ds-button--ghost-muted {
-    --btn-fg: var(--ds-text-muted);
-    --btn-icon-only: var(--ds-icon-default-muted);
+  .ds-button--size-xs .ds-button__badge {
+    min-width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    padding: 0 var(--ds-spacing-0-5);
   }
 }
