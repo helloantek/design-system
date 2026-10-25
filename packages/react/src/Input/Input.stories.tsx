@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
 import { RiAtLine, RiInformationFill } from '@remixicon/react';
-import brands from '@helloantek/ds-tokens/brands.json';
+import { Button } from '../Button';
 import { Input, InputAction, type InputSize, type InputVariant } from './Input';
 
-const FIGMA_URL = 'https://www.figma.com/design/4tiBR2hKd4yvQehtKhM9OY?node-id=3780-4518';
+const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=82-50';
 
 const variants: InputVariant[] = ['default', 'shadow', 'soft'];
-const sizes: InputSize[] = ['lg', 'sm'];
+const sizes: InputSize[] = ['xl', 'lg', 'default'];
 
 const meta = {
   title: 'Components/Input',
   parameters: {
     docs: {
       description: {
-        component: `Implements the Figma component set **Input** ([open in Figma](${FIGMA_URL})) for Figma Variant = Default, Shortcut, Add-on, Inline add-on and Tail button. Figma "Style" → \`variant\`, "Size" → \`size\`; Active is \`:focus-within\`, Failed is \`error\`, Disabled is \`disabled\`. Styles come from \`@helloantek/ds-css\`, so the same classes work outside React. Dropdown, Tags, Quantity and Lead button (file) variants are separate components (see the README).`,
+        component: `Implements the Sort UI 2.0 component sets **Input** ([open in Figma](${FIGMA_URL})), **Input Group** (icons, inline text, Kbd and the button slot) and **Field** (label, description, error). \`size\` is Figma Size: \`xl\` (40 px), \`lg\` (36 px), \`default\` (32 px), the same heights as Button's sizes of the same name. Focus is \`:focus-within\`, Invalid is \`error\`, Disabled is \`disabled\`. Sort UI 2.0 has a single input style: \`default\` is it, \`shadow\` adds Shadow/xs and \`soft\` is a borderless tinted field. Styles come from \`@helloantek/ds-css\`, so the same classes work outside React.`,
       },
     },
   },
@@ -47,7 +47,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     error: '',
     placeholder: 'mail@domain.com',
     variant: 'default',
-    size: 'lg',
+    size: 'default',
     disabled: false,
     leadIcon: true,
     tailIcon: true,
@@ -90,19 +90,19 @@ const grid = (columns: number): CSSProperties => ({
   display: 'grid',
   gridTemplateColumns: `repeat(${columns}, 280px)`,
   gap: 24,
-  fontFamily: 'var(--ds-font-family-body)',
+  fontFamily: 'var(--ds-font-sans)',
   fontSize: 12,
-  color: 'var(--ds-text-muted)',
+  color: 'var(--ds-muted-foreground)',
 });
 
-/** Every supported Figma Variant in its static states. Focus an input to see Active. */
+/** Every slot combination in the static states. Focus an input to see Focus. */
 export const AllVariants: StoryObj = {
   decorators: [(Story) => <div style={{ width: 'auto' }}>{Story()}</div>],
   render: () => (
     <div style={grid(4)}>
       <span>Placeholder</span>
       <span>Filled</span>
-      <span>Failed</span>
+      <span>Invalid</span>
       <span>Disabled</span>
       {Object.entries(kinds).map(([name, props]) => (
         <div key={name} style={{ display: 'contents' }}>
@@ -127,36 +127,37 @@ export const Styles: StoryObj = {
   ),
 };
 
+/** Figma Size: 40, 36 and 32 px, next to the Button of the same size. */
 export const Sizes: StoryObj = {
   decorators: [(Story) => <div style={{ width: 'auto' }}>{Story()}</div>],
   render: () => (
-    <div style={grid(2)}>
+    <div style={{ display: 'grid', gap: 16 }}>
       {sizes.map((size) => (
-        <Input key={size} size={size} label={size} caption="Caption text" {...kinds['Tail button']} />
+        <div key={size} style={{ display: 'flex', gap: 8, alignItems: 'flex-end', width: 400 }}>
+          <Input size={size} label={size} placeholder="mail@domain.com" leadIcon={<RiAtLine />} />
+          <Button size={size}>Subscribe</Button>
+        </div>
       ))}
     </div>
   ),
 };
 
-/** The same inputs under every brand and colour scheme, driven only by tokens. */
-export const Brands: StoryObj = {
+/** Light and Dark, driven only by tokens. */
+export const Themes: StoryObj = {
   parameters: { layout: 'fullscreen' },
   decorators: [(Story) => <div style={{ width: 'auto' }}>{Story()}</div>],
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-      {Object.keys(brands).flatMap((brand) =>
-        (['light', 'dark'] as const).map((scheme) => (
-          <div key={`${brand}-${scheme}`} data-ds-brand={brand} data-ds-scheme={scheme} style={{ background: 'var(--ds-bg-default)', padding: 24, display: 'grid', gap: 16 }}>
-            <div style={{ fontFamily: 'var(--ds-font-family-body)', fontSize: 12, color: 'var(--ds-text-muted)' }}>
-              {brand} · {scheme}
-            </div>
-            {variants.map((variant) => (
-              <Input key={variant} variant={variant} label={variant} caption="Caption text" {...kinds.Default} />
-            ))}
-            <Input label="Failed" error="Error message" {...kinds['Tail button']} />
-          </div>
-        )),
-      )}
+      {(['light', 'dark'] as const).map((scheme) => (
+        <div key={scheme} data-ds-brand="theme-1" data-ds-scheme={scheme} style={{ background: 'var(--ds-background)', padding: 24, display: 'grid', gap: 16 }}>
+          <div style={{ fontFamily: 'var(--ds-font-sans)', fontSize: 12, color: 'var(--ds-muted-foreground)' }}>{scheme === 'light' ? 'Light' : 'Dark'}</div>
+          {variants.map((variant) => (
+            <Input key={variant} variant={variant} label={variant} caption="Caption text" {...kinds.Default} />
+          ))}
+          <Input label="Invalid" error="Error message" defaultValue="hey@sortui" {...kinds['Tail button']} />
+          <Input label="Disabled" caption="Caption text" disabled {...kinds.Shortcut} />
+        </div>
+      ))}
     </div>
   ),
 };

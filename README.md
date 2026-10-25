@@ -122,29 +122,29 @@ A short label: status, category, count or a removable value. Covers every Figma 
 
 ## Input
 
-Label, input and caption in one field. Covers Figma Variant = Default, Shortcut, Add-on, Inline add-on and Tail button; the remaining Figma variants are separate components ([backlog](docs/backlog.md)).
+Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group** and **Field**.
 
 ```tsx
 <Input label="Email" caption="We never share it" placeholder="mail@domain.com" leadIcon={<RiAtLine />} />
-<Input label="Website" addonBefore="https://" addonAfter=".com" />
+<Input label="Website" prefix="https://" suffix=".com" />
 <Input label="Invite" placeholder="mail@domain.com" action={<InputAction onClick={send}>Send</InputAction>} />
 <Input label="Email" error="Enter a valid address" />
 ```
 
 | Figma property | React prop | CSS class |
 |---|---|---|
-| Style | `variant`: `default` · `shadow` · `soft` | `ds-input--<variant>` |
-| Size | `size`: `lg` · `sm` | `ds-field--<size>` |
-| State = Placeholder / Filled | `placeholder` / `value` | native |
-| State = Active | focus | `:focus-within` |
-| State = Failed | `error` (replaces the caption, sets `aria-invalid`) | `ds-input--invalid` · `ds-field__caption--error` |
-| State = Disabled | `disabled` | `ds-input--disabled` |
-| Label · Caption | `label` · `caption` (wired with `for` / `aria-describedby`) | `ds-field__label` · `ds-field__caption` |
-| Lead Icon · Tail Icon | `leadIcon` · `tailIcon` | `ds-input__icon` |
-| Variant = Shortcut | `shortcut` (also `aria-keyshortcuts`) | `ds-input__shortcut` |
-| Variant = Inline add-on | `prefix` · `suffix` | `ds-input__affix` |
-| Variant = Add-on | `addonBefore` · `addonAfter` | `ds-input__addon` |
-| Variant = Tail button | `action={<InputAction>…</InputAction>}` | `ds-input__action` |
+| Size | `size`: `xl` (40 px) · `lg` (36 px) · `default` (32 px, the default); the same heights as Button's sizes of the same name | `ds-field--<size>` · `ds-input--<size>` |
+| — (one style in 2.0) | `variant`: `default` · `shadow` (+ Shadow/xs) · `soft` (borderless, tinted) | `ds-input--<variant>` |
+| Value = Placeholder / Filled | `placeholder` / `value` | native |
+| State = Focus | focus | `:focus-within` |
+| State = Invalid · Field Error | `error` (replaces the description, sets `aria-invalid`, label turns red) | `ds-input--invalid` · `ds-field__caption--error` |
+| State = Disabled | `disabled` (input and label at 50 %) | `ds-input--disabled` |
+| Field Label · Description | `label` · `caption` (wired with `for` / `aria-describedby`) | `ds-field__label` · `ds-field__caption` |
+| Leading icon · Trailing icon | `leadIcon` · `tailIcon` | `ds-input__icon` |
+| Kbd in the T slot | `shortcut` (also `aria-keyshortcuts`) | `ds-input__shortcut` |
+| L slot · T slot text | `prefix` · `suffix` | `ds-input__affix` |
+| Button (Outline xs) in the T slot | `action={<InputAction>…</InputAction>}` | `ds-input__action` |
+| — | `addonBefore` · `addonAfter`: segments split off by a line | `ds-input__addon` |
 
 ## Select
 
@@ -215,8 +215,10 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Theme-2 Primary's text shadow lowers contrast to 3.25:1.
 - Ghost Muted icon-only changes icon colour on hover.
 - The `Tooltip` property has no layer.
-- Input: State=Failed adds a local shadow in Style=Default and Soft that those styles have nowhere else; the label row has an empty 78 px "Tail" frame with no property.
-- Input: disabled prefix/suffix text is 1.83:1 (WCAG exempts disabled controls, but axe reports it).
+- Input (2.0): State=Invalid's stroke and ring are bound to Tailwind class names ("border-destructive dark:border-destructive/50", "ring-destructive/20 …") instead of variables; the code uses `invalid-border` and `invalid-ring`. There is no Invalid + Focus variant; the code keeps the red stroke and ring while focused.
+- Input (2.0): Input Group's prefix/suffix text is 13 px in the component but 14 px in the demo frames; the code follows the component.
+- Input (2.0): Input Group Filled + Invalid keeps the value black, while Input Filled + Invalid turns it red; the code follows Input. Field Invalid shows the description and the error together; `error` replaces the description, as before.
+- Input (2.0): disabled prefix/suffix text (muted at 50 %) is 2.1:1 (WCAG exempts disabled controls, but axe reports it).
 - Select: State=Destructive is drawn as a disabled field (grey background, hint text), not as an error; Failed is the error state. The name invites misuse.
 - Select: State=Failed has no extra shadow in Style=Default and Soft, while Input does; one of the two is likely unintended.
 - Select: the Active variant shows the placeholder while its menu has "Simon Alt" checked.

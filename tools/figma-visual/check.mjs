@@ -173,6 +173,11 @@ for (const component of components) {
       await page.keyboard.press('Tab');
       // Fail loudly instead of silently comparing an unfocused render.
       await page.waitForFunction(() => document.activeElement && document.activeElement !== document.body);
+      // Tab selects a filled input's text, which Figma does not draw; the caret is hidden by the screenshot.
+      await page.evaluate(() => {
+        const el = document.activeElement;
+        if (el instanceof HTMLInputElement && el.value) el.setSelectionRange(el.value.length, el.value.length);
+      });
     }
     // Let the browser repaint after the interaction before taking the screenshot.
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));

@@ -2,34 +2,34 @@ import { createContext, useContext, useId, useRef, type ButtonHTMLAttributes, ty
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-input*); this component only renders the markup.
 
-/** Figma "Style" property. */
+/** Sort UI 2.0 has one input style (`default`); `shadow` adds Shadow/xs, `soft` is a borderless tinted field. */
 export type InputVariant = 'default' | 'shadow' | 'soft';
-/** Figma "Size" property. */
-export type InputSize = 'lg' | 'sm';
+/** Figma "Size": 40, 36 and 32 px tall, like Button's sizes of the same name. */
+export type InputSize = 'xl' | 'lg' | 'default';
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {
   ref?: Ref<HTMLInputElement>;
-  /** Figma "Label". Rendered as a <label> tied to the input. */
+  /** Figma "Field Label". Rendered as a <label> tied to the input. */
   label?: ReactNode;
-  /** Figma "Caption": help text under the input. */
+  /** Figma Field "Description": help text under the input. */
   caption?: ReactNode;
-  /** Figma State=Failed: the message replaces the caption and marks the input invalid. */
+  /** Figma State=Invalid (Field "Error"): the message replaces the caption and marks the input invalid. */
   error?: ReactNode;
   variant?: InputVariant;
   size?: InputSize;
-  /** Figma "❖ Lead Icon" slot. Icons should use `currentColor`. */
+  /** Figma "Leading icon". Icons should use `currentColor`. */
   leadIcon?: ReactNode;
-  /** Figma "❖ Tail Icon" slot. Turns red when the input is invalid. */
+  /** Figma "Trailing icon". Turns red when the input is invalid. */
   tailIcon?: ReactNode;
-  /** Figma Variant=Shortcut: keyboard hint shown inside the input, also exposed as aria-keyshortcuts. */
+  /** Figma "Kbd" in the T slot: keyboard hint shown inside the input, also exposed as aria-keyshortcuts. */
   shortcut?: string;
-  /** Figma Variant=Inline add-on: text inside the input before / after the value. */
+  /** Figma Input Group "L slot" / "T slot" text: inside the input before / after the value. */
   prefix?: ReactNode;
   suffix?: ReactNode;
-  /** Figma Variant=Add-on: segments joined to the input before / after it. */
+  /** Segments joined to the input before / after it, split off by a line. */
   addonBefore?: ReactNode;
   addonAfter?: ReactNode;
-  /** Figma Variant=Tail button: usually an <InputAction>. */
+  /** Figma Input Group button in the T slot: usually an <InputAction>. */
   action?: ReactNode;
   /** Class for the outer field element. */
   className?: string;
@@ -44,7 +44,7 @@ export function Input(props: InputProps) {
     caption,
     error,
     variant = 'default',
-    size = 'lg',
+    size = 'default',
     leadIcon,
     tailIcon,
     shortcut,
@@ -140,7 +140,7 @@ export interface InputActionProps extends ButtonHTMLAttributes<HTMLButtonElement
   ref?: Ref<HTMLButtonElement>;
 }
 
-/** The button joined to an Input (Figma Variant=Tail button). Disabled together with its Input. */
+/** The button inside an Input (Figma Input Group T slot, Button Outline xs). Disabled together with its Input. */
 export function InputAction({ type = 'button', className, disabled, ...rest }: InputActionProps) {
   const inputDisabled = useContext(DisabledContext);
   return <button {...rest} type={type} disabled={disabled ?? inputDisabled} className={['ds-input__action', className].filter(Boolean).join(' ')} />;
