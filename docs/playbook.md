@@ -17,7 +17,7 @@ With the Figma MCP server (see `.claude/skills/figma-to-component/SKILL.md` for 
 1. `get_metadata` on the component set → list of variants and their properties.
 2. `use_figma` (read-only) → `componentPropertyDefinitions`, and resolved fills, strokes, effects and text styles **per variant**, including which variables they are bound to.
 3. `get_design_context` on a few representative variants → paddings, gaps, sizes, structure.
-4. New variables or modes → add them to `packages/tokens/figma/variables.json`, new effect styles to `effects.json`.
+4. New variables or effect styles → re-export Sort UI 2.0 with `export-variables-v2.js` and `packages/tokens/scripts/import-sort-ui-2.mjs` (see [the migration notes](migration-sort-ui-2.md#tokens)).
 
 ### Decide the scope
 

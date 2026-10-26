@@ -31,25 +31,25 @@
     border-radius: var(--ds-radius-xs);
     background-color: var(--badge-bg);
     /* Figma strokes are inside and do not change the size, so the stroke is an inset shadow. */
-    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--badge-stroke);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--badge-stroke);
     color: var(--badge-fg);
-    font-family: var(--ds-font-family-body);
-    font-size: var(--ds-font-size-xs);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-2xs);
     font-weight: var(--ds-font-weight-medium);
-    line-height: var(--ds-font-line-height-leading-4);
+    line-height: var(--ds-text-2xs--line-height);
     white-space: nowrap;
     vertical-align: middle;
   }
 
   /* Figma Size */
   .ds-badge--sm {
-    --badge-pad: var(--ds-space-2);
+    --badge-pad: var(--ds-spacing-0-5);
     --badge-icon-size: 12px;
     --badge-dot-size: 6px;
   }
 
   .ds-badge--lg {
-    --badge-pad: var(--ds-space-4);
+    --badge-pad: var(--ds-spacing-1);
     --badge-icon-size: 14px;
     --badge-dot-size: 8px;
   }
@@ -150,7 +150,7 @@
   /* ── Parts ──────────────────────────────────────────────────────────── */
 
   .ds-badge__label {
-    padding: 0 var(--ds-space-4);
+    padding: 0 var(--ds-spacing-1);
   }
 
   /* Variant=Icon, Dot and Image: a 16 px slot before the label; Icon and Dot pull the label 2 px closer. */
@@ -171,11 +171,11 @@
   }
 
   .ds-badge__lead + .ds-badge__label {
-    padding-left: var(--ds-space-2);
+    padding-left: var(--ds-spacing-0-5);
   }
 
   .ds-badge__lead--image + .ds-badge__label {
-    padding-left: var(--ds-space-4);
+    padding-left: var(--ds-spacing-1);
   }
 
   .ds-badge__lead > svg {

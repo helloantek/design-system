@@ -1,21 +1,17 @@
 # Adding a brand
 
-All brands share the same components. A brand is a choice of one mode per Figma variable collection.
+All brands share the same components; a brand is a set of token values. Sort UI 2.0 has one theme (Light and Dark), so the
+system ships one brand, `theme-1`, built from `packages/tokens/figma/sort-ui-2/` and `figma/sort-ui-1.3-kept.json`.
 
-1. **In Figma:** add the brand's modes. Light and dark go in `Themes` (e.g. `Theme-3-Light`, `Theme-3-Dark`); if needed, a new mode in `Radius` or `Font Family`.
-2. **Export variables:** re-export `packages/tokens/figma/variables.json` with the new modes (see the token export step in `.claude/skills/figma-to-component/SKILL.md`).
-3. **Register the brand** in `packages/tokens/brands.json`:
-   ```json
-   "theme-3": {
-     "label": "Theme 3",
-     "Themes": { "light": "Theme-3-Light", "dark": "Theme-3-Dark" },
-     "Radius": "Rounded",
-     "Font Family": "Font B"
-   }
-   ```
-   A missing collection falls back to its first mode; an unknown mode fails the build.
-4. **Build:** `npm run build -w @helloantek/ds-tokens` produces CSS, JS, Swift and Kotlin for the brand.
-5. **Check:** the Brands story in Storybook shows every component in the new brand. Read the axe output for contrast.
-6. **Fonts:** a brand with a new font family must document how apps load it (e.g. `@fontsource/<font>`).
+A second brand needs its own values first:
 
-A project then installs `@helloantek/ds-tokens`, `@helloantek/ds-css` and an adapter, and loads `@helloantek/ds-tokens/css/theme-3.css`.
+1. **In Figma:** give the Sort UI 2.0 `Themes` collection (and, if the brand differs there, `Radius` or `Typography`)
+   a mode per brand, e.g. `Brand-B Light` / `Brand-B Dark`.
+2. **Tokens:** extend `export-variables-v2.js`, `import-sort-ui-2.mjs` and `resolveSortUi2()` in
+   `packages/tokens/scripts/build.mjs` to read a brand's modes, and register the brand in `packages/tokens/brands.json`
+   (`"brand-b": { "label": "Brand B" }`). Add a test for it in `packages/tokens/test/build.test.mjs`.
+3. **Build:** `npm run build -w @helloantek/ds-tokens` produces CSS (`css/brand-b.css`, `css/scoped/brand-b.css`), JS,
+   Swift and Kotlin for every brand.
+4. **Check:** load the scoped CSS in `apps/storybook/.storybook/preview.tsx`, switch the Brand toolbar and read the axe
+   output for contrast; run the visual check with `brand` set to the new brand in a manifest if it has its own Figma renders.
+5. **Fonts:** a brand with a new font family must document how apps load it (e.g. `@fontsource/<font>`).

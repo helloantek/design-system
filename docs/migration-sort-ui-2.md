@@ -12,16 +12,19 @@ Each stage is its own branch and pull request, and `main` stays green between th
 1. **Tokens** (`claude/tokens/sort-ui-2`): Sort UI 2.0 variables and effect styles are generated **next to** the 1.3
    tokens, for every brand. Nothing visible changes; components still use 1.3.
 2. **Components**, one pull request each, rebuilt from the 2.0 component sets and their references:
-   Button (`40:2125`, done), Input (`82:50`, done), Select (`104:37` + Select Item `102:44`, done), Avatar (`174:6534` +
-   Avatar Badge `174:6524`, Avatar Group `179:80`). A component's CSS switches to 2.0 tokens only; its Figma references are
+   Button (`40:2125`), Input (`82:50`), Select (`104:37` + Select Item `102:44`), Avatar (`174:6534` + Avatar Badge
+   `174:6524`, Avatar Group `179:80`), all done. A component's CSS uses 2.0 tokens only; its Figma references are
    re-exported from 2.0.
-   **Badge stays on Sort UI 1.3** (decided with the owner): 2.0's Badge (`55:129`) is a different component (Default,
-   Outline, Secondary, Ghost, Destructive, Link and Solid/Tint colours, always a pill), while 1.3's Soft/Strong colours,
-   shapes, border, dot, image and remove button are what the system uses, Select tags included.
-3. **Cleanup and release**: remove the 1.3 tokens, `theme-2` and `figma/variables.json`/`effects.json`, rename the brand,
-   and publish 2.0.0 with a migration note for apps (the `--ds-*` names change). Badge still reads 1.3 tokens
-   (`bg/badge/*`, `bg/basic/*`, text and icon colours), so before they go, its values move into its own CSS or a small
-   set of kept tokens, with its Figma references unchanged.
+   **Badge and Status Badge stay on Sort UI 1.3** (decided with the owner): 2.0's Badge (`55:129`) is a different
+   component (Default, Outline, Secondary, Ghost, Destructive, Link and Solid/Tint colours, always a pill), while 1.3's
+   Soft/Strong colours, shapes, border, dot, image and remove button are what the system uses, Select tags included;
+   2.0's Avatar Badge is a plain dot, while Status Badge carries checkmark, online, offline, notification, icon and logo.
+3. **Cleanup and release** (`claude/tokens/sort-ui-2-cleanup`): the 1.3 tokens, `theme-2` and
+   `figma/variables.json`/`effects.json` are gone. The 40 Sort UI 1.3 colours Badge and Status Badge still use live in
+   `figma/sort-ui-1.3-kept.json` (Theme-1 Light and Dark values, same `--ds-*` names), so their Figma references are
+   unchanged; Badge's sizes, spacing and font use the equal 2.0 tokens. The brand keeps its name, `theme-1`.
+   Released as **2.0.0** (after Sort UI 2.0): nothing was published before, so the packages start from 1.0.0 and the
+   major changeset takes them to 2.0.0. The migration note for apps is below.
 
 New 2.0 components (Alert Dialog, Dialog, Checkbox, Tabs…) follow the normal playbook after stage 2.
 
@@ -46,8 +49,34 @@ CSS names follow Figma's WEB code syntax with the `--ds-` prefix, so Dev Mode ou
 | Effect `Surface/Dialog` | — | `--ds-surface-dialog` (box-shadow list) |
 
 Opacity, motion and effects are CSS-only; colours, dimensions, weights and fonts also reach JS, Swift and Kotlin.
-Where a 1.3 token has the same CSS name (`--ds-radius-xs`, `--ds-font-weight-medium`…), the values are equal, and the
-build fails if they ever differ. The **Foundations/Sort UI 2.0** stories show every token in Light and Dark.
+The kept 1.3 colours (`figma/sort-ui-1.3-kept.json`) are added to the same set; the build fails if a name is defined twice
+with different values. The **Foundations/Sort UI 2.0** stories show every token in Light and Dark.
 
 Notable changes from 1.3: `text-xs` is 13 px (12 px is now `text-2xs`), the page background is `#fcfcfc`, primary is
 near-black (`#0a0a0a`, white in Dark), radii go up to `4xl` (24 px), and spacing is the Tailwind scale.
+
+## Upgrading an app to 2.0.0
+
+- **Brands:** only `theme-1` remains; drop `theme-2.css` imports and `data-ds-brand="theme-2"`.
+- **Components:** Button, Input, Select and Avatar have new size and variant names; each changeset (`CHANGELOG.md`)
+  lists them. In short: sizes are `xl` · `lg` · `default` · `sm` · `xs` where the component has them (`default` is the
+  default), Button variants are `default` · `outline` · `secondary` · `ghost` · `destructive`, Avatar shapes are
+  `round` · `square`, Button's `leadIcon`/`tailIcon` are `leadingIcon`/`trailingIcon`. Badge and StatusBadge are unchanged.
+- **Tokens:** every Sort UI 1.3 `--ds-*` token is gone except the 40 colours Badge and Status Badge use. Closest 2.0
+  tokens for app code:
+
+| 1.3 | 2.0 |
+|---|---|
+| `--ds-bg-default` · `--ds-bg-card` | `--ds-background` · `--ds-card` |
+| `--ds-text-default` · `--ds-text-muted` · `--ds-text-subtle` | `--ds-foreground` · `--ds-muted-foreground` |
+| `--ds-text-destructive` | `--ds-destructive-foreground` |
+| `--ds-border-default` · `--ds-border-darker` | `--ds-border` · `--ds-field-border` |
+| `--ds-bg-state-primary` · `--ds-text-white-default` on it | `--ds-primary` · `--ds-primary-foreground` |
+| `--ds-bg-input` · `--ds-bg-input-soft` | `--ds-field` · `--ds-fill-1` |
+| `--ds-font-family-body` | `--ds-font-sans` |
+| `--ds-font-size-xs` / `-sm` (12 / 14 px) | `--ds-text-2xs` / `--ds-text-sm` (`--ds-text-xs` is 13 px now) |
+| `--ds-font-line-height-leading-4` / `-5` | `--ds-text-2xs--line-height` / `--ds-text-sm--line-height` |
+| `--ds-space-<px>` (e.g. `space-8`) | `--ds-spacing-<px ÷ 4>` (e.g. `spacing-2`) |
+| `--ds-stroke-default` | `--ds-stroke-width-1` |
+| `--ds-shadow-components-default` · `--ds-shadow-modal-sm` | `--ds-shadow-xs` · `--ds-surface-popover` |
+| `--ds-icon-size-<size>` | `--ds-spacing-*` (e.g. 24 px = `spacing-6`) |

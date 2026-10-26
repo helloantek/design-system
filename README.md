@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file `4tiBR2hKd4yvQehtKhM9OY` (Sort UI 1.3), moving to Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`) in stages; see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Status Badge), Badge, Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`, `theme-2`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -37,7 +37,7 @@ import '@helloantek/ds-css';
 
 import { Button } from '@helloantek/ds-react';
 
-<Button variant="secondary" leadIcon={<RiAddLine />}>Add</Button>
+<Button variant="secondary" leadingIcon={<RiAddLine />}>Add</Button>
 ```
 
 Colour scheme: `data-ds-scheme="dark"` on `<html>` (or any section), `"system"` to follow the OS. Light is the default.
@@ -47,7 +47,7 @@ Colour scheme: `data-ds-scheme="dark"` on `<html>` (or any section), `"system"` 
 Load the same two CSS files and use the classes; each component's markup is documented at the top of its CSS file:
 
 ```html
-<button class="ds-button ds-button--primary ds-button--md ds-button--rounded">
+<button class="ds-button ds-button--default ds-button--size-default">
   <span class="ds-button__label">Save</span>
 </button>
 ```
@@ -212,11 +212,7 @@ npm run test:visual      # every component matches Figma: renders (pixels) and e
 
 ## Known design findings
 
-These come from the Figma palette, not the code (details in the pilot report):
-- Destructive white text is 3.9–3.97:1 against WCAG AA's 4.5:1.
-- Theme-2 Primary's text shadow lowers contrast to 3.25:1.
-- Ghost Muted icon-only changes icon colour on hover.
-- The `Tooltip` property has no layer.
+These come from the Figma files, not the code:
 - Input (2.0): State=Invalid's stroke and ring are bound to Tailwind class names ("border-destructive dark:border-destructive/50", "ring-destructive/20 …") instead of variables; the code uses `invalid-border` and `invalid-ring`. There is no Invalid + Focus variant; the code keeps the red stroke and ring while focused.
 - Input (2.0): Input Group's prefix/suffix text is 13 px in the component but 14 px in the demo frames; the code follows the component.
 - Input (2.0): Input Group Filled + Invalid keeps the value black, while Input Filled + Invalid turns it red; the code follows Input. Field Invalid shows the description and the error together; `error` replaces the description, as before.
@@ -230,8 +226,5 @@ These come from the Figma palette, not the code (details in the pilot report):
 - Badge: Orange + Strong + Dot draws the dot in the badge's own colour, so it is invisible (every other colour uses white); the code uses white.
 - Badge: the Orange Soft label still draws #ba420d although its variable (orange/700) is #a73b0c; the component has not picked up the library update. The code follows the variable.
 - Badge: the Close Icon stays grey (Control buttons Style=Default): invisible on Strong badges and faint on dark Soft colours. The code gives it the label colour and a round hover in Pill badges.
-- Avatar: Rounded uses radius/xs up to size md and radius/sm from lg, but Initials use radius/sm at every size; the ring's corners (6/8/10 px) and the badge offsets are fixed numbers that change irregularly between sizes (e.g. Rounded lg badges stick out 2 px, md and xl 4 and 6 px). The code follows Figma.
-- Avatar: in Theme-1 Dark, Initials put text/white-default (#18181b there) on bg/basic/gray-accent (#6f6f77): 3.6:1, below AA.
-- Avatar: the Empty picture is a raster image (#f4f4f5 / #d4d4d8) with no variables; the code draws it with bg/basic/gray-subtle and border/darker (#d5d5d8 on that background), so it follows the colour scheme.
 - Button (2.0): Variant=Default draws Hover exactly like Default, so the primary button gives no hover feedback; in Focus the Default variant drops its inset highlight and Outline drops its control shadow (local effects instead of the effect styles).
 - Status Badge: Offline uses icon/black-disabled, which is the same dark grey in Dark mode, so the dot disappears on dark backgrounds.

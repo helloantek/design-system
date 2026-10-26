@@ -2,8 +2,7 @@
 
 Multi-brand design system: one UI kit, many brands. See `README.md` for the architecture and `docs/adr/0001-layered-packages.md` for why.
 
-- `packages/tokens` — Figma variables (`figma/variables.json`, `figma/effects.json`) + `brands.json` → CSS/JS/Swift/Kotlin. Generated `dist/` is never edited.
-- Migrating to Sort UI 2.0 (Figma `4JnqgEbdlnKgiFrfmiwEZw`) in stages: its tokens (`figma/sort-ui-2/`) sit next to 1.3 until every component has moved; see `docs/migration-sort-ui-2.md`.
+- `packages/tokens` — Sort UI 2.0 variables (Figma `4JnqgEbdlnKgiFrfmiwEZw`, `figma/sort-ui-2/`) + the few Sort UI 1.3 colours Badge and Status Badge still use (`figma/sort-ui-1.3-kept.json`) + `brands.json` → CSS/JS/Swift/Kotlin. Generated `dist/` is never edited. History: `docs/migration-sort-ui-2.md`.
 - `packages/css` — component styles. BEM `ds-<component>`, `@layer ds.components`, only `var(--ds-*)` values.
 - `packages/react` — thin adapter: markup and classes, props named after Figma properties.
 - `apps/storybook` — documentation; stories live next to components in `packages/*/src`.

@@ -1,0 +1,165 @@
+{
+ "$comment": "Sort UI 1.3 colours (Figma file 4tiBR2hKd4yvQehtKhM9OY, Themes collection, Theme-1-Light / Theme-1-Dark) still used by Badge and Status Badge, which stay on 1.3. Taken once from the last 1.3 export; Sort UI 2.0 has no equivalent. Remove an entry when no component uses it any more.",
+ "colors": {
+  "text/subtle": {
+   "light": "#4e4e55",
+   "dark": "#ffffffb2"
+  },
+  "text/white-default": {
+   "light": "#ffffff",
+   "dark": "#18181b"
+  },
+  "bg/state/ghost": {
+   "light": "#27272a00",
+   "dark": "#ffffff00"
+  },
+  "bg/state/ghost-hover": {
+   "light": "#27272a0f",
+   "dark": "#ffffff14"
+  },
+  "border/default": {
+   "light": "#27272a1a",
+   "dark": "#ffffff1a"
+  },
+  "border/darker": {
+   "light": "#27272a26",
+   "dark": "#ffffff26"
+  },
+  "border/highlight": {
+   "light": "#27272a66",
+   "dark": "#ffffff66"
+  },
+  "icon/white-default": {
+   "light": "#ffffff",
+   "dark": "#18181b"
+  },
+  "icon/default-muted": {
+   "light": "#6f6f77",
+   "dark": "#ffffff80"
+  },
+  "bg/badge/default": {
+   "light": "#ffffff",
+   "dark": "#ffffff1a"
+  },
+  "bg/badge/gray": {
+   "light": "#27272a0f",
+   "dark": "#ffffff1a"
+  },
+  "bg/badge/red": {
+   "light": "#ee6e6c1a",
+   "dark": "#ee6e6c1a"
+  },
+  "bg/badge/orange": {
+   "light": "#f38f361a",
+   "dark": "#f38f361a"
+  },
+  "bg/badge/lime": {
+   "light": "#abe4351a",
+   "dark": "#abe4351a"
+  },
+  "bg/badge/green": {
+   "light": "#66dc7e1a",
+   "dark": "#66dc7e1a"
+  },
+  "bg/badge/cyan": {
+   "light": "#4ad0ef1a",
+   "dark": "#4ad0ef1a"
+  },
+  "bg/badge/blue": {
+   "light": "#65a0fd1a",
+   "dark": "#65a0fd1a"
+  },
+  "bg/badge/violet": {
+   "light": "#a185fd1a",
+   "dark": "#a185fd1a"
+  },
+  "bg/badge/fuchsia": {
+   "light": "#dd72fa1a",
+   "dark": "#dd72fa1a"
+  },
+  "bg/badge/pink": {
+   "light": "#ea6eb31a",
+   "dark": "#ea6eb31a"
+  },
+  "bg/basic/gray-accent": {
+   "light": "#6f6f77",
+   "dark": "#6f6f77"
+  },
+  "bg/basic/red-accent": {
+   "light": "#e74341",
+   "dark": "#e74341"
+  },
+  "bg/basic/red-strong": {
+   "light": "#b11e1b",
+   "dark": "#ed6664"
+  },
+  "bg/basic/orange-accent": {
+   "light": "#f27313",
+   "dark": "#f27313"
+  },
+  "bg/basic/orange-strong": {
+   "light": "#a73b0c",
+   "dark": "#f38f36"
+  },
+  "bg/basic/lime-accent": {
+   "light": "#90cd22",
+   "dark": "#90cd22"
+  },
+  "bg/basic/lime-strong": {
+   "light": "#557c18",
+   "dark": "#abe435"
+  },
+  "bg/basic/green-accent": {
+   "light": "#4fc660",
+   "dark": "#4fc660"
+  },
+  "bg/basic/green-strong": {
+   "light": "#33803f",
+   "dark": "#66dc7e"
+  },
+  "bg/basic/cyan-accent": {
+   "light": "#3eb5d7",
+   "dark": "#3eb5d7"
+  },
+  "bg/basic/cyan-strong": {
+   "light": "#297392",
+   "dark": "#4ad0ef"
+  },
+  "bg/basic/blue-accent": {
+   "light": "#437dfc",
+   "dark": "#437dfc"
+  },
+  "bg/basic/blue-strong": {
+   "light": "#2147dd",
+   "dark": "#65a0fd"
+  },
+  "bg/basic/violet-accent": {
+   "light": "#8655fd",
+   "dark": "#8655fd"
+  },
+  "bg/basic/violet-strong": {
+   "light": "#6717de",
+   "dark": "#a185fd"
+  },
+  "bg/basic/fuchsia-accent": {
+   "light": "#cf3ff3",
+   "dark": "#cf3ff3"
+  },
+  "bg/basic/fuchsia-strong": {
+   "light": "#9a15b1",
+   "dark": "#dd72fa"
+  },
+  "bg/basic/pink-accent": {
+   "light": "#e34798",
+   "dark": "#e34798"
+  },
+  "bg/basic/pink-strong": {
+   "light": "#b61a5c",
+   "dark": "#ea6eb3"
+  },
+  "icon/black-disabled": {
+   "light": "#27272a59",
+   "dark": "#27272a59"
+  }
+ }
+}
