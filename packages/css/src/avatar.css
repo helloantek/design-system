@@ -263,8 +263,8 @@
     position: relative;
     display: inline-flex;
     flex-shrink: 0;
-    width: var(--ds-icon-size-xl);
-    height: var(--ds-icon-size-xl);
+    width: var(--ds-spacing-6);
+    height: var(--ds-spacing-6);
     vertical-align: middle;
   }
 
@@ -276,7 +276,7 @@
   }
 
   .ds-status-badge__ring {
-    fill: var(--ds-bg-default);
+    fill: var(--ds-background);
   }
 
   .ds-status-badge__mark {

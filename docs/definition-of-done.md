@@ -22,9 +22,9 @@ A component is ready for other projects when all of these hold:
 - [ ] Respects `prefers-reduced-motion`.
 
 **Theming**
-- [ ] Renders correctly for every brand and both colour schemes (Brands story).
+- [ ] Renders correctly in every brand and both colour schemes (Themes story; one brand today).
 
 **Documentation**
-- [ ] Stories: Playground, variant matrix, sizes, Brands; docs link to the Figma node.
+- [ ] Stories: Playground, variant matrix, sizes, Themes; docs link to the Figma node.
 - [ ] Props table updated in the README.
 - [ ] Changeset added.

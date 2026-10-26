@@ -77,7 +77,7 @@ export const SignUp: StoryObj<Args> = {
     };
 
     return (
-      <form onSubmit={onSubmit} noValidate style={{ display: 'grid', gap: 20, width: 360, fontFamily: 'var(--ds-font-family-body)' }}>
+      <form onSubmit={onSubmit} noValidate style={{ display: 'grid', gap: 20, width: 360, fontFamily: 'var(--ds-font-sans)' }}>
         <Input {...field} name="name" label="Name" placeholder="Jane Doe" leadIcon={<RiUser3Line />} error={errors.name} />
         <Input {...field} name="email" type="email" label="Email" placeholder="mail@domain.com" leadIcon={<RiAtLine />} caption="We never share it" error={errors.email} />
         <Select {...field} name="role" label="Role" placeholder="Select a role" options={roles} error={errors.role} />
@@ -95,7 +95,7 @@ export const SignUp: StoryObj<Args> = {
           </Button>
         </div>
         {submitted && (
-          <pre data-testid="submitted" style={{ margin: 0, padding: 12, borderRadius: 4, background: 'var(--ds-bg-input-soft)', color: 'var(--ds-text-default)', fontSize: 12 }}>
+          <pre data-testid="submitted" style={{ margin: 0, padding: 12, borderRadius: 4, background: 'var(--ds-fill-1)', color: 'var(--ds-foreground)', fontSize: 12 }}>
             {JSON.stringify(submitted, null, 2)}
           </pre>
         )}

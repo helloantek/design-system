@@ -19,13 +19,13 @@ Parse the URL: `figma.com/design/<fileKey>/…?node-id=<a>-<b>` → nodeId `<a>:
 
 ## 2. Tokens
 
-`scripts/export-variables.js` returns resolved values for every mode of the collections you list. Merge new variables into `packages/tokens/figma/variables.json` (same shape) and effect styles into `figma/effects.json`. Run `npm run build -w @helloantek/ds-tokens && npm test`.
+`scripts/export-variables-v2.js` (with `use_figma`) returns every Sort UI 2.0 variable and effect style; save its `text` and run `node packages/tokens/scripts/import-sort-ui-2.mjs <file> <hash>` to update `packages/tokens/figma/sort-ui-2/`. Run `npm run build -w @helloantek/ds-tokens && npm test`.
 
 ## 3. Code
 
 - `packages/css/src/<name>.css` (+ `@import` in `index.css`): BEM `ds-<name>`, `@layer ds.components`, only `var(--ds-*)`.
 - `packages/react/src/<Name>/` + export from `src/index.ts`: markup and classes only, props named after Figma properties.
-- Stories next to the component: Playground, variant × state matrix, sizes, Brands.
+- Stories next to the component: Playground, variant × state matrix, sizes, Themes (Light and Dark).
 
 ## 4. Visual references and check
 

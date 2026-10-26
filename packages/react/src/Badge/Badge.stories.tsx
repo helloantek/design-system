@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type CSSProperties } from 'react';
 import { RiUser3Fill } from '@remixicon/react';
-import brands from '@helloantek/ds-tokens/brands.json';
 import { Badge, type BadgeColor, type BadgeShape, type BadgeSize, type BadgeVariant } from './Badge';
 import { badgeImage } from './Badge.fixtures';
 
@@ -69,9 +68,9 @@ const grid = (columns: number): CSSProperties => ({
   gap: 12,
   alignItems: 'center',
   justifyItems: 'start',
-  fontFamily: 'var(--ds-font-family-body)',
+  fontFamily: 'var(--ds-font-sans)',
   fontSize: 12,
-  color: 'var(--ds-text-muted)',
+  color: 'var(--ds-muted-foreground)',
 });
 
 /** Every Figma Color in Soft (with and without Border) and Strong, with and without the Close Icon. */
@@ -141,16 +140,15 @@ export const Variants: StoryObj = {
   ),
 };
 
-/** The same badges under every brand and colour scheme, driven only by tokens. */
-export const Brands: StoryObj = {
+/** Light and Dark, driven only by tokens. */
+export const Themes: StoryObj = {
   parameters: { layout: 'fullscreen' },
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-      {Object.keys(brands).flatMap((brand) =>
-        (['light', 'dark'] as const).map((scheme) => (
-          <div key={`${brand}-${scheme}`} data-ds-brand={brand} data-ds-scheme={scheme} style={{ background: 'var(--ds-bg-default)', padding: 24, display: 'grid', gap: 12 }}>
-            <div style={{ fontFamily: 'var(--ds-font-family-body)', fontSize: 12, color: 'var(--ds-text-muted)' }}>
-              {brand} · {scheme}
+      {(['light', 'dark'] as const).map((scheme) => (
+          <div key={scheme} data-ds-brand="theme-1" data-ds-scheme={scheme} style={{ background: 'var(--ds-background)', padding: 24, display: 'grid', gap: 12 }}>
+            <div style={{ fontFamily: 'var(--ds-font-sans)', fontSize: 12, color: 'var(--ds-muted-foreground)' }}>
+              {scheme === 'light' ? 'Light' : 'Dark'}
             </div>
             {variants.map((variant) => (
               <div key={variant} style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -165,8 +163,7 @@ export const Brands: StoryObj = {
               </div>
             ))}
           </div>
-        )),
-      )}
+        ))}
     </div>
   ),
 };
