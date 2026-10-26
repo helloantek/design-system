@@ -1,0 +1,70 @@
+{
+ "$comment": "Sort UI 2.0 Avatar Group reference renders for every Size, with three avatars and the \"+3\" count; renderers/avatar.tsx renders six avatars with max={3}.",
+ "component": "avatar-group",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "179:80",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "xs",
+   "nodeId": "179:28",
+   "props": {
+    "Size": "xs"
+   },
+   "pixels": false,
+   "$why": "Figma's three sample photos differ from the fixture picture; the spec checks the sizes, the overlap, the count and its ring.",
+   "nodeW": 56,
+   "nodeH": 20
+  },
+  {
+   "slug": "sm",
+   "nodeId": "179:41",
+   "props": {
+    "Size": "sm"
+   },
+   "pixels": false,
+   "$why": "Figma's three sample photos differ from the fixture picture; the spec checks the sizes, the overlap, the count and its ring.",
+   "nodeW": 72,
+   "nodeH": 24
+  },
+  {
+   "slug": "default",
+   "nodeId": "179:15",
+   "props": {
+    "Size": "default"
+   },
+   "pixels": false,
+   "$why": "Figma's three sample photos differ from the fixture picture; the spec checks the sizes, the overlap, the count and its ring.",
+   "nodeW": 104,
+   "nodeH": 32
+  },
+  {
+   "slug": "lg",
+   "nodeId": "179:54",
+   "props": {
+    "Size": "lg"
+   },
+   "pixels": false,
+   "$why": "Figma's three sample photos differ from the fixture picture; the spec checks the sizes, the overlap, the count and its ring.",
+   "nodeW": 136,
+   "nodeH": 40
+  },
+  {
+   "slug": "xl",
+   "nodeId": "179:67",
+   "props": {
+    "Size": "xl"
+   },
+   "pixels": false,
+   "$why": "Figma's three sample photos differ from the fixture picture; the spec checks the sizes, the overlap, the count and its ring.",
+   "nodeW": 168,
+   "nodeH": 48
+  }
+ ]
+}

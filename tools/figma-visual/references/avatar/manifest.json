@@ -1,8 +1,8 @@
 {
- "$comment": "Figma Avatar reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/avatar.tsx turns them into props. Every Variant and Size in Circular; Rounded at 2xs, sm, md, lg and 3xl (radius xs up to md, sm from lg; Initials always sm). The Ring, Top badge and Bottom badge booleans cannot be exported from a read-only file (hidden in every variant); the Status Badge has its own references.",
+ "$comment": "Sort UI 2.0 Avatar reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/avatar.tsx turns them into props. Every variant, size and shape. The 2xs, 2xl and 3xl extensions have no Figma render.",
  "component": "avatar",
- "figmaFile": "4tiBR2hKd4yvQehtKhM9OY",
- "componentSet": "2725:4557",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "174:6534",
  "brand": "theme-1",
  "scheme": "light",
  "thresholds": {
@@ -12,433 +12,354 @@
  },
  "entries": [
   {
-   "slug": "userpic-2xs-circular",
-   "nodeId": "2725:4243",
+   "slug": "image-default-round",
+   "nodeId": "174:6535",
    "props": {
-    "Variant": "Userpic",
-    "Size": "2xs",
-    "Shape": "Circular"
+    "variant": "image",
+    "size": "default",
+    "shape": "round"
    },
-   "nodeW": 16,
-   "nodeH": 16
+   "nodeW": 32,
+   "nodeH": 32,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
   },
   {
-   "slug": "userpic-xs-circular",
-   "nodeId": "2725:4524",
+   "slug": "fallback-default-round",
+   "nodeId": "174:6537",
    "props": {
-    "Variant": "Userpic",
-    "Size": "xs",
-    "Shape": "Circular"
-   },
-   "nodeW": 20,
-   "nodeH": 20
-  },
-  {
-   "slug": "userpic-sm-circular",
-   "nodeId": "2725:4241",
-   "props": {
-    "Variant": "Userpic",
-    "Size": "sm",
-    "Shape": "Circular"
-   },
-   "nodeW": 24,
-   "nodeH": 24
-  },
-  {
-   "slug": "userpic-md-circular",
-   "nodeId": "2725:4292",
-   "props": {
-    "Variant": "Userpic",
-    "Size": "md",
-    "Shape": "Circular"
+    "variant": "fallback",
+    "size": "default",
+    "shape": "round"
    },
    "nodeW": 32,
    "nodeH": 32
   },
   {
-   "slug": "userpic-lg-circular",
-   "nodeId": "2725:4246",
+   "slug": "icon-default-round",
+   "nodeId": "174:6540",
    "props": {
-    "Variant": "Userpic",
-    "Size": "lg",
-    "Shape": "Circular"
+    "variant": "icon",
+    "size": "default",
+    "shape": "round"
+   },
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "image-lg-round",
+   "nodeId": "174:6543",
+   "props": {
+    "variant": "image",
+    "size": "lg",
+    "shape": "round"
+   },
+   "nodeW": 40,
+   "nodeH": 40,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
+  },
+  {
+   "slug": "fallback-lg-round",
+   "nodeId": "174:6545",
+   "props": {
+    "variant": "fallback",
+    "size": "lg",
+    "shape": "round"
    },
    "nodeW": 40,
    "nodeH": 40
   },
   {
-   "slug": "userpic-xl-circular",
-   "nodeId": "2725:4428",
+   "slug": "icon-lg-round",
+   "nodeId": "174:6548",
    "props": {
-    "Variant": "Userpic",
-    "Size": "xl",
-    "Shape": "Circular"
+    "variant": "icon",
+    "size": "lg",
+    "shape": "round"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "image-xl-round",
+   "nodeId": "174:6551",
+   "props": {
+    "variant": "image",
+    "size": "xl",
+    "shape": "round"
+   },
+   "nodeW": 48,
+   "nodeH": 48,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
+  },
+  {
+   "slug": "fallback-xl-round",
+   "nodeId": "174:6553",
+   "props": {
+    "variant": "fallback",
+    "size": "xl",
+    "shape": "round"
    },
    "nodeW": 48,
    "nodeH": 48
   },
   {
-   "slug": "userpic-2xl-circular",
-   "nodeId": "2725:4420",
+   "slug": "icon-xl-round",
+   "nodeId": "174:6556",
    "props": {
-    "Variant": "Userpic",
-    "Size": "2xl",
-    "Shape": "Circular"
-   },
-   "nodeW": 56,
-   "nodeH": 56
-  },
-  {
-   "slug": "userpic-3xl-circular",
-   "nodeId": "2725:4251",
-   "props": {
-    "Variant": "Userpic",
-    "Size": "3xl",
-    "Shape": "Circular"
-   },
-   "nodeW": 64,
-   "nodeH": 64
-  },
-  {
-   "slug": "empty-2xs-circular",
-   "nodeId": "2725:4460",
-   "props": {
-    "Variant": "Empty",
-    "Size": "2xs",
-    "Shape": "Circular"
-   },
-   "nodeW": 16,
-   "nodeH": 16
-  },
-  {
-   "slug": "empty-xs-circular",
-   "nodeId": "2725:4321",
-   "props": {
-    "Variant": "Empty",
-    "Size": "xs",
-    "Shape": "Circular"
-   },
-   "nodeW": 20,
-   "nodeH": 20
-  },
-  {
-   "slug": "empty-sm-circular",
-   "nodeId": "2725:4240",
-   "props": {
-    "Variant": "Empty",
-    "Size": "sm",
-    "Shape": "Circular"
-   },
-   "nodeW": 24,
-   "nodeH": 24
-  },
-  {
-   "slug": "empty-md-circular",
-   "nodeId": "2725:4244",
-   "props": {
-    "Variant": "Empty",
-    "Size": "md",
-    "Shape": "Circular"
-   },
-   "nodeW": 32,
-   "nodeH": 32
-  },
-  {
-   "slug": "empty-lg-circular",
-   "nodeId": "2725:4245",
-   "props": {
-    "Variant": "Empty",
-    "Size": "lg",
-    "Shape": "Circular"
-   },
-   "nodeW": 40,
-   "nodeH": 40
-  },
-  {
-   "slug": "empty-xl-circular",
-   "nodeId": "2725:4247",
-   "props": {
-    "Variant": "Empty",
-    "Size": "xl",
-    "Shape": "Circular"
+    "variant": "icon",
+    "size": "xl",
+    "shape": "round"
    },
    "nodeW": 48,
    "nodeH": 48
   },
   {
-   "slug": "empty-2xl-circular",
-   "nodeId": "2725:4447",
+   "slug": "image-sm-round",
+   "nodeId": "174:6559",
    "props": {
-    "Variant": "Empty",
-    "Size": "2xl",
-    "Shape": "Circular"
+    "variant": "image",
+    "size": "sm",
+    "shape": "round"
    },
-   "nodeW": 56,
-   "nodeH": 56
+   "nodeW": 24,
+   "nodeH": 24,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
   },
   {
-   "slug": "empty-3xl-circular",
-   "nodeId": "2725:4249",
+   "slug": "fallback-sm-round",
+   "nodeId": "174:6561",
    "props": {
-    "Variant": "Empty",
-    "Size": "3xl",
-    "Shape": "Circular"
+    "variant": "fallback",
+    "size": "sm",
+    "shape": "round"
    },
-   "nodeW": 64,
-   "nodeH": 64
+   "nodeW": 24,
+   "nodeH": 24
   },
   {
-   "slug": "initials-2xs-circular",
-   "nodeId": "2725:4306",
+   "slug": "icon-sm-round",
+   "nodeId": "174:6564",
    "props": {
-    "Variant": "Initials",
-    "Size": "2xs",
-    "Shape": "Circular"
+    "variant": "icon",
+    "size": "sm",
+    "shape": "round"
    },
-   "nodeW": 16,
-   "nodeH": 16
+   "nodeW": 24,
+   "nodeH": 24
   },
   {
-   "slug": "initials-xs-circular",
-   "nodeId": "2725:4298",
+   "slug": "image-xs-round",
+   "nodeId": "174:6567",
    "props": {
-    "Variant": "Initials",
-    "Size": "xs",
-    "Shape": "Circular"
+    "variant": "image",
+    "size": "xs",
+    "shape": "round"
+   },
+   "nodeW": 20,
+   "nodeH": 20,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
+  },
+  {
+   "slug": "fallback-xs-round",
+   "nodeId": "174:6569",
+   "props": {
+    "variant": "fallback",
+    "size": "xs",
+    "shape": "round"
    },
    "nodeW": 20,
    "nodeH": 20
   },
   {
-   "slug": "initials-sm-circular",
-   "nodeId": "2725:4330",
+   "slug": "icon-xs-round",
+   "nodeId": "174:6572",
    "props": {
-    "Variant": "Initials",
-    "Size": "sm",
-    "Shape": "Circular"
+    "variant": "icon",
+    "size": "xs",
+    "shape": "round"
    },
-   "nodeW": 24,
-   "nodeH": 24
+   "nodeW": 20,
+   "nodeH": 20
   },
   {
-   "slug": "initials-md-circular",
-   "nodeId": "2725:4356",
+   "slug": "image-default-square",
+   "nodeId": "174:6575",
    "props": {
-    "Variant": "Initials",
-    "Size": "md",
-    "Shape": "Circular"
+    "variant": "image",
+    "size": "default",
+    "shape": "square"
+   },
+   "nodeW": 32,
+   "nodeH": 32,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
+  },
+  {
+   "slug": "fallback-default-square",
+   "nodeId": "174:6577",
+   "props": {
+    "variant": "fallback",
+    "size": "default",
+    "shape": "square"
    },
    "nodeW": 32,
    "nodeH": 32
   },
   {
-   "slug": "initials-lg-circular",
-   "nodeId": "2725:4385",
+   "slug": "icon-default-square",
+   "nodeId": "174:6580",
    "props": {
-    "Variant": "Initials",
-    "Size": "lg",
-    "Shape": "Circular"
+    "variant": "icon",
+    "size": "default",
+    "shape": "square"
+   },
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "image-lg-square",
+   "nodeId": "174:6583",
+   "props": {
+    "variant": "image",
+    "size": "lg",
+    "shape": "square"
+   },
+   "nodeW": 40,
+   "nodeH": 40,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
+  },
+  {
+   "slug": "fallback-lg-square",
+   "nodeId": "174:6585",
+   "props": {
+    "variant": "fallback",
+    "size": "lg",
+    "shape": "square"
    },
    "nodeW": 40,
    "nodeH": 40
   },
   {
-   "slug": "initials-xl-circular",
-   "nodeId": "2725:4545",
+   "slug": "icon-lg-square",
+   "nodeId": "174:6588",
    "props": {
-    "Variant": "Initials",
-    "Size": "xl",
-    "Shape": "Circular"
+    "variant": "icon",
+    "size": "lg",
+    "shape": "square"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  },
+  {
+   "slug": "image-xl-square",
+   "nodeId": "174:6591",
+   "props": {
+    "variant": "image",
+    "size": "xl",
+    "shape": "square"
+   },
+   "nodeW": 48,
+   "nodeH": 48,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
+  },
+  {
+   "slug": "fallback-xl-square",
+   "nodeId": "174:6593",
+   "props": {
+    "variant": "fallback",
+    "size": "xl",
+    "shape": "square"
    },
    "nodeW": 48,
    "nodeH": 48
   },
   {
-   "slug": "initials-2xl-circular",
-   "nodeId": "2725:4403",
+   "slug": "icon-xl-square",
+   "nodeId": "174:6596",
    "props": {
-    "Variant": "Initials",
-    "Size": "2xl",
-    "Shape": "Circular"
+    "variant": "icon",
+    "size": "xl",
+    "shape": "square"
    },
-   "nodeW": 56,
-   "nodeH": 56
+   "nodeW": 48,
+   "nodeH": 48
   },
   {
-   "slug": "initials-3xl-circular",
-   "nodeId": "2725:4492",
+   "slug": "image-sm-square",
+   "nodeId": "174:6599",
    "props": {
-    "Variant": "Initials",
-    "Size": "3xl",
-    "Shape": "Circular"
+    "variant": "image",
+    "size": "sm",
+    "shape": "square"
    },
-   "nodeW": 64,
-   "nodeH": 64
+   "nodeW": 24,
+   "nodeH": 24,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
   },
   {
-   "slug": "userpic-2xs-rounded",
-   "nodeId": "2725:4237",
+   "slug": "fallback-sm-square",
+   "nodeId": "174:6601",
    "props": {
-    "Variant": "Userpic",
-    "Size": "2xs",
-    "Shape": "Rounded"
-   },
-   "nodeW": 16,
-   "nodeH": 16
-  },
-  {
-   "slug": "userpic-sm-rounded",
-   "nodeId": "2725:4538",
-   "props": {
-    "Variant": "Userpic",
-    "Size": "sm",
-    "Shape": "Rounded"
+    "variant": "fallback",
+    "size": "sm",
+    "shape": "square"
    },
    "nodeW": 24,
    "nodeH": 24
   },
   {
-   "slug": "userpic-md-rounded",
-   "nodeId": "2725:4550",
+   "slug": "icon-sm-square",
+   "nodeId": "174:6604",
    "props": {
-    "Variant": "Userpic",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 32,
-   "nodeH": 32
-  },
-  {
-   "slug": "userpic-lg-rounded",
-   "nodeId": "2725:4509",
-   "props": {
-    "Variant": "Userpic",
-    "Size": "lg",
-    "Shape": "Rounded"
-   },
-   "nodeW": 40,
-   "nodeH": 40
-  },
-  {
-   "slug": "userpic-3xl-rounded",
-   "nodeId": "2725:4250",
-   "props": {
-    "Variant": "Userpic",
-    "Size": "3xl",
-    "Shape": "Rounded"
-   },
-   "nodeW": 64,
-   "nodeH": 64
-  },
-  {
-   "slug": "empty-2xs-rounded",
-   "nodeId": "2725:4378",
-   "props": {
-    "Variant": "Empty",
-    "Size": "2xs",
-    "Shape": "Rounded"
-   },
-   "nodeW": 16,
-   "nodeH": 16
-  },
-  {
-   "slug": "empty-sm-rounded",
-   "nodeId": "2725:4239",
-   "props": {
-    "Variant": "Empty",
-    "Size": "sm",
-    "Shape": "Rounded"
+    "variant": "icon",
+    "size": "sm",
+    "shape": "square"
    },
    "nodeW": 24,
    "nodeH": 24
   },
   {
-   "slug": "empty-md-rounded",
-   "nodeId": "2725:4242",
+   "slug": "image-xs-square",
+   "nodeId": "174:6607",
    "props": {
-    "Variant": "Empty",
-    "Size": "md",
-    "Shape": "Rounded"
+    "variant": "image",
+    "size": "xs",
+    "shape": "square"
    },
-   "nodeW": 32,
-   "nodeH": 32
+   "nodeW": 20,
+   "nodeH": 20,
+   "pixels": false,
+   "$why": "Figma's sample photo differs from the fixture picture; the size, radius and spec checks still cover it."
   },
   {
-   "slug": "empty-lg-rounded",
-   "nodeId": "2725:4309",
+   "slug": "fallback-xs-square",
+   "nodeId": "174:6609",
    "props": {
-    "Variant": "Empty",
-    "Size": "lg",
-    "Shape": "Rounded"
+    "variant": "fallback",
+    "size": "xs",
+    "shape": "square"
    },
-   "nodeW": 40,
-   "nodeH": 40
+   "nodeW": 20,
+   "nodeH": 20
   },
   {
-   "slug": "empty-3xl-rounded",
-   "nodeId": "2725:4340",
+   "slug": "icon-xs-square",
+   "nodeId": "174:6612",
    "props": {
-    "Variant": "Empty",
-    "Size": "3xl",
-    "Shape": "Rounded"
+    "variant": "icon",
+    "size": "xs",
+    "shape": "square"
    },
-   "nodeW": 64,
-   "nodeH": 64
-  },
-  {
-   "slug": "initials-2xs-rounded",
-   "nodeId": "2725:4270",
-   "props": {
-    "Variant": "Initials",
-    "Size": "2xs",
-    "Shape": "Rounded"
-   },
-   "nodeW": 16,
-   "nodeH": 16
-  },
-  {
-   "slug": "initials-sm-rounded",
-   "nodeId": "2725:4408",
-   "props": {
-    "Variant": "Initials",
-    "Size": "sm",
-    "Shape": "Rounded"
-   },
-   "nodeW": 24,
-   "nodeH": 24
-  },
-  {
-   "slug": "initials-md-rounded",
-   "nodeId": "2725:4552",
-   "props": {
-    "Variant": "Initials",
-    "Size": "md",
-    "Shape": "Rounded"
-   },
-   "nodeW": 32,
-   "nodeH": 32
-  },
-  {
-   "slug": "initials-lg-rounded",
-   "nodeId": "2725:4383",
-   "props": {
-    "Variant": "Initials",
-    "Size": "lg",
-    "Shape": "Rounded"
-   },
-   "nodeW": 40,
-   "nodeH": 40
-  },
-  {
-   "slug": "initials-3xl-rounded",
-   "nodeId": "2725:4519",
-   "props": {
-    "Variant": "Initials",
-    "Size": "3xl",
-    "Shape": "Rounded"
-   },
-   "nodeW": 64,
-   "nodeH": 64
+   "nodeW": 20,
+   "nodeH": 20
   }
  ]
 }

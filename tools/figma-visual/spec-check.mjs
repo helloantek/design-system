@@ -70,6 +70,7 @@ export function compareInPage({ map, layers, target: targetSelector = '#target' 
       const got = cfg.stroke === 'before-border' ? getComputedStyle(el, '::before').borderTopColor
         : cfg.stroke === 'inset-shadow' ? insetShadowColor(cs.boxShadow)
         : cfg.stroke === 'after-inset-shadow' ? insetShadowColor(getComputedStyle(el, '::after').boxShadow)
+        : cfg.stroke === 'outer-shadow' ? (cs.boxShadow.match(/rgba?\([^)]+\)/) || [null])[0]
         : cfg.stroke === 'svg' ? cs.stroke : cs.borderTopColor;
       if (!got || !sameColor(got, expected.stroke)) fail('stroke', got, expected.stroke);
     }

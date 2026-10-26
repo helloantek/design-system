@@ -79,24 +79,26 @@ Changed from 1.3: variants `primary` → `default`, `soft`/`dashed`/`ghost-muted
 
 ## Avatar
 
-A person's picture, initials or a placeholder, with optional status badges. Covers every Figma Variant, Size and Shape, the Ring, Top badge and Bottom badge, and the Status Badge component.
+A person's picture, initials or an icon, with an optional badge, and avatar groups. Sort UI 2.0 **Avatar**, **Avatar Badge** and **Avatar Group**; the Sort UI 1.3 **Status Badge** stays available (like Badge).
 
 ```tsx
 <Avatar src={user.photo} name="Sam Rivera" />
-<Avatar initials="SR" name="Sam Rivera" size="lg" shape="rounded" />
-<Avatar name="Unknown user" bottomBadge={<StatusBadge variant="offline" />} />
-<Avatar src={user.photo} name="Sam Rivera" ring topBadge={<StatusBadge variant="checkmark" />} />
+<Avatar initials="SR" name="Sam Rivera" size="lg" shape="square" />
+<Avatar src={user.photo} name="Sam Rivera" bottomBadge={<AvatarBadge label="Online" />} />
+<Avatar name="Unknown user" topBadge={<StatusBadge variant="checkmark" />} />
+<AvatarGroup size="sm" max={3} aria-label="Reviewers">{people.map((p) => <Avatar key={p.id} {...p} />)}</AvatarGroup>
 ```
 
 | Figma property | React prop | CSS class |
 |---|---|---|
-| Variant (Userpic, Initials, Empty) | set by the content: `src` · `initials` · neither (a picture that fails to load falls back) | `ds-avatar__image` > `img` · `ds-avatar--initials` + `ds-avatar__initials` · `ds-avatar__placeholder` |
-| Size | `size`: `2xs` · `xs` · `sm` · `md` · `lg` · `xl` · `2xl` · `3xl` | `ds-avatar--<size>` |
-| Shape | `shape`: `circular` · `rounded` | `ds-avatar--<shape>` |
-| Ring | `ring` | `ds-avatar--ring` |
-| Top badge / Bottom badge | `topBadge` · `bottomBadge` (any node, usually a `StatusBadge`) | `ds-avatar__badge--top` · `--bottom` |
+| variant (image, fallback, icon) | set by the content: `src` · `initials` · neither (a person icon, or `icon`); a picture that fails to load falls back | `ds-avatar__image` > `img` · `ds-avatar--fallback` + `ds-avatar__initials` · `ds-avatar__icon` |
+| size | `size`: `xs` (20) · `sm` (24) · `default` (32, the default) · `lg` (40) · `xl` (48); extensions `2xs` (16) · `2xl` (56) · `3xl` (64) | `ds-avatar--<size>` |
+| shape | `shape`: `round` · `square` (6 / 8 / 10 px by size) | `ds-avatar--<shape>` |
+| badge (Avatar Badge) | `bottomBadge={<AvatarBadge label? icon? />}`: a primary dot inside the bottom right corner, 8 / 10 / 12 px by size | `ds-avatar-badge` · `--icon` |
+| Avatar Group (avatars, Count, Size) | `<AvatarGroup size max total>`: children overlap by 8 px with a 2 px ring; `max` (or `total`) adds the "+N" count | `ds-avatar-group` · `ds-avatar-group__count` |
+| — | `ring`: the group's 2 px ring on a single avatar | `ds-avatar--ring` |
+| — | `topBadge` · `bottomBadge` with a `StatusBadge` (Sort UI 1.3): `checkmark` · `online` · `offline` · `notification` · `icon` (+ `icon`) · `logo` (+ `image`); `label` overrides the spoken name | `ds-avatar__badge--top` · `--bottom` · `ds-status-badge--<variant>` |
 | — | `name`: the accessible name (without it the avatar is decorative) | |
-| Status Badge · Variant | `<StatusBadge variant>`: `checkmark` · `online` · `offline` · `notification` · `icon` (+ `icon`) · `logo` (+ `image`); `label` overrides the spoken name | `ds-status-badge--<variant>` |
 
 ## Badge
 
@@ -185,7 +187,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | Checkbox · Radio | `indicator`: `check` (default) · `checkbox` · `radio` | `ds-select__check` · `ds-select__box--checkbox` · `ds-select__box--radio` |
 | — | `multiple` (`value`/`defaultValue` are arrays; options toggle and the menu stays open; the trigger lists the labels) | `[aria-multiselectable]` on the menu |
 | — | `multiple tags`: each value is a `Badge` (sm, Neutral, Soft, Border, Close Icon). × removes it with the mouse, Backspace/Delete removes the last one, the menu toggles any; removals are announced. Tags that do not fit wrap onto more rows (default), or with `tagsOverflow="count"` stay on one row with a "+N" badge (its tooltip and screen-reader text name the hidden values). No buttons inside the combobox: the × is a pointer target only. | `ds-select__tags` · `--count` · `ds-select__more` · `ds-select__status` |
-| — | option `media` (20 px picture: `<Avatar size="xs" shape="rounded" …/>`, a flag `<svg>`); a single select shows the selected option's `media` in place of the lead icon | `ds-select__media` in the option and the trigger |
+| — | option `media` (20 px picture: `<Avatar size="xs" shape="square" …/>`, a flag `<svg>`); a single select shows the selected option's `media` in place of the lead icon | `ds-select__media` in the option and the trigger |
 | — | `{ type: 'caption', label }`: a note in the menu (read as the menu's description) | `ds-select__note` |
 
 Forms: `name` submits the value through a hidden input (one per value with `multiple`, read them with `formData.getAll(name)`), and resetting the form restores `defaultValue`. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
