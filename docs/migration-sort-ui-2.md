@@ -22,7 +22,9 @@ Each stage is its own branch and pull request, and `main` stays green between th
 3. **Cleanup and release** (`claude/tokens/sort-ui-2-cleanup`): the 1.3 tokens, `theme-2` and
    `figma/variables.json`/`effects.json` are gone. The 40 Sort UI 1.3 colours Badge and Status Badge still use live in
    `figma/sort-ui-1.3-kept.json` (Theme-1 Light and Dark values, same `--ds-*` names), so their Figma references are
-   unchanged; Badge's sizes, spacing and font use the equal 2.0 tokens. Released as 2.0.0 with a migration note for apps.
+   unchanged; Badge's sizes, spacing and font use the equal 2.0 tokens. The brand keeps its name, `theme-1`.
+   Released as **2.0.0** (after Sort UI 2.0): nothing was published before, so the packages start from 1.0.0 and the
+   major changeset takes them to 2.0.0. The migration note for apps is below.
 
 New 2.0 components (Alert Dialog, Dialog, Checkbox, Tabs…) follow the normal playbook after stage 2.
 

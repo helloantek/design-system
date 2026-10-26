@@ -1,6 +1,6 @@
 {
   "name": "@helloantek/ds-tokens",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Design tokens from Figma for every brand: CSS, JS, Swift and Kotlin.",
   "type": "module",
   "files": ["dist", "brands.json"],
