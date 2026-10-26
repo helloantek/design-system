@@ -1,38 +1,37 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode, type Ref } from 'react';
-import { RiCheckFill, RiExpandUpDownFill } from '@remixicon/react';
 import { Badge } from '../Badge';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-select*); this component renders the markup and the
 // WAI-ARIA select-only combobox behaviour (https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
 
-/** Figma "Style" property. */
+/** Sort UI 2.0 has one field style (`default`); `shadow` adds Shadow/xs, `soft` is a borderless tinted field. */
 export type SelectVariant = 'default' | 'shadow' | 'soft';
-/** Figma "Size" property. */
-export type SelectSize = 'lg' | 'sm';
+/** Figma "Size": 40, 36, 32 and 28 px tall, like Button's and Input's sizes of the same name. */
+export type SelectSize = 'xl' | 'lg' | 'default' | 'sm';
 
-/** Figma "Select Menu Items" Type=Default. */
+/** Figma "Select Item". */
 export interface SelectOption {
   value: string;
-  /** Figma "↩ Label". Also shown in the trigger when selected and used for type-ahead. */
+  /** Figma "Label". Also shown in the trigger when selected and used for type-ahead. */
   label: string;
-  /** Figma "Supporter text": muted text after the label. */
+  /** Muted text after the label. */
   caption?: ReactNode;
-  /** Figma "❖ Lead Icon". Icons should use `currentColor`. */
+  /** Figma "Leading icon". Icons should use `currentColor`. */
   icon?: ReactNode;
-  /** Figma "Badge": rendered as `<Badge border>` (Size=sm, Color=Neutral, Style=Soft, Border=True). */
+  /** Rendered as `<Badge border>` (Size=sm, Color=Neutral, Style=Soft, Border=True). */
   badge?: ReactNode;
   /**
-   * Figma Type=Country Flag or Avatar: a 20 px picture before the label, e.g. a flag `<svg>` or
+   * A 20 px picture before the label, e.g. a flag `<svg>` or
    * `<Avatar size="xs" shape="rounded" …/>`. A single select also shows it in the trigger for the selected option
-   * (Figma Select Input Variant=Avatar).
+   * in place of the lead icon.
    */
   media?: ReactNode;
-  /** Figma Type=Default Large: a second line under the label; the icon sits in a 36 px circle. */
+  /** Figma Select Item "Description": a second line under the label. */
   description?: ReactNode;
   disabled?: boolean;
 }
 
-/** Figma "Select Menu Items" Type=Label, followed by its options. */
+/** Figma "Select Label", followed by its options. */
 export interface SelectGroup {
   label: ReactNode;
   /** Muted text on the right of the group label. */
@@ -40,12 +39,12 @@ export interface SelectGroup {
   options: SelectOption[];
 }
 
-/** Figma "Select Menu Items" Type=Divider. */
+/** Figma "Select Separator". */
 export interface SelectSeparator {
   type: 'separator';
 }
 
-/** Figma "Select Menu Items" Type=Caption: a note in the menu, read out as the menu's description. */
+/** A note in the menu, read out as the menu's description. */
 export interface SelectCaption {
   type: 'caption';
   label: ReactNode;
@@ -53,34 +52,34 @@ export interface SelectCaption {
 
 export type SelectItem = SelectOption | SelectGroup | SelectSeparator | SelectCaption;
 
-/** Figma "Select type": the mark of selected options. */
+/** The mark of selected options: the Select Item check mark, or the Checkbox / Radio component. */
 export type SelectIndicator = 'check' | 'checkbox' | 'radio';
 
 /** Other props (`aria-*`, `data-*`, event handlers…) go to the combobox element. */
 interface SelectBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange' | 'role' | 'placeholder'> {
   ref?: Ref<HTMLDivElement>;
   options: SelectItem[];
-  /** Figma "↩ Placeholder". */
+  /** Figma "Placeholder". */
   placeholder?: string;
-  /** Figma "Label". Names the combobox and the listbox. */
+  /** Figma "Field Label". Names the combobox and the listbox. */
   label?: ReactNode;
   /** Accessible name when there is no visible label. */
   'aria-label'?: string;
-  /** Figma "Caption": help text under the field. */
+  /** Figma Field "Description": help text under the field. */
   caption?: ReactNode;
-  /** Figma State=Failed: the message replaces the caption and marks the select invalid. */
+  /** Figma State=Invalid (Field "Error"): the message replaces the caption and marks the select invalid. */
   error?: ReactNode;
   variant?: SelectVariant;
   size?: SelectSize;
-  /** Figma "❖ Lead Icon" slot. */
+  /** Figma "Leading icon". */
   leadIcon?: ReactNode;
-  /** Figma "❖ Tail Icon" slot. Turns red when the select is invalid. */
+  /** An icon before the chevron. Turns red when the select is invalid. */
   tailIcon?: ReactNode;
-  /** Figma Select Menu Items "Select type": check mark (Default), Checkbox or Radio Button. */
+  /** Check mark (Figma Select Item), Checkbox or Radio. */
   indicator?: SelectIndicator;
-  /** Figma State=Destructive, drawn by Figma as a disabled field. */
+  /** Figma State=Disabled. */
   disabled?: boolean;
-  /** Opens the menu on first render (Figma State=Active with the menu shown). */
+  /** Opens the menu on first render. */
   defaultOpen?: boolean;
   /** Form field name: the value is submitted through a hidden input (one per value with `multiple`). */
   name?: string;
@@ -90,7 +89,7 @@ interface SelectBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children
   className?: string;
 }
 
-/** One value (Figma Variant=Default). */
+/** One value. */
 interface SelectSingleProps {
   multiple?: false;
   tags?: never;
@@ -102,11 +101,11 @@ interface SelectSingleProps {
   onValueChange?: (value: string) => void;
 }
 
-/** Several values (Figma Variant=Multi-select): options toggle and the menu stays open; the trigger lists the labels. */
+/** Several values: options toggle and the menu stays open; the trigger lists the labels. */
 interface SelectMultipleProps {
   multiple: true;
   /**
-   * Figma Variant=Tags: the trigger shows each value as a removable badge (× with the mouse, Backspace removes the
+   * The trigger shows each value as a removable badge (× with the mouse, Backspace removes the
    * last one).
    */
   tags?: boolean;
@@ -124,14 +123,21 @@ const isGroup = (item: SelectItem): item is SelectGroup => 'options' in item;
 const isCaption = (item: SelectItem): item is SelectCaption => 'type' in item && item.type === 'caption';
 const isOption = (item: SelectItem): item is SelectOption => 'value' in item;
 
-// The check of the Figma Checkbox component (8 px glyph).
+// Sort UI 2.0 icons (24 px grid, 1.25 px stroke). Figma draws the chevron and the item's check mark at 72 % in a 16 px
+// slot, hence the viewBox; the Checkbox's check fills its 14 px box.
+const chevronDown = (
+  <svg viewBox="0.9 0.9 22.2 22.2" fill="none" stroke="currentColor" strokeWidth={1.736} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);
+const checkMark = (
+  <svg viewBox="0.9 0.9 22.2 22.2" fill="none" stroke="currentColor" strokeWidth={1.736} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M20 6 9 17l-5-5" />
+  </svg>
+);
 const checkboxGlyph = (
-  <svg viewBox="0 0 8 8" fill="currentColor" aria-hidden>
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M7.64368 0.141519C8.0113 0.399497 8.11064 0.922328 7.86556 1.3093L3.8656 7.62501C3.73265 7.83493 3.5173 7.97104 3.2788 7.9959C3.04029 8.02076 2.80376 7.93174 2.63429 7.75335L0.234312 5.22707C-0.078104 4.89821 -0.078104 4.36502 0.234312 4.03616C0.546728 3.7073 1.05325 3.7073 1.36567 4.03616L3.07563 5.83611L6.53429 0.375074C6.77937 -0.0118926 7.27606 -0.116459 7.64368 0.141519Z"
-    />
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.14} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M20 6 9 17l-5-5" />
   </svg>
 );
 const PAGE = 10;
@@ -154,7 +160,7 @@ export function Select(props: SelectProps) {
     caption,
     error,
     variant = 'default',
-    size = 'lg',
+    size = 'default',
     leadIcon,
     tailIcon,
     indicator = 'check',
@@ -183,7 +189,7 @@ export function Select(props: SelectProps) {
   const values = toList(props.value) ?? uncontrolled;
   const [open, setOpen] = useState(defaultOpen && !disabled);
   // Index into `flat` of the option with visual focus, or -1. Opening with the mouse highlights nothing,
-  // so the selected option is not drawn as hovered (Figma Active=True, State=Default).
+  // so the selected option is not drawn as highlighted.
   const [highlighted, setHighlighted] = useState(-1);
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const hiddenRef = useRef<HTMLInputElement | null>(null);
@@ -228,7 +234,7 @@ export function Select(props: SelectProps) {
     observer.observe(measure);
     return () => observer.disconnect();
   }, [counting, selectedKey]);
-  // Figma Variant=Avatar: a single select shows the selected option's picture (e.g. an Avatar) instead of the lead icon.
+  // A single select shows the selected option's picture (e.g. an Avatar) instead of the lead icon.
   const leadMedia = !multiple ? selected[0]?.media : undefined;
   const shown = counting ? selected.slice(0, fit) : selected;
   const hidden = counting ? selected.slice(fit) : [];
@@ -350,7 +356,7 @@ export function Select(props: SelectProps) {
     const large = option.description !== undefined;
     const mark =
       indicator === 'check' ? (
-        isSelected && <RiCheckFill />
+        isSelected && checkMark
       ) : (
         <span className={`ds-select__box ds-select__box--${indicator}`}>{indicator === 'checkbox' ? checkboxGlyph : <span className="ds-select__dot" />}</span>
       );
@@ -391,7 +397,7 @@ export function Select(props: SelectProps) {
             <span className="ds-select__label">{option.label}</span>
           )}
           {option.caption !== undefined && <span className="ds-select__caption">{option.caption}</span>}
-          {/* Default Large shows the mark on the right, before the badge. */}
+          {/* An item with a description shows the mark on the right, before the badge. */}
           {large && (isSelected || indicator !== 'check') && (
             <span className="ds-select__check" aria-hidden>
               {mark}
@@ -403,7 +409,7 @@ export function Select(props: SelectProps) {
     );
   };
 
-  // Figma Type=Caption notes describe the menu.
+  // Notes describe the menu.
   const noteIds = options.map((item, i) => (isCaption(item) ? `${id}-note-${i}` : null)).filter(Boolean).join(' ');
 
   const triggerClasses = [
@@ -501,7 +507,7 @@ export function Select(props: SelectProps) {
             </span>
           )}
           <span className="ds-select__icon" aria-hidden>
-            <RiExpandUpDownFill />
+            {chevronDown}
           </span>
         </div>
         <div

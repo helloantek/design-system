@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import { RiBuildingLine, RiGlobalLine, RiInformationFill, RiRocketLine, RiUser3Line } from '@remixicon/react';
-import brands from '@helloantek/ds-tokens/brands.json';
 import { Avatar } from '../Avatar';
+import { Button } from '../Button';
 import { avatarImage } from '../Avatar/Avatar.fixtures';
 import { Select, type SelectIndicator, type SelectItem, type SelectSize, type SelectVariant } from './Select';
 import { FlagUnitedStates } from './Select.fixtures';
 
-const FIGMA_URL = 'https://www.figma.com/design/4tiBR2hKd4yvQehtKhM9OY?node-id=3817-74026';
+const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=104-37';
 
 const variants: SelectVariant[] = ['default', 'shadow', 'soft'];
-const sizes: SelectSize[] = ['lg', 'sm'];
+const sizes: SelectSize[] = ['xl', 'lg', 'default', 'sm'];
 
 // Sample data from the Figma file.
 const users: SelectItem[] = ['Alex Jhonson', 'Simon Alt', 'Emma Thompson', 'Michael Davis', 'Kate Roberts', 'Ryan Parker', 'Lily Chen'].map((name) => ({
@@ -37,7 +37,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `Implements the Figma component sets **Select Input**, **Select Menu** and **Select Menu Items** ([open in Figma](${FIGMA_URL})): Select Input Variant = Default, Multi-select, Tags and Avatar, and menu items of Type = Default, Default Large, Avatar, Country Flag, Label, Caption and Divider in every Select type. Figma "Style" → \`variant\`, "Size" → \`size\`; Active is the focused trigger, Failed is \`error\`, Destructive (drawn as a disabled field in Figma) is \`disabled\`. Keyboard: arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab and type-ahead, as in the WAI-ARIA select-only combobox. **Playground** builds the menu from item controls; **MenuItem** shows one item with its Figma properties. The menu search and the menu footer button are in the backlog.`,
+        component: `Implements the Sort UI 2.0 component sets **Select**, **Select Item**, **Select Label**, **Select Separator** and **Select Content** ([open in Figma](${FIGMA_URL})), with the **Checkbox** and **Radio** components for \`indicator\`. \`size\` is Figma Size: \`xl\` (40 px), \`lg\` (36 px), \`default\` (32 px), \`sm\` (28 px), the same heights as Button's and Input's sizes of the same name. Focus is the focused trigger, Invalid is \`error\`, Disabled is \`disabled\`. Sort UI 2.0 has a single field style: \`default\` is it, \`shadow\` adds Shadow/xs and \`soft\` is a borderless tinted field. Multi-select, tags, avatars and flags, captions, badges, notes and descriptions keep working as before, in the 2.0 look. Keyboard: arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab and type-ahead, as in the WAI-ARIA select-only combobox.`,
       },
     },
   },
@@ -87,7 +87,7 @@ const people = [
   ['Lily Chen', 'Researcher'],
 ] as const;
 
-/** Builds the menu from the Playground's item controls (Figma "Select Menu Items" properties). */
+/** Builds the menu from the Playground's item controls. */
 function playgroundItems(args: PlaygroundArgs): SelectItem[] {
   const options = people.map(([name, role], i) => ({
     value: name.toLowerCase().replace(' ', '-'),
@@ -118,7 +118,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     error: '',
     placeholder: 'Select a user',
     variant: 'default',
-    size: 'lg',
+    size: 'default',
     disabled: false,
     leadIcon: true,
     tailIcon: true,
@@ -141,25 +141,25 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     size: { control: 'inline-radio', options: sizes, table: { category: 'Field' } },
     label: { table: { category: 'Field' } },
     caption: { table: { category: 'Field' } },
-    error: { description: 'Figma State=Failed', table: { category: 'Field' } },
+    error: { description: 'Figma State=Invalid', table: { category: 'Field' } },
     placeholder: { table: { category: 'Field' } },
-    disabled: { description: 'Figma State=Destructive', table: { category: 'Field' } },
+    disabled: { description: 'Figma State=Disabled', table: { category: 'Field' } },
     leadIcon: { table: { category: 'Field' } },
     tailIcon: { table: { category: 'Field' } },
-    multiple: { description: 'Figma Variant=Multi-select: pick several options', table: { category: 'Field' } },
-    tags: { description: 'Figma Variant=Tags: values as removable badges (× or Backspace)', if: { arg: 'multiple' }, table: { category: 'Field' } },
+    multiple: { description: 'Pick several options', table: { category: 'Field' } },
+    tags: { description: 'Values as removable badges (× or Backspace)', if: { arg: 'multiple' }, table: { category: 'Field' } },
     tagsOverflow: { control: 'inline-radio', options: ['wrap', 'count'], description: 'Tags that do not fit: wrap onto more rows, or one row and "+N"', if: { arg: 'tags' }, table: { category: 'Field' } },
-    indicator: { control: 'inline-radio', options: ['check', 'checkbox', 'radio'], description: 'Figma Select type: Default, Checkbox, Radio Button', table: { category: 'Menu items' } },
-    itemType: { control: 'inline-radio', options: ['Default', 'Default Large', 'Avatar', 'Country Flag'], description: 'Figma Select Menu Items Type (Avatar also shows the selected avatar in the field: Select Input Variant=Avatar)', table: { category: 'Menu items' } },
-    // Only Type=Default has a Lead Icon slot; Default Large shows its icon circle and Country Flag its flag there.
-    itemIcon: { name: 'Lead Icon', description: 'Figma "Lead Icon" (Type=Default only)', if: { arg: 'itemType', eq: 'Default' }, table: { category: 'Menu items' } },
-    // Default Large shows the role as its second line instead.
-    itemSupporterText: { name: 'Supporter text', description: 'Figma "Supporter text": muted text after the label', if: { arg: 'itemType', neq: 'Default Large' }, table: { category: 'Menu items' } },
-    itemBadge: { name: 'Badge', description: 'Figma "Badge" (on the second option)', table: { category: 'Menu items' } },
-    disabledItem: { name: 'Disabled option', description: 'Figma State=Disabled (on the fourth option)', table: { category: 'Menu items' } },
-    groups: { name: 'Group labels', description: 'Figma Type=Label', table: { category: 'Menu items' } },
-    divider: { name: 'Divider', description: 'Figma Type=Divider', table: { category: 'Menu items' } },
-    menuCaption: { name: 'Caption note', description: 'Figma Type=Caption: a note at the top of the menu', table: { category: 'Menu items' } },
+    indicator: { control: 'inline-radio', options: ['check', 'checkbox', 'radio'], description: 'Check mark (Select Item), Checkbox or Radio', table: { category: 'Menu items' } },
+    itemType: { control: 'inline-radio', options: ['Default', 'Default Large', 'Avatar', 'Country Flag'], description: 'Item content: plain, with a description, with an avatar (also shown in the field) or a flag', table: { category: 'Menu items' } },
+    // Only plain items take the icon control; items with a description always show one, flags and avatars show their picture.
+    itemIcon: { name: 'Lead Icon', description: 'Figma "Leading icon" (plain items only)', if: { arg: 'itemType', eq: 'Default' }, table: { category: 'Menu items' } },
+    // Items with a description show the role as their second line instead.
+    itemSupporterText: { name: 'Supporter text', description: 'Muted text after the label', if: { arg: 'itemType', neq: 'Default Large' }, table: { category: 'Menu items' } },
+    itemBadge: { name: 'Badge', description: 'A Badge on the second option', table: { category: 'Menu items' } },
+    disabledItem: { name: 'Disabled option', description: 'Select Item State=Disabled (on the fourth option)', table: { category: 'Menu items' } },
+    groups: { name: 'Group labels', description: 'Figma Select Label', table: { category: 'Menu items' } },
+    divider: { name: 'Divider', description: 'Figma Select Separator', table: { category: 'Menu items' } },
+    menuCaption: { name: 'Caption note', description: 'A note at the top of the menu', table: { category: 'Menu items' } },
   },
   render: function Render(args) {
     const [value, setValue] = useState<string | null>(null);
@@ -196,8 +196,8 @@ type MenuItemArgs = {
 };
 
 /**
- * One Figma "Select Menu Items" item with its Figma properties as controls, shown in an open menu between two
- * plain options. Hover it for State=Hover.
+ * One item with its properties as controls, shown in an open menu between two plain options. Hover it for
+ * Select Item State=Highlighted.
  */
 export const MenuItem: StoryObj<MenuItemArgs> = {
   args: {
@@ -216,7 +216,7 @@ export const MenuItem: StoryObj<MenuItemArgs> = {
   argTypes: {
     type: { name: 'Type', control: 'select', options: ['Default', 'Default Large', 'Avatar', 'Country Flag', 'Label', 'Caption', 'Divider'] },
     selectType: { name: 'Select type', control: 'inline-radio', options: ['Default', 'Checkbox', 'Radio Button'] },
-    state: { name: 'State', control: 'inline-radio', options: ['Default', 'Disabled'], description: 'Hover the item for State=Hover' },
+    state: { name: 'State', control: 'inline-radio', options: ['Default', 'Disabled'], description: 'Hover the item for State=Highlighted' },
     active: { name: 'Active', description: 'Selected' },
     leadIcon: { name: 'Lead Icon', description: 'Type=Default only', if: { arg: 'type', eq: 'Default' } },
     label: { name: '↩ Label' },
@@ -258,21 +258,21 @@ const grid = (columns: number): CSSProperties => ({
   display: 'grid',
   gridTemplateColumns: `repeat(${columns}, 280px)`,
   gap: 24,
-  fontFamily: 'var(--ds-font-family-body)',
+  fontFamily: 'var(--ds-font-sans)',
   fontSize: 12,
-  color: 'var(--ds-text-muted)',
+  color: 'var(--ds-muted-foreground)',
 });
 
 const field = { options: users, placeholder: 'Select a user', leadIcon: <RiUser3Line />, tailIcon: <RiInformationFill /> };
 
-/** Every Figma Style in the static states. Focus a select to see Active. */
+/** Every style in the static states. Focus a select to see Focus. */
 export const AllStates: StoryObj = {
   render: () => (
     <div style={grid(4)}>
       <span>Placeholder</span>
       <span>Filled</span>
-      <span>Failed</span>
-      <span>Destructive (disabled)</span>
+      <span>Invalid</span>
+      <span>Disabled</span>
       {variants.map((variant) => (
         <div key={variant} style={{ display: 'contents' }}>
           <Select {...field} variant={variant} label={variant} caption="Caption text" />
@@ -285,17 +285,23 @@ export const AllStates: StoryObj = {
   ),
 };
 
+/** Figma Size: 40, 36, 32 and 28 px, next to the Button of the same size. */
 export const Sizes: StoryObj = {
   render: () => (
-    <div style={grid(2)}>
+    <div style={{ display: 'grid', gap: 16 }}>
       {sizes.map((size) => (
-        <Select key={size} {...field} size={size} label={size} caption="Caption text" />
+        <div key={size} style={{ display: 'flex', gap: 8, alignItems: 'flex-end', width: 400 }}>
+          <div style={{ flex: 1 }}>
+            <Select {...field} size={size} label={size} />
+          </div>
+          <Button size={size}>Assign</Button>
+        </div>
       ))}
     </div>
   ),
 };
 
-/** Figma Variant=Multi-select: options toggle, the menu stays open and the trigger lists the selected labels. */
+/** Multi-select: options toggle, the menu stays open and the trigger lists the selected labels. */
 const plans: SelectItem[] = [
   { type: 'caption', label: 'Billed yearly. You can change the plan at any time.' },
   { value: 'starter', label: 'Starter', description: 'For individuals', icon: <RiRocketLine /> },
@@ -311,7 +317,7 @@ const countries: SelectItem[] = [
 
 const column = { display: 'grid', gap: 24, gridTemplateColumns: 'repeat(4, 280px)', paddingBottom: 260, alignItems: 'start' } satisfies CSSProperties;
 
-/** Every Figma "Select Menu Items" type and Select type, each in an open menu: Checkbox, Radio Button, Country Flag, Default Large with a Caption. */
+/** Each indicator and item type in an open menu: Checkbox, Radio, flags, items with a description and a note. */
 export const MenuItemTypes: StoryObj = {
   render: () => (
     <div style={column}>
@@ -330,7 +336,7 @@ export const MultiSelect: StoryObj = {
   ),
 };
 
-/** Figma Variant=Tags: each value is a removable badge. × removes it with the mouse; Backspace removes the last one; the menu toggles any. Tags that do not fit wrap (default) or, with `tagsOverflow="count"`, stay on one row with a "+N" badge (hover it for the names). */
+/** Tags: each value is a removable badge. × removes it with the mouse; Backspace removes the last one; the menu toggles any. Tags that do not fit wrap (default) or, with `tagsOverflow="count"`, stay on one row with a "+N" badge (hover it for the names). */
 export const Tags: StoryObj = {
   render: () => (
     <div style={{ display: 'grid', gap: 24, width: 320 }}>
@@ -342,7 +348,7 @@ export const Tags: StoryObj = {
   ),
 };
 
-/** Figma Select Input Variant=Avatar: options carry an Avatar (`media`), and the field shows the selected person's avatar instead of the lead icon. */
+/** Avatars: options carry an Avatar (`media`), and the field shows the selected person's avatar instead of the lead icon. */
 export const WithAvatars: StoryObj = {
   name: 'Avatar',
   render: () => {
@@ -363,24 +369,21 @@ export const Menu: StoryObj = {
   render: () => <Select options={rich} label="Region" placeholder="Select a region" defaultValue="eu" defaultOpen />,
 };
 
-/** The same selects under every brand and colour scheme, driven only by tokens. */
-export const Brands: StoryObj = {
+/** Light and Dark, driven only by tokens. */
+export const Themes: StoryObj = {
   parameters: { layout: 'fullscreen' },
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 368px)' }}>
-      {Object.keys(brands).flatMap((brand) =>
-        (['light', 'dark'] as const).map((scheme) => (
-          <div key={`${brand}-${scheme}`} data-ds-brand={brand} data-ds-scheme={scheme} style={{ background: 'var(--ds-bg-default)', padding: 24, display: 'grid', gap: 16, alignContent: 'start', minHeight: 600 }}>
-            <div style={{ fontFamily: 'var(--ds-font-family-body)', fontSize: 12, color: 'var(--ds-text-muted)' }}>
-              {brand} · {scheme}
-            </div>
-            {variants.map((variant) => (
-              <Select key={variant} {...field} variant={variant} label={variant} defaultValue="simon-alt" />
-            ))}
-            <Select options={rich} label="Open" defaultValue="eu" defaultOpen />
-          </div>
-        )),
-      )}
+      {(['light', 'dark'] as const).map((scheme) => (
+        <div key={scheme} data-ds-brand="theme-1" data-ds-scheme={scheme} style={{ background: 'var(--ds-background)', padding: 24, display: 'grid', gap: 16, alignContent: 'start', minHeight: 600 }}>
+          <div style={{ fontFamily: 'var(--ds-font-sans)', fontSize: 12, color: 'var(--ds-muted-foreground)' }}>{scheme === 'light' ? 'Light' : 'Dark'}</div>
+          {variants.map((variant) => (
+            <Select key={variant} {...field} variant={variant} label={variant} defaultValue="simon-alt" />
+          ))}
+          <Select {...field} label="Invalid" error="Error message" />
+          <Select options={rich} label="Open" defaultValue="eu" defaultOpen />
+        </div>
+      ))}
     </div>
   ),
 };

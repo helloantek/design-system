@@ -61,9 +61,7 @@ export const SignUp: StoryObj<Args> = {
   render: function Render({ variant, size, disabled }) {
     const [errors, setErrors] = useState<Errors>({});
     const [submitted, setSubmitted] = useState<Record<string, FormDataEntryValue | FormDataEntryValue[]> | null>(null);
-    // Select keeps its Sort UI 1.3 sizes (lg 36 px, sm 32 px) until it moves to 2.0; xl falls back to lg there.
-    const field = { variant, disabled };
-    const selectSize = size === 'default' ? 'sm' : 'lg';
+    const field = { variant, size, disabled };
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -80,11 +78,11 @@ export const SignUp: StoryObj<Args> = {
 
     return (
       <form onSubmit={onSubmit} noValidate style={{ display: 'grid', gap: 20, width: 360, fontFamily: 'var(--ds-font-family-body)' }}>
-        <Input {...field} size={size} name="name" label="Name" placeholder="Jane Doe" leadIcon={<RiUser3Line />} error={errors.name} />
-        <Input {...field} size={size} name="email" type="email" label="Email" placeholder="mail@domain.com" leadIcon={<RiAtLine />} caption="We never share it" error={errors.email} />
-        <Select {...field} size={selectSize} name="role" label="Role" placeholder="Select a role" options={roles} error={errors.role} />
-        <Select {...field} size={selectSize} name="teams" label="Teams" placeholder="Select teams" options={teams} multiple caption="Pick all that apply" />
-        <Select {...field} size={selectSize} name="plan" label="Plan" placeholder="Select a plan" options={plans} defaultValue="free" caption="You can change it later" />
+        <Input {...field} name="name" label="Name" placeholder="Jane Doe" leadIcon={<RiUser3Line />} error={errors.name} />
+        <Input {...field} name="email" type="email" label="Email" placeholder="mail@domain.com" leadIcon={<RiAtLine />} caption="We never share it" error={errors.email} />
+        <Select {...field} name="role" label="Role" placeholder="Select a role" options={roles} error={errors.role} />
+        <Select {...field} name="teams" label="Teams" placeholder="Select teams" options={teams} multiple caption="Pick all that apply" />
+        <Select {...field} name="plan" label="Plan" placeholder="Select a plan" options={plans} defaultValue="free" caption="You can change it later" />
         <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
           <Button type="reset" variant="ghost" size={size} disabled={disabled} onClick={() => {
               setErrors({});

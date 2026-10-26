@@ -1,0 +1,38 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Select Item: Figma reserves the check mark's 16 px in the right padding (32 px) when the item is not selected; the code keeps an empty 16 px slot instead. Select Content: the menu's 1 px border is an inset shadow.",
+      "stroke": "inset-shadow"
+    },
+    "Label": {
+      "selector": ".ds-select__label"
+    },
+    "Check": {
+      "selector": ".ds-select__check svg",
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "Figma's icon frame is 17.3 px; the code draws the same glyph (72 % of the 24 px grid) in a 16 px slot."
+    },
+    "Check/VECTOR": {
+      "selector": ".ds-select__check svg",
+      "stroke": "svg"
+    },
+    "items": {
+      "selector": ".ds-select__menu > div",
+      "skip": [
+        "w",
+        "h",
+        "p",
+        "g"
+      ],
+      "$why": "The items slot is the menu's content box; the pixels cover it."
+    }
+  }
+}
