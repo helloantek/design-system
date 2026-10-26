@@ -179,12 +179,18 @@ const tests = {
     // tagsOverflow="count": one row, the rest in "+N", named for screen readers; removing makes room.
     await open('components-select--tags');
     const counted = page.locator('.ds-select').nth(2);
-    const visible = await counted.locator('.ds-select__tags > .ds-badge:not(.ds-select__more) .ds-badge__label').allTextContents();
     const more = counted.locator('.ds-select__more');
+    // The fit is re-measured when the web font arrives, so wait for it and read the tags and the counter together.
+    await page.evaluate(() => document.fonts.ready);
+    const { visible, counter, hiddenText } = await counted.evaluate((el) => ({
+      visible: [...el.querySelectorAll('.ds-select__tags > .ds-badge:not(.ds-select__more) .ds-badge__label')].map((l) => l.textContent),
+      counter: el.querySelector('.ds-select__more [aria-hidden]')?.textContent,
+      hiddenText: el.querySelector('.ds-select__more .ds-select__hidden')?.textContent,
+    }));
     assert.ok(visible.length >= 1 && visible.length < 5, `some tags fit (${visible.length})`);
-    assert.equal(await more.locator('[aria-hidden]').textContent(), `+${5 - visible.length}`);
+    assert.equal(counter, `+${5 - visible.length}`);
     const names = ['Alex Jhonson', 'Simon Alt', 'Emma Thompson', 'Michael Davis', 'Kate Roberts'];
-    assert.equal(await more.locator('.ds-select__hidden').textContent(), `and ${5 - visible.length} more: ${names.slice(visible.length).join(', ')}`);
+    assert.equal(hiddenText, `and ${5 - visible.length} more: ${names.slice(visible.length).join(', ')}`);
     // One row, and the counter ends inside the row's padding box (nothing clipped).
     const row = await counted.locator('.ds-select__tags').evaluate((el) => {
       const r = el.getBoundingClientRect(), m = el.querySelector('.ds-select__more').getBoundingClientRect();
