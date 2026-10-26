@@ -12,11 +12,16 @@ Each stage is its own branch and pull request, and `main` stays green between th
 1. **Tokens** (`claude/tokens/sort-ui-2`): Sort UI 2.0 variables and effect styles are generated **next to** the 1.3
    tokens, for every brand. Nothing visible changes; components still use 1.3.
 2. **Components**, one pull request each, rebuilt from the 2.0 component sets and their references:
-   Button (`40:2125`, done), Input (`82:50`, done), Select (`104:37` + Select Item `102:44`, done), Badge (`55:129` + Status indicator
-   `2101:22980`), Avatar (`174:6534` + Avatar Badge `174:6524`, Avatar Group `179:80`). A component's CSS switches to 2.0
-   tokens only; its Figma references are re-exported from 2.0.
+   Button (`40:2125`, done), Input (`82:50`, done), Select (`104:37` + Select Item `102:44`, done), Avatar (`174:6534` +
+   Avatar Badge `174:6524`, Avatar Group `179:80`). A component's CSS switches to 2.0 tokens only; its Figma references are
+   re-exported from 2.0.
+   **Badge stays on Sort UI 1.3** (decided with the owner): 2.0's Badge (`55:129`) is a different component (Default,
+   Outline, Secondary, Ghost, Destructive, Link and Solid/Tint colours, always a pill), while 1.3's Soft/Strong colours,
+   shapes, border, dot, image and remove button are what the system uses, Select tags included.
 3. **Cleanup and release**: remove the 1.3 tokens, `theme-2` and `figma/variables.json`/`effects.json`, rename the brand,
-   and publish 2.0.0 with a migration note for apps (the `--ds-*` names change).
+   and publish 2.0.0 with a migration note for apps (the `--ds-*` names change). Badge still reads 1.3 tokens
+   (`bg/badge/*`, `bg/basic/*`, text and icon colours), so before they go, its values move into its own CSS or a small
+   set of kept tokens, with its Figma references unchanged.
 
 New 2.0 components (Alert Dialog, Dialog, Checkbox, Tabs…) follow the normal playbook after stage 2.
 
