@@ -2,8 +2,8 @@ import { useState, type HTMLAttributes, type ReactNode, type Ref } from 'react';
 
 // Styles live in @helloantek/ds-css (classes ds-avatar*); this component only renders the markup.
 
-/** Figma "size" (Sort UI 2.0: xs 20, sm 24, default 32, lg 40, xl 48 px); 2xs (16), 2xl (56) and 3xl (64) are extensions. */
-export type AvatarSize = '2xs' | 'xs' | 'sm' | 'default' | 'lg' | 'xl' | '2xl' | '3xl';
+/** Figma "size": xs 20, sm 24, default 32, lg 40, xl 48 px. */
+export type AvatarSize = 'xs' | 'sm' | 'default' | 'lg' | 'xl';
 /** Figma "shape". */
 export type AvatarShape = 'round' | 'square';
 

@@ -240,8 +240,8 @@ const tests = {
     const figma = [
       ['default', 'round', 12, 22, -2, 22],
       ['sm', 'square', 12, 16, -4, 16],
-      ['2xl', 'round', 18, 39, -1, 39],
-      ['3xl', 'square', 20, 52, -8, 52],
+      ['lg', 'round', 16, 26, -2, 26],
+      ['xl', 'square', 16, 38, -6, 38],
     ];
     for (const [size, shape, badge, x, top, bottom] of figma) {
       await page.goto(`http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=size:${size};shape:${shape};ring:!true;topBadge:!true;badge:status`);

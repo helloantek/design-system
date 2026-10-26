@@ -1,5 +1,5 @@
 {
- "$comment": "Sort UI 2.0 Avatar reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/avatar.tsx turns them into props. Every variant, size and shape. The 2xs, 2xl and 3xl extensions have no Figma render.",
+ "$comment": "Sort UI 2.0 Avatar reference renders (1x PNG, exported with get_screenshot) and the Figma properties of each; renderers/avatar.tsx turns them into props. Every variant, size and shape.",
  "component": "avatar",
  "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
  "componentSet": "174:6534",

@@ -9,8 +9,7 @@ import { avatarImage } from './Avatar.fixtures';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=174-6534';
 
-const sizes: AvatarSize[] = ['2xs', 'xs', 'sm', 'default', 'lg', 'xl', '2xl', '3xl'];
-const figmaSizes: AvatarSize[] = ['xs', 'sm', 'default', 'lg', 'xl'];
+const sizes: AvatarSize[] = ['xs', 'sm', 'default', 'lg', 'xl'];
 const shapes: AvatarShape[] = ['round', 'square'];
 const badgeVariants: StatusBadgeVariant[] = ['checkmark', 'online', 'offline', 'notification', 'icon'];
 
@@ -26,7 +25,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `Implements the Sort UI 2.0 component sets **Avatar**, **Avatar Badge** and **Avatar Group** ([open in Figma](${FIGMA_URL})). Figma "variant" follows the content: \`src\` → image, \`initials\` → fallback, neither → icon (a person, or \`icon\`); a picture that fails to load falls back. \`size\`: \`xs\` · \`sm\` · \`default\` · \`lg\` · \`xl\` as in Figma, plus the \`2xs\`, \`2xl\` and \`3xl\` extensions; \`shape\`: \`round\` · \`square\`. Figma "badge" is \`bottomBadge={<AvatarBadge />}\`; the Sort UI 1.3 **Status Badge** (checkmark, online, offline, notification, icon, logo) stays available in \`topBadge\` and \`bottomBadge\`. \`name\` is the accessible name.`,
+        component: `Implements the Sort UI 2.0 component sets **Avatar**, **Avatar Badge** and **Avatar Group** ([open in Figma](${FIGMA_URL})). Figma "variant" follows the content: \`src\` → image, \`initials\` → fallback, neither → icon (a person, or \`icon\`); a picture that fails to load falls back. \`size\`: \`xs\` · \`sm\` · \`default\` · \`lg\` · \`xl\`; \`shape\`: \`round\` · \`square\`. Figma "badge" is \`bottomBadge={<AvatarBadge />}\`; the Sort UI 1.3 **Status Badge** (checkmark, online, offline, notification, icon, logo) stays available in \`topBadge\` and \`bottomBadge\`. \`name\` is the accessible name.`,
       },
     },
   },
@@ -87,7 +86,7 @@ const grid = (columns: number): CSSProperties => ({
   color: 'var(--ds-muted-foreground)',
 });
 
-/** Every Figma variant, size and shape (2xs, 2xl and 3xl are extensions). */
+/** Every Figma variant, size and shape. */
 export const Variants: StoryObj = {
   render: () => (
     <div style={grid(sizes.length)}>
@@ -111,7 +110,7 @@ export const Variants: StoryObj = {
   ),
 };
 
-/** Figma "badge" (Avatar Badge, plain and with an icon) at every Figma size, and the Status Badges in both slots. */
+/** Figma "badge" (Avatar Badge, plain and with an icon) at every size, and the Status Badges in both slots. */
 export const Badges: StoryObj = {
   render: () => (
     <div style={grid(sizes.length)}>
@@ -172,7 +171,7 @@ const people = [
 export const Group: StoryObj = {
   render: () => (
     <div style={{ display: 'grid', gap: 16, justifyItems: 'start' }}>
-      {figmaSizes.map((size) => (
+      {sizes.map((size) => (
         <AvatarGroup key={size} size={size} max={3} aria-label="Reviewers">
           {people.map((p) => (
             <Avatar key={p.name} {...p} />
