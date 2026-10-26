@@ -51,7 +51,7 @@ export default meta;
 type ItemType = 'Default' | 'Default Large' | 'Avatar' | 'Country Flag';
 
 // Figma Type=Avatar: Simon Alt has a picture, the others one initial (Figma shows one letter up to size md).
-const personAvatar = (name: string, i: number) => <Avatar size="xs" shape="rounded" src={i === 1 ? avatarImage : undefined} initials={name[0]} />;
+const personAvatar = (name: string, i: number) => <Avatar size="xs" shape="square" src={i === 1 ? avatarImage : undefined} initials={name[0]} />;
 
 type PlaygroundArgs = {
   label: string;
@@ -232,7 +232,7 @@ export const MenuItem: StoryObj<MenuItemArgs> = {
       value: 'item',
       label: a.label,
       icon: a.type === 'Default Large' || (a.type === 'Default' && a.leadIcon) ? <RiGlobalLine /> : undefined,
-      media: a.type === 'Country Flag' ? <FlagUnitedStates /> : a.type === 'Avatar' ? <Avatar size="xs" shape="rounded" initials="S" /> : undefined,
+      media: a.type === 'Country Flag' ? <FlagUnitedStates /> : a.type === 'Avatar' ? <Avatar size="xs" shape="square" initials="S" /> : undefined,
       description: a.type === 'Default Large' ? a.caption : undefined,
       caption: a.supporterText && a.type !== 'Default Large' ? a.supporterTextValue : undefined,
       badge: a.badge ? a.badgeText : undefined,

@@ -22,7 +22,7 @@ export interface SelectOption {
   badge?: ReactNode;
   /**
    * A 20 px picture before the label, e.g. a flag `<svg>` or
-   * `<Avatar size="xs" shape="rounded" …/>`. A single select also shows it in the trigger for the selected option
+   * `<Avatar size="xs" shape="square" …/>`. A single select also shows it in the trigger for the selected option
    * in place of the lead icon.
    */
   media?: ReactNode;

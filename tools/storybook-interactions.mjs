@@ -179,12 +179,18 @@ const tests = {
     // tagsOverflow="count": one row, the rest in "+N", named for screen readers; removing makes room.
     await open('components-select--tags');
     const counted = page.locator('.ds-select').nth(2);
-    const visible = await counted.locator('.ds-select__tags > .ds-badge:not(.ds-select__more) .ds-badge__label').allTextContents();
     const more = counted.locator('.ds-select__more');
+    // The fit is re-measured when the web font arrives, so wait for it and read the tags and the counter together.
+    await page.evaluate(() => document.fonts.ready);
+    const { visible, counter, hiddenText } = await counted.evaluate((el) => ({
+      visible: [...el.querySelectorAll('.ds-select__tags > .ds-badge:not(.ds-select__more) .ds-badge__label')].map((l) => l.textContent),
+      counter: el.querySelector('.ds-select__more [aria-hidden]')?.textContent,
+      hiddenText: el.querySelector('.ds-select__more .ds-select__hidden')?.textContent,
+    }));
     assert.ok(visible.length >= 1 && visible.length < 5, `some tags fit (${visible.length})`);
-    assert.equal(await more.locator('[aria-hidden]').textContent(), `+${5 - visible.length}`);
+    assert.equal(counter, `+${5 - visible.length}`);
     const names = ['Alex Jhonson', 'Simon Alt', 'Emma Thompson', 'Michael Davis', 'Kate Roberts'];
-    assert.equal(await more.locator('.ds-select__hidden').textContent(), `and ${5 - visible.length} more: ${names.slice(visible.length).join(', ')}`);
+    assert.equal(hiddenText, `and ${5 - visible.length} more: ${names.slice(visible.length).join(', ')}`);
     // One row, and the counter ends inside the row's padding box (nothing clipped).
     const row = await counted.locator('.ds-select__tags').evaluate((el) => {
       const r = el.getBoundingClientRect(), m = el.querySelector('.ds-select__more').getBoundingClientRect();
@@ -230,15 +236,15 @@ const tests = {
     assert.equal(await page.locator('.ds-badge').count(), 0);
   },
   'avatar: badges and ring sit where Figma puts them; names and fallback': async () => {
-    // Figma: badge size and position per Size and Shape (x, y relative to the avatar), ring 2 px outside.
+    // Status Badges: size and position per size and shape (x, y relative to the avatar), as in Sort UI 1.3; ring 2 px outside.
     const figma = [
-      ['md', 'circular', 12, 22, -2, 22],
-      ['sm', 'rounded', 12, 16, -4, 16],
-      ['2xl', 'circular', 18, 39, -1, 39],
-      ['3xl', 'rounded', 20, 52, -8, 52],
+      ['default', 'round', 12, 22, -2, 22],
+      ['sm', 'square', 12, 16, -4, 16],
+      ['lg', 'round', 16, 26, -2, 26],
+      ['xl', 'square', 16, 38, -6, 38],
     ];
     for (const [size, shape, badge, x, top, bottom] of figma) {
-      await page.goto(`http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=size:${size};shape:${shape};ring:!true;topBadge:!true;bottomBadge:!true`);
+      await page.goto(`http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=size:${size};shape:${shape};ring:!true;topBadge:!true;badge:status`);
       const avatar = page.locator('.ds-avatar');
       await avatar.waitFor();
       const a = await avatar.boundingBox();
@@ -247,19 +253,34 @@ const tests = {
       const got = [t.width, t.x - a.x, t.y - a.y, b.y - a.y].map((v) => Math.round(v * 100) / 100);
       assert.deepEqual(got, [badge, x, top, bottom], `${size} ${shape}: badge size, x, top y, bottom y`);
       const ring = await avatar.evaluate((el) => { const s = getComputedStyle(el, '::before'); return [s.inset, s.backgroundColor]; });
-      assert.deepEqual(ring, ['-2px', 'rgb(255, 255, 255)'], 'ring: 2 px in the page colour');
+      assert.deepEqual(ring, ['-2px', 'rgb(252, 252, 252)'], 'ring: 2 px in the page colour');
     }
-    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=bottomBadge:!true');
+    // Figma Avatar Badge: inside the bottom right corner, 8 / 10 / 12 px (Figma x = y = size − badge).
+    for (const [size, dot] of [['xs', 8], ['default', 10], ['xl', 12]]) {
+      await page.goto(`http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=size:${size};badge:avatar`);
+      const a = await page.locator('.ds-avatar').boundingBox();
+      const d = await page.getByRole('img', { name: 'Online' }).boundingBox();
+      assert.deepEqual([d.width, d.x - a.x, d.y - a.y], [dot, a.width - dot, a.height - dot], `${size}: Avatar Badge size and position`);
+    }
+    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=badge:status');
     await page.getByRole('img', { name: 'Sam Rivera' }).waitFor();
     assert.equal(await page.getByRole('img', { name: 'Online' }).count(), 1, 'the status badge is named');
-    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=variant:Initials;initials:SR');
+    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story&args=variant:fallback;initials:SR');
     assert.equal(await page.getByRole('img', { name: 'Sam Rivera' }).textContent(), 'SR', 'initials carry the name');
-    // A picture that fails to load falls back to Empty.
-    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--group&viewMode=story');
-    await page.locator('.ds-avatar').first().waitFor();
+    // A picture that fails to load falls back to the icon.
+    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--playground&viewMode=story');
+    await page.locator('.ds-avatar img').waitFor();
     await page.locator('.ds-avatar img').evaluate((img) => { img.src = 'data:image/png;base64,broken'; });
     await page.waitForFunction(() => document.querySelectorAll('.ds-avatar img').length === 0);
-    assert.equal(await page.getByRole('img', { name: 'Sam Rivera' }).locator('.ds-avatar__placeholder').count(), 1);
+    assert.equal(await page.getByRole('img', { name: 'Sam Rivera' }).locator('.ds-avatar__icon').count(), 1);
+    // Avatar Group: max 3 shows three avatars with the ring, overlapping by 8 px, and a named "+3".
+    await page.goto('http://localhost:6008/iframe.html?id=components-avatar--group&viewMode=story');
+    const group = page.getByRole('group', { name: 'Reviewers' }).nth(2);
+    await group.waitFor();
+    const boxes = await group.locator('.ds-avatar').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().x));
+    assert.equal(boxes.length, 3);
+    assert.equal(Math.round(boxes[1] - boxes[0]), 24, 'default: 32 px avatars overlap by 8 px');
+    assert.equal(await group.getByRole('img', { name: 'and 3 more' }).textContent(), '+3');
   },
   'playground form: validation, submitted data and reset': async () => {
     await open('playground-form--sign-up');

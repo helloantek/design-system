@@ -1,14 +1,27 @@
 {
-  "$comment": "Figma layer path (as in spec.json) -> element inside #target (the avatar) and how to read it.",
+  "$comment": "Figma layer path (as in spec.json) -> element inside #target and how to read it. skip: spec keys not compared for this layer.",
   "layers": {
-    "root": {},
-    "image": {
+    "root": {
       "selector": ".ds-avatar__image",
-      "stroke": "after-inset-shadow",
-      "$why": "The inside stroke is an ::after overlay so it stays above the picture."
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The picture box carries the size, radius and fill; Figma's auto layout has nothing to lay out."
     },
-    "initials": {
+    "Initials": {
       "selector": ".ds-avatar__initials"
+    },
+    "plus": {
+      "selector": ".ds-avatar__icon svg"
+    },
+    "plus/VECTOR": {
+      "selector": ".ds-avatar__icon svg",
+      "stroke": "svg",
+      "skip": [
+        "fill"
+      ],
+      "$why": "Figma gives the xs plus a fill as well as the stroke; an open path draws nothing with it."
     }
   }
 }

@@ -1,24 +1,28 @@
 /*
- * Avatar — Figma component set "Avatar" (node 2725:4557 in file 4tiBR2hKd4yvQehtKhM9OY): every Variant (Userpic,
- * Initials, Empty), Size (2xs–3xl) and Shape, plus the "Ring", "Top badge" and "Bottom badge" booleans.
- * Status Badge — Figma component set "Status Badge" (node 2155:3440): Checkmark, Online, Offline, Notification, Icon,
- * Logo. Every colour comes from @helloantek/ds-tokens; avatar sizes, the ring's corner radii and badge offsets have no
- * variables in Figma.
+ * Avatar — Sort UI 2.0 component sets "Avatar" (node 174:6534), "Avatar Badge" (174:6524) and "Avatar Group" (179:80)
+ * in file 4JnqgEbdlnKgiFrfmiwEZw: every variant (image, fallback, icon), size (xs–xl) and shape. Values are Sort UI 2.0
+ * tokens.
+ * Status Badge — the Sort UI 1.3 component set "Status Badge" (node 2155:3440 in file 4tiBR2hKd4yvQehtKhM9OY), kept
+ * like Badge: Checkmark, Online, Offline, Notification, Icon, Logo, in the avatar's top and bottom badge slots.
  *
  * Markup (classes in [] are optional):
- *   <span class="ds-avatar ds-avatar--md ds-avatar--circular [ds-avatar--initials] [ds-avatar--ring]">
+ *   <span class="ds-avatar ds-avatar--default ds-avatar--round [ds-avatar--fallback] [ds-avatar--ring]">
  *     <span class="ds-avatar__image">
- *       <img…/>  |  <span class="ds-avatar__initials">SR</span>  |  <svg class="ds-avatar__placeholder"…/>
+ *       <img…/>  |  <span class="ds-avatar__initials">SR</span>  |  <span class="ds-avatar__icon"><svg…/></span>
  *     </span>
  *     [<span class="ds-avatar__badge ds-avatar__badge--top"><span class="ds-status-badge …">…</span></span>]
- *     [<span class="ds-avatar__badge ds-avatar__badge--bottom">…</span>]
+ *     [<span class="ds-avatar__badge ds-avatar__badge--bottom"><span class="ds-status-badge …"/> | <span class="ds-avatar-badge"/></span>]
+ *   </span>
+ *   <span class="ds-avatar-badge [ds-avatar-badge--icon]" role="img" aria-label="Online">[<svg…plus…/>]</span>
+ *   <span class="ds-avatar-group ds-avatar-group--default" role="group">
+ *     <span class="ds-avatar …">…</span>…
+ *     [<span class="ds-avatar-group__count">+3</span>]
  *   </span>
  *   <span class="ds-status-badge ds-status-badge--online" role="img" aria-label="Online"><svg viewBox="0 0 24 24">…</svg></span>
  */
 
 @layer ds.components {
   .ds-avatar {
-    /* Rounded corners: Figma uses radius/xs up to md and radius/sm from lg; Initials always use radius/sm. */
     --avatar-radius: var(--ds-radius-full);
 
     position: relative;
@@ -30,109 +34,87 @@
     vertical-align: middle;
   }
 
-  /* Figma Size: box, initials text style, badge size and how far badges stick out (circular / rounded). */
-  .ds-avatar--2xs {
-    --avatar-size: 16px;
-    --avatar-text: var(--ds-font-size-xs);
-    --avatar-leading: var(--ds-font-line-height-leading-4);
-    --avatar-badge: 8px;
-    --avatar-badge-out: 2px;
-    --avatar-badge-out-rounded: 3px;
-    --avatar-ring-radius: 6px;
-  }
-
+  /* Figma size: box, square radius, initials text, icon, Avatar Badge dot and its icon, and the Status Badge slot with how far it
+     sticks out (round / square; Sort UI 1.3 values). */
   .ds-avatar--xs {
-    --avatar-size: 20px;
-    --avatar-text: var(--ds-font-size-xs);
-    --avatar-leading: var(--ds-font-line-height-leading-4);
+    --avatar-size: var(--ds-spacing-5);
+    --avatar-square-radius: var(--ds-radius-sm);
+    --avatar-text: var(--ds-text-2xs);
+    --avatar-leading: var(--ds-text-2xs--line-height);
+    --avatar-icon: var(--ds-spacing-3);
+    --avatar-dot: var(--ds-spacing-2);
+    --avatar-dot-icon: var(--ds-spacing-2);
     --avatar-badge: 10px;
     --avatar-badge-out: 3px;
-    --avatar-badge-out-rounded: 4px;
-    --avatar-ring-radius: 8px;
+    --avatar-badge-out-square: 4px;
   }
 
   .ds-avatar--sm {
-    --avatar-size: 24px;
-    --avatar-text: var(--ds-font-size-xs);
-    --avatar-leading: var(--ds-font-line-height-leading-4);
-    --avatar-badge: var(--ds-icon-size-xs);
+    --avatar-size: var(--ds-spacing-6);
+    --avatar-square-radius: var(--ds-radius-sm);
+    --avatar-text: var(--ds-text-2xs);
+    --avatar-leading: var(--ds-text-2xs--line-height);
+    --avatar-icon: var(--ds-spacing-4);
+    --avatar-dot: var(--ds-spacing-2);
+    --avatar-dot-icon: var(--ds-spacing-2);
+    --avatar-badge: 12px;
     --avatar-badge-out: 3px;
-    --avatar-badge-out-rounded: 4px;
-    --avatar-ring-radius: 8px;
+    --avatar-badge-out-square: 4px;
   }
 
-  .ds-avatar--md {
-    --avatar-size: 32px;
-    --avatar-text: var(--ds-font-size-sm);
-    --avatar-leading: var(--ds-font-line-height-leading-5);
-    --avatar-badge: var(--ds-icon-size-xs);
+  .ds-avatar--default {
+    --avatar-size: var(--ds-spacing-8);
+    --avatar-square-radius: var(--ds-radius-md);
+    --avatar-text: var(--ds-text-sm);
+    --avatar-leading: var(--ds-text-sm--line-height);
+    --avatar-icon: var(--ds-spacing-4);
+    --avatar-dot: var(--ds-spacing-2-5);
+    --avatar-dot-icon: var(--ds-spacing-2);
+    --avatar-badge: 12px;
     --avatar-badge-out: 2px;
-    --avatar-badge-out-rounded: 4px;
-    --avatar-ring-radius: 10px;
+    --avatar-badge-out-square: 4px;
   }
 
   .ds-avatar--lg {
-    --avatar-size: 40px;
-    --avatar-text: var(--ds-font-size-sm);
-    --avatar-leading: var(--ds-font-line-height-leading-5);
-    --avatar-badge: var(--ds-icon-size-sm);
+    --avatar-size: var(--ds-spacing-10);
+    --avatar-square-radius: var(--ds-radius-lg);
+    --avatar-text: var(--ds-text-sm);
+    --avatar-leading: var(--ds-text-sm--line-height);
+    --avatar-icon: var(--ds-spacing-6);
+    --avatar-dot: var(--ds-spacing-3);
+    --avatar-dot-icon: var(--ds-spacing-2-5);
+    --avatar-badge: 16px;
     --avatar-badge-out: 2px;
-    --avatar-badge-out-rounded: 2px;
-    --avatar-ring-radius: 10px;
+    --avatar-badge-out-square: 2px;
   }
 
   .ds-avatar--xl {
-    --avatar-size: 48px;
-    --avatar-text: var(--ds-font-size-md);
-    --avatar-leading: var(--ds-font-line-height-leading-6);
-    --avatar-badge: var(--ds-icon-size-sm);
+    --avatar-size: var(--ds-spacing-12);
+    --avatar-square-radius: var(--ds-radius-lg);
+    --avatar-text: var(--ds-text-sm);
+    --avatar-leading: var(--ds-text-sm--line-height);
+    --avatar-icon: var(--ds-spacing-6);
+    --avatar-dot: var(--ds-spacing-3);
+    --avatar-dot-icon: var(--ds-spacing-2-5);
+    --avatar-badge: 16px;
     --avatar-badge-out: 2px;
-    --avatar-badge-out-rounded: 6px;
-    --avatar-ring-radius: 10px;
+    --avatar-badge-out-square: 6px;
   }
 
-  .ds-avatar--2xl {
-    --avatar-size: 56px;
-    --avatar-text: var(--ds-font-size-lg);
-    --avatar-leading: var(--ds-font-line-height-leading-7);
-    --avatar-badge: var(--ds-icon-size-md);
-    --avatar-badge-out: 1px;
-    --avatar-badge-out-rounded: 6px;
-    --avatar-ring-radius: 10px;
+  /* Figma shape=square */
+  .ds-avatar--square {
+    --avatar-radius: var(--avatar-square-radius);
+    --avatar-badge-out: var(--avatar-badge-out-square);
   }
 
-  .ds-avatar--3xl {
-    --avatar-size: 64px;
-    --avatar-text: var(--ds-font-size-xl);
-    --avatar-leading: var(--ds-font-line-height-leading-7);
-    --avatar-badge: var(--ds-icon-size-lg);
-    --avatar-badge-out: 0px;
-    --avatar-badge-out-rounded: 8px;
-    --avatar-ring-radius: 10px;
-  }
-
-  /* Figma Shape */
-  .ds-avatar--rounded {
-    --avatar-radius: var(--ds-radius-xs);
-    --avatar-badge-out: var(--avatar-badge-out-rounded);
-  }
-
-  .ds-avatar--rounded:is(.ds-avatar--lg, .ds-avatar--xl, .ds-avatar--2xl, .ds-avatar--3xl, .ds-avatar--initials) {
-    --avatar-radius: var(--ds-radius-sm);
-  }
-
-  /* "Ring": a 2 px disc in the page colour behind the avatar, to separate it from what it overlaps. */
+  /* Ring (Avatar Group's 2 px outside stroke in the page colour), to separate avatars that overlap. */
   .ds-avatar--ring::before {
     content: '';
     position: absolute;
     z-index: -1;
-    inset: -2px;
-    border-radius: var(--ds-radius-full);
-    background-color: var(--ds-bg-default);
-  }
-
-  .ds-avatar--ring.ds-avatar--rounded::before {
-    border-radius: var(--avatar-ring-radius);
+    inset: calc(-1 * var(--ds-stroke-width-4));
+    border-radius: calc(var(--avatar-radius) + var(--ds-stroke-width-4));
+    background-color: var(--ds-background);
   }
 
   .ds-avatar__image {
@@ -144,48 +126,40 @@
     height: 100%;
     overflow: hidden;
     border-radius: var(--avatar-radius);
-    background-color: var(--ds-bg-basic-gray-subtle);
+    background-color: var(--ds-fill-2);
   }
 
-  /* Figma strokes are inside; an overlay keeps the stroke above the picture. */
-  .ds-avatar__image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    box-shadow: inset 0 0 0 var(--ds-stroke-default) var(--ds-border-default);
-    pointer-events: none;
-  }
-
-  .ds-avatar__image > img,
-  .ds-avatar__placeholder {
+  .ds-avatar__image > img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  /* Variant=Empty: Figma's placeholder picture, drawn with tokens so it follows the brand and colour scheme. */
-  .ds-avatar__placeholder {
-    fill: var(--ds-border-darker);
-  }
-
-  /* Variant=Initials */
-  .ds-avatar--initials .ds-avatar__image {
-    background-color: var(--ds-bg-basic-gray-accent);
-  }
-
+  /* variant=fallback: initials, 12 px up to sm and 14 px from default. */
   .ds-avatar__initials {
-    color: var(--ds-text-white-default);
-    font-family: var(--ds-font-family-body);
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
     font-size: var(--avatar-text);
-    font-weight: var(--ds-font-weight-medium);
+    font-weight: var(--ds-font-weight-normal);
     line-height: var(--avatar-leading);
     white-space: nowrap;
     text-align: center;
   }
 
-  /* "Top badge" / "Bottom badge" */
+  /* variant=icon: a muted icon (a person when none is given). */
+  .ds-avatar__icon {
+    display: flex;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-avatar__icon > svg {
+    display: block;
+    width: var(--avatar-icon);
+    height: var(--avatar-icon);
+  }
+
+  /* Badge slots: a Status Badge sticks out of the top / bottom right corner. */
   .ds-avatar__badge {
     position: absolute;
     right: calc(-1 * var(--avatar-badge-out));
@@ -205,6 +179,82 @@
   .ds-avatar__badge > .ds-status-badge {
     width: 100%;
     height: 100%;
+  }
+
+  /* Figma "Avatar Badge" sits inside the corner, flush with the avatar's box: 8 px up to sm, 10 px in default,
+     12 px from lg. */
+  .ds-avatar__badge:has(> .ds-avatar-badge) {
+    --avatar-badge: var(--avatar-dot);
+    --avatar-badge-out: 0px;
+  }
+
+  .ds-avatar__badge--top:has(> .ds-avatar-badge) {
+    top: 0;
+  }
+
+  .ds-avatar__badge--bottom:has(> .ds-avatar-badge) {
+    bottom: 0;
+  }
+
+  /* ── Avatar Badge ───────────────────────────────────────────────────── */
+  /* A primary dot with a 2 px stroke (centred) in the page colour; variant=icon holds a small icon (e.g. plus). */
+  .ds-avatar-badge {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--avatar-dot, var(--ds-spacing-2-5));
+    height: var(--avatar-dot, var(--ds-spacing-2-5));
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-primary);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-background), inset 0 0 0 var(--ds-stroke-width-1) var(--ds-background);
+    color: var(--ds-primary-foreground);
+  }
+
+  .ds-avatar__badge > .ds-avatar-badge {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Figma: an 8 px icon in the 8 and 10 px dots, 10 px in the 12 px dot. */
+  .ds-avatar-badge > svg {
+    display: block;
+    flex-shrink: 0;
+    width: var(--avatar-dot-icon, var(--ds-spacing-2));
+    height: var(--avatar-dot-icon, var(--ds-spacing-2));
+  }
+
+  /* ── Avatar Group ───────────────────────────────────────────────────── */
+  /* Avatars overlap by 8 px, each with the ring; the count is a muted circle of the same size. */
+  .ds-avatar-group {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  .ds-avatar-group > * + * {
+    margin-left: calc(-1 * var(--ds-spacing-2));
+  }
+
+  .ds-avatar-group__count {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-muted);
+    box-shadow: 0 0 0 var(--ds-stroke-width-4) var(--ds-background);
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--avatar-text);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--avatar-leading);
+    white-space: nowrap;
   }
 
   /* ── Status Badge ───────────────────────────────────────────────────── */

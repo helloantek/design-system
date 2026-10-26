@@ -1,0 +1,33 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside #target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The overlap is a negative margin on each item after the first, checked through the width."
+    },
+    "avatars": {
+      "selector": ".ds-avatar",
+      "skip": [
+        "w",
+        "h",
+        "p",
+        "g"
+      ],
+      "$why": "Figma's slot frame has no element in the code."
+    },
+    "Count": {
+      "selector": ".ds-avatar-group__count",
+      "stroke": "outer-shadow",
+      "skip": [
+        "p",
+        "g"
+      ]
+    },
+    "Count/TEXT": {
+      "selector": ".ds-avatar-group__count"
+    }
+  }
+}

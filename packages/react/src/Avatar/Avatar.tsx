@@ -2,34 +2,36 @@ import { useState, type HTMLAttributes, type ReactNode, type Ref } from 'react';
 
 // Styles live in @helloantek/ds-css (classes ds-avatar*); this component only renders the markup.
 
-/** Figma "Size" property. */
-export type AvatarSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
-/** Figma "Shape" property. */
-export type AvatarShape = 'circular' | 'rounded';
+/** Figma "size": xs 20, sm 24, default 32, lg 40, xl 48 px. */
+export type AvatarSize = 'xs' | 'sm' | 'default' | 'lg' | 'xl';
+/** Figma "shape". */
+export type AvatarShape = 'round' | 'square';
 
 export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
   ref?: Ref<HTMLSpanElement>;
-  /** Figma Variant=Userpic: the picture's URL. Falls back to the initials (or Empty) when it fails to load. */
+  /** Figma variant=image: the picture's URL. Falls back to the initials (or the icon) when it fails to load. */
   src?: string;
-  /** Figma Variant=Initials, e.g. "SR". Figma shows one letter up to size md and two from lg. */
+  /** Figma variant=fallback ("Initials"), e.g. "SH". */
   initials?: string;
+  /** Figma variant=icon: the icon shown without a picture or initials (a person by default). Use `currentColor`. */
+  icon?: ReactNode;
   /** Who the avatar shows; the accessible name of the picture or initials. Without it the avatar is decorative. */
   name?: string;
   size?: AvatarSize;
   shape?: AvatarShape;
-  /** Figma "Ring": a 2 px ring in the page colour, e.g. for overlapping avatars. */
+  /** A 2 px ring in the page colour, as Avatar Group draws it, e.g. for overlapping avatars. */
   ring?: boolean;
-  /** Figma "Top badge", e.g. `<StatusBadge variant="checkmark" />`. */
+  /** A badge on the top right corner, e.g. `<StatusBadge variant="checkmark" />`. */
   topBadge?: ReactNode;
-  /** Figma "Bottom badge", e.g. `<StatusBadge variant="online" />`. */
+  /** A badge on the bottom right corner: Figma "badge" (`<AvatarBadge />`) or e.g. `<StatusBadge variant="online" />`. */
   bottomBadge?: ReactNode;
 }
 
-// Figma's Variant=Empty picture on a 64 px grid: head and shoulders.
-const placeholder = (
-  <svg className="ds-avatar__placeholder" viewBox="0 0 64 64" aria-hidden>
-    <ellipse cx="32" cy="24" rx="12" ry="14" />
-    <ellipse cx="32" cy="72" rx="33" ry="32" />
+// Sort UI 2.0's user icon (24 px grid, 1.25 px stroke at 16 px).
+const person = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.875} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <circle cx="12" cy="8" r="5" />
+    <path d="M20 21a8 8 0 0 0-16 0" />
   </svg>
 );
 
@@ -37,9 +39,10 @@ export function Avatar({
   ref,
   src,
   initials,
+  icon,
   name,
-  size = 'md',
-  shape = 'circular',
+  size = 'default',
+  shape = 'round',
   ring = false,
   topBadge,
   bottomBadge,
@@ -48,8 +51,7 @@ export function Avatar({
 }: AvatarProps) {
   const [failed, setFailed] = useState<string>();
   const picture = src && failed !== src;
-  const variant = picture ? 'userpic' : initials ? 'initials' : 'empty';
-  const classes = ['ds-avatar', `ds-avatar--${size}`, `ds-avatar--${shape}`, variant === 'initials' && 'ds-avatar--initials', ring && 'ds-avatar--ring', className]
+  const classes = ['ds-avatar', `ds-avatar--${size}`, `ds-avatar--${shape}`, !picture && initials && 'ds-avatar--fallback', ring && 'ds-avatar--ring', className]
     .filter(Boolean)
     .join(' ');
   const label = !picture && name ? { role: 'img', 'aria-label': name } : {};
@@ -63,7 +65,9 @@ export function Avatar({
             {initials}
           </span>
         ) : (
-          placeholder
+          <span className="ds-avatar__icon" aria-hidden>
+            {icon ?? person}
+          </span>
         )}
       </span>
       {topBadge && <span className="ds-avatar__badge ds-avatar__badge--top">{topBadge}</span>}

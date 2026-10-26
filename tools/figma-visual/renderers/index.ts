@@ -1,4 +1,4 @@
-import { renderAvatar, renderStatusBadge } from './avatar';
+import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
 import { renderButton } from './button';
 import { renderInput } from './input';
@@ -8,6 +8,7 @@ import type { Renderer } from './types';
 // One renderer per component folder in ../references.
 export const renderers: Record<string, Renderer> = {
   avatar: renderAvatar,
+  'avatar-group': renderAvatarGroup,
   badge: renderBadge,
   button: renderButton,
   input: renderInput,
