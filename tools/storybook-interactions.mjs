@@ -373,6 +373,13 @@ Object.assign(tests, {
     await trigger.click();
     await widgets.hover();
     assert.equal(await development.isVisible(), true, 'hover opens the submenu');
+    // The submenu starts 4 px right of the menu (Figma); the pointer crosses that gap on its way in.
+    const [menuBox, subBox] = await Promise.all([rootMenu.boundingBox(), page.locator('#storybook-root [role="menu"]').nth(1).boundingBox()]);
+    assert.equal(Math.round(subBox.x - (menuBox.x + menuBox.width)), 4, 'a 4 px gap between the menus');
+    assert.equal(Math.round(subBox.y - (await widgets.boundingBox()).y), -4, 'the first sub item is level with the trigger');
+    const target = await development.boundingBox();
+    await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2, { steps: 12 });
+    assert.equal(await focusedItem(), 'Development', 'crossing the gap keeps the submenu open');
     await page.getByRole('menuitem', { name: 'Manage widgets' }).hover();
     assert.equal(await focusedItem(), 'Manage widgets');
     await page.mouse.move(5, 5);

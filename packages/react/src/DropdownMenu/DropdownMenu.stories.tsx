@@ -220,8 +220,9 @@ export const WithShortcuts: StoryObj = {
   ),
 };
 
-/** Figma demo "Submenus": hover or → opens a submenu, ← or Escape closes it. */
+/** Figma demo "Submenus": hover or → opens a submenu (4 px right of its menu), ← or Escape closes it. */
 export const Submenus: StoryObj = {
+  parameters: { layout: 'padded' },
   decorators: [room(300)],
   render: () => (
     <DropdownMenu trigger={trigger('Menu')} defaultOpen>

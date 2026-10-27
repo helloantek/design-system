@@ -86,10 +86,14 @@ function useMenuKeys() {
   };
 }
 
-/** Leaving a menu with the pointer clears its highlight; an open submenu keeps its own. */
+/**
+ * Leaving a menu with the pointer clears its highlight; an open submenu keeps its own, and so does its trigger, so the
+ * pointer can cross the gap between the menus.
+ */
 function unhover(event: MouseEvent<HTMLElement>) {
   const menu = event.currentTarget;
-  if (menu.contains(document.activeElement) && document.activeElement?.closest('[role="menu"]') === menu) menu.focus();
+  const active = document.activeElement;
+  if (menu.contains(active) && active?.closest('[role="menu"]') === menu && active.getAttribute('aria-expanded') !== 'true') menu.focus();
 }
 
 /** The pointer highlights what it is over: hovering an item focuses it, a disabled item clears the highlight. */

@@ -79,7 +79,7 @@
     display: none;
   }
 
-  /* A submenu: next to its trigger, its first item level with the trigger (padding + border above it). */
+  /* A submenu: 4 px right of its menu, its first item level with the trigger (the 4 px padding above it; the border is outside). */
   .ds-dropdown__sub {
     position: relative;
     display: flex;
@@ -89,8 +89,9 @@
   .ds-dropdown__sub > .ds-dropdown__content {
     position: absolute;
     z-index: 10;
-    top: calc(-1 * (var(--ds-spacing-1) + var(--ds-stroke-width-1)));
-    left: calc(100% + var(--ds-spacing-0-5));
+    top: calc(-1 * var(--ds-spacing-1));
+    /* The trigger ends 4 px inside the menu; Figma leaves 4 px between the two menus' boxes. */
+    left: calc(100% + var(--ds-spacing-2));
   }
 
   /* ── Item (Figma "Dropdown Menu Item") ───────────────────────────────── */
