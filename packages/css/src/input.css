@@ -112,6 +112,30 @@
   }
 
   /*
+   * Choice card (Figma's "Choice cards" demo): the horizontal Field in a bordered card, filled when checked. The label
+   * stretches over the whole card, so a click anywhere toggles the control.
+   *   <div class="ds-field ds-field--horizontal ds-field--card">…as above…</div>
+   */
+  .ds-field--card {
+    position: relative;
+    box-sizing: border-box;
+    padding: var(--ds-spacing-4);
+    border-radius: var(--ds-radius-2xl);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+  }
+
+  .ds-field--card:has(.ds-checkbox__input:checked:not(:indeterminate)) {
+    background-color: var(--ds-fill-1);
+  }
+
+  .ds-field--card .ds-field__label::after {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    content: '';
+  }
+
+  /*
    * Figma "Field Group" with a "Field Label" and description on top: related fields under one name.
    *   <fieldset class="ds-fieldset"><legend class="ds-fieldset__legend">Label</legend><p class="ds-field__caption">…</p>
    *     <div class="ds-fieldset__fields">…fields…</div></fieldset>

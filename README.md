@@ -215,6 +215,7 @@ A native `<input type="checkbox">` drawn as the Sort UI 2.0 **Checkbox**, alone 
 | — | `indeterminate` (minus on the unchecked box; a click clears it) | `:indeterminate` |
 | Field Orientation = Horizontal · Field Label · Description · Error | `label` · `caption` · `error` (replaces the description, as in Input); wired with `<label for>` and `aria-describedby` | `ds-field--horizontal` · `ds-field__control` · `ds-field__content` |
 | Field Control = Start · End | `control`: `start` (default) · `end` | `ds-field--control-end` |
+| — (Figma's "Choice cards" demo) | `card`: the field in a bordered 16 px card, filled when checked; a click anywhere on the card toggles it | `ds-field--card` |
 | Field Group | `<CheckboxGroup label caption error disabled>`: a `<fieldset>` with a legend, fields 12 px apart | `ds-fieldset` · `ds-fieldset__legend` · `ds-fieldset__fields` |
 
 Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`name`, `value`, `required`, `ref`…) go to the input.

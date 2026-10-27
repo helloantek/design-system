@@ -9,7 +9,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `Implements the Sort UI 2.0 **Checkbox** ([open in Figma](${FIGMA_URL})) on a native \`<input type="checkbox">\`, with **Field** Orientation=Horizontal for \`label\`, \`caption\` and \`error\` (\`control\`: \`start\` · \`end\`) and **Field Group** for \`CheckboxGroup\`. Figma Checked = \`checked\` / \`defaultChecked\`; State: Focus = keyboard focus, Disabled = \`disabled\`, Invalid = \`invalid\` or \`error\`. \`indeterminate\` draws the minus of Figma's demos. Without \`label\`, \`aria-label\` is required.`,
+        component: `Implements the Sort UI 2.0 **Checkbox** ([open in Figma](${FIGMA_URL})) on a native \`<input type="checkbox">\`, with **Field** Orientation=Horizontal for \`label\`, \`caption\` and \`error\` (\`control\`: \`start\` · \`end\`; \`card\` for Figma's choice cards) and **Field Group** for \`CheckboxGroup\`. Figma Checked = \`checked\` / \`defaultChecked\`; State: Focus = keyboard focus, Disabled = \`disabled\`, Invalid = \`invalid\` or \`error\`. \`indeterminate\` draws the minus of Figma's demos. Without \`label\`, \`aria-label\` is required.`,
       },
     },
   },
@@ -170,6 +170,21 @@ export const Nested: StoryObj = {
   },
 };
 
+/** Figma demo "Choice cards": `card` puts the field in a bordered card, filled when checked; the whole card is clickable. */
+export const ChoiceCards: StoryObj = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 8, width: 448 }}>
+      <Checkbox card label="Extra storage" caption="Another 200 GB for photos and backups." />
+      <Checkbox card label="Family sharing" caption="Share the plan with up to five people." defaultChecked />
+      <Checkbox card label="Priority support" caption="Answers within an hour, day or night." />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 16 }}>
+        <Checkbox card label="Email receipts" caption="A copy of every invoice in your inbox." />
+        <Checkbox card label="Usage alerts" caption="A heads-up at 80% of your storage." defaultChecked />
+      </div>
+    </div>
+  ),
+};
+
 /** Light and Dark, driven only by tokens. */
 export const Themes: StoryObj = {
   parameters: { layout: 'fullscreen' },
@@ -187,6 +202,7 @@ export const Themes: StoryObj = {
           </div>
           <Checkbox label="Subscription renewal emails" caption="Send customers email receipts for subscription payments" defaultChecked />
           <Checkbox label="Accept the terms" error="This field is required." />
+          <Checkbox card label="Family sharing" caption="Share the plan with up to five people." defaultChecked />
         </div>
       ))}
     </div>

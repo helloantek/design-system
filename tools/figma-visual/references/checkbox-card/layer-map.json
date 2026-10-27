@@ -1,0 +1,20 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma nests the Field (16 px padding, 8 px gap) in the card frame; the code's card is the field itself, so the padding and gap are compared on \"Field\"."
+    },
+    "Field": {},
+    "Title": {
+      "selector": ".ds-field__label"
+    },
+    "Description": {
+      "selector": ".ds-field__caption"
+    }
+  }
+}

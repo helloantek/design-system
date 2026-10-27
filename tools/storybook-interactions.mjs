@@ -429,6 +429,16 @@ Object.assign(tests, {
     assert.equal(await terms.getAttribute('aria-invalid'), 'true');
     assert.equal(await page.locator(`#${await terms.getAttribute('aria-describedby')}`).textContent(), 'This field is required.');
   },
+  'checkbox: a click anywhere on a choice card toggles it': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-checkbox--choice-cards&viewMode=story');
+    const storage = page.getByRole('checkbox', { name: 'Extra storage' });
+    const card = page.locator('.ds-field--card').first();
+    const box = await card.boundingBox();
+    await page.mouse.click(box.x + box.width - 12, box.y + box.height - 8);
+    assert.equal(await storage.isChecked(), true, 'the card corner toggles it');
+    assert.equal(await card.evaluate((el) => getComputedStyle(el).backgroundColor), 'rgba(115, 115, 115, 0.05)', 'a checked card is filled');
+    assert.match(await storage.getAttribute('aria-describedby'), /caption/, 'the name is the title; the description describes it');
+  },
   'checkbox: nested parent is indeterminate and sets its children': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-checkbox--nested&viewMode=story');
     const parent = page.getByRole('checkbox', { name: 'Push notifications' });

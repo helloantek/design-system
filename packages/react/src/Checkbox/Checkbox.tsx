@@ -41,6 +41,8 @@ interface CheckboxFieldProps extends CheckboxBaseProps {
   error?: ReactNode;
   /** Figma Field "Control": the checkbox before (`start`, default) or after (`end`) the label. */
   control?: 'start' | 'end';
+  /** Figma's "Choice cards" demo: the field in a bordered card, filled when checked; a click anywhere toggles it. */
+  card?: boolean;
   /** Class for the field. */
   className?: string;
 }
@@ -51,6 +53,7 @@ interface CheckboxOnlyProps extends CheckboxBaseProps {
   caption?: never;
   error?: never;
   control?: never;
+  card?: never;
   'aria-label'?: string;
   'aria-labelledby'?: string;
 }
@@ -58,7 +61,7 @@ interface CheckboxOnlyProps extends CheckboxBaseProps {
 export type CheckboxProps = CheckboxFieldProps | (CheckboxOnlyProps & ({ 'aria-label': string } | { 'aria-labelledby': string }));
 
 export function Checkbox(props: CheckboxProps) {
-  const { ref, label, caption, error, control = 'start', className, indeterminate = false, invalid = false, onChange, onCheckedChange, id: idProp, 'aria-describedby': describedBy, ...rest } = props;
+  const { ref, label, caption, error, control = 'start', card = false, className, indeterminate = false, invalid = false, onChange, onCheckedChange, id: idProp, 'aria-describedby': describedBy, ...rest } = props;
   const autoId = useId();
   const id = idProp ?? autoId;
   const captionId = `${id}-caption`;
@@ -99,7 +102,7 @@ export function Checkbox(props: CheckboxProps) {
 
   if (label === undefined) return box;
   return (
-    <div className={['ds-field', 'ds-field--horizontal', control === 'end' && 'ds-field--control-end', className].filter(Boolean).join(' ')}>
+    <div className={['ds-field', 'ds-field--horizontal', control === 'end' && 'ds-field--control-end', card && 'ds-field--card', className].filter(Boolean).join(' ')}>
       <span className="ds-field__control">{box}</span>
       <div className="ds-field__content">
         <label className="ds-field__label" htmlFor={id}>
