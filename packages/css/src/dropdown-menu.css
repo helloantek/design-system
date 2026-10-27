@@ -1,0 +1,311 @@
+/*
+ * Dropdown Menu — Sort UI 2.0 page "Dropdown Menu" (node 148:2) in file 4JnqgEbdlnKgiFrfmiwEZw: component sets
+ * "Dropdown Menu Item" (154:90), "Dropdown Menu Label" (150:15), "Dropdown Menu User Profile" (569:3166) and the
+ * components "Dropdown Menu Content" (150:18), "Dropdown Menu Separator" (150:16) and "Dropdown Menu Trigger" (597:14929).
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (classes in [] are optional; ARIA follows the WAI-ARIA menu button pattern):
+ *   <div class="ds-dropdown">
+ *     <button class="ds-button ds-button--outline …" aria-haspopup="menu" aria-expanded="true" aria-controls="m">Open</button>
+ *     <div class="ds-dropdown__content [ds-dropdown__content--end]" id="m" role="menu" tabindex="-1">
+ *       <div class="ds-dropdown__label [ds-dropdown__label--sm] [ds-dropdown__label--inset]" role="presentation"><span>My Account</span></div>
+ *       <div class="ds-dropdown__item [ds-dropdown__item--destructive] [ds-dropdown__item--inset]" role="menuitem" tabindex="-1" [aria-disabled="true"]>
+ *         [<span class="ds-dropdown__icon" aria-hidden="true"><svg…/></span>]
+ *         <span class="ds-dropdown__text">Profile</span>
+ *         [<kbd class="ds-dropdown__shortcut">⌘P</kbd>]
+ *       </div>
+ *       <div class="ds-dropdown__item ds-dropdown__item--checkbox | ds-dropdown__item--menubar" role="menuitemcheckbox" aria-checked="true" tabindex="-1">
+ *         <span class="ds-dropdown__check" aria-hidden="true"><svg…check…/></span> …as above…
+ *       </div>
+ *       <div class="ds-dropdown__separator" role="separator"></div>
+ *       <div class="ds-dropdown__sub" role="none">
+ *         <div class="ds-dropdown__item" role="menuitem" aria-haspopup="menu" aria-expanded="true" aria-controls="s" tabindex="-1">
+ *           …<span class="ds-dropdown__text">Invite</span><span class="ds-dropdown__chevron" aria-hidden="true"><svg…/></span>
+ *         </div>
+ *         <div class="ds-dropdown__content" id="s" role="menu">…items…</div>
+ *       </div>
+ *       <div class="ds-dropdown__item ds-dropdown__profile [ds-dropdown__profile--lg]" role="menuitem" tabindex="-1">
+ *         <span class="ds-avatar ds-avatar--default …">…</span>   (avatar.css; xs in Size=default)
+ *         <span class="ds-dropdown__person"><span class="ds-dropdown__name">Name</span>[<span class="ds-dropdown__handle">@handle</span>]</span>
+ *         <span class="ds-dropdown__chevron" aria-hidden="true"><svg…/></span>
+ *       </div>
+ *     </div>
+ *   </div>
+ * Figma State=Focus = :focus (the item under the mouse or the keyboard has focus) and an open sub trigger;
+ * State=Disabled = aria-disabled; User Profile State=Hover = :focus as well. [data-highlighted] draws Focus in static previews.
+ */
+
+@layer ds.components {
+  .ds-dropdown {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+  }
+
+  /* ── Content (Figma "Dropdown Menu Content") ─────────────────────────── */
+
+  .ds-dropdown__content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    min-width: var(--ds-spacing-32);
+    padding: var(--ds-spacing-1);
+    /* 8 px like every control (Figma draws 14 px); the items inside the 4 px padding take 8 − 4 = 4 px. */
+    border-radius: var(--ds-radius-md);
+    outline: none;
+    background-color: var(--ds-popover);
+    /* Figma: a 1 px border stroke outside the box and the Surface/Popover effect style. */
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+  }
+
+  /* In .ds-dropdown the menu pops up: Figma "Dropdown Menu Trigger" opens it 4 px under the button. On its own it stays in the flow. */
+  .ds-dropdown > .ds-dropdown__content {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + var(--ds-spacing-1));
+    left: 0;
+  }
+
+  .ds-dropdown > .ds-dropdown__content--end {
+    right: 0;
+    left: auto;
+  }
+
+  .ds-dropdown__content[hidden] {
+    display: none;
+  }
+
+  /* A submenu: next to its trigger, its first item level with the trigger (padding + border above it). */
+  .ds-dropdown__sub {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ds-dropdown__sub > .ds-dropdown__content {
+    position: absolute;
+    z-index: 10;
+    top: calc(-1 * (var(--ds-spacing-1) + var(--ds-stroke-width-1)));
+    left: calc(100% + var(--ds-spacing-0-5));
+  }
+
+  /* ── Item (Figma "Dropdown Menu Item") ───────────────────────────────── */
+
+  .ds-dropdown__item {
+    --dropdown-text: var(--ds-popover-foreground);
+    --dropdown-icon: var(--ds-foreground);
+    --dropdown-shortcut: var(--ds-muted-foreground);
+
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    color: var(--dropdown-text);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    cursor: default;
+    user-select: none;
+  }
+
+  /* Figma Inset=True: the label lines up with labels after a leading icon (8 + 20 + 8 px). */
+  .ds-dropdown__item--inset {
+    padding-left: var(--ds-spacing-9);
+  }
+
+  /* Figma State=Focus: the item under the pointer or the keyboard, and the trigger of an open submenu. */
+  .ds-dropdown__item:focus,
+  .ds-dropdown__item[data-highlighted],
+  .ds-dropdown__item[aria-expanded='true'] {
+    --dropdown-text: var(--ds-accent-foreground);
+    --dropdown-shortcut: var(--ds-accent-foreground);
+
+    background-color: var(--ds-fill-2);
+  }
+
+  /* Figma Type=Destructive: red label and icon; focus tints the row red and keeps the muted shortcut. */
+  .ds-dropdown__item--destructive,
+  .ds-dropdown__item--destructive:focus,
+  .ds-dropdown__item--destructive[data-highlighted] {
+    --dropdown-text: var(--ds-destructive-foreground);
+    --dropdown-icon: var(--ds-destructive-foreground);
+    --dropdown-shortcut: var(--ds-muted-foreground);
+  }
+
+  .ds-dropdown__item--destructive:focus,
+  .ds-dropdown__item--destructive[data-highlighted] {
+    background-color: var(--ds-alpha-destructive-5);
+  }
+
+  /* Figma State=Disabled: the whole item at 50 %. */
+  .ds-dropdown__item[aria-disabled='true'] {
+    opacity: 0.5;
+  }
+
+  /* Figma "L slot": a 20 px slot with a 16 px icon, or a 20 px picture (e.g. an xs Avatar). */
+  .ds-dropdown__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+    color: var(--dropdown-icon);
+  }
+
+  .ds-dropdown__icon > svg {
+    display: block;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-dropdown__text {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  /* Figma "Shortcut" (Keys). */
+  .ds-dropdown__shortcut {
+    flex-shrink: 0;
+    color: var(--dropdown-shortcut);
+    font-family: inherit;
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-2xs--line-height);
+    letter-spacing: inherit;
+  }
+
+  /* Sort UI 2.0 icons are drawn at 72 % of their 24 px grid (17.28 px) with a 1.25 px stroke. */
+  .ds-dropdown__check,
+  .ds-dropdown__chevron {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: calc(var(--ds-spacing-6) * 0.72);
+    height: calc(var(--ds-spacing-6) * 0.72);
+  }
+
+  .ds-dropdown__check > svg,
+  .ds-dropdown__chevron > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Figma Type=Sub trigger. */
+  .ds-dropdown__chevron {
+    color: var(--ds-muted-foreground);
+  }
+
+  /*
+   * Figma Type=Checkbox: the check mark on the right, in the 32 px right padding; Type=Menubar checkbox: on the left,
+   * in a 28 px left padding (36 px with Inset). The check stays in place; unchecked items hide it.
+   */
+  .ds-dropdown__item--checkbox {
+    padding-right: var(--ds-spacing-8);
+  }
+
+  .ds-dropdown__item--menubar:not(.ds-dropdown__item--inset) {
+    padding-left: var(--ds-spacing-7);
+  }
+
+  .ds-dropdown__check {
+    position: absolute;
+    top: var(--ds-spacing-2);
+    right: calc(var(--ds-spacing-2) + var(--ds-spacing-4) - var(--ds-spacing-6) * 0.72);
+    color: var(--dropdown-text);
+  }
+
+  .ds-dropdown__item--menubar .ds-dropdown__check {
+    right: auto;
+    left: var(--ds-spacing-2);
+  }
+
+  .ds-dropdown__item[aria-checked='false'] .ds-dropdown__check {
+    visibility: hidden;
+  }
+
+  /* ── User Profile (Figma "Dropdown Menu User Profile") ───────────────── */
+
+  .ds-dropdown__profile {
+    --dropdown-chevron: var(--ds-accent-foreground);
+  }
+
+  /* Figma State=Hover. */
+  .ds-dropdown__profile:focus,
+  .ds-dropdown__profile[data-highlighted] {
+    --dropdown-text: var(--ds-popover-foreground);
+
+    background-color: var(--ds-accent);
+  }
+
+  .ds-dropdown__profile .ds-dropdown__chevron {
+    color: var(--dropdown-chevron);
+  }
+
+  .ds-dropdown__person {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-dropdown__name {
+    font-weight: var(--ds-font-weight-medium);
+    white-space: nowrap;
+  }
+
+  .ds-dropdown__handle {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+    white-space: nowrap;
+  }
+
+  /* ── Label and Separator ─────────────────────────────────────────────── */
+
+  /* Figma "Dropdown Menu Label": Size=xs (12/16, the default) or sm (14/20). */
+  .ds-dropdown__label {
+    padding: var(--ds-spacing-1) var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-2xs--line-height);
+    white-space: nowrap;
+  }
+
+  .ds-dropdown__label--sm {
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-dropdown__label--inset {
+    padding-left: var(--ds-spacing-9);
+  }
+
+  /* Figma "Dropdown Menu Separator": 8 px tall, the line (centred on its middle) runs across the menu's padding. */
+  .ds-dropdown__separator {
+    position: relative;
+    flex-shrink: 0;
+    height: 0;
+    padding: var(--ds-spacing-1) 0;
+  }
+
+  .ds-dropdown__separator::before {
+    position: absolute;
+    top: 50%;
+    right: calc(-1 * var(--ds-spacing-1));
+    left: calc(-1 * var(--ds-spacing-1));
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+    content: '';
+    transform: translateY(-50%);
+  }
+}

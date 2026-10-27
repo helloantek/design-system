@@ -26,7 +26,8 @@ Each stage is its own branch and pull request, and `main` stays green between th
    Released as **2.0.0** (after Sort UI 2.0): nothing was published before, so the packages start from 1.0.0 and the
    major changeset takes them to 2.0.0. The migration note for apps is below.
 
-New 2.0 components (Alert Dialog, Dialog, Checkbox, Tabs…) follow the normal playbook after stage 2.
+New 2.0 components (Alert Dialog, Dialog, Checkbox, Tabs…) follow the normal playbook after stage 2. Done: Dropdown Menu
+(page `148:2`).
 
 ## Tokens
 
