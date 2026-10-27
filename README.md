@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Checkbox, Dropdown Menu, Input, Radio, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Checkbox, Dropdown Menu, Input, Radio, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -250,6 +250,35 @@ Native `<input type="radio">`s drawn as the Sort UI 2.0 **Radio**, in a **Radio 
 | Choice Card (Title, Description, Checked, State) | `card` (filled when checked; a click anywhere selects; focus puts the ring on the card; hover draws a dark 1.5 px stroke) | `ds-field--card` |
 
 Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`value`, `ref`…) go to the input.
+
+## Button Group
+
+Buttons, an Input or a Select joined into one control: Sort UI 2.0 **Button Group** (Orientation), its **Button** set (Start, Middle, End) and **Button Group Text**. The items touch, only the group's outer corners are rounded, and each item after the first drops the stroke it shares with the previous one; Secondary and Ghost buttons are split by a hairline. A group of groups spaces them 8 px apart (Figma's "Button Group" and "Nested" demos). A group has `role="group"` and needs a name.
+
+```tsx
+<ButtonGroup aria-label="Review">
+  <Button variant="outline">Preview</Button>
+  <Button variant="outline">Share</Button>
+</ButtonGroup>
+<ButtonGroup aria-label="Follow">
+  <Button variant="outline">Follow</Button>
+  <DropdownMenu trigger={<Button variant="outline" icon={<ChevronDown />} aria-label="More follow options" />} align="end">…</DropdownMenu>
+</ButtonGroup>
+<ButtonGroup aria-label="Website">
+  <ButtonGroupText>https://</ButtonGroupText>
+  <Input aria-label="Website" placeholder="example.com" />
+</ButtonGroup>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Orientation = Horizontal · Vertical | `orientation`: `horizontal` (default) · `vertical` | `ds-button-group` · `ds-button-group--vertical` |
+| Button Variant = Start · Middle · End | any `Button` (or a Dropdown Menu's button trigger) in the group, by position | `ds-button-group > .ds-button` (uses `--btn-stroke-shape`) |
+| Button Group Text (Label, Icon) | `<ButtonGroupText icon>`: the field fill, 12 px padding, xs medium | `ds-button-group__text` |
+| items (Input, Select) | an `Input` or a `Select` takes the room left by the buttons | `ds-button-group > .ds-field` |
+| nested Button Groups | a `ButtonGroup` of `ButtonGroup`s: 8 px apart, each with its own corners | `ds-button-group:has(> .ds-button-group)` |
+
+The focused item rises above its neighbours so its ring is not covered. Without `aria-label` or `aria-labelledby` the types report an error.
 
 ## Dropdown Menu
 

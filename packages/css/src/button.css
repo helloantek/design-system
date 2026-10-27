@@ -34,7 +34,8 @@
     border-radius: var(--ds-radius-md);
     outline: none;
     background: var(--btn-bg, transparent);
-    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--btn-stroke), var(--btn-ring), var(--btn-effect);
+    /* --btn-stroke-shape lets Button Group drop the stroke on a side it shares with the previous button. */
+    box-shadow: var(--btn-stroke-shape, inset 0 0 0 var(--ds-stroke-width-1) var(--btn-stroke)), var(--btn-ring), var(--btn-effect);
     color: var(--btn-fg);
     font-family: var(--ds-font-sans);
     font-size: var(--ds-text-xs);

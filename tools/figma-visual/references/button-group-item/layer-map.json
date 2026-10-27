@@ -1,0 +1,31 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "p",
+        "g",
+        "w"
+      ],
+      "$why": "Figma wraps the Button in the Start / Middle / End instance (no padding); the code's item is the Button itself, compared on \"Button\"."
+    },
+    "Button": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "The button hugs its label (width follows glyph rasterisation, as in references/button); the size check (±2 px) still covers it."
+    },
+    "Container": {
+      "selector": ".ds-button__label",
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "The label frame hugs its text (width follows rasterisation; the inline span is one line box tall)."
+    },
+    "Label": {
+      "selector": ".ds-button__label"
+    }
+  }
+}

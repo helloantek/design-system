@@ -511,6 +511,31 @@ Object.assign(tests, {
     const ids = (await first.getAttribute('aria-describedby')).split(' ');
     assert.equal(await page.locator(`#${ids[ids.length - 1]}`).textContent(), 'Pick one to finish setting up your profile.', 'the error describes each radio');
   },
+  'button-group: a named group; outer corners only; the focused item rises above its neighbours': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-button-group--toolbar&viewMode=story');
+    await page.waitForSelector('.ds-button-group');
+    const review = page.getByRole('group', { name: 'Review' });
+    assert.equal(await page.getByRole('group', { name: 'Toolbar' }).count(), 1, 'the outer group has role group and a name');
+    const radii = await review.locator('.ds-button').evaluateAll((els) => els.map((e) => getComputedStyle(e).borderRadius));
+    assert.deepEqual(radii, ['8px 0px 0px 8px', '0px 8px 8px 0px'], 'the group rounds only its outer corners');
+    const gap = await page.locator('.ds-button-group').first().evaluate((el) => getComputedStyle(el).columnGap);
+    assert.equal(gap, '8px', 'a group of groups spaces them 8 px apart');
+    await review.getByRole('button', { name: 'Preview' }).focus();
+    await page.keyboard.press('Tab');
+    const share = review.getByRole('button', { name: 'Share' });
+    assert.equal(await share.evaluate((el) => el === document.activeElement), true);
+    assert.equal(await share.evaluate((el) => getComputedStyle(el).zIndex), '1', 'the focused item draws its ring over its neighbours');
+  },
+  'button-group: the dropdown trigger joins the group and opens its menu': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-button-group--with-dropdown-menu&viewMode=story');
+    const trigger = page.getByRole('button', { name: 'More follow options' });
+    assert.equal(await trigger.evaluate((el) => getComputedStyle(el).borderRadius), '0px 8px 8px 0px', 'the trigger takes the end corners');
+    await trigger.click();
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    await page.getByRole('menuitem', { name: 'Copy link' }).waitFor();
+    await page.keyboard.press('Escape');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'false');
+  },
 });
 
 let failed = 0;

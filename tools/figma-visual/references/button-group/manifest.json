@@ -1,0 +1,50 @@
+{
+ "$comment": "Sort UI 2.0 Button Group (Orientation Horizontal and Vertical: four Outline buttons) and Button Group Text (1x PNG, get_screenshot). The group renders are cropped to the group's box (Figma's export adds the Controls/secondary-control shadow's 2 px margin). Button Group Text is drawn on a transparent canvas, so only its size and spec are compared.",
+ "component": "button-group",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "309:5264",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 8
+ },
+ "entries": [
+  {
+   "slug": "group-horizontal",
+   "nodeId": "307:20",
+   "props": {
+    "Kind": "Group",
+    "Orientation": "Horizontal"
+   },
+   "target": "#target .ds-button-group",
+   "nodeW": 248,
+   "nodeH": 32
+  },
+  {
+   "slug": "group-vertical",
+   "nodeId": "309:102",
+   "props": {
+    "Kind": "Group",
+    "Orientation": "Vertical"
+   },
+   "target": "#target .ds-button-group",
+   "nodeW": 120,
+   "nodeH": 128
+  },
+  {
+   "slug": "text",
+   "nodeId": "308:25",
+   "props": {
+    "Kind": "Text"
+   },
+   "target": "#target .ds-button-group__text",
+   "nodeW": 51,
+   "nodeH": 32,
+   "pixels": false,
+   "$why": "Figma renders Button Group Text on a transparent canvas (its fill is a 2 % tint), so the PNG has no page behind it; the spec check compares the size, padding, gap, fill and text."
+  }
+ ],
+ "$thresholdsWhy": "maxSizeDelta 8: the horizontal group lays four \"Button\" labels side by side, and each renders ~1.7 px narrower than Figma (glyph rasterisation, see the Environment line), so the row is ~6.7 px narrower. One button stays within ±2 px in references/button-group-item."
+}
