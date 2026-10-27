@@ -3,6 +3,8 @@ name: Release
 on:
   push:
     branches: [main]
+  # "Run workflow" in the Actions tab: opens or updates the "Version packages" PR without waiting for a push.
+  workflow_dispatch:
 
 permissions:
   contents: write
