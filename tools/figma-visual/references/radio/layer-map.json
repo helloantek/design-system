@@ -1,0 +1,16 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "selector": ".ds-radio__input",
+      "stroke": "inset-shadow",
+      "skip": [
+        "opacity"
+      ],
+      "$why": "Disabled fades the whole .ds-radio (circle and dot together, like Figma's layer opacity), not the input; the pixels cover it."
+    },
+    "Dot": {
+      "selector": ".ds-radio__dot"
+    }
+  }
+}

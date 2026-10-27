@@ -1,0 +1,88 @@
+/*
+ * Radio — Sort UI 2.0 component set "Radio" (node 121:64) in file 4JnqgEbdlnKgiFrfmiwEZw, with "Field"
+ * Orientation=Horizontal and "Choice Card" (in input.css) for its label. Values are Sort UI 2.0 tokens.
+ * Framework-agnostic: any markup with these classes works. The native input is the circle, so forms, labels and the
+ * arrow keys of a radio group work as usual.
+ *
+ * Markup:
+ *   <span class="ds-radio">
+ *     <input class="ds-radio__input" type="radio" name="plan" value="yearly" [checked] [disabled] [aria-invalid="true"]>
+ *     <span class="ds-radio__dot" aria-hidden="true"></span>
+ *   </span>
+ * Figma Checked = :checked; State: Focus = :focus-visible, Disabled = :disabled, Invalid = [aria-invalid="true"].
+ */
+
+@layer ds.components {
+  .ds-radio {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    vertical-align: middle;
+  }
+
+  .ds-radio > * {
+    grid-area: 1 / 1;
+  }
+
+  .ds-radio__input {
+    --radio-stroke: transparent;
+    --radio-ring: 0 0 #0000;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: var(--ds-radius-full);
+    outline: none;
+    background-color: var(--ds-fill-3);
+    /* Figma: a 1 px stroke inside (Focus, Invalid) and a 3 px ring. */
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--radio-stroke), var(--radio-ring);
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .ds-radio__input:checked {
+    background-color: var(--ds-primary);
+  }
+
+  /* Figma State=Focus: ring stroke (primary when checked) and a 3 px ring. */
+  .ds-radio__input:focus-visible {
+    --radio-stroke: var(--ds-ring);
+    --radio-ring: 0 0 0 calc(var(--ds-stroke-width-4) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma State=Invalid: invalid-border stroke (primary when checked) and the invalid ring. */
+  .ds-radio__input[aria-invalid='true'] {
+    --radio-stroke: var(--ds-invalid-border);
+    --radio-ring: 0 0 0 calc(var(--ds-stroke-width-4) + var(--ds-stroke-width-1)) var(--ds-invalid-ring);
+  }
+
+  .ds-radio__input:checked:is(:focus-visible, [aria-invalid='true']) {
+    --radio-stroke: var(--ds-primary);
+  }
+
+  /* Figma State=Disabled: the whole radio at 50 %. */
+  .ds-radio:has(.ds-radio__input:disabled) {
+    opacity: 0.5;
+  }
+
+  .ds-radio__input:disabled {
+    cursor: not-allowed;
+  }
+
+  /* Figma "Dot": 8 px in the middle, shown when checked; the input takes the clicks. */
+  .ds-radio__dot {
+    width: var(--ds-spacing-2);
+    height: var(--ds-spacing-2);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-primary-foreground);
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .ds-radio__input:checked ~ .ds-radio__dot {
+    visibility: visible;
+  }
+}
