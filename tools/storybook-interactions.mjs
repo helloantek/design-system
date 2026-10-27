@@ -306,6 +306,111 @@ const tests = {
   },
 };
 
+// Dropdown Menu (WAI-ARIA menu button): the stories open the menu on first render, so tests close it first.
+const menuButton = async (id, name) => {
+  await page.goto(`http://localhost:6008/iframe.html?id=${id}&viewMode=story`);
+  const trigger = page.getByRole('button', { name, exact: true });
+  await trigger.click();
+  assert.equal(await trigger.getAttribute('aria-expanded'), 'false', 'a click on the open menu button closes it');
+  return trigger;
+};
+const focusedItem = () => page.evaluate(() => document.activeElement?.querySelector('.ds-dropdown__text')?.textContent ?? document.activeElement?.tagName);
+const rootMenu = page.locator('#storybook-root [role="menu"]').first();
+
+Object.assign(tests, {
+  'dropdown-menu: keyboard opens, moves, picks and returns focus': async () => {
+    const trigger = await menuButton('components-dropdown-menu--default', 'Open');
+    await trigger.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.equal(await focusedItem(), 'Profile', 'Enter focuses the first item');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await focusedItem(), 'Billing');
+    await page.keyboard.press('ArrowUp');
+    await page.keyboard.press('ArrowUp');
+    assert.equal(await focusedItem(), 'Support', 'ArrowUp wraps and skips the disabled API item');
+    await page.keyboard.press('Home');
+    assert.equal(await focusedItem(), 'Profile');
+    await page.keyboard.press('c');
+    assert.equal(await focusedItem(), 'Changelog', 'type-ahead');
+    await page.keyboard.press('Escape');
+    assert.equal(await rootMenu.isVisible(), false);
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Open', 'Escape returns focus to the trigger');
+    await page.keyboard.press('ArrowUp');
+    assert.equal(await focusedItem(), 'Support', 'ArrowUp opens on the last item');
+    await page.keyboard.press('Enter');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'false', 'picking an item closes the menu');
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Open');
+    await trigger.click();
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('role')), 'menu', 'a click focuses the menu, not an item');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await focusedItem(), 'Profile');
+    await page.keyboard.press('Tab');
+    assert.equal(await rootMenu.isVisible(), false, 'Tab closes the menu');
+  },
+  'dropdown-menu: submenus open with → or hover and close with ←, Escape or another item': async () => {
+    const trigger = await menuButton('components-dropdown-menu--submenus', 'Menu');
+    const widgets = page.getByRole('menuitem', { name: 'Widgets', exact: true });
+    const development = page.getByRole('menuitem', { name: 'Development', exact: true });
+    await trigger.focus();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('w');
+    assert.equal(await focusedItem(), 'Widgets');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await widgets.getAttribute('aria-expanded'), 'true');
+    assert.equal(await focusedItem(), 'Development', '→ opens the submenu on its first item');
+    await page.keyboard.press('Enter');
+    assert.equal(await focusedItem(), 'New widget', 'Enter on a sub trigger opens it too');
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await focusedItem(), 'Development', '← closes the submenu');
+    assert.equal(await development.getAttribute('aria-expanded'), 'false');
+    await page.keyboard.press('Escape');
+    assert.equal(await focusedItem(), 'Widgets', 'Escape closes only the submenu');
+    assert.equal(await widgets.getAttribute('aria-expanded'), 'false');
+    await page.keyboard.press('Escape');
+    assert.equal(await rootMenu.isVisible(), false);
+
+    await trigger.click();
+    await widgets.hover();
+    assert.equal(await development.isVisible(), true, 'hover opens the submenu');
+    // The submenu starts 4 px right of the menu (Figma); the pointer crosses that gap on its way in.
+    const [menuBox, subBox] = await Promise.all([rootMenu.boundingBox(), page.locator('#storybook-root [role="menu"]').nth(1).boundingBox()]);
+    assert.equal(Math.round(subBox.x - (menuBox.x + menuBox.width)), 4, 'a 4 px gap between the menus');
+    assert.equal(Math.round(subBox.y - (await widgets.boundingBox()).y), -4, 'the first sub item is level with the trigger');
+    const target = await development.boundingBox();
+    await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2, { steps: 12 });
+    assert.equal(await focusedItem(), 'Development', 'crossing the gap keeps the submenu open');
+    await page.getByRole('menuitem', { name: 'Manage widgets' }).hover();
+    assert.equal(await focusedItem(), 'Manage widgets');
+    await page.mouse.move(5, 5);
+    assert.equal(await development.isVisible(), true, 'leaving the submenu keeps it open');
+    await page.getByRole('menuitem', { name: 'Cursor chat' }).hover();
+    assert.equal(await development.isVisible(), false, 'another item of the parent menu closes it');
+    await page.mouse.click(5, 5);
+    assert.equal(await rootMenu.isVisible(), false, 'a click outside closes the menu');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'false');
+  },
+  'dropdown-menu: checkbox and radio items toggle and keep the menu open': async () => {
+    await menuButton('components-dropdown-menu--checkboxes', 'Notifications');
+    await page.getByRole('button', { name: 'Notifications', exact: true }).click();
+    const email = page.getByRole('menuitemcheckbox', { name: 'Email' });
+    assert.equal(await email.getAttribute('aria-checked'), 'false');
+    await email.click();
+    assert.equal(await email.getAttribute('aria-checked'), 'true');
+    assert.equal(await rootMenu.isVisible(), true, 'checking keeps the menu open');
+    const sms = page.getByRole('menuitemcheckbox', { name: 'SMS' });
+    await sms.hover();
+    await page.keyboard.press(' ');
+    assert.equal(await sms.getAttribute('aria-checked'), 'false', 'Space toggles a controlled item');
+
+    await menuButton('components-dropdown-menu--radio', 'Panel');
+    await page.getByRole('button', { name: 'Panel', exact: true }).click();
+    await page.getByRole('menuitemradio', { name: 'Left' }).click();
+    assert.equal(await page.getByRole('menuitemradio', { name: 'Left' }).getAttribute('aria-checked'), 'true');
+    assert.equal(await page.getByRole('menuitemradio', { name: 'Bottom' }).getAttribute('aria-checked'), 'false');
+  },
+});
+
 let failed = 0;
 for (const [name, run] of Object.entries(tests)) {
   try {

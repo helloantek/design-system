@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Dropdown Menu, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -192,6 +192,46 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 
 Forms: `name` submits the value through a hidden input (one per value with `multiple`, read them with `formData.getAll(name)`), and resetting the form restores `defaultValue`. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
 
+## Dropdown Menu
+
+A button that opens a menu of actions: the WAI-ARIA menu button (Enter, Space or the arrows open it; arrows, Home/End and type-ahead move; Enter or Space picks; → and ← open and close submenus; Escape closes; focus goes back to the button). Sort UI 2.0 **Dropdown Menu Trigger**, **Content**, **Item**, **Label**, **Separator** and **User Profile**. Radio items are ours: Figma draws them as Checkbox items.
+
+```tsx
+<DropdownMenu trigger={<Button variant="outline" trailingIcon={<ChevronDown />}>Account</Button>}>
+  <DropdownMenuUserProfile name="Sam Rivera" handle="@sam" src={user.photo} onClick={openProfile} />
+  <DropdownMenuSeparator />
+  <DropdownMenuGroup label="My Account">
+    <DropdownMenuItem icon={<RiUser3Line />} shortcut="⌘P" onClick={openProfile}>Profile</DropdownMenuItem>
+    <DropdownMenuCheckboxItem checked={compact} onCheckedChange={setCompact}>Compact view</DropdownMenuCheckboxItem>
+    <DropdownMenuSub icon={<RiUserAddLine />} label="Invite">
+      <DropdownMenuItem>By email</DropdownMenuItem>
+    </DropdownMenuSub>
+  </DropdownMenuGroup>
+  <DropdownMenuRadioGroup label="Panel position" value={position} onValueChange={setPosition}>
+    <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+    <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+  </DropdownMenuRadioGroup>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem type="destructive" icon={<RiLogoutBoxRLine />} onClick={signOut}>Sign out</DropdownMenuItem>
+</DropdownMenu>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Dropdown Menu Trigger (Slot, Menu) | `<DropdownMenu trigger={<Button …/>}>`: the trigger gets `aria-haspopup`, `aria-expanded`, `aria-controls`; the menu opens 4 px below it; `align`: `start` (default) · `end`; `open` · `defaultOpen` · `onOpenChange` | `ds-dropdown` · `ds-dropdown__content--end` |
+| Dropdown Menu Content (items) | the menu (popover, 8 px radius, outside border, Surface/Popover); `<DropdownMenuContent aria-label>` on its own stays in the page flow (context menus, panels) | `ds-dropdown__content` |
+| Item Type = Item · Destructive | `<DropdownMenuItem type>`: a click runs `onClick` and closes the menu unless it calls `preventDefault()` | `ds-dropdown__item` · `--destructive` |
+| Item Type = Checkbox · Menubar checkbox; Checked | `<DropdownMenuCheckboxItem type="checkbox" \| "menubar" checked defaultChecked onCheckedChange>`; `<DropdownMenuRadioGroup value onValueChange label>` + `<DropdownMenuRadioItem value type>`. Checking keeps the menu open | `--checkbox` · `--menubar` · `ds-dropdown__check` · `[aria-checked]` |
+| Item Type = Sub trigger | `<DropdownMenuSub label icon>{items}</DropdownMenuSub>`: opens on hover, →, Enter or Space, to the right of its trigger | `ds-dropdown__sub` · `ds-dropdown__chevron` |
+| Item State = Focus · Disabled | the item under the pointer or the keyboard (and an open sub trigger) · `disabled` (`aria-disabled`, skipped by the keys, 50 %) | `:focus` · `[data-highlighted]` (static previews) · `[aria-disabled]` |
+| Item Inset | `inset` (the label lines up after a 20 px icon) | `--inset` |
+| Item Leading slot (L slot) · Label · Shortcut (Keys) | `icon` (16 px icon or a 20 px picture such as `<Avatar size="xs" />`) · children · `shortcut` (shown only; the app handles the keys) | `ds-dropdown__icon` · `ds-dropdown__text` · `ds-dropdown__shortcut` |
+| Dropdown Menu Label Size · Inset | `<DropdownMenuLabel size="xs" \| "sm" inset>`, or `<DropdownMenuGroup label labelSize labelInset>`, which also names the group | `ds-dropdown__label` · `--sm` · `--inset` |
+| Dropdown Menu Separator | `<DropdownMenuSeparator />` | `ds-dropdown__separator` |
+| Dropdown Menu User Profile Size · State | `<DropdownMenuUserProfile size="lg" \| "default" name handle src initials>` (Hover = the pointer) | `ds-dropdown__profile` |
+
+The menu opens below its trigger; like Select's, it does not flip near the edge of the viewport yet.
+
 ## Working on the design system
 
 ```sh
@@ -219,7 +259,9 @@ These come from the Figma files, not the code:
 - Input (2.0): disabled prefix/suffix text (muted at 50 %) is 2.1:1 (WCAG exempts disabled controls, but axe reports it).
 - Select (2.0): State=Invalid's stroke and ring are bound to Tailwind class names, as in Input; unlike Input, the value stays black.
 - Select (2.0): Select Item reserves the check mark's 16 px in a 32 px right padding when not selected; the code keeps an empty 16 px slot, which looks the same.
-- Radius (2.0): Figma gives Button 8 px, Input and Select 10 px (Select sm 8 px), the Select menu 14 px and its items 10 px. The design system uses one control radius: Button, Input, Select and the menu are 8 px, and what sits inside a 4 px inset takes 8 − 4 = 4 px (menu items, the Input's action button). Figma should follow.
+- Radius (2.0): Figma gives Button 8 px, Input and Select 10 px (Select sm 8 px), the Select and Dropdown menus 14 px and their items 10 px. The design system uses one control radius: Button, Input, Select and the menus are 8 px, and what sits inside a 4 px inset takes 8 − 4 = 4 px (menu items, the Input's action button). Figma should follow.
+- Dropdown Menu (2.0): Item State=Focus fills with `fill-2`, while User Profile State=Hover uses `accent` (the same colour today, but two variables for one highlight). The User Profile chevron is `accent-foreground`, the Sub trigger chevron `muted-foreground`.
+- Dropdown Menu (2.0): Inset=True keeps the Leading slot visible, so an inset item with an icon is indented twice; Inset is meant for items without an icon. There is no radio item: the "Radio" demo uses Checkbox items.
 - Select (2.0): a disabled field's label at 50 % (Field State=Disabled) is 3.69:1. axe reports it for Select, whose combobox is not a native control, but not for Input, whose label belongs to a disabled input.
 - Badge: Strong badges put white text on the accent colour, below WCAG AA's 4.5:1 for every colour but Neutral (Lime 1.91, Green 2.19, Cyan 2.38, Orange 2.9, Fuchsia 3.71, Pink 3.73, Blue 3.76, Red 3.97, Violet 4.43).
 - Badge: Border has no effect on Strong badges, except Neutral, where Strong + Border looks exactly like Soft + Border. The Style value is spelled "Srong".

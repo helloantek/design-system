@@ -1,0 +1,531 @@
+{
+ "$comment": "Sort UI 2.0 Dropdown Menu reference renders (1x PNG, exported with get_screenshot): every Dropdown Menu Item Type × State × Inset, Dropdown Menu Label (Size × Inset), Separator, Content (Figma's six sample items) and User Profile (Size × State). Items are rendered in a 224 px DropdownMenuContent by renderers/dropdown-menu.tsx; State=Focus is real keyboard focus (the renderer makes that item tabbable, check.mjs presses Tab) and User Profile State=Hover the pointer over it. content.png is cropped to the menu's own 224 × 200 box (Figma's export adds the outside border and the shadow's margin).",
+ "component": "dropdown-menu",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "154:90",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "item-default",
+   "nodeId": "148:4",
+   "props": {
+    "Kind": "Item",
+    "Type": "Item",
+    "State": "Default",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-focus",
+   "nodeId": "148:16",
+   "props": {
+    "Kind": "Item",
+    "Type": "Item",
+    "State": "Focus",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-disabled",
+   "nodeId": "148:28",
+   "props": {
+    "Kind": "Item",
+    "Type": "Item",
+    "State": "Disabled",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-inset-default",
+   "nodeId": "148:10",
+   "props": {
+    "Kind": "Item",
+    "Type": "Item",
+    "State": "Default",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-inset-focus",
+   "nodeId": "148:22",
+   "props": {
+    "Kind": "Item",
+    "Type": "Item",
+    "State": "Focus",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "item-inset-disabled",
+   "nodeId": "148:34",
+   "props": {
+    "Kind": "Item",
+    "Type": "Item",
+    "State": "Disabled",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-default",
+   "nodeId": "148:40",
+   "props": {
+    "Kind": "Item",
+    "Type": "Destructive",
+    "State": "Default",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-focus",
+   "nodeId": "148:52",
+   "props": {
+    "Kind": "Item",
+    "Type": "Destructive",
+    "State": "Focus",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-disabled",
+   "nodeId": "148:64",
+   "props": {
+    "Kind": "Item",
+    "Type": "Destructive",
+    "State": "Disabled",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-inset-default",
+   "nodeId": "148:46",
+   "props": {
+    "Kind": "Item",
+    "Type": "Destructive",
+    "State": "Default",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-inset-focus",
+   "nodeId": "148:58",
+   "props": {
+    "Kind": "Item",
+    "Type": "Destructive",
+    "State": "Focus",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "destructive-inset-disabled",
+   "nodeId": "148:70",
+   "props": {
+    "Kind": "Item",
+    "Type": "Destructive",
+    "State": "Disabled",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-default",
+   "nodeId": "149:2",
+   "props": {
+    "Kind": "Item",
+    "Type": "Checkbox",
+    "State": "Default",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-focus",
+   "nodeId": "149:6",
+   "props": {
+    "Kind": "Item",
+    "Type": "Checkbox",
+    "State": "Focus",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-disabled",
+   "nodeId": "149:10",
+   "props": {
+    "Kind": "Item",
+    "Type": "Checkbox",
+    "State": "Disabled",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-inset-default",
+   "nodeId": "149:14",
+   "props": {
+    "Kind": "Item",
+    "Type": "Checkbox",
+    "State": "Default",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-inset-focus",
+   "nodeId": "149:18",
+   "props": {
+    "Kind": "Item",
+    "Type": "Checkbox",
+    "State": "Focus",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "checkbox-inset-disabled",
+   "nodeId": "149:22",
+   "props": {
+    "Kind": "Item",
+    "Type": "Checkbox",
+    "State": "Disabled",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "menubar-default",
+   "nodeId": "161:45",
+   "props": {
+    "Kind": "Item",
+    "Type": "Menubar checkbox",
+    "State": "Default",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "menubar-focus",
+   "nodeId": "161:61",
+   "props": {
+    "Kind": "Item",
+    "Type": "Menubar checkbox",
+    "State": "Focus",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "menubar-disabled",
+   "nodeId": "161:77",
+   "props": {
+    "Kind": "Item",
+    "Type": "Menubar checkbox",
+    "State": "Disabled",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "menubar-inset-default",
+   "nodeId": "161:53",
+   "props": {
+    "Kind": "Item",
+    "Type": "Menubar checkbox",
+    "State": "Default",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "menubar-inset-focus",
+   "nodeId": "161:69",
+   "props": {
+    "Kind": "Item",
+    "Type": "Menubar checkbox",
+    "State": "Focus",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "menubar-inset-disabled",
+   "nodeId": "161:85",
+   "props": {
+    "Kind": "Item",
+    "Type": "Menubar checkbox",
+    "State": "Disabled",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "sub-default",
+   "nodeId": "149:27",
+   "props": {
+    "Kind": "Item",
+    "Type": "Sub trigger",
+    "State": "Default",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "sub-focus",
+   "nodeId": "149:41",
+   "props": {
+    "Kind": "Item",
+    "Type": "Sub trigger",
+    "State": "Focus",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "sub-disabled",
+   "nodeId": "149:55",
+   "props": {
+    "Kind": "Item",
+    "Type": "Sub trigger",
+    "State": "Disabled",
+    "Inset": "False"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "sub-inset-default",
+   "nodeId": "149:34",
+   "props": {
+    "Kind": "Item",
+    "Type": "Sub trigger",
+    "State": "Default",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "sub-inset-focus",
+   "nodeId": "149:48",
+   "props": {
+    "Kind": "Item",
+    "Type": "Sub trigger",
+    "State": "Focus",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "sub-inset-disabled",
+   "nodeId": "149:62",
+   "props": {
+    "Kind": "Item",
+    "Type": "Sub trigger",
+    "State": "Disabled",
+    "Inset": "True"
+   },
+   "target": "#target [role^=\"menuitem\"]",
+   "nodeW": 216,
+   "nodeH": 32
+  },
+  {
+   "slug": "label-xs",
+   "nodeId": "150:11",
+   "props": {
+    "Kind": "Label",
+    "Size": "xs",
+    "Inset": "False"
+   },
+   "target": "#target .ds-dropdown__label",
+   "nodeW": 216,
+   "nodeH": 24
+  },
+  {
+   "slug": "label-xs-inset",
+   "nodeId": "150:13",
+   "props": {
+    "Kind": "Label",
+    "Size": "xs",
+    "Inset": "True"
+   },
+   "target": "#target .ds-dropdown__label",
+   "nodeW": 216,
+   "nodeH": 24
+  },
+  {
+   "slug": "label-sm",
+   "nodeId": "161:1170",
+   "props": {
+    "Kind": "Label",
+    "Size": "sm",
+    "Inset": "False"
+   },
+   "target": "#target .ds-dropdown__label",
+   "nodeW": 216,
+   "nodeH": 28
+  },
+  {
+   "slug": "label-sm-inset",
+   "nodeId": "161:1172",
+   "props": {
+    "Kind": "Label",
+    "Size": "sm",
+    "Inset": "True"
+   },
+   "target": "#target .ds-dropdown__label",
+   "nodeW": 216,
+   "nodeH": 28
+  },
+  {
+   "slug": "separator",
+   "nodeId": "150:16",
+   "props": {
+    "Kind": "Separator"
+   },
+   "target": "#target .ds-dropdown__separator",
+   "nodeW": 216,
+   "nodeH": 8,
+   "pixels": false,
+   "$why": "Figma renders the separator on a transparent canvas (its line overflows the 216 px node by 4 px on each side), so the PNG has no menu behind it; the spec check compares the size and the line colour."
+  },
+  {
+   "slug": "content",
+   "nodeId": "150:18",
+   "props": {
+    "Kind": "Content"
+   },
+   "target": "#target .ds-dropdown__content",
+   "nodeW": 224,
+   "nodeH": 200
+  },
+  {
+   "slug": "profile-lg-default",
+   "nodeId": "569:3167",
+   "props": {
+    "Kind": "User Profile",
+    "Size": "lg",
+    "State": "Default"
+   },
+   "target": "#target .ds-dropdown__profile",
+   "nodeW": 216,
+   "nodeH": 48,
+   "pixels": false,
+   "$why": "Figma's avatar is a different photo (the frog avatar of the demo); the spec check compares the layout, colours and avatar size."
+  },
+  {
+   "slug": "profile-lg-hover",
+   "nodeId": "569:3264",
+   "props": {
+    "Kind": "User Profile",
+    "Size": "lg",
+    "State": "Hover"
+   },
+   "target": "#target .ds-dropdown__profile",
+   "nodeW": 216,
+   "nodeH": 48,
+   "pixels": false,
+   "$why": "Figma's avatar is a different photo (the frog avatar of the demo); the spec check compares the layout, colours and avatar size."
+  },
+  {
+   "slug": "profile-default-default",
+   "nodeId": "569:3291",
+   "props": {
+    "Kind": "User Profile",
+    "Size": "default",
+    "State": "Default"
+   },
+   "target": "#target .ds-dropdown__profile",
+   "nodeW": 216,
+   "nodeH": 32,
+   "pixels": false,
+   "$why": "Figma's avatar is a different photo (the frog avatar of the demo); the spec check compares the layout, colours and avatar size."
+  },
+  {
+   "slug": "profile-default-hover",
+   "nodeId": "569:3297",
+   "props": {
+    "Kind": "User Profile",
+    "Size": "default",
+    "State": "Hover"
+   },
+   "target": "#target .ds-dropdown__profile",
+   "nodeW": 216,
+   "nodeH": 32,
+   "pixels": false,
+   "$why": "Figma's avatar is a different photo (the frog avatar of the demo); the spec check compares the layout, colours and avatar size."
+  }
+ ]
+}

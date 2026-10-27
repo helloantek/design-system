@@ -1,6 +1,7 @@
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
 import { renderButton } from './button';
+import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
 import { renderSelect, renderSelectItem } from './select';
 import type { Renderer } from './types';
@@ -11,6 +12,7 @@ export const renderers: Record<string, Renderer> = {
   'avatar-group': renderAvatarGroup,
   badge: renderBadge,
   button: renderButton,
+  'dropdown-menu': renderDropdownMenu,
   input: renderInput,
   select: renderSelect,
   'select-item': renderSelectItem,

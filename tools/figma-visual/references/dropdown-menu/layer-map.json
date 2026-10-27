@@ -1,0 +1,65 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "$why": "Dropdown Menu Content's border is outside its box in Figma, drawn as an outer 1 px shadow."
+    },
+    "L slot": {
+      "selector": ".ds-dropdown__icon"
+    },
+    "icon": {
+      "selector": ".ds-dropdown__icon > svg"
+    },
+    "icon/VECTOR": {
+      "selector": ".ds-dropdown__icon > svg",
+      "stroke": "svg"
+    },
+    "Label": {
+      "selector": ".ds-dropdown__text, .ds-dropdown__name, .ds-dropdown__label > span"
+    },
+    "Label#1": {
+      "selector": ".ds-dropdown__handle, [role=\"menuitem\"]:nth-child(2) .ds-dropdown__text"
+    },
+    "Shortcut": {
+      "selector": ".ds-dropdown__shortcut"
+    },
+    "Check": {
+      "selector": ".ds-dropdown__check"
+    },
+    "Check/VECTOR": {
+      "selector": ".ds-dropdown__check svg",
+      "stroke": "svg"
+    },
+    "Chevron": {
+      "selector": ".ds-dropdown__chevron"
+    },
+    "Chevron/VECTOR": {
+      "selector": ".ds-dropdown__chevron svg",
+      "stroke": "svg"
+    },
+    "line": {
+      "stroke": "before-border",
+      "$why": "The separator's line is its ::before border, running 4 px past each side like Figma's line."
+    },
+    "Avatar": {
+      "selector": ".ds-avatar",
+      "skip": [
+        "r",
+        "p",
+        "g"
+      ],
+      "$why": "The Avatar component (avatar.css, checked on its own) is round with 50 %; its inner layout differs from Figma's image frame."
+    },
+    "items": {
+      "selector": "[role=\"menuitem\"]",
+      "skip": [
+        "w",
+        "h",
+        "p",
+        "g"
+      ],
+      "$why": "Figma's items slot is the menu's content box; the code puts the items in the menu directly and the pixels cover their position."
+    }
+  }
+}
