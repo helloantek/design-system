@@ -436,6 +436,7 @@ Object.assign(tests, {
     const box = await card.boundingBox();
     await page.mouse.click(box.x + box.width - 12, box.y + box.height - 8);
     assert.equal(await storage.isChecked(), true, 'the card corner toggles it');
+    await page.mouse.move(0, 0);
     assert.equal(await card.evaluate((el) => getComputedStyle(el).backgroundColor), 'rgba(115, 115, 115, 0.05)', 'a checked card is filled');
     assert.match(await storage.getAttribute('aria-describedby'), /caption/, 'the name is the title; the description describes it');
   },
@@ -450,6 +451,29 @@ Object.assign(tests, {
     for (const name of ['Direct messages', 'Mentions', 'Comments on your posts']) assert.equal(await page.getByRole('checkbox', { name }).isChecked(), true);
     await page.getByRole('checkbox', { name: 'Mentions' }).click();
     assert.equal(await mixed(), true, 'unchecking a child makes the parent mixed again');
+  },
+});
+
+Object.assign(tests, {
+  'hover: Input, Select and choice cards get a dark 1.5 px stroke, not when disabled': async () => {
+    const stroke = (locator) => locator.evaluate((el) => getComputedStyle(el).boxShadow.match(/(rgba?\([^)]+\)) 0px 0px 0px ([\d.]+px) inset/)?.slice(1).join(' '));
+    const dark = 'rgb(98, 98, 98) 1.5px';
+    const check = async (id, selector) => {
+      await page.goto(`http://localhost:6008/iframe.html?id=${id}&viewMode=story`);
+      const el = page.locator(selector).first();
+      await page.mouse.move(0, 0);
+      assert.notEqual(await stroke(el), dark, `${selector} at rest`);
+      await el.hover();
+      assert.equal(await stroke(el), dark, `${selector} on hover`);
+    };
+    await check('components-input--playground', '.ds-input');
+    await check('components-select--playground', '.ds-select__trigger');
+    await check('components-checkbox--choice-cards', '.ds-field--card');
+    await page.goto('http://localhost:6008/iframe.html?id=components-select--all-states&viewMode=story');
+    const disabled = page.locator('.ds-select__trigger--disabled').first();
+    const rest = await stroke(disabled);
+    await disabled.hover({ force: true });
+    assert.equal(await stroke(disabled), rest, 'a disabled select does not react');
   },
 });
 
