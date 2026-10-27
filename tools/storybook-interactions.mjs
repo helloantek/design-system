@@ -436,6 +436,7 @@ Object.assign(tests, {
     const box = await card.boundingBox();
     await page.mouse.click(box.x + box.width - 12, box.y + box.height - 8);
     assert.equal(await storage.isChecked(), true, 'the card corner toggles it');
+    await page.mouse.move(0, 0);
     assert.equal(await card.evaluate((el) => getComputedStyle(el).backgroundColor), 'rgba(115, 115, 115, 0.05)', 'a checked card is filled');
     assert.match(await storage.getAttribute('aria-describedby'), /caption/, 'the name is the title; the description describes it');
   },
@@ -450,6 +451,33 @@ Object.assign(tests, {
     for (const name of ['Direct messages', 'Mentions', 'Comments on your posts']) assert.equal(await page.getByRole('checkbox', { name }).isChecked(), true);
     await page.getByRole('checkbox', { name: 'Mentions' }).click();
     assert.equal(await mixed(), true, 'unchecking a child makes the parent mixed again');
+  },
+});
+
+Object.assign(tests, {
+  'hover: Input, Select and choice cards get one fill step darker, not when disabled': async () => {
+    const bg = (locator) => locator.evaluate((el) => getComputedStyle(el).backgroundColor);
+    const check = async (id, selector, expected) => {
+      await page.goto(`http://localhost:6008/iframe.html?id=${id}&viewMode=story`);
+      const el = page.locator(selector).first();
+      await page.mouse.move(0, 0);
+      const rest = await bg(el);
+      await el.hover();
+      assert.notEqual(await bg(el), rest, `${selector} changes on hover`);
+      assert.equal(await bg(el), expected, `${selector} hover fill`);
+    };
+    await check('components-input--playground', '.ds-input', 'rgba(115, 115, 115, 0.05)');
+    await check('components-select--playground', '.ds-select__trigger', 'rgba(115, 115, 115, 0.05)');
+    await check('components-checkbox--choice-cards', '.ds-field--card', 'rgba(115, 115, 115, 0.05)');
+    await page.goto('http://localhost:6008/iframe.html?id=components-checkbox--choice-cards&viewMode=story');
+    const checked = page.locator('.ds-field--card').nth(1);
+    await checked.hover();
+    assert.equal(await bg(checked), 'rgba(115, 115, 115, 0.08)', 'a checked card goes from fill-1 to fill-2');
+    await page.goto('http://localhost:6008/iframe.html?id=components-select--all-states&viewMode=story');
+    const disabled = page.locator('.ds-select__trigger--disabled').first();
+    const rest = await bg(disabled);
+    await disabled.hover({ force: true });
+    assert.equal(await bg(disabled), rest, 'a disabled select does not react');
   },
 });
 

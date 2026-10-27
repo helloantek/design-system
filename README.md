@@ -139,6 +139,7 @@ Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group*
 | — (one style in 2.0) | `variant`: `default` · `shadow` (+ Shadow/xs) · `soft` (borderless, tinted) | `ds-input--<variant>` |
 | Value = Placeholder / Filled | `placeholder` / `value` | native |
 | State = Focus | focus | `:focus-within` |
+| — (hover, ours) | the fill one step darker: field → fill-1 (Soft: fill-1 → fill-2); not while focused or disabled | `:hover` |
 | State = Invalid · Field Error | `error` (replaces the description, sets `aria-invalid`, label turns red) | `ds-input--invalid` · `ds-field__caption--error` |
 | State = Disabled | `disabled` (input and label at 50 %) | `ds-input--disabled` |
 | Field Label · Description | `label` · `caption` (wired with `for` / `aria-describedby`) | `ds-field__label` · `ds-field__caption` |
@@ -173,6 +174,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | — (one style in 2.0) | `variant`: `default` · `shadow` (+ Shadow/xs) · `soft` (borderless, tinted) | `ds-select__trigger--<variant>` |
 | Value = Placeholder / Filled | `placeholder` / `value` · `defaultValue` | `ds-select__value--placeholder` |
 | State = Focus | focus (the menu opens on click or keys) | `:focus` |
+| — (hover, ours) | the fill one step darker (Soft: fill-1 → fill-2), as in Input | `:hover` |
 | State = Invalid · Field Error | `error` (replaces the description, sets `aria-invalid`, label turns red) | `ds-select__trigger--invalid` |
 | State = Disabled | `disabled` (field and label at 50 %) | `ds-select__trigger--disabled` |
 | Field Label · Description | `label` · `caption` (wired with `aria-labelledby` / `aria-describedby`) | `ds-field__label` · `ds-field__caption` |
@@ -215,7 +217,7 @@ A native `<input type="checkbox">` drawn as the Sort UI 2.0 **Checkbox**, alone 
 | — | `indeterminate` (minus on the unchecked box; a click clears it) | `:indeterminate` |
 | Field Orientation = Horizontal · Field Label · Description · Error | `label` · `caption` · `error` (replaces the description, as in Input); wired with `<label for>` and `aria-describedby` | `ds-field--horizontal` · `ds-field__control` · `ds-field__content` |
 | Field Control = Start · End | `control`: `start` (default) · `end` | `ds-field--control-end` |
-| — (Figma's "Choice cards" demo) | `card`: the field in a bordered 16 px card, filled when checked; a click anywhere on the card toggles it | `ds-field--card` |
+| — (Figma's "Choice cards" demo) | `card`: the field in a bordered 16 px card, filled when checked; a click anywhere on the card toggles it; hover makes the fill one step darker | `ds-field--card` |
 | Field Group | `<CheckboxGroup label caption error disabled>`: a `<fieldset>` with a legend, fields 12 px apart | `ds-fieldset` · `ds-fieldset__legend` · `ds-fieldset__fields` |
 
 Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`name`, `value`, `required`, `ref`…) go to the input.
@@ -281,6 +283,7 @@ npm run test:visual      # every component matches Figma: renders (pixels) and e
 ## Known design findings
 
 These come from the Figma files, not the code:
+- Hover (2.0): Input, Select and Checkbox have no Hover state (Button has one). The code darkens the fill one step on hover (field → fill-1, Soft and checked choice cards fill-1 → fill-2), without new tokens; Figma should add the state.
 - Input (2.0): State=Invalid's stroke and ring are bound to Tailwind class names ("border-destructive dark:border-destructive/50", "ring-destructive/20 …") instead of variables; the code uses `invalid-border` and `invalid-ring`. There is no Invalid + Focus variant; the code keeps the red stroke and ring while focused.
 - Input (2.0): Input Group's prefix/suffix text is 13 px in the component but 14 px in the demo frames; the code follows the component.
 - Input (2.0): Input Group Filled + Invalid keeps the value black, while Input Filled + Invalid turns it red; the code follows Input. Field Invalid shows the description and the error together; `error` replaces the description, as before.

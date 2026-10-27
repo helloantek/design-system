@@ -50,7 +50,7 @@
  *     <span class="ds-select__text"><span class="ds-select__label">…</span><span class="ds-select__description">…</span></span>,
  *     then the check slot (when selected) and the badge.
  * Figma Size: .ds-field--sm (28 px), --default (32 px), --lg (36 px), --xl (40 px).
- * Figma State: Focus = focused trigger, Invalid = --invalid, Disabled = --disabled. Select Item Highlighted =
+ * Figma State: Focus = focused trigger, Invalid = --invalid, Disabled = --disabled; Hover (ours) = :hover. Select Item Highlighted =
  * [data-highlighted] or :hover. Sort UI 2.0 has one field style; Shadow adds Shadow/xs and Soft is a borderless tinted field.
  */
 
@@ -123,6 +123,15 @@
   .ds-select__trigger--soft {
     --select-bg: var(--ds-fill-1);
     --select-stroke: transparent;
+  }
+
+  /* Hover (not a Figma state; ours, as in Input): the fill one step darker. Not while focused or open. */
+  .ds-select__trigger:hover:not(:focus, .ds-select__trigger--disabled) {
+    --select-bg: var(--ds-fill-1);
+  }
+
+  .ds-select__trigger--soft:hover:not(:focus, .ds-select__trigger--disabled) {
+    --select-bg: var(--ds-fill-2);
   }
 
   /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */

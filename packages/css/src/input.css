@@ -25,7 +25,7 @@
  *   </div>
  * Figma Size: .ds-field--default (32 px, the default), .ds-field--lg (36 px), .ds-field--xl (40 px);
  * .ds-input--<size> does the same without the field.
- * Figma State: Focus = :focus-within, Invalid = .ds-input--invalid (+ .ds-field__caption--error),
+ * Figma State: Focus = :focus-within, Hover (ours) = :hover, Invalid = .ds-input--invalid (+ .ds-field__caption--error),
  * Disabled = .ds-input--disabled + disabled input. Value=Placeholder / Filled = empty / filled input.
  * Sort UI 2.0 has one input style; Shadow adds Shadow/xs and Soft is a borderless tinted field.
  */
@@ -128,6 +128,15 @@
     background-color: var(--ds-fill-1);
   }
 
+  /* Hover (ours, like Input and Select): one fill step darker, none → fill-1, checked fill-1 → fill-2. */
+  .ds-field--card:hover:not(:has(.ds-checkbox__input:disabled)) {
+    background-color: var(--ds-fill-1);
+  }
+
+  .ds-field--card:hover:not(:has(.ds-checkbox__input:disabled)):has(.ds-checkbox__input:checked:not(:indeterminate)) {
+    background-color: var(--ds-fill-2);
+  }
+
   .ds-field--card .ds-field__label::after {
     position: absolute;
     inset: 0;
@@ -228,6 +237,15 @@
   .ds-input--soft {
     --input-bg: var(--ds-fill-1);
     --input-stroke: transparent;
+  }
+
+  /* Hover (not a Figma state; ours): the fill one step darker, field → fill-1 (Soft: fill-1 → fill-2). Not while focused. */
+  .ds-input:hover:not(:focus-within, .ds-input--disabled) {
+    --input-bg: var(--ds-fill-1);
+  }
+
+  .ds-input--soft:hover:not(:focus-within, .ds-input--disabled) {
+    --input-bg: var(--ds-fill-2);
   }
 
   /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */
