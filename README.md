@@ -212,7 +212,7 @@ A native `<input type="checkbox">` drawn as the Sort UI 2.0 **Checkbox**, alone 
 |---|---|---|
 | Checked | `checked` · `defaultChecked`; `onCheckedChange(checked)` or the native `onChange` | `ds-checkbox__input:checked` |
 | State = Focus | keyboard focus (ring stroke and a 3 px ring) | `:focus-visible` |
-| State = Disabled | `disabled` (the checkbox at 50 %; in a Field the label too) | `:disabled` |
+| State = Disabled | `disabled` (the checkbox at 50 %; in a Field the label and description too) | `:disabled` |
 | State = Invalid | `invalid`, or `error` in a Field (sets `aria-invalid`, the label turns red) | `[aria-invalid="true"]` |
 | — | `indeterminate` (minus on the unchecked box; a click clears it) | `:indeterminate` |
 | Field Orientation = Horizontal · Field Label · Description · Error | `label` · `caption` · `error` (replaces the description, as in Input); wired with `<label for>` and `aria-describedby` | `ds-field--horizontal` · `ds-field__control` · `ds-field__content` |
@@ -243,7 +243,7 @@ Native `<input type="radio">`s drawn as the Sort UI 2.0 **Radio**, in a **Radio 
 |---|---|---|
 | Checked | the group's `value` · `defaultValue` · `onValueChange(value)`; a lone radio takes `checked` / `defaultChecked` | `ds-radio__input:checked` · `ds-radio__dot` |
 | State = Focus | keyboard focus (ring stroke and a 3 px ring) | `:focus-visible` |
-| State = Disabled | `disabled` on a radio or the whole group (the radio at 50 %; in a Field the label too) | `:disabled` |
+| State = Disabled | `disabled` on a radio or the whole group (the radio at 50 %; in a Field the label and description too) | `:disabled` |
 | State = Invalid | the group's `invalid`, or `error` (replaces the description); a radio's own `invalid` (sets `aria-invalid`, the label turns red) | `[aria-invalid="true"]` |
 | Radio Group (Field Group) | `<RadioGroup label caption error invalid name required disabled columns>`: a `<fieldset>` with a legend, radios 12 px apart (choice cards 8 px); `columns` lays them out in a grid | `ds-fieldset` · `ds-fieldset__fields--grid` (`--fieldset-columns`) |
 | Field Orientation = Horizontal · Field Label · Description · Control = Start · End | `label` · `caption` · `control`: `start` (default) · `end` | `ds-field--horizontal` · `ds-field--control-end` |
@@ -321,7 +321,7 @@ A setting that takes effect at once: a native checkbox with `role="switch"`, dra
 | Size = default · sm | `size`: `default` (32 × 20) · `sm` (24 × 16) | `ds-switch` · `ds-switch--sm` |
 | Checked | `checked` · `defaultChecked` · `onCheckedChange(checked)` | `ds-switch__input:checked` · `ds-switch__thumb` |
 | State = Focus | keyboard focus (ring stroke and a 3 px ring) | `:focus-visible` |
-| State = Disabled | `disabled` (the switch at 50 %; in a Field the label too) | `:disabled` |
+| State = Disabled | `disabled` (the switch at 50 %; in a Field the label and description too) | `:disabled` |
 | State = Invalid | `invalid`, or `error` (replaces the description) | `[aria-invalid="true"]` |
 | Field Label · Helper · Description · Control | `label` (a `ds-field__helper` span adds the muted Helper) · `caption` · `control`: `end` (default) · `start` | `ds-field--horizontal` · `ds-field__helper` · `ds-field--control-end` |
 | Choice card (the "Choice cards" demo) | `card` (filled when on; a click anywhere toggles; focus rings the card; hover draws the dark stroke) | `ds-field--card` |
@@ -423,6 +423,7 @@ These come from the Figma files, not the code:
 - Radius (2.0): Figma gives Button 8 px, Input, Textarea and Select 10 px (Select sm 8 px), the Select and Dropdown menus 14 px and their items 10 px. The design system uses one control radius: Button, Input, Select and the menus are 8 px, and what sits inside a 4 px inset takes 8 − 4 = 4 px (menu items, the Input's action button). Figma should follow.
 - Checkbox (2.0): there is no indeterminate variant; the "Nested" and "Table rows" demos override a checked checkbox with the unchecked fill and a muted minus, which the code draws for `indeterminate`. Checked + Focus and Checked + Invalid draw the stroke in the primary colour, on the primary fill, so only the ring shows. The radius is 5 px, between the xs (4) and sm (6) tokens.
 - Radio (2.0): Choice Card State=Hover fills the card with fill-1; the code keeps the dark 1.5 px hover stroke chosen for Input, Select and the Checkbox cards. In the Choice Card the radio sits level with the top of the title (16 px from the top), while the Field and the earlier Checkbox card demos centre the control on the title's 20 px line (18 px); the code centres it. Focus fills an unchecked card with the page background (`background`), which the code follows.
+- Field (2.0): State=Disabled (Orientation=Horizontal) fades only the label to 50 %; the code fades the description too, for Checkbox, Radio and Switch.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
 - Textarea (2.0): State=Invalid keeps a filled value in `foreground`, while Input turns it red (`destructive-foreground`); the code follows each. The "Character limit" demo's Progress circle shows 25 % for 85 of 280 characters (30 %); the code draws the real share.
 - Checkbox (2.0): Field Orientation=Horizontal State=Invalid shows the description and the error together, as the vertical Field does; `error` replaces the description, as in Input and Select.

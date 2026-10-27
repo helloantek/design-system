@@ -118,6 +118,11 @@
     cursor: not-allowed;
   }
 
+  /* Disabled: the description fades with the label (Figma fades only the label; the design system fades both). */
+  .ds-field--horizontal:has(.ds-checkbox__input:disabled, .ds-radio__input:disabled, .ds-switch__input:disabled) .ds-field__caption {
+    opacity: 0.5;
+  }
+
   /*
    * Figma "Choice Card" (135:121): the horizontal Field in a bordered card, filled when checked, with a Checkbox or a
    * Radio. The label stretches over the whole card, so a click anywhere toggles the control.

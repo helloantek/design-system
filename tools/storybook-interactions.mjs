@@ -574,6 +574,9 @@ Object.assign(tests, {
     const disabled = page.getByRole('switch', { name: 'Product update notifications' });
     await page.getByText('Product update notifications').click({ force: true });
     assert.equal(await disabled.isChecked(), false, 'a disabled switch does not toggle');
+    const disabledField = page.locator('.ds-field').filter({ has: disabled });
+    assert.equal(await disabledField.locator('.ds-field__label').evaluate((el) => getComputedStyle(el).opacity), '0.5', 'the disabled label fades');
+    assert.equal(await disabledField.locator('.ds-field__caption').evaluate((el) => getComputedStyle(el).opacity), '0.5', 'and so does its description');
     await page.goto('http://localhost:6008/iframe.html?id=components-switch--invalid&viewMode=story');
     const twoFactor = page.getByRole('switch', { name: 'Two-factor authentication' });
     assert.equal(await twoFactor.getAttribute('aria-invalid'), 'true');
