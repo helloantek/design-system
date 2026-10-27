@@ -1,0 +1,44 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (the menu) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "$why": "Dropdown Menu Content's border is outside its box in Figma, drawn as an outer 1 px shadow."
+    },
+    "Dropdown Menu Label": {
+      "selector": ".ds-dropdown__label"
+    },
+    "Dropdown Menu Label/TEXT": {
+      "selector": ".ds-dropdown__label"
+    },
+    "Dropdown Menu Item": {
+      "selector": ".ds-dropdown__item:not(.ds-dropdown__item--icon)"
+    },
+    "Label": {
+      "selector": ".ds-dropdown__item .ds-dropdown__text"
+    },
+    "Shortcut": {
+      "selector": ".ds-dropdown__shortcut"
+    },
+    "Reactions": {
+      "selector": ".ds-dropdown__row",
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma spreads the reactions with space-between (no gap); the code does the same with justify-content."
+    },
+    "Reaction 👍": {
+      "selector": ".ds-dropdown__item--icon"
+    },
+    "Add reaction": {
+      "selector": ".ds-dropdown__item--icon:last-child"
+    },
+    "Dropdown Menu Separator": {
+      "selector": ".ds-dropdown__separator",
+      "skip": [
+        "w"
+      ],
+      "$why": "The separator is a flex item without a width of its own; its line runs across the menu (see references/dropdown-menu)."
+    }
+  }
+}

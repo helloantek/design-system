@@ -17,6 +17,7 @@ import { Avatar } from '../Avatar';
 
 // Styles live in @helloantek/ds-css (classes ds-dropdown*); these components render the markup and the WAI-ARIA
 // menu button behaviour (https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/): focus moves onto the items.
+// itemsOf, RootContext, useMenuKeys and unhover are shared with ContextMenu; index.ts does not export them.
 
 // Sort UI 2.0 icons (24 px grid) drawn at 72 % (17.28 px), so a 1.25 px stroke is 1.736 in the grid.
 const checkMark = (
@@ -33,7 +34,7 @@ const chevronRight = (
 const cx = (...classes: (string | false | null | undefined)[]) => classes.filter(Boolean).join(' ') || undefined;
 
 /** The enabled items of one menu level (not those of its submenus). */
-const itemsOf = (menu: HTMLElement) =>
+export const itemsOf = (menu: HTMLElement) =>
   Array.from(menu.querySelectorAll<HTMLElement>('[role^="menuitem"]')).filter((el) => el.closest('[role="menu"]') === menu && el.getAttribute('aria-disabled') !== 'true');
 
 const labelOf = (item: HTMLElement) => (item.querySelector('.ds-dropdown__text, .ds-dropdown__name')?.textContent ?? '').trim().toLowerCase();
@@ -42,7 +43,7 @@ interface RootContextValue {
   /** Closes the whole menu; focus goes back to the trigger unless it moves elsewhere (Tab, a click outside). */
   close: (focusTrigger: boolean) => void;
 }
-const RootContext = createContext<RootContextValue | null>(null);
+export const RootContext = createContext<RootContextValue | null>(null);
 
 function useRoot() {
   const root = useContext(RootContext);
@@ -54,7 +55,7 @@ function useRoot() {
  * Keyboard handling shared by the menu and its submenus: arrows (wrapping), Home/End, Enter/Space and type-ahead.
  * Keys pressed inside a submenu belong to the submenu only.
  */
-function useMenuKeys() {
+export function useMenuKeys() {
   const typeahead = useRef({ text: '', at: 0 });
   return (event: KeyboardEvent<HTMLDivElement>, onEscape: () => void, onLeft?: () => void) => {
     const menu = event.currentTarget;
@@ -90,7 +91,7 @@ function useMenuKeys() {
  * Leaving a menu with the pointer clears its highlight; an open submenu keeps its own, and so does its trigger, so the
  * pointer can cross the gap between the menus.
  */
-function unhover(event: MouseEvent<HTMLElement>) {
+export function unhover(event: MouseEvent<HTMLElement>) {
   const menu = event.currentTarget;
   const active = document.activeElement;
   if (menu.contains(active) && active?.closest('[role="menu"]') === menu && active.getAttribute('aria-expanded') !== 'true') menu.focus();
@@ -567,6 +568,56 @@ export function DropdownMenuGroup({ label, labelSize, labelInset, children, ...r
           {label}
         </DropdownMenuLabel>
       )}
+      {children}
+    </div>
+  );
+}
+
+export interface DropdownMenuRowProps extends HTMLAttributes<HTMLDivElement> {
+  /** Names the row, e.g. "Reactions". */
+  'aria-label': string;
+  /** DropdownMenuIconItems. */
+  children: ReactNode;
+}
+
+/** A row of icon items spread across the menu (Context Menu "Chat message" demo: Reactions). */
+export function DropdownMenuRow({ className, children, ...rest }: DropdownMenuRowProps) {
+  return (
+    <div role="group" {...rest} className={cx('ds-dropdown__row', className)}>
+      {children}
+    </div>
+  );
+}
+
+export interface DropdownMenuIconItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+  ref?: Ref<HTMLDivElement>;
+  /** The item's name, since it shows only an icon or an emoji. */
+  'aria-label': string;
+  /** A 17 px icon using `currentColor`, or an emoji. */
+  children: ReactNode;
+  disabled?: boolean;
+}
+
+/** A 32 px square item in a DropdownMenuRow. A click runs `onClick` and closes the menu unless it calls `preventDefault()`. */
+export function DropdownMenuIconItem({ disabled = false, className, children, onClick, onMouseMove, ...rest }: DropdownMenuIconItemProps) {
+  const root = useRoot();
+  return (
+    <div
+      role="menuitem"
+      tabIndex={-1}
+      aria-disabled={disabled || undefined}
+      {...rest}
+      className={cx('ds-dropdown__item', 'ds-dropdown__item--icon', className)}
+      onMouseMove={(event) => {
+        onMouseMove?.(event);
+        hover(event, disabled);
+      }}
+      onClick={(event) => {
+        if (disabled) return;
+        onClick?.(event);
+        if (!event.defaultPrevented) root.close(true);
+      }}
+    >
       {children}
     </div>
   );

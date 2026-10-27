@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Checkbox, Dropdown Menu, Input, Radio, Select, Textarea. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Checkbox, Context Menu, Dropdown Menu, Input, Radio, Select, Textarea. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -303,6 +303,28 @@ A native `<textarea>` drawn as the Sort UI 2.0 **Textarea**, in a **Field** for 
 
 Hover draws the dark 1.5 px stroke of Input and Select. Other props (`rows`, `name`, `ref`…) go to the textarea.
 
+## Context Menu
+
+The menu of actions for whatever is under the pointer: a right-click on the trigger opens it there, and Shift+F10 or the Menu key opens it at the trigger's corner with the first item focused. From then on it behaves like Dropdown Menu (arrows, Home/End, letters, → and ← for submenus, Enter or Space to pick, Escape to close and give focus back). A click outside, Tab, scrolling or resizing closes it. Sort UI 2.0 has no component set for it: its demos are **Dropdown Menu Content**, **Item**, **Label** and **Separator**, so the items are the Dropdown Menu parts.
+
+```tsx
+<ContextMenu aria-label="Photo" trigger={<figure>…</figure>}>
+  <DropdownMenuLabel>IMG_2041.HEIC</DropdownMenuLabel>
+  <DropdownMenuItem icon={<Copy />} shortcut="⌘C">Copy image</DropdownMenuItem>
+  <DropdownMenuSub label="Status" icon={<CircleDot />}>…</DropdownMenuSub>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem type="destructive" icon={<Trash />} shortcut="⌘⌫">Delete photo</DropdownMenuItem>
+</ContextMenu>
+```
+
+| Figma | React prop | CSS class |
+|---|---|---|
+| the area that is right-clicked | `trigger` (gets `tabIndex` 0 unless it sets one, and `data-open` while the menu is open) | — |
+| Dropdown Menu Content at the pointer | `aria-label` (required: the area does not name the menu) · `className` · `style` · `onOpenChange` · `disabled` (keeps the browser's menu) | `ds-context-menu` · `ds-dropdown__content` (fixed at the pointer, kept inside the viewport) |
+| items | the Dropdown Menu parts, plus `DropdownMenuRow` / `DropdownMenuIconItem` for a row of reactions | see Dropdown Menu |
+
+The menu is `position: fixed` in place, not portalled, so it inherits the brand and scheme of its section; an ancestor with a `transform` or `filter` would move it.
+
 ## Dropdown Menu
 
 A button that opens a menu of actions: the WAI-ARIA menu button (Enter, Space or the arrows open it; arrows, Home/End and type-ahead move; Enter or Space picks; → and ← open and close submenus; Escape closes; focus goes back to the button). Sort UI 2.0 **Dropdown Menu Trigger**, **Content**, **Item**, **Label**, **Separator** and **User Profile**. Radio items are ours: Figma draws them as Checkbox items.
@@ -339,6 +361,7 @@ A button that opens a menu of actions: the WAI-ARIA menu button (Enter, Space or
 | Item Leading slot (L slot) · Label · Shortcut (Keys) | `icon` (16 px icon or a 20 px picture such as `<Avatar size="xs" />`) · children · `shortcut` (shown only; the app handles the keys) | `ds-dropdown__icon` · `ds-dropdown__text` · `ds-dropdown__shortcut` |
 | Dropdown Menu Label Size · Inset | `<DropdownMenuLabel size="xs" \| "sm" inset>`, or `<DropdownMenuGroup label labelSize labelInset>`, which also names the group | `ds-dropdown__label` · `--sm` · `--inset` |
 | Dropdown Menu Separator | `<DropdownMenuSeparator />` | `ds-dropdown__separator` |
+| — (Context Menu "Chat message" demo: Reactions) | `<DropdownMenuRow aria-label>` of `<DropdownMenuIconItem aria-label>`s: 32 px square items (an icon or an emoji) spread across the menu | `ds-dropdown__row` · `ds-dropdown__item--icon` |
 | Dropdown Menu User Profile Size · State | `<DropdownMenuUserProfile size="lg" \| "default" name handle src initials>` (Hover = the pointer) | `ds-dropdown__profile` |
 
 The menu opens below its trigger; like Select's, it does not flip near the edge of the viewport yet.
