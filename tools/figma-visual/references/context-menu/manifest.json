@@ -1,0 +1,37 @@
+{
+ "$comment": "Sort UI 2.0 Context Menu (page 161:1174) demos \"Photo\" and \"Chat message\": the Dropdown Menu Content instances, cropped to the menu's own 224 px box from get_screenshot renders of their _Component Preview (1490:65635, 1490:65640; Figma's export adds the outside border and the shadow's margin). renderers/context-menu.tsx renders the same items in an open DropdownMenuContent, which is what ContextMenu shows at the pointer. Chat message is left to the spec check: Figma draws the reactions with Apple Color Emoji, the browser with its own emoji font.",
+ "component": "context-menu",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "161:1174",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "photo",
+   "nodeId": "I1490:65635;1467:45555;1493:25076",
+   "props": {
+    "Demo": "Photo"
+   },
+   "target": "#target [role=\"menu\"]",
+   "nodeW": 224,
+   "nodeH": 304
+  },
+  {
+   "slug": "chat-message",
+   "nodeId": "I1490:65640;1467:45555;1493:25210",
+   "props": {
+    "Demo": "Chat message"
+   },
+   "target": "#target [role=\"menu\"]",
+   "nodeW": 224,
+   "nodeH": 280,
+   "pixels": false,
+   "$why": "The reactions are emoji: Figma renders Apple Color Emoji, the browser its own emoji font, so pixels cannot match; the spec check compares the menu, the row and the 32 px reaction items."
+  }
+ ]
+}

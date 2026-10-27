@@ -512,6 +512,53 @@ Object.assign(tests, {
     const ids = (await first.getAttribute('aria-describedby')).split(' ');
     assert.equal(await page.locator(`#${ids[ids.length - 1]}`).textContent(), 'Pick one to finish setting up your profile.', 'the error describes each radio');
   },
+  'context-menu: a right-click opens it at the pointer; arrows move; Escape closes and returns focus': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-context-menu--photo&viewMode=story');
+    const area = page.getByText('Right-click the photo');
+    await area.waitFor();
+    const menu = page.getByRole('menu', { name: 'Photo' });
+    assert.equal(await menu.isVisible(), false, 'closed at first');
+    const box = await area.boundingBox();
+    await page.mouse.click(box.x + 40, box.y + 30, { button: 'right' });
+    assert.equal(await menu.isVisible(), true, 'a right-click opens it');
+    const at = await menu.boundingBox();
+    assert.deepEqual([Math.round(at.x), Math.round(at.y)], [Math.round(box.x + 40), Math.round(box.y + 30)], 'at the pointer');
+    assert.equal(await menu.evaluate((el) => el === document.activeElement), true, 'focus moves onto the menu');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Copy image⌘C', 'ArrowDown reaches the first item');
+    await page.keyboard.press('Escape');
+    assert.equal(await menu.isVisible(), false, 'Escape closes it');
+    assert.equal(await area.evaluate((el) => el === document.activeElement), true, 'focus goes back to the area');
+    await page.mouse.click(box.x + box.width - 4, box.y + box.height - 4, { button: 'right' });
+    await page.mouse.click(box.x + 4, box.y + box.height + 120);
+    assert.equal(await menu.isVisible(), false, 'a click outside closes it');
+  },
+  'context-menu: Shift+F10 opens it with the first item focused; an item runs and closes it; it stays in the viewport': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-context-menu--chat-message&viewMode=story');
+    const area = page.getByText('Right-click the message');
+    await area.waitFor();
+    await area.focus();
+    await page.keyboard.press('Shift+F10');
+    const menu = page.getByRole('menu', { name: 'Message' });
+    assert.equal(await menu.isVisible(), true, 'Shift+F10 opens it');
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Smile', 'the first item takes focus');
+    assert.equal(await page.getByRole('group', { name: 'Reactions' }).getByRole('menuitem').count(), 6);
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    assert.equal(await menu.isVisible(), false, 'picking an item closes the menu');
+    assert.equal(await page.getByText('Reaction: 😴').count(), 1, 'the item ran');
+    const viewport = page.viewportSize();
+    // A narrow viewport leaves less than the menu's width right of the area.
+    await page.setViewportSize({ width: 600, height: viewport.height });
+    // Resizing closes an open menu; let the resize event pass before opening it again.
+    await page.waitForFunction(() => window.innerWidth === 600);
+    await page.evaluate(() => new Promise((r) => setTimeout(r, 100)));
+    const box = await area.boundingBox();
+    await page.mouse.click(box.x + box.width - 2, box.y + 10, { button: 'right' });
+    const at = await menu.boundingBox();
+    assert.equal(at.x + at.width <= 600, true, 'near the right edge it opens to the left of the pointer');
+    await page.setViewportSize(viewport);
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });

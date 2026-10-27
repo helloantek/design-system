@@ -1,0 +1,24 @@
+/*
+ * Context Menu — Sort UI 2.0 page "Context Menu" (node 161:1174) in file 4JnqgEbdlnKgiFrfmiwEZw. Figma has no
+ * component set for it: its demos are Dropdown Menu Content, Item, Label and Separator (dropdown-menu.css) opened at
+ * the pointer by a right-click. Values are Sort UI 2.0 tokens.
+ *
+ * Markup:
+ *   <div class="ds-context-menu">
+ *     <div tabindex="0" [data-open]>…the trigger: the area that opens the menu…</div>
+ *     <div class="ds-dropdown__content" role="menu" aria-label="…" style="left: 120px; top: 80px" [hidden]>…items…</div>
+ *   </div>
+ * The menu is fixed at the pointer (left/top in viewport pixels), moved back inside the viewport when it would overflow.
+ */
+
+@layer ds.components {
+  /* The wrapper takes no box of its own: the trigger keeps its place in the layout. */
+  .ds-context-menu {
+    display: contents;
+  }
+
+  .ds-context-menu > .ds-dropdown__content {
+    position: fixed;
+    z-index: 50;
+  }
+}

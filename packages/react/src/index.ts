@@ -3,6 +3,7 @@ export * from './Badge';
 export * from './Button';
 export * from './ButtonGroup';
 export * from './Checkbox';
+export * from './ContextMenu';
 export * from './DropdownMenu';
 export * from './Input';
 export * from './Radio';

@@ -234,6 +234,35 @@
     visibility: hidden;
   }
 
+  /*
+   * A row of icon items (Context Menu "Chat message" demo: Reactions): 32 px square items spread across the menu.
+   *   <div class="ds-dropdown__row" role="group" aria-label="Reactions">
+   *     <div class="ds-dropdown__item ds-dropdown__item--icon" role="menuitem" aria-label="Thumbs up">👍</div>…
+   *   </div>
+   */
+  .ds-dropdown__row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .ds-dropdown__item--icon {
+    justify-content: center;
+    gap: 0;
+    width: var(--ds-spacing-8);
+    height: var(--ds-spacing-8);
+    padding: 0;
+    color: var(--dropdown-icon);
+    /* Emoji at 18/24, as in Figma. */
+    font-size: var(--ds-text-lg);
+    line-height: var(--ds-spacing-6);
+  }
+
+  .ds-dropdown__item--icon > svg {
+    display: block;
+    width: calc(var(--ds-spacing-6) * 0.72);
+    height: calc(var(--ds-spacing-6) * 0.72);
+  }
+
   /* ── User Profile (Figma "Dropdown Menu User Profile") ───────────────── */
 
   .ds-dropdown__profile {
