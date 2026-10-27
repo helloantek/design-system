@@ -1,0 +1,15 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-textarea) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "g"
+      ],
+      "$why": "The textarea is one element with padding; there is no auto-layout gap to read (Figma: 0)."
+    },
+    "Text": {
+      "text": "placeholder-if-empty"
+    }
+  }
+}

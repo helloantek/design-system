@@ -7,6 +7,7 @@ import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
+import { renderTextarea } from './textarea';
 import type { Renderer } from './types';
 
 // One renderer per component folder in ../references.
@@ -27,4 +28,5 @@ export const renderers: Record<string, Renderer> = {
   select: renderSelect,
   'select-item': renderSelectItem,
   'status-badge': renderStatusBadge,
+  textarea: renderTextarea,
 };

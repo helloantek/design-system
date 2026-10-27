@@ -1,0 +1,164 @@
+/*
+ * Textarea — Sort UI 2.0 component set "Textarea" (node 99:72) on page 99:2 in file 4JnqgEbdlnKgiFrfmiwEZw, in a
+ * "Field" (input.css) whose "Field Label" can carry a trail add-on: the "Character limit" demo's count and
+ * "Progress circle". Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (classes in [] are optional):
+ *   <div class="ds-field">
+ *     <div class="ds-field__label-row">
+ *       <label class="ds-field__label" for="post">Post</label>
+ *       [<span class="ds-field__addon ds-textarea__count">195
+ *          <svg class="ds-textarea__progress" viewBox="0 0 16 16" aria-hidden="true">
+ *            <circle class="ds-textarea__progress-track" cx="8" cy="8" r="6.8"/>
+ *            <circle class="ds-textarea__progress-indicator" cx="8" cy="8" r="6.8" pathLength="100"
+ *                    style="--textarea-progress: 30"/>
+ *          </svg></span>]
+ *     </div>
+ *     <textarea class="ds-textarea" id="post" placeholder="…" [disabled] [aria-invalid="true"]></textarea>
+ *     <p class="ds-field__caption">Caption text</p>
+ *   </div>
+ * Figma State: Focus = :focus (a text field shows focus however it was reached), Hover (ours) = :hover,
+ * Invalid = [aria-invalid="true"] (+ .ds-field__caption--error), Disabled = :disabled.
+ * Value=Placeholder / Filled = empty / filled. The box is at least 64 px tall and grows with its text (Figma: Hug).
+ */
+
+@layer ds.components {
+  .ds-textarea {
+    /* The Figma stroke (1 px, inside) is the first inset shadow, so it never changes the size. */
+    --textarea-stroke: var(--ds-field-border);
+    --textarea-ring: 0 0 #0000;
+
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: var(--ds-spacing-16);
+    margin: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-2-5);
+    border: 0;
+    /* 8 px like Input (Figma draws 10 px; the design system uses one control radius, see the README). */
+    border-radius: var(--ds-radius-md);
+    outline: none;
+    background-color: var(--ds-field);
+    box-shadow: inset 0 0 0 var(--textarea-stroke-width, var(--ds-stroke-width-1)) var(--textarea-stroke), var(--textarea-ring);
+    color: var(--ds-foreground);
+    caret-color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-xs--line-height);
+    /* Figma letter spacing −0.5 %. */
+    letter-spacing: -0.005em;
+    /* Figma: the box hugs its text. Browsers without field-sizing keep the 64 px and scroll. */
+    field-sizing: content;
+    resize: none;
+  }
+
+  .ds-textarea--resize {
+    resize: vertical;
+  }
+
+  .ds-textarea::placeholder {
+    color: var(--ds-muted-foreground);
+    opacity: 1;
+  }
+
+  /* Hover (not a Figma state; ours, as in Input): a dark 1.5 px stroke. Not while focused, invalid or disabled. */
+  .ds-textarea:hover:not(:focus, [aria-invalid='true'], :disabled) {
+    --textarea-stroke: var(--ds-muted-foreground);
+    --textarea-stroke-width: var(--ds-stroke-width-3);
+  }
+
+  /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */
+  .ds-textarea:focus {
+    --textarea-stroke: var(--ds-ring);
+    --textarea-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma State=Invalid: red stroke and ring (the text stays foreground, as in Figma). Focus keeps them. */
+  .ds-textarea[aria-invalid='true'] {
+    --textarea-stroke: var(--ds-invalid-border);
+    --textarea-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-invalid-ring);
+  }
+
+  /* Figma State=Disabled: the whole textarea at 50 %. */
+  .ds-textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ── Field Label with a trail add-on (Figma "Field Label" › label-addon) ── */
+
+  .ds-field__label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  .ds-field__addon {
+    display: inline-flex;
+    margin-left: auto;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* The count of characters left; figures keep their width while it changes. */
+  .ds-textarea__count {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The count's sentence for screen readers ("195 of 280 characters left"); the figure is shown instead. */
+  .ds-textarea__count-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ds-textarea__count--over {
+    color: var(--ds-destructive-foreground);
+  }
+
+  /* Figma "Progress circle" (16 px, a 70 % inner radius): a fill-2 track, the used share in primary from 12 o'clock. */
+  .ds-textarea__progress {
+    display: block;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    transform: rotate(-90deg);
+  }
+
+  .ds-textarea__progress > circle {
+    fill: none;
+    stroke-width: 2.4;
+  }
+
+  .ds-textarea__progress-track {
+    stroke: var(--ds-fill-2);
+  }
+
+  .ds-textarea__progress-indicator {
+    stroke: var(--ds-primary);
+    stroke-dasharray: var(--textarea-progress, 0) 100;
+  }
+
+  .ds-textarea__count--over .ds-textarea__progress-indicator {
+    stroke: var(--ds-destructive-foreground);
+  }
+
+  /* The Field's label follows the textarea's Invalid and Disabled states. */
+  .ds-field:has(.ds-textarea[aria-invalid='true']) .ds-field__label {
+    color: var(--ds-destructive-foreground);
+  }
+
+  .ds-field:has(.ds-textarea:disabled) :is(.ds-field__label, .ds-field__addon) {
+    opacity: 0.5;
+  }
+}
