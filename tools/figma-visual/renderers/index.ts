@@ -4,6 +4,7 @@ import { renderButton } from './button';
 import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './checkbox';
 import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
+import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
 import type { Renderer } from './types';
 
@@ -18,6 +19,8 @@ export const renderers: Record<string, Renderer> = {
   'checkbox-field': renderCheckboxField,
   'dropdown-menu': renderDropdownMenu,
   input: renderInput,
+  radio: renderRadio,
+  'radio-card': renderRadioCard,
   select: renderSelect,
   'select-item': renderSelectItem,
   'status-badge': renderStatusBadge,

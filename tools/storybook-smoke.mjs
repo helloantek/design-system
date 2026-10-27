@@ -33,7 +33,17 @@ for (const story of stories) {
   await page.goto(`http://localhost:6007/iframe.html?id=${story.id}&viewMode=story`);
   await page.waitForSelector('#storybook-root > *', { timeout: 10000 });
   const buttons = await page.locator('#storybook-root button').count();
-  const axe = await new AxeBuilder({ page }).include('#storybook-root').analyze();
+  // Storybook's a11y addon runs axe in the preview after each render; wait for it rather than failing on the overlap.
+  let axe;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      axe = await new AxeBuilder({ page }).include('#storybook-root').analyze();
+      break;
+    } catch (error) {
+      if (attempt === 20 || !String(error.message).includes('Axe is already running')) throw error;
+      await page.waitForTimeout(250);
+    }
+  }
   const violations = axe.violations.map((v) => `${v.id}(${v.nodes.length})`);
   // Render and console errors fail the run; axe findings are reported (some come from the Figma palette itself).
   if (errors.length) failed++;

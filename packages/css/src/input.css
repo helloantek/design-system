@@ -50,11 +50,11 @@
     line-height: var(--ds-text-sm--line-height);
   }
 
-  .ds-field:has(.ds-input--invalid, .ds-select__trigger--invalid, .ds-checkbox__input[aria-invalid='true']) .ds-field__label {
+  .ds-field:has(.ds-input--invalid, .ds-select__trigger--invalid, .ds-checkbox__input[aria-invalid='true'], .ds-radio__input[aria-invalid='true']) .ds-field__label {
     color: var(--ds-destructive-foreground);
   }
 
-  .ds-field:has(.ds-input--disabled, .ds-select__trigger--disabled, .ds-checkbox__input:disabled) .ds-field__label {
+  .ds-field:has(.ds-input--disabled, .ds-select__trigger--disabled, .ds-checkbox__input:disabled, .ds-radio__input:disabled) .ds-field__label {
     opacity: 0.5;
   }
 
@@ -107,13 +107,13 @@
     cursor: pointer;
   }
 
-  .ds-field--horizontal:has(.ds-checkbox__input:disabled) .ds-field__label {
+  .ds-field--horizontal:has(.ds-checkbox__input:disabled, .ds-radio__input:disabled) .ds-field__label {
     cursor: not-allowed;
   }
 
   /*
-   * Choice card (Figma's "Choice cards" demo): the horizontal Field in a bordered card, filled when checked. The label
-   * stretches over the whole card, so a click anywhere toggles the control.
+   * Figma "Choice Card" (135:121): the horizontal Field in a bordered card, filled when checked, with a Checkbox or a
+   * Radio. The label stretches over the whole card, so a click anywhere toggles the control.
    *   <div class="ds-field ds-field--horizontal ds-field--card">…as above…</div>
    */
   .ds-field--card {
@@ -121,17 +121,37 @@
     box-sizing: border-box;
     padding: var(--ds-spacing-4);
     border-radius: var(--ds-radius-2xl);
-    box-shadow: inset 0 0 0 var(--card-stroke-width, var(--ds-stroke-width-1)) var(--card-stroke, var(--ds-border));
+    box-shadow: inset 0 0 0 var(--card-stroke-width, var(--ds-stroke-width-1)) var(--card-stroke, var(--ds-border)), var(--card-ring, 0 0 #0000);
   }
 
-  .ds-field--card:has(.ds-checkbox__input:checked:not(:indeterminate)) {
+  .ds-field--card:has(.ds-checkbox__input:checked:not(:indeterminate), .ds-radio__input:checked) {
     background-color: var(--ds-fill-1);
   }
 
-  /* Hover (ours, like Input and Select): a dark 1.5 px stroke. */
-  .ds-field--card:hover:not(:has(.ds-checkbox__input:disabled)) {
+  /* Hover: a dark 1.5 px stroke, as in Input and Select (Figma's Choice Card State=Hover fills with fill-1 instead). */
+  .ds-field--card:hover:not(:has(.ds-checkbox__input:disabled, .ds-radio__input:disabled)) {
     --card-stroke: var(--ds-muted-foreground);
     --card-stroke-width: var(--ds-stroke-width-3);
+  }
+
+  /* Figma Choice Card State=Focus: the card takes the ring stroke and the 3 px ring, the control draws none. */
+  .ds-field--card:has(:focus-visible) {
+    --card-stroke: var(--ds-ring);
+    --card-stroke-width: var(--ds-stroke-width-1);
+    --card-ring: 0 0 0 calc(var(--ds-stroke-width-4) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma fills the unchecked card with the page background while focused. */
+  .ds-field--card:has(:focus-visible):not(:has(.ds-checkbox__input:checked:not(:indeterminate), .ds-radio__input:checked)) {
+    background-color: var(--ds-background);
+  }
+
+  .ds-field--card .ds-checkbox__input:focus-visible:not([aria-invalid='true']),
+  .ds-field--card .ds-radio__input:focus-visible:not([aria-invalid='true']) {
+    --checkbox-stroke: transparent;
+    --checkbox-ring: 0 0 #0000;
+    --radio-stroke: transparent;
+    --radio-ring: 0 0 #0000;
   }
 
   .ds-field--card .ds-field__label::after {
@@ -175,6 +195,17 @@
     flex-direction: column;
     gap: var(--ds-spacing-3);
     margin-top: var(--ds-spacing-3);
+  }
+
+  /* Choice cards sit 8 px apart. */
+  .ds-fieldset__fields:has(> .ds-field--card) {
+    gap: var(--ds-spacing-2);
+  }
+
+  /* Fields in columns (Figma's Radio "Grid" demo): --fieldset-columns columns, 12 px apart both ways. */
+  .ds-fieldset__fields--grid {
+    display: grid;
+    grid-template-columns: repeat(var(--fieldset-columns, 2), minmax(0, 1fr));
   }
 
   /* ── Input box ──────────────────────────────────────────────────────── */

@@ -477,6 +477,42 @@ Object.assign(tests, {
   },
 });
 
+Object.assign(tests, {
+  'radio: arrows move the choice within the group; labels select; disabled is skipped': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-radio--list&viewMode=story');
+    const radio = (name) => page.getByRole('radio', { name, exact: true });
+    await page.waitForSelector('.ds-radio__input');
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement?.value), 'Normal · 160 kbps', 'Tab reaches the checked radio');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await radio('High · 320 kbps').isChecked(), true, 'ArrowDown checks the next radio');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await radio('Automatic').isChecked(), true, 'the disabled Lossless is skipped and the arrows wrap');
+    await page.getByText('Low · 96 kbps').click();
+    assert.equal(await radio('Low · 96 kbps').isChecked(), true, 'the label selects');
+    assert.equal(await radio('Automatic').isChecked(), false, 'one choice at a time');
+    assert.equal(await page.locator('input[type="radio"]:not([disabled])').evaluateAll((els) => new Set(els.map((e) => e.name)).size), 1, 'the radios share one name');
+  },
+  'radio: choice cards select on click and show focus on the card; errors describe every radio': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-radio--choice-cards&viewMode=story');
+    const card = page.locator('.ds-field--card').first();
+    const box = await card.boundingBox();
+    await page.mouse.click(box.x + 20, box.y + box.height - 10);
+    assert.equal(await page.getByRole('radio', { name: 'Monthly' }).isChecked(), true, 'a click on the card selects it');
+    await page.keyboard.press('ArrowDown');
+    const focused = page.locator('.ds-field--card').nth(1);
+    assert.match(await focused.evaluate((el) => getComputedStyle(el).boxShadow), /rgb\(161, 161, 161\) 0px 0px 0px 1px inset/, 'keyboard focus puts the ring stroke on the card');
+    assert.equal(await page.locator('.ds-field--card .ds-radio__input').nth(1).evaluate((el) => getComputedStyle(el).boxShadow.startsWith('rgba(0, 0, 0, 0)')), true, 'not on the radio');
+    await page.goto('http://localhost:6008/iframe.html?id=components-radio--invalid&viewMode=story');
+    const group = page.locator('fieldset').nth(1);
+    const first = group.getByRole('radio', { name: 'Everyone' });
+    assert.equal(await first.getAttribute('aria-invalid'), 'true');
+    assert.equal(await first.getAttribute('required'), '', 'a required group makes its radios required');
+    const ids = (await first.getAttribute('aria-describedby')).split(' ');
+    assert.equal(await page.locator(`#${ids[ids.length - 1]}`).textContent(), 'Pick one to finish setting up your profile.', 'the error describes each radio');
+  },
+});
+
 let failed = 0;
 for (const [name, run] of Object.entries(tests)) {
   try {

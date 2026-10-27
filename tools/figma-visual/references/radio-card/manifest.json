@@ -1,0 +1,59 @@
+{
+ "$comment": "Sort UI 2.0 Choice Card (135:121, page Field) with a Radio: Checked \u00d7 State Default and Focus (keyboard focus on the radio puts the ring on the card). State=Hover is not compared: on hover the code draws a dark 1.5 px stroke, as Input and Select do, where Figma fills with fill-1 (README design findings). Focus renders are cropped to the card (Figma's export adds the 3 px ring's margin).",
+ "component": "radio-card",
+ "componentSet": "135:121",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "unchecked-default",
+   "nodeId": "135:73",
+   "props": {
+    "Checked": "False",
+    "State": "Default"
+   },
+   "target": "#target .ds-field--card",
+   "nodeW": 320,
+   "nodeH": 76
+  },
+  {
+   "slug": "unchecked-focus",
+   "nodeId": "135:89",
+   "props": {
+    "Checked": "False",
+    "State": "Focus"
+   },
+   "target": "#target .ds-field--card",
+   "nodeW": 320,
+   "nodeH": 76
+  },
+  {
+   "slug": "checked-default",
+   "nodeId": "135:97",
+   "props": {
+    "Checked": "True",
+    "State": "Default"
+   },
+   "target": "#target .ds-field--card",
+   "nodeW": 320,
+   "nodeH": 76
+  },
+  {
+   "slug": "checked-focus",
+   "nodeId": "135:113",
+   "props": {
+    "Checked": "True",
+    "State": "Focus"
+   },
+   "target": "#target .ds-field--card",
+   "nodeW": 320,
+   "nodeH": 76
+  }
+ ]
+}
