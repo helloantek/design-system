@@ -1,6 +1,6 @@
 {
   "name": "@helloantek/ds-react",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "React components for @helloantek/ds. Styles come from @helloantek/ds-css.",
   "type": "module",
   "files": [
