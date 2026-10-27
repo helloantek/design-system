@@ -1,0 +1,136 @@
+/*
+ * Button Group — Sort UI 2.0 page "Button Group" (node 302:14707) in file 4JnqgEbdlnKgiFrfmiwEZw: the component set
+ * "Button Group" (309:5264, Orientation), its "Button" set (912:30642, Variant Start / Middle / End × Orientation) and
+ * "Button Group Text" (308:25). Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup:
+ *   <div class="ds-button-group [ds-button-group--vertical]" role="group" aria-label="…">
+ *     <button class="ds-button ds-button--outline ds-button--size-default">Preview</button>
+ *     <button class="ds-button ds-button--outline ds-button--size-default">Share</button>
+ *     [<span class="ds-button-group__text">[<svg…/>]<span>Text</span></span>]
+ *     [<div class="ds-field ds-field--default">…Input or Select…</div>]   (input.css, select.css)
+ *     [<div class="ds-dropdown"><button class="ds-button …">…</button>…menu…</div>]   (dropdown-menu.css)
+ *   </div>
+ * The items touch: only the group's outer corners are rounded (8 px), and every item after the first drops the stroke
+ * on the side it shares with the previous one (Figma Variant=Middle and End), so the group is exactly as wide as its
+ * items. A group of groups (Figma's "Button Group" and "Nested" demos) spaces them 8 px apart instead.
+ */
+
+@layer ds.components {
+  .ds-button-group {
+    display: inline-flex;
+    align-items: stretch;
+    vertical-align: top;
+  }
+
+  .ds-button-group--vertical {
+    flex-direction: column;
+  }
+
+  /* ── Joined items ───────────────────────────────────────────────────── */
+
+  .ds-button-group:not(:has(> .ds-button-group)) {
+    > *,
+    > .ds-dropdown > .ds-button,
+    > .ds-field :is(.ds-input, .ds-select__trigger) {
+      border-radius: 0;
+    }
+
+    /* A focused item rises above its neighbours, so its ring is not covered. */
+    > :focus-visible,
+    > :focus-within {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  /* Horizontal: the start corners on the first item, the end corners on the last (Figma Variant=Start / End). */
+  .ds-button-group:not(.ds-button-group--vertical, :has(> .ds-button-group)) {
+    > :first-child,
+    > .ds-dropdown:first-child > .ds-button,
+    > .ds-field:first-child :is(.ds-input, .ds-select__trigger) {
+      border-start-start-radius: var(--ds-radius-md);
+      border-end-start-radius: var(--ds-radius-md);
+    }
+
+    > :last-child,
+    > .ds-dropdown:last-child > .ds-button,
+    > .ds-field:last-child :is(.ds-input, .ds-select__trigger) {
+      border-start-end-radius: var(--ds-radius-md);
+      border-end-end-radius: var(--ds-radius-md);
+    }
+
+    /* Figma Variant=Middle and End: no stroke on the start side (a Dropdown Menu's trigger counts as an item). */
+    > .ds-button:not(:first-child, :focus-visible),
+    > .ds-dropdown:not(:first-child) > .ds-button:not(:focus-visible) {
+      --btn-stroke-shape: inset 0 var(--ds-stroke-width-1) 0 0 var(--btn-stroke), inset 0 calc(-1 * var(--ds-stroke-width-1)) 0 0 var(--btn-stroke),
+        inset calc(-1 * var(--ds-stroke-width-1)) 0 0 0 var(--btn-stroke);
+    }
+
+    /* Strokeless buttons (Secondary, Ghost) are split by a hairline in the control border (Figma: 0.5 px). */
+    > .ds-button:is(.ds-button--secondary, .ds-button--ghost):not(:first-child, :focus-visible),
+    > .ds-dropdown:not(:first-child) > .ds-button:is(.ds-button--secondary, .ds-button--ghost):not(:focus-visible) {
+      --btn-stroke-shape: inset calc(var(--ds-stroke-width-1) / 2) 0 0 0 var(--ds-control-border);
+    }
+  }
+
+  /* Vertical: the top corners on the first item, the bottom corners on the last. */
+  .ds-button-group--vertical:not(:has(> .ds-button-group)) {
+    > :first-child {
+      border-start-start-radius: var(--ds-radius-md);
+      border-start-end-radius: var(--ds-radius-md);
+    }
+
+    > :last-child {
+      border-end-start-radius: var(--ds-radius-md);
+      border-end-end-radius: var(--ds-radius-md);
+    }
+
+    > .ds-button:not(:first-child, :focus-visible) {
+      --btn-stroke-shape: inset var(--ds-stroke-width-1) 0 0 0 var(--btn-stroke), inset calc(-1 * var(--ds-stroke-width-1)) 0 0 0 var(--btn-stroke),
+        inset 0 calc(-1 * var(--ds-stroke-width-1)) 0 0 var(--btn-stroke);
+    }
+
+    > .ds-button:is(.ds-button--secondary, .ds-button--ghost):not(:first-child, :focus-visible) {
+      --btn-stroke-shape: inset 0 calc(var(--ds-stroke-width-1) / 2) 0 0 var(--ds-control-border);
+    }
+  }
+
+  /* ── A group of groups: items 8 px apart, each keeping its own corners ── */
+
+  .ds-button-group:has(> .ds-button-group) {
+    gap: var(--ds-spacing-2);
+  }
+
+  /* An Input or Select in a group takes the room left by the buttons. */
+  .ds-button-group > .ds-field {
+    flex: 1 1 auto;
+  }
+
+  /* ── Figma "Button Group Text": a label segment on the field fill ───── */
+
+  .ds-button-group__text {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    min-height: var(--ds-spacing-8);
+    padding: 0 var(--ds-spacing-3);
+    background-color: var(--ds-field);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+  }
+
+  .ds-button-group__text > svg {
+    display: block;
+    flex-shrink: 0;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+}

@@ -1,6 +1,7 @@
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
 import { renderButton } from './button';
+import { renderButtonGroup, renderButtonGroupItem } from './button-group';
 import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './checkbox';
 import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
@@ -14,6 +15,8 @@ export const renderers: Record<string, Renderer> = {
   'avatar-group': renderAvatarGroup,
   badge: renderBadge,
   button: renderButton,
+  'button-group': renderButtonGroup,
+  'button-group-item': renderButtonGroupItem,
   checkbox: renderCheckbox,
   'checkbox-card': renderCheckboxCard,
   'checkbox-field': renderCheckboxField,

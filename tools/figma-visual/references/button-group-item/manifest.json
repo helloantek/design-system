@@ -1,0 +1,81 @@
+{
+ "$comment": "Sort UI 2.0 Button Group's Button set (Variant Start / Middle / End \u00d7 Orientation): each item is rendered in a group of three Outline buttons and the entry measures that item. Renders are cropped to the button (Figma's export adds the shadow's 2 px margin).",
+ "component": "button-group-item",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "912:30642",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "start-horizontal",
+   "nodeId": "912:30641",
+   "props": {
+    "Variant": "Start",
+    "Orientation": "Horizontal"
+   },
+   "target": "#target",
+   "nodeW": 62,
+   "nodeH": 32
+  },
+  {
+   "slug": "middle-horizontal",
+   "nodeId": "912:30637",
+   "props": {
+    "Variant": "Middle",
+    "Orientation": "Horizontal"
+   },
+   "target": "#target",
+   "nodeW": 62,
+   "nodeH": 32
+  },
+  {
+   "slug": "end-horizontal",
+   "nodeId": "912:30636",
+   "props": {
+    "Variant": "End",
+    "Orientation": "Horizontal"
+   },
+   "target": "#target",
+   "nodeW": 62,
+   "nodeH": 32
+  },
+  {
+   "slug": "start-vertical",
+   "nodeId": "912:30640",
+   "props": {
+    "Variant": "Start",
+    "Orientation": "Vertical"
+   },
+   "target": "#target",
+   "nodeW": 62,
+   "nodeH": 32
+  },
+  {
+   "slug": "middle-vertical",
+   "nodeId": "912:30638",
+   "props": {
+    "Variant": "Middle",
+    "Orientation": "Vertical"
+   },
+   "target": "#target",
+   "nodeW": 62,
+   "nodeH": 32
+  },
+  {
+   "slug": "end-vertical",
+   "nodeId": "912:30639",
+   "props": {
+    "Variant": "End",
+    "Orientation": "Vertical"
+   },
+   "target": "#target",
+   "nodeW": 62,
+   "nodeH": 32
+  }
+ ]
+}
