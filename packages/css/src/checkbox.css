@@ -1,0 +1,104 @@
+/*
+ * Checkbox — Sort UI 2.0 component set "Checkbox" (node 121:29) in file 4JnqgEbdlnKgiFrfmiwEZw, with "Field"
+ * Orientation=Horizontal (133:98, in input.css) for its label. Values are Sort UI 2.0 tokens. Framework-agnostic: any
+ * markup with these classes works. The native input is the box, so forms, labels and keyboard work as usual.
+ *
+ * Markup:
+ *   <span class="ds-checkbox">
+ *     <input class="ds-checkbox__input" type="checkbox" [checked] [disabled] [aria-invalid="true"]>
+ *     <svg class="ds-checkbox__check" aria-hidden="true">…check…</svg>
+ *     <svg class="ds-checkbox__minus" aria-hidden="true">…minus…</svg>
+ *   </span>
+ * Figma Checked = :checked; State: Focus = :focus-visible, Disabled = :disabled, Invalid = [aria-invalid="true"].
+ * Indeterminate (the input's `indeterminate` property) is drawn like Figma's demos: the unchecked box with a minus.
+ */
+
+@layer ds.components {
+  .ds-checkbox {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    vertical-align: middle;
+  }
+
+  .ds-checkbox > * {
+    grid-area: 1 / 1;
+  }
+
+  .ds-checkbox__input {
+    --checkbox-stroke: transparent;
+    --checkbox-ring: 0 0 #0000;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    /* Figma's Checkbox radius is 5 px, between the xs (4) and sm (6) tokens. */
+    border-radius: calc(var(--ds-radius-xs) + var(--ds-stroke-width-1));
+    outline: none;
+    background-color: var(--ds-fill-3);
+    /* Figma: a 1 px stroke inside (Focus, Invalid) and a 3 px ring. */
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--checkbox-stroke), var(--checkbox-ring);
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .ds-checkbox__input:checked {
+    background-color: var(--ds-primary);
+  }
+
+  /* Indeterminate is not a Figma variant; the demos draw it on the unchecked box. */
+  .ds-checkbox__input:indeterminate {
+    background-color: var(--ds-fill-3);
+  }
+
+  /* Figma State=Focus: ring stroke (primary when checked) and a 3 px ring. */
+  .ds-checkbox__input:focus-visible {
+    --checkbox-stroke: var(--ds-ring);
+    --checkbox-ring: 0 0 0 calc(var(--ds-stroke-width-4) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma State=Invalid: invalid-border stroke (primary when checked) and the invalid ring. */
+  .ds-checkbox__input[aria-invalid='true'] {
+    --checkbox-stroke: var(--ds-invalid-border);
+    --checkbox-ring: 0 0 0 calc(var(--ds-stroke-width-4) + var(--ds-stroke-width-1)) var(--ds-invalid-ring);
+  }
+
+  .ds-checkbox__input:checked:not(:indeterminate):is(:focus-visible, [aria-invalid='true']) {
+    --checkbox-stroke: var(--ds-primary);
+  }
+
+  /* Figma State=Disabled: the whole checkbox at 50 %. */
+  .ds-checkbox:has(.ds-checkbox__input:disabled) {
+    opacity: 0.5;
+  }
+
+  .ds-checkbox__input:disabled {
+    cursor: not-allowed;
+  }
+
+  /* The check (14 px, 1.25 px stroke) and the minus sit in the middle of the box; the input takes the clicks. */
+  .ds-checkbox__check,
+  .ds-checkbox__minus {
+    display: block;
+    width: calc(var(--ds-spacing-4) - var(--ds-spacing-0-5));
+    height: calc(var(--ds-spacing-4) - var(--ds-spacing-0-5));
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .ds-checkbox__check {
+    color: var(--ds-primary-foreground);
+  }
+
+  .ds-checkbox__minus {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-checkbox__input:checked:not(:indeterminate) ~ .ds-checkbox__check,
+  .ds-checkbox__input:indeterminate ~ .ds-checkbox__minus {
+    visibility: visible;
+  }
+}

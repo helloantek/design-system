@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Dropdown Menu, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Checkbox, Dropdown Menu, Input, Select. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -192,6 +192,33 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 
 Forms: `name` submits the value through a hidden input (one per value with `multiple`, read them with `formData.getAll(name)`), and resetting the form restores `defaultValue`. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
 
+## Checkbox
+
+A native `<input type="checkbox">` drawn as the Sort UI 2.0 **Checkbox**, alone or in a **Field** Orientation=Horizontal (label, description, error), and **Field Group** for a set of checkboxes under a legend. Indeterminate is ours: Figma's demos draw it with a minus on the unchecked box.
+
+```tsx
+<Checkbox label="Subscription renewal emails" caption="Send customers email receipts" checked={renewals} onCheckedChange={setRenewals} />
+<Checkbox label="Accept the terms" name="terms" required error={termsError} />
+<Checkbox aria-label="Select all rows" checked={all} indeterminate={some && !all} onCheckedChange={selectAll} />
+<CheckboxGroup label="Import from Tunely" caption="Choose what to bring over to your new library.">
+  <Checkbox label="Playlists" name="import" value="playlists" />
+  <Checkbox label="Liked songs" name="import" value="liked" defaultChecked />
+</CheckboxGroup>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Checked | `checked` · `defaultChecked`; `onCheckedChange(checked)` or the native `onChange` | `ds-checkbox__input:checked` |
+| State = Focus | keyboard focus (ring stroke and a 3 px ring) | `:focus-visible` |
+| State = Disabled | `disabled` (the checkbox at 50 %; in a Field the label too) | `:disabled` |
+| State = Invalid | `invalid`, or `error` in a Field (sets `aria-invalid`, the label turns red) | `[aria-invalid="true"]` |
+| — | `indeterminate` (minus on the unchecked box; a click clears it) | `:indeterminate` |
+| Field Orientation = Horizontal · Field Label · Description · Error | `label` · `caption` · `error` (replaces the description, as in Input); wired with `<label for>` and `aria-describedby` | `ds-field--horizontal` · `ds-field__control` · `ds-field__content` |
+| Field Control = Start · End | `control`: `start` (default) · `end` | `ds-field--control-end` |
+| Field Group | `<CheckboxGroup label caption error disabled>`: a `<fieldset>` with a legend, fields 12 px apart | `ds-fieldset` · `ds-fieldset__legend` · `ds-fieldset__fields` |
+
+Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`name`, `value`, `required`, `ref`…) go to the input.
+
 ## Dropdown Menu
 
 A button that opens a menu of actions: the WAI-ARIA menu button (Enter, Space or the arrows open it; arrows, Home/End and type-ahead move; Enter or Space picks; → and ← open and close submenus; Escape closes; focus goes back to the button). Sort UI 2.0 **Dropdown Menu Trigger**, **Content**, **Item**, **Label**, **Separator** and **User Profile**. Radio items are ours: Figma draws them as Checkbox items.
@@ -260,6 +287,8 @@ These come from the Figma files, not the code:
 - Select (2.0): State=Invalid's stroke and ring are bound to Tailwind class names, as in Input; unlike Input, the value stays black.
 - Select (2.0): Select Item reserves the check mark's 16 px in a 32 px right padding when not selected; the code keeps an empty 16 px slot, which looks the same.
 - Radius (2.0): Figma gives Button 8 px, Input and Select 10 px (Select sm 8 px), the Select and Dropdown menus 14 px and their items 10 px. The design system uses one control radius: Button, Input, Select and the menus are 8 px, and what sits inside a 4 px inset takes 8 − 4 = 4 px (menu items, the Input's action button). Figma should follow.
+- Checkbox (2.0): there is no indeterminate variant; the "Nested" and "Table rows" demos override a checked checkbox with the unchecked fill and a muted minus, which the code draws for `indeterminate`. Checked + Focus and Checked + Invalid draw the stroke in the primary colour, on the primary fill, so only the ring shows. The radius is 5 px, between the xs (4) and sm (6) tokens.
+- Checkbox (2.0): Field Orientation=Horizontal State=Invalid shows the description and the error together, as the vertical Field does; `error` replaces the description, as in Input and Select.
 - Dropdown Menu (2.0): Item State=Focus fills with `fill-2`, while User Profile State=Hover uses `accent` (the same colour today, but two variables for one highlight). The User Profile chevron is `accent-foreground`, the Sub trigger chevron `muted-foreground`.
 - Dropdown Menu (2.0): Inset=True keeps the Leading slot visible, so an inset item with an icon is indented twice; Inset is meant for items without an icon. There is no radio item: the "Radio" demo uses Checkbox items.
 - Select (2.0): a disabled field's label at 50 % (Field State=Disabled) is 3.69:1. axe reports it for Select, whose combobox is not a native control, but not for Input, whose label belongs to a disabled input.

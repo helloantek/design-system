@@ -1,0 +1,20 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "opacity"
+      ],
+      "$why": "Disabled fades the whole .ds-checkbox (box and check together, like Figma's layer opacity), not the input; the pixels cover it.",
+      "selector": ".ds-checkbox__input"
+    },
+    "Check": {
+      "selector": ".ds-checkbox__check"
+    },
+    "Check/VECTOR": {
+      "selector": ".ds-checkbox__check",
+      "stroke": "svg"
+    }
+  }
+}

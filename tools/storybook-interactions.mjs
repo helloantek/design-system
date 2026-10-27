@@ -411,6 +411,38 @@ Object.assign(tests, {
   },
 });
 
+Object.assign(tests, {
+  'checkbox: label click and Space toggle; disabled does not; error is described': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-checkbox--with-descriptions&viewMode=story');
+    const onboarding = page.getByRole('checkbox', { name: 'User onboarding emails' });
+    assert.equal(await onboarding.isChecked(), false);
+    await page.getByText('User onboarding emails').click();
+    assert.equal(await onboarding.isChecked(), true, 'the label toggles the checkbox');
+    await page.keyboard.press('Space');
+    assert.equal(await onboarding.isChecked(), false, 'Space toggles it');
+    assert.match(await onboarding.getAttribute('aria-describedby'), /caption/, 'the description describes it');
+    const disabled = page.getByRole('checkbox', { name: 'Product update notifications' });
+    await page.getByText('Product update notifications').click({ force: true });
+    assert.equal(await disabled.isChecked(), false, 'a disabled checkbox ignores its label');
+    await page.goto('http://localhost:6008/iframe.html?id=components-checkbox--themes&viewMode=story');
+    const terms = page.getByRole('checkbox', { name: 'Accept the terms' }).first();
+    assert.equal(await terms.getAttribute('aria-invalid'), 'true');
+    assert.equal(await page.locator(`#${await terms.getAttribute('aria-describedby')}`).textContent(), 'This field is required.');
+  },
+  'checkbox: nested parent is indeterminate and sets its children': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-checkbox--nested&viewMode=story');
+    const parent = page.getByRole('checkbox', { name: 'Push notifications' });
+    const mixed = () => parent.evaluate((el) => el.indeterminate);
+    assert.equal(await mixed(), true, 'one child of three checked');
+    await parent.click();
+    assert.equal(await mixed(), false);
+    assert.equal(await parent.isChecked(), true);
+    for (const name of ['Direct messages', 'Mentions', 'Comments on your posts']) assert.equal(await page.getByRole('checkbox', { name }).isChecked(), true);
+    await page.getByRole('checkbox', { name: 'Mentions' }).click();
+    assert.equal(await mixed(), true, 'unchecking a child makes the parent mixed again');
+  },
+});
+
 let failed = 0;
 for (const [name, run] of Object.entries(tests)) {
   try {

@@ -1,0 +1,63 @@
+{
+ "$comment": "Sort UI 2.0 Field Orientation=Horizontal with a Checkbox (1x PNG, get_screenshot): Control Start and End, State Default and Disabled. State=Invalid is not compared: Figma shows the description and the error together, while `error` replaces the description, as in Input and Select (README design findings); the checkbox's Invalid look is in references/checkbox.",
+ "component": "checkbox-field",
+ "componentSet": "133:98",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "field-start-default",
+   "nodeId": "133:32",
+   "props": {
+    "Orientation": "Horizontal",
+    "Control": "Start",
+    "State": "Default"
+   },
+   "target": "#target .ds-field",
+   "nodeW": 320,
+   "nodeH": 44
+  },
+  {
+   "slug": "field-end-default",
+   "nodeId": "505:6624",
+   "props": {
+    "Orientation": "Horizontal",
+    "Control": "End",
+    "State": "Default"
+   },
+   "target": "#target .ds-field",
+   "nodeW": 320,
+   "nodeH": 44
+  },
+  {
+   "slug": "field-start-disabled",
+   "nodeId": "133:54",
+   "props": {
+    "Orientation": "Horizontal",
+    "Control": "Start",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-field",
+   "nodeW": 320,
+   "nodeH": 44
+  },
+  {
+   "slug": "field-end-disabled",
+   "nodeId": "505:6638",
+   "props": {
+    "Orientation": "Horizontal",
+    "Control": "End",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-field",
+   "nodeW": 320,
+   "nodeH": 44
+  }
+ ]
+}
