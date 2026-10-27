@@ -2,8 +2,19 @@
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [["@helloantek/ds-tokens", "@helloantek/ds-css", "@helloantek/ds-react"]],
+  "fixed": [
+    [
+      "@helloantek/ds-tokens",
+      "@helloantek/ds-css",
+      "@helloantek/ds-react"
+    ]
+  ],
   "access": "restricted",
   "baseBranch": "main",
-  "ignore": ["@helloantek/ds-storybook"]
+  "ignore": [
+    "@helloantek/ds-storybook"
+  ],
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  }
 }
