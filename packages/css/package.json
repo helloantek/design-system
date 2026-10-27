@@ -1,6 +1,6 @@
 {
   "name": "@helloantek/ds-css",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Framework-agnostic component styles built only on @helloantek/ds-tokens.",
   "type": "module",
   "files": [
