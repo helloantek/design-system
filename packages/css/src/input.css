@@ -50,11 +50,11 @@
     line-height: var(--ds-text-sm--line-height);
   }
 
-  .ds-field:has(.ds-input--invalid, .ds-select__trigger--invalid) .ds-field__label {
+  .ds-field:has(.ds-input--invalid, .ds-select__trigger--invalid, .ds-checkbox__input[aria-invalid='true']) .ds-field__label {
     color: var(--ds-destructive-foreground);
   }
 
-  .ds-field:has(.ds-input--disabled, .ds-select__trigger--disabled) .ds-field__label {
+  .ds-field:has(.ds-input--disabled, .ds-select__trigger--disabled, .ds-checkbox__input:disabled) .ds-field__label {
     opacity: 0.5;
   }
 
@@ -69,6 +69,106 @@
 
   .ds-field__caption--error {
     color: var(--ds-destructive-foreground);
+  }
+
+  /*
+   * Figma "Field" Orientation=Horizontal (Checkbox and similar controls): the control beside a label and description.
+   *   <div class="ds-field ds-field--horizontal [ds-field--control-end]">
+   *     <span class="ds-field__control"><span class="ds-checkbox">…</span></span>
+   *     <div class="ds-field__content"><label class="ds-field__label" for="c">Label</label><p class="ds-field__caption">…</p></div>
+   *   </div>
+   * Control=Start (default) or End.
+   */
+  .ds-field--horizontal {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .ds-field--control-end {
+    flex-direction: row-reverse;
+  }
+
+  /* 2 px down, so the 16 px control sits in the middle of the label's 20 px line. */
+  .ds-field__control {
+    display: flex;
+    flex-shrink: 0;
+    padding-top: var(--ds-spacing-0-5);
+  }
+
+  .ds-field__content {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+  }
+
+  .ds-field--horizontal .ds-field__label {
+    cursor: pointer;
+  }
+
+  .ds-field--horizontal:has(.ds-checkbox__input:disabled) .ds-field__label {
+    cursor: not-allowed;
+  }
+
+  /*
+   * Choice card (Figma's "Choice cards" demo): the horizontal Field in a bordered card, filled when checked. The label
+   * stretches over the whole card, so a click anywhere toggles the control.
+   *   <div class="ds-field ds-field--horizontal ds-field--card">…as above…</div>
+   */
+  .ds-field--card {
+    position: relative;
+    box-sizing: border-box;
+    padding: var(--ds-spacing-4);
+    border-radius: var(--ds-radius-2xl);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+  }
+
+  .ds-field--card:has(.ds-checkbox__input:checked:not(:indeterminate)) {
+    background-color: var(--ds-fill-1);
+  }
+
+  .ds-field--card .ds-field__label::after {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    content: '';
+  }
+
+  /*
+   * Figma "Field Group" with a "Field Label" and description on top: related fields under one name.
+   *   <fieldset class="ds-fieldset"><legend class="ds-fieldset__legend">Label</legend><p class="ds-field__caption">…</p>
+   *     <div class="ds-fieldset__fields">…fields…</div></fieldset>
+   */
+  .ds-fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+  }
+
+  /* Floated, so the legend is an ordinary flex item instead of sitting in the fieldset's border. */
+  .ds-fieldset__legend {
+    float: left;
+    width: 100%;
+    padding: 0;
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  /* 16 px under the legend (and description): the 4 px gap plus 12 px; 12 px between the fields. */
+  .ds-fieldset__fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    margin-top: var(--ds-spacing-3);
   }
 
   /* ── Input box ──────────────────────────────────────────────────────── */

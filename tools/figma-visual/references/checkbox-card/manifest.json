@@ -1,0 +1,59 @@
+{
+ "$comment": "Choice Card frames of the Checkbox page's \"Choice cards\" demo (inside the demo instance 1471:55409, so get_screenshot cannot export them on their own): cropped at 1x from the demo frame's render, whose render bounds start 3 px left and 2 px above the frame. Wide (448 px) and narrow (220 px) cards, unchecked and checked.",
+ "component": "checkbox-card",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "121:29",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "card-unchecked",
+   "nodeId": "I1471:55419;1467:45555;1471:60015",
+   "props": {
+    "Checked": "False",
+    "Width": "wide"
+   },
+   "target": "#target .ds-field",
+   "nodeW": 448,
+   "nodeH": 76
+  },
+  {
+   "slug": "card-checked",
+   "nodeId": "I1471:55419;1467:45555;1471:60022",
+   "props": {
+    "Checked": "True",
+    "Width": "wide"
+   },
+   "target": "#target .ds-field",
+   "nodeW": 448,
+   "nodeH": 76
+  },
+  {
+   "slug": "card-narrow-unchecked",
+   "nodeId": "I1471:55419;1467:45555;1471:60037",
+   "props": {
+    "Checked": "False",
+    "Width": "narrow"
+   },
+   "target": "#target .ds-field",
+   "nodeW": 220,
+   "nodeH": 96
+  },
+  {
+   "slug": "card-narrow-checked",
+   "nodeId": "I1471:55419;1467:45555;1471:60044",
+   "props": {
+    "Checked": "True",
+    "Width": "narrow"
+   },
+   "target": "#target .ds-field",
+   "nodeW": 220,
+   "nodeH": 96
+  }
+ ]
+}

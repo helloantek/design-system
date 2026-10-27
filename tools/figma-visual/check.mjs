@@ -94,7 +94,11 @@ function compare(ref, capture, box) {
     for (let dx = -SEARCH; dx <= SEARCH; dx++) {
       const cand = crop(capture, Math.round(cx + dx), Math.round(cy + dy), w, h);
       const n = pixelmatch(ref.data, cand.data, null, w, h, { threshold: 0.1, includeAA: false });
-      if (!best || n < best.n) best = { n, cand };
+      // Faint content (a translucent fill on a light page) matches at every offset at 0.1, so ties go to the finer
+      // threshold, then to the offset nearest the centre.
+      const fine = pixelmatch(ref.data, cand.data, null, w, h, { threshold: 0.03, includeAA: false });
+      const off = Math.abs(dx) + Math.abs(dy);
+      if (!best || n < best.n || (n === best.n && (fine < best.fine || (fine === best.fine && off < best.off)))) best = { n, fine, off, cand };
     }
   }
   const strong = differs(ref.data, best.cand.data, w, h, 0.1);
@@ -176,7 +180,7 @@ for (const component of components) {
       // Tab selects a filled input's text, which Figma does not draw; the caret is hidden by the screenshot.
       await page.evaluate(() => {
         const el = document.activeElement;
-        if (el instanceof HTMLInputElement && el.value) el.setSelectionRange(el.value.length, el.value.length);
+        if (el instanceof HTMLInputElement && el.value && el.selectionStart !== null) el.setSelectionRange(el.value.length, el.value.length);
       });
     }
     // Let the browser repaint after the interaction before taking the screenshot.

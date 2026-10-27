@@ -1,0 +1,103 @@
+{
+ "$comment": "Sort UI 2.0 Checkbox reference renders (1x PNG, get_screenshot): every Checked \u00d7 State. Focus is keyboard focus (check.mjs presses Tab). Focus and Invalid renders are cropped to the 16 px box (Figma's export adds the 3 px ring's margin); the ring colour is in the spec as the stroke and in the CSS.",
+ "component": "checkbox",
+ "componentSet": "121:29",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "unchecked-default",
+   "nodeId": "121:5",
+   "props": {
+    "Checked": "False",
+    "State": "Default"
+   },
+   "target": "#target .ds-checkbox",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "unchecked-focus",
+   "nodeId": "121:8",
+   "props": {
+    "Checked": "False",
+    "State": "Focus"
+   },
+   "target": "#target .ds-checkbox",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "unchecked-disabled",
+   "nodeId": "121:11",
+   "props": {
+    "Checked": "False",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-checkbox",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "unchecked-invalid",
+   "nodeId": "121:14",
+   "props": {
+    "Checked": "False",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-checkbox",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "checked-default",
+   "nodeId": "121:17",
+   "props": {
+    "Checked": "True",
+    "State": "Default"
+   },
+   "target": "#target .ds-checkbox",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "checked-focus",
+   "nodeId": "121:20",
+   "props": {
+    "Checked": "True",
+    "State": "Focus"
+   },
+   "target": "#target .ds-checkbox",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "checked-disabled",
+   "nodeId": "121:23",
+   "props": {
+    "Checked": "True",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-checkbox",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "checked-invalid",
+   "nodeId": "121:26",
+   "props": {
+    "Checked": "True",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-checkbox",
+   "nodeW": 16,
+   "nodeH": 16
+  }
+ ]
+}
