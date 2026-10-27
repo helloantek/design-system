@@ -208,7 +208,7 @@ npm run test:visual      # every component matches Figma: renders (pixels) and e
 - Try components before they are merged: every branch has a Storybook preview, plus a Playground form; see [previews](docs/previews.md).
 - New component: [playbook](docs/playbook.md), [Definition of Done](docs/definition-of-done.md), [Figma checklist](docs/figma-checklist.md). With Claude Code, the `figma-to-component` skill runs the whole path.
 - New brand: [adding a brand](docs/adding-a-brand.md).
-- Releases: add a changeset (`npm run changeset`); merging the "Version packages" PR publishes. Publishing is off until the repository variable `RELEASE_ENABLED` is set to `true` (Settings → Secrets and variables → Actions → Variables).
+- Releases: add a changeset (`npm run changeset`); the Release workflow opens a "Version packages" PR on each push to `main` (or from "Run workflow" in the Actions tab), and merging it publishes. It runs only when the repository variable `RELEASE_ENABLED` is `true` (Settings → Secrets and variables → Actions → Variables) and Actions may open pull requests (Settings → Actions → General → Workflow permissions: read and write, and "Allow GitHub Actions to create and approve pull requests").
 
 ## Known design findings
 
