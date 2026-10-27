@@ -455,7 +455,7 @@ Object.assign(tests, {
 });
 
 Object.assign(tests, {
-  'hover: Input, Select and choice cards get a dark 1.5 px stroke, not when disabled': async () => {
+  'hover: Input, Select, Textarea and choice cards get a dark 1.5 px stroke, not when disabled': async () => {
     const stroke = (locator) => locator.evaluate((el) => getComputedStyle(el).boxShadow.match(/(rgba?\([^)]+\)) 0px 0px 0px ([\d.]+px) inset/)?.slice(1).join(' '));
     const dark = 'rgb(98, 98, 98) 1.5px';
     const check = async (id, selector) => {
@@ -469,6 +469,7 @@ Object.assign(tests, {
     await check('components-input--playground', '.ds-input');
     await check('components-select--playground', '.ds-select__trigger');
     await check('components-checkbox--choice-cards', '.ds-field--card');
+    await check('components-textarea--playground', '.ds-textarea');
     await page.goto('http://localhost:6008/iframe.html?id=components-select--all-states&viewMode=story');
     const disabled = page.locator('.ds-select__trigger--disabled').first();
     const rest = await stroke(disabled);
@@ -510,6 +511,38 @@ Object.assign(tests, {
     assert.equal(await first.getAttribute('required'), '', 'a required group makes its radios required');
     const ids = (await first.getAttribute('aria-describedby')).split(' ');
     assert.equal(await page.locator(`#${ids[ids.length - 1]}`).textContent(), 'Pick one to finish setting up your profile.', 'the error describes each radio');
+  },
+  'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
+    const post = page.getByRole('textbox', { name: 'Post' });
+    const count = page.locator('.ds-textarea__count').first();
+    assert.equal(await count.locator('[aria-hidden]').first().textContent(), '195', '280 − 85 characters left');
+    assert.match(await page.locator(`#${(await post.getAttribute('aria-describedby')).split(' ').pop()}`).textContent(), /195 of 280 characters left/, 'the count describes the textarea');
+    await post.focus();
+    await page.keyboard.press('End');
+    await page.keyboard.type('!!');
+    assert.equal(await count.locator('[aria-hidden]').first().textContent(), '193');
+    await post.fill('x'.repeat(300));
+    assert.equal((await post.inputValue()).length, 280, 'maxLength stops at the limit');
+    assert.equal(await count.locator('[aria-hidden]').first().textContent(), '0');
+  },
+  'textarea: a soft limit goes negative and marks it invalid; focus draws the ring; it grows with its text': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
+    const tagline = page.getByRole('textbox', { name: 'Tagline' });
+    assert.equal(await tagline.getAttribute('aria-invalid'), 'true', 'over the soft limit');
+    assert.equal(await page.locator('.ds-textarea__count--over [aria-hidden]').first().textContent(), '-6');
+    await tagline.fill('Ship small.');
+    assert.equal(await tagline.getAttribute('aria-invalid'), null, 'back under the limit');
+    await page.goto('http://localhost:6008/iframe.html?id=components-textarea--field&viewMode=story');
+    const summary = page.getByRole('textbox', { name: 'Summary' });
+    await summary.waitFor();
+    await page.keyboard.press('Tab');
+    assert.equal(await summary.evaluate((el) => el === document.activeElement), true, 'Tab reaches the textarea');
+    assert.match(await summary.evaluate((el) => getComputedStyle(el).boxShadow), /0px 0px 0px 2px/, 'focus ring');
+    const before = (await summary.boundingBox()).height;
+    assert.equal(before, 64, 'at least 64 px tall');
+    await summary.fill('One\nTwo\nThree\nFour\nFive');
+    assert.equal((await summary.boundingBox()).height > before, true, 'grows with its text');
   },
   'button-group: a named group; outer corners only; the focused item rises above its neighbours': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-button-group--toolbar&viewMode=story');

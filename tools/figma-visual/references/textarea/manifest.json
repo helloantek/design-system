@@ -1,0 +1,103 @@
+{
+ "$comment": "Sort UI 2.0 Textarea (99:72) reference renders (1x PNG, exported with get_screenshot): every Value and State, with the sample texts of the Figma file; renderers/textarea.tsx turns them into props. Focus and Invalid renders keep the ring's 2 px margin, as in references/input.",
+ "component": "textarea",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "99:72",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "placeholder-default",
+   "nodeId": "99:24",
+   "props": {
+    "Value": "Placeholder",
+    "State": "Default"
+   },
+   "target": "#target .ds-textarea",
+   "nodeW": 280,
+   "nodeH": 64
+  },
+  {
+   "slug": "placeholder-focus",
+   "nodeId": "99:26",
+   "props": {
+    "Value": "Placeholder",
+    "State": "Focus"
+   },
+   "target": "#target .ds-textarea",
+   "nodeW": 280,
+   "nodeH": 64
+  },
+  {
+   "slug": "placeholder-disabled",
+   "nodeId": "99:28",
+   "props": {
+    "Value": "Placeholder",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-textarea",
+   "nodeW": 280,
+   "nodeH": 64
+  },
+  {
+   "slug": "placeholder-invalid",
+   "nodeId": "99:30",
+   "props": {
+    "Value": "Placeholder",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-textarea",
+   "nodeW": 280,
+   "nodeH": 64
+  },
+  {
+   "slug": "filled-default",
+   "nodeId": "99:32",
+   "props": {
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-textarea",
+   "nodeW": 280,
+   "nodeH": 64
+  },
+  {
+   "slug": "filled-focus",
+   "nodeId": "99:34",
+   "props": {
+    "Value": "Filled",
+    "State": "Focus"
+   },
+   "target": "#target .ds-textarea",
+   "nodeW": 280,
+   "nodeH": 64
+  },
+  {
+   "slug": "filled-disabled",
+   "nodeId": "99:36",
+   "props": {
+    "Value": "Filled",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-textarea",
+   "nodeW": 280,
+   "nodeH": 64
+  },
+  {
+   "slug": "filled-invalid",
+   "nodeId": "99:38",
+   "props": {
+    "Value": "Filled",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-textarea",
+   "nodeW": 280,
+   "nodeH": 64
+  }
+ ]
+}
