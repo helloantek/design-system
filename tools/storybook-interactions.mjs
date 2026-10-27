@@ -559,6 +559,39 @@ Object.assign(tests, {
     assert.equal(at.x + at.width <= 600, true, 'near the right edge it opens to the left of the pointer');
     await page.setViewportSize(viewport);
   },
+  'switch: role switch; label click and Space toggle; disabled does not; error describes it': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-switch--with-description&viewMode=story');
+    const onboarding = page.getByRole('switch', { name: 'User onboarding emails' });
+    await onboarding.waitFor();
+    assert.equal(await onboarding.isChecked(), true);
+    await page.getByText('User onboarding emails').click();
+    assert.equal(await onboarding.isChecked(), false, 'the label toggles it');
+    await onboarding.focus();
+    await page.keyboard.press('Space');
+    assert.equal(await onboarding.isChecked(), true, 'Space toggles it');
+    const thumb = page.locator('.ds-switch__thumb').first();
+    assert.notEqual(await thumb.evaluate((el) => getComputedStyle(el).translate), 'none', 'the thumb moves to the end when on');
+    const disabled = page.getByRole('switch', { name: 'Product update notifications' });
+    await page.getByText('Product update notifications').click({ force: true });
+    assert.equal(await disabled.isChecked(), false, 'a disabled switch does not toggle');
+    await page.goto('http://localhost:6008/iframe.html?id=components-switch--invalid&viewMode=story');
+    const twoFactor = page.getByRole('switch', { name: 'Two-factor authentication' });
+    assert.equal(await twoFactor.getAttribute('aria-invalid'), 'true');
+    assert.equal(await page.locator(`#${await twoFactor.getAttribute('aria-describedby')}`).textContent(), 'Required for admins — turn it on to keep the role.');
+  },
+  'switch: a click anywhere on a choice card toggles it; focus rings the card, not the switch': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-switch--choice-cards&viewMode=story');
+    const shuffle = page.getByRole('switch', { name: 'Smart shuffle' });
+    await shuffle.waitFor();
+    const card = page.locator('.ds-field--card').first();
+    const box = await card.boundingBox();
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height - 6);
+    assert.equal(await shuffle.isChecked(), true, 'a click on the card toggles it');
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    assert.match(await card.evaluate((el) => getComputedStyle(el).boxShadow), /0px 0px 0px 3px/, 'the card shows the ring');
+    assert.equal(await shuffle.evaluate((el) => getComputedStyle(el).boxShadow.includes('0px 0px 0px 3px')), false, 'not the switch');
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });

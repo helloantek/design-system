@@ -8,6 +8,7 @@ import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
+import { renderSwitch } from './switch';
 import { renderTextarea } from './textarea';
 import type { Renderer } from './types';
 
@@ -30,5 +31,6 @@ export const renderers: Record<string, Renderer> = {
   select: renderSelect,
   'select-item': renderSelectItem,
   'status-badge': renderStatusBadge,
+  switch: renderSwitch,
   textarea: renderTextarea,
 };
