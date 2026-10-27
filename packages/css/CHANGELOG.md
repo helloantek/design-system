@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.2.1
+
+### Patch Changes
+
+- 55debeb: Input, Select and Checkbox choice cards react to hover with a dark 1.5 px stroke (`muted-foreground`, `stroke-width-3`). Focused, invalid and disabled fields keep their look.
+
 ## 2.2.0
 
 ### Minor Changes
