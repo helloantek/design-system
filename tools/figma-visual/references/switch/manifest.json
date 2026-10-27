@@ -1,0 +1,207 @@
+{
+ "$comment": "Sort UI 2.0 Switch (121:115) reference renders (1x PNG, get_screenshot): every Size × Checked × State. Focus is keyboard focus (check.mjs presses Tab). Focus and Invalid renders are cropped to the track (Figma's export adds the 3 px ring's margin), as in references/radio. The switch's off fill is translucent, so it sits on the page background, as Figma draws it.",
+ "component": "switch",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "121:115",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-off-default",
+   "nodeId": "121:83",
+   "props": {
+    "Size": "default",
+    "Checked": "False",
+    "State": "Default"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 32,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-off-focus",
+   "nodeId": "121:85",
+   "props": {
+    "Size": "default",
+    "Checked": "False",
+    "State": "Focus"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 32,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-off-disabled",
+   "nodeId": "121:87",
+   "props": {
+    "Size": "default",
+    "Checked": "False",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 32,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-off-invalid",
+   "nodeId": "121:89",
+   "props": {
+    "Size": "default",
+    "Checked": "False",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 32,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-on-default",
+   "nodeId": "121:91",
+   "props": {
+    "Size": "default",
+    "Checked": "True",
+    "State": "Default"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 32,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-on-focus",
+   "nodeId": "121:93",
+   "props": {
+    "Size": "default",
+    "Checked": "True",
+    "State": "Focus"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 32,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-on-disabled",
+   "nodeId": "121:95",
+   "props": {
+    "Size": "default",
+    "Checked": "True",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 32,
+   "nodeH": 20
+  },
+  {
+   "slug": "default-on-invalid",
+   "nodeId": "121:97",
+   "props": {
+    "Size": "default",
+    "Checked": "True",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 32,
+   "nodeH": 20
+  },
+  {
+   "slug": "sm-off-default",
+   "nodeId": "121:99",
+   "props": {
+    "Size": "sm",
+    "Checked": "False",
+    "State": "Default"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 24,
+   "nodeH": 16
+  },
+  {
+   "slug": "sm-off-focus",
+   "nodeId": "121:101",
+   "props": {
+    "Size": "sm",
+    "Checked": "False",
+    "State": "Focus"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 24,
+   "nodeH": 16
+  },
+  {
+   "slug": "sm-off-disabled",
+   "nodeId": "121:103",
+   "props": {
+    "Size": "sm",
+    "Checked": "False",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 24,
+   "nodeH": 16
+  },
+  {
+   "slug": "sm-off-invalid",
+   "nodeId": "121:105",
+   "props": {
+    "Size": "sm",
+    "Checked": "False",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 24,
+   "nodeH": 16
+  },
+  {
+   "slug": "sm-on-default",
+   "nodeId": "121:107",
+   "props": {
+    "Size": "sm",
+    "Checked": "True",
+    "State": "Default"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 24,
+   "nodeH": 16
+  },
+  {
+   "slug": "sm-on-focus",
+   "nodeId": "121:109",
+   "props": {
+    "Size": "sm",
+    "Checked": "True",
+    "State": "Focus"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 24,
+   "nodeH": 16
+  },
+  {
+   "slug": "sm-on-disabled",
+   "nodeId": "121:111",
+   "props": {
+    "Size": "sm",
+    "Checked": "True",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 24,
+   "nodeH": 16
+  },
+  {
+   "slug": "sm-on-invalid",
+   "nodeId": "121:113",
+   "props": {
+    "Size": "sm",
+    "Checked": "True",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-switch",
+   "nodeW": 24,
+   "nodeH": 16
+  }
+ ]
+}

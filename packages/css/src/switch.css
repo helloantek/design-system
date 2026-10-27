@@ -1,0 +1,124 @@
+/*
+ * Switch — Sort UI 2.0 component set "Switch" (node 121:115) on page 121:4 in file 4JnqgEbdlnKgiFrfmiwEZw, with
+ * "Field" Orientation=Horizontal and the choice card (in input.css) for its label. Values are Sort UI 2.0 tokens.
+ * Framework-agnostic: any markup with these classes works. The native checkbox (role="switch") is the track, so
+ * forms, labels and Space work as usual.
+ *
+ * Markup:
+ *   <span class="ds-switch [ds-switch--sm]">
+ *     <input class="ds-switch__input" type="checkbox" role="switch" [checked] [disabled] [aria-invalid="true"]>
+ *     <span class="ds-switch__thumb" aria-hidden="true"></span>
+ *   </span>
+ * Figma Size: default (32 × 20, a 16 px thumb) or sm (24 × 16, a 12 px thumb). Checked = :checked;
+ * State: Focus = :focus-visible, Disabled = :disabled, Invalid = [aria-invalid="true"].
+ */
+
+@layer ds.components {
+  .ds-switch {
+    --switch-width: var(--ds-spacing-8);
+    --switch-height: var(--ds-spacing-5);
+    --switch-thumb: var(--ds-spacing-4);
+
+    position: relative;
+    display: inline-grid;
+    flex-shrink: 0;
+    width: var(--switch-width);
+    height: var(--switch-height);
+    vertical-align: middle;
+  }
+
+  .ds-switch--sm {
+    --switch-width: var(--ds-spacing-6);
+    --switch-height: var(--ds-spacing-4);
+    --switch-thumb: var(--ds-spacing-3);
+  }
+
+  /* Figma "Switch": the track, a pill with 2 px around the thumb. */
+  .ds-switch__input {
+    --switch-stroke: transparent;
+    --switch-ring: 0 0 #0000;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: var(--ds-radius-full);
+    outline: none;
+    background-color: var(--ds-fill-3);
+    /* Figma: a 2 px stroke inside (Checked, Focus, Invalid) and a 3 px ring. */
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-4) var(--switch-stroke), var(--switch-ring);
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .ds-switch__input:checked {
+    --switch-stroke: var(--ds-primary);
+
+    background-color: var(--ds-primary);
+  }
+
+  /* Figma State=Focus: the ring stroke (primary when checked) and a 3 px ring. */
+  .ds-switch__input:focus-visible {
+    --switch-ring: 0 0 0 calc(var(--ds-stroke-width-4) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-switch__input:focus-visible:not(:checked) {
+    --switch-stroke: var(--switch-focus-stroke, var(--ds-ring));
+  }
+
+  /* Figma State=Invalid: the invalid-border stroke (primary when checked) and the invalid ring. */
+  .ds-switch__input[aria-invalid='true'] {
+    --switch-ring: 0 0 0 calc(var(--ds-stroke-width-4) + var(--ds-stroke-width-1)) var(--ds-invalid-ring);
+  }
+
+  .ds-switch__input[aria-invalid='true']:not(:checked) {
+    --switch-stroke: var(--ds-invalid-border);
+  }
+
+  /* Figma State=Disabled: the whole switch at 50 %. */
+  .ds-switch:has(.ds-switch__input:disabled) {
+    opacity: 0.5;
+  }
+
+  .ds-switch__input:disabled {
+    cursor: not-allowed;
+  }
+
+  /*
+   * Figma "Thumb": 2 px in from the start, at the end when checked, with Shadow/sm. Unchecked it is unchecked-thumb
+   * with a faint highlight from the top (Figma 8 %, the 10 % token). Figma's stroke fades from white at the top
+   * (30 %, 25 % when checked) to nothing; the code draws it as a 1 px white rim along the top. Both only show where the
+   * thumb is not white (Dark). The input takes the clicks.
+   */
+  .ds-switch__thumb {
+    position: absolute;
+    top: calc((var(--switch-height) - var(--switch-thumb)) / 2);
+    inset-inline-start: calc((var(--switch-height) - var(--switch-thumb)) / 2);
+    width: var(--switch-thumb);
+    height: var(--switch-thumb);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--switch-thumb-fill, var(--ds-unchecked-thumb));
+    background-image: linear-gradient(var(--switch-thumb-highlight, var(--ds-alpha-white-10)), transparent 70%);
+    box-shadow: inset 0 var(--ds-stroke-width-1) 0 var(--switch-thumb-edge, var(--ds-alpha-white-30)), var(--ds-shadow-sm);
+    pointer-events: none;
+    transition: translate 120ms ease;
+  }
+
+  .ds-switch__input:checked + .ds-switch__thumb {
+    --switch-thumb-fill: var(--ds-primary-foreground);
+    --switch-thumb-highlight: transparent;
+    --switch-thumb-edge: var(--ds-alpha-white-20);
+
+    translate: calc(var(--switch-width) - var(--switch-height)) 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-switch__thumb {
+      transition: none;
+    }
+  }
+
+  .ds-switch:dir(rtl) .ds-switch__input:checked + .ds-switch__thumb {
+    translate: calc(var(--switch-height) - var(--switch-width)) 0;
+  }
+}

@@ -27,7 +27,7 @@ Each stage is its own branch and pull request, and `main` stays green between th
    major changeset takes them to 2.0.0. The migration note for apps is below.
 
 New 2.0 components (Alert Dialog, Dialog, Checkbox, Tabs…) follow the normal playbook after stage 2. Done: Dropdown Menu
-(page `148:2`), Checkbox (page `121:2`), Radio (page `121:3`), Button Group (page `302:14707`), Textarea (page `99:2`), Context Menu (page `161:1174`).
+(page `148:2`), Checkbox (page `121:2`), Radio (page `121:3`), Button Group (page `302:14707`), Textarea (page `99:2`), Context Menu (page `161:1174`), Switch (page `121:4`).
 
 ## Tokens
 

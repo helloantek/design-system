@@ -1,0 +1,18 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-switch) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "selector": ".ds-switch__input",
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g",
+        "opacity"
+      ],
+      "$why": "The thumb is placed absolutely 2 px in (Figma's 2 px padding), so the track has no padding of its own; Disabled fades the whole .ds-switch (track and thumb together, like Figma's layer opacity), not the input. The pixels cover both."
+    },
+    "Thumb": {
+      "selector": ".ds-switch__thumb"
+    }
+  }
+}
