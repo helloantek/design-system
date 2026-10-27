@@ -121,20 +121,17 @@
     box-sizing: border-box;
     padding: var(--ds-spacing-4);
     border-radius: var(--ds-radius-2xl);
-    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    box-shadow: inset 0 0 0 var(--card-stroke-width, var(--ds-stroke-width-1)) var(--card-stroke, var(--ds-border));
   }
 
   .ds-field--card:has(.ds-checkbox__input:checked:not(:indeterminate)) {
     background-color: var(--ds-fill-1);
   }
 
-  /* Hover (ours, like Input and Select): one fill step darker, none → fill-1, checked fill-1 → fill-2. */
+  /* Hover (ours, like Input and Select): a dark 1.5 px stroke. */
   .ds-field--card:hover:not(:has(.ds-checkbox__input:disabled)) {
-    background-color: var(--ds-fill-1);
-  }
-
-  .ds-field--card:hover:not(:has(.ds-checkbox__input:disabled)):has(.ds-checkbox__input:checked:not(:indeterminate)) {
-    background-color: var(--ds-fill-2);
+    --card-stroke: var(--ds-muted-foreground);
+    --card-stroke-width: var(--ds-stroke-width-3);
   }
 
   .ds-field--card .ds-field__label::after {
@@ -205,7 +202,7 @@
     /* 8 px like Button (Figma draws 10 px; the design system uses one control radius, see the README). */
     border-radius: var(--ds-radius-md);
     background-color: var(--input-bg);
-    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--input-stroke), var(--input-ring), var(--input-shadow);
+    box-shadow: inset 0 0 0 var(--input-stroke-width, var(--ds-stroke-width-1)) var(--input-stroke), var(--input-ring), var(--input-shadow);
     font-family: var(--ds-font-sans);
     font-size: var(--ds-text-xs);
     font-weight: var(--ds-font-weight-normal);
@@ -239,13 +236,10 @@
     --input-stroke: transparent;
   }
 
-  /* Hover (not a Figma state; ours): the fill one step darker, field → fill-1 (Soft: fill-1 → fill-2). Not while focused. */
-  .ds-input:hover:not(:focus-within, .ds-input--disabled) {
-    --input-bg: var(--ds-fill-1);
-  }
-
-  .ds-input--soft:hover:not(:focus-within, .ds-input--disabled) {
-    --input-bg: var(--ds-fill-2);
+  /* Hover (not a Figma state; ours): a dark 1.5 px stroke. Not while focused, invalid or disabled. */
+  .ds-input:hover:not(:focus-within, .ds-input--invalid, .ds-input--disabled) {
+    --input-stroke: var(--ds-muted-foreground);
+    --input-stroke-width: var(--ds-stroke-width-3);
   }
 
   /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */

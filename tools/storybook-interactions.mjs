@@ -455,29 +455,25 @@ Object.assign(tests, {
 });
 
 Object.assign(tests, {
-  'hover: Input, Select and choice cards get one fill step darker, not when disabled': async () => {
-    const bg = (locator) => locator.evaluate((el) => getComputedStyle(el).backgroundColor);
-    const check = async (id, selector, expected) => {
+  'hover: Input, Select and choice cards get a dark 1.5 px stroke, not when disabled': async () => {
+    const stroke = (locator) => locator.evaluate((el) => getComputedStyle(el).boxShadow.match(/(rgba?\([^)]+\)) 0px 0px 0px ([\d.]+px) inset/)?.slice(1).join(' '));
+    const dark = 'rgb(98, 98, 98) 1.5px';
+    const check = async (id, selector) => {
       await page.goto(`http://localhost:6008/iframe.html?id=${id}&viewMode=story`);
       const el = page.locator(selector).first();
       await page.mouse.move(0, 0);
-      const rest = await bg(el);
+      assert.notEqual(await stroke(el), dark, `${selector} at rest`);
       await el.hover();
-      assert.notEqual(await bg(el), rest, `${selector} changes on hover`);
-      assert.equal(await bg(el), expected, `${selector} hover fill`);
+      assert.equal(await stroke(el), dark, `${selector} on hover`);
     };
-    await check('components-input--playground', '.ds-input', 'rgba(115, 115, 115, 0.05)');
-    await check('components-select--playground', '.ds-select__trigger', 'rgba(115, 115, 115, 0.05)');
-    await check('components-checkbox--choice-cards', '.ds-field--card', 'rgba(115, 115, 115, 0.05)');
-    await page.goto('http://localhost:6008/iframe.html?id=components-checkbox--choice-cards&viewMode=story');
-    const checked = page.locator('.ds-field--card').nth(1);
-    await checked.hover();
-    assert.equal(await bg(checked), 'rgba(115, 115, 115, 0.08)', 'a checked card goes from fill-1 to fill-2');
+    await check('components-input--playground', '.ds-input');
+    await check('components-select--playground', '.ds-select__trigger');
+    await check('components-checkbox--choice-cards', '.ds-field--card');
     await page.goto('http://localhost:6008/iframe.html?id=components-select--all-states&viewMode=story');
     const disabled = page.locator('.ds-select__trigger--disabled').first();
-    const rest = await bg(disabled);
+    const rest = await stroke(disabled);
     await disabled.hover({ force: true });
-    assert.equal(await bg(disabled), rest, 'a disabled select does not react');
+    assert.equal(await stroke(disabled), rest, 'a disabled select does not react');
   },
 });
 

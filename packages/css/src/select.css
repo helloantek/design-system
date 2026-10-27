@@ -86,7 +86,7 @@
     border-radius: var(--ds-radius-md);
     outline: none;
     background-color: var(--select-bg);
-    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--select-stroke), var(--select-ring), var(--select-shadow);
+    box-shadow: inset 0 0 0 var(--select-stroke-width, var(--ds-stroke-width-1)) var(--select-stroke), var(--select-ring), var(--select-shadow);
     font-family: var(--ds-font-sans);
     font-size: var(--ds-text-xs);
     font-weight: var(--ds-font-weight-normal);
@@ -125,13 +125,10 @@
     --select-stroke: transparent;
   }
 
-  /* Hover (not a Figma state; ours, as in Input): the fill one step darker. Not while focused or open. */
-  .ds-select__trigger:hover:not(:focus, .ds-select__trigger--disabled) {
-    --select-bg: var(--ds-fill-1);
-  }
-
-  .ds-select__trigger--soft:hover:not(:focus, .ds-select__trigger--disabled) {
-    --select-bg: var(--ds-fill-2);
+  /* Hover (not a Figma state; ours, as in Input): a dark 1.5 px stroke. Not while focused (or open), invalid or disabled. */
+  .ds-select__trigger:hover:not(:focus, .ds-select__trigger--invalid, .ds-select__trigger--disabled) {
+    --select-stroke: var(--ds-muted-foreground);
+    --select-stroke-width: var(--ds-stroke-width-3);
   }
 
   /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */
