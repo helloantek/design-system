@@ -1,15 +1,23 @@
 {
   "name": "@helloantek/ds-css",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Framework-agnostic component styles built only on @helloantek/ds-tokens.",
   "type": "module",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "exports": {
     ".": "./src/index.css",
     "./*.css": "./src/*.css"
   },
   "style": "./src/index.css",
-  "sideEffects": ["*.css"],
-  "peerDependencies": { "@helloantek/ds-tokens": "^1.0.0" },
-  "publishConfig": { "registry": "https://npm.pkg.github.com" }
+  "sideEffects": [
+    "*.css"
+  ],
+  "peerDependencies": {
+    "@helloantek/ds-tokens": "^2.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }
