@@ -26,6 +26,8 @@ Review checklist for designers and product:
 
 `.github/workflows/preview.yml` builds Storybook on every push and `tools/storybook-preview.mjs` puts it in a folder of the `gh-pages` branch, which GitHub Pages serves. Deleting the branch removes its preview. Previews of forks are not built.
 
+After a push, a tab that was already open may show the previous build for up to 10 minutes (GitHub Pages lets browsers cache files that long). Each publish keeps the previous build's `assets/`, so that old version still loads instead of failing with "Failed to fetch dynamically imported module". To see the new build at once, open the preview in a private window or clear the site's data for `helloantek.github.io`.
+
 **One-time setup** (repository admin), after the workflow has run once and created the `gh-pages` branch: Settings → Pages → Build and deployment → Source: *Deploy from a branch* → Branch: `gh-pages`, folder `/ (root)` → Save.
 
 Previews are public, like the repository.

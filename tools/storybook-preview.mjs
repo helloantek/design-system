@@ -7,6 +7,9 @@
 // Needs GITHUB_TOKEN (contents: write) and GITHUB_REPOSITORY, as in GitHub Actions; PREVIEW_REMOTE overrides the
 // remote URL (used for local tests). Every deploy replaces gh-pages with one commit, so the branch does not grow with
 // each build; --force-with-lease plus retries keeps concurrent deploys of other branches from overwriting each other.
+// A publish keeps the previous build's assets/ next to the new ones (one generation): a browser that still has the old
+// iframe.html cached (GitHub Pages lets it keep files for 10 minutes) then loads the old version instead of failing on
+// "Failed to fetch dynamically imported module". preview.json lists the build's own assets, so older ones are dropped.
 import { execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -78,12 +81,26 @@ for (let attempt = 1; ; attempt++) {
       git(dir, 'init', '--quiet', '-b', 'gh-pages');
       git(dir, 'remote', 'add', 'origin', remote);
     }
-    rmSync(join(dir, slug), { recursive: true, force: true });
-    if (action === 'publish') {
-      cpSync(resolve(buildDir), join(dir, slug), { recursive: true });
-      const sha = process.env.GITHUB_SHA ?? git(process.cwd(), 'rev-parse', 'HEAD');
-      writeFileSync(join(dir, slug, 'preview.json'), JSON.stringify({ branch, sha, updated: new Date().toISOString() }) + '\n');
+    const target = join(dir, slug);
+    // The previous build's own assets (all of assets/ for builds published before preview.json listed them).
+    const previous = mkdtempSync(join(tmpdir(), 'previous-assets-'));
+    if (action === 'publish' && existsSync(join(target, 'assets'))) {
+      const meta = existsSync(join(target, 'preview.json')) ? JSON.parse(readFileSync(join(target, 'preview.json'), 'utf8')) : {};
+      for (const name of meta.assets ?? readdirSync(join(target, 'assets'))) {
+        if (existsSync(join(target, 'assets', name))) cpSync(join(target, 'assets', name), join(previous, name));
+      }
     }
+    rmSync(target, { recursive: true, force: true });
+    if (action === 'publish') {
+      cpSync(resolve(buildDir), target, { recursive: true });
+      const assets = existsSync(join(target, 'assets')) ? readdirSync(join(target, 'assets')) : [];
+      for (const name of readdirSync(previous)) {
+        if (!assets.includes(name)) cpSync(join(previous, name), join(target, 'assets', name));
+      }
+      const sha = process.env.GITHUB_SHA ?? git(process.cwd(), 'rev-parse', 'HEAD');
+      writeFileSync(join(target, 'preview.json'), JSON.stringify({ branch, sha, updated: new Date().toISOString(), assets }) + '\n');
+    }
+    rmSync(previous, { recursive: true, force: true });
     writeIndex(dir);
     writeFileSync(join(dir, '.nojekyll'), ''); // serve folders starting with "_" too
     git(dir, 'add', '-A');
