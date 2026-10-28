@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useSyncExternalStore, type HTMLAttributes, type MouseEvent, type ReactNode, type Ref, type RefObject } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type HTMLAttributes, type MouseEvent, type ReactNode, type Ref, type RefObject } from 'react';
 import { Button } from '../Button';
 
 // Styles live in @helloantek/ds-css (classes ds-toaster*, ds-toast*). `toast()` adds a notification to a shared
@@ -189,13 +189,18 @@ export interface ToasterProps {
   closeButton?: boolean;
   /** How many toasts show at once (default 3); the others wait their turn. */
   visibleToasts?: number;
+  /**
+   * Not in Figma: piles the toasts up, the newest in front and the older ones peeking 14 px out behind it, smaller.
+   * Hovering or focusing the pile spreads it into the list.
+   */
+  stacked?: boolean;
   /** The region's accessible name. */
   label?: string;
   className?: string;
 }
 
 /** The fixed region that shows `toast()` notifications. Mount it once, near the root of the app. */
-export function Toaster({ position = 'bottom-right', duration = 4000, closeButton = false, visibleToasts = 3, label = 'Notifications', className }: ToasterProps) {
+export function Toaster({ position = 'bottom-right', duration = 4000, closeButton = false, visibleToasts = 3, stacked = false, label = 'Notifications', className }: ToasterProps) {
   const all = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
   const shown = all.slice(-visibleToasts);
   const region = useRef<HTMLElement>(null);
@@ -203,6 +208,11 @@ export function Toaster({ position = 'bottom-right', duration = 4000, closeButto
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [pageHidden, setPageHidden] = useState(false);
+  // Stacked: each toast's own height, measured, to place the pile and the spread-out list.
+  const [heights, setHeights] = useState<Record<string, number>>({});
+  const onHeight = (id: ToastId, height: number) => setHeights((h) => (h[id] === height ? h : { ...h, [id]: height }));
+  const heightOf = (id: ToastId) => heights[id] ?? 0;
+  const newestFirst = [...shown].reverse();
 
   useEffect(() => {
     const onKey = (event: globalThis.KeyboardEvent) => {
@@ -224,7 +234,8 @@ export function Toaster({ position = 'bottom-right', duration = 4000, closeButto
   return (
     <section
       ref={region}
-      className={cx('ds-toaster', `ds-toaster--${position}`, className)}
+      className={cx('ds-toaster', `ds-toaster--${position}`, stacked && 'ds-toaster--stacked', className)}
+      data-expanded={stacked && (hovered || focused) ? '' : undefined}
       aria-label={label}
       aria-keyshortcuts="Alt+T"
       tabIndex={-1}
@@ -241,10 +252,30 @@ export function Toaster({ position = 'bottom-right', duration = 4000, closeButto
         }
       }}
     >
-      <ol className="ds-toaster__list" aria-live="polite">
-        {shown.map((record) => (
-          <ToasterItem key={record.id} record={record} duration={duration} closeButton={closeButton} paused={hovered || focused || pageHidden} region={region} />
-        ))}
+      <ol
+        className="ds-toaster__list"
+        aria-live="polite"
+        style={
+          stacked && shown.length > 0
+            ? ({ '--toaster-front': `${heightOf(newestFirst[0].id)}px`, '--toaster-sum': `${shown.reduce((sum, r) => sum + heightOf(r.id), 0)}px`, '--toaster-count': shown.length } as CSSProperties)
+            : undefined
+        }
+      >
+        {shown.map((record) => {
+          const index = newestFirst.indexOf(record);
+          const offset = newestFirst.slice(0, index).reduce((sum, r) => sum + heightOf(r.id), 0);
+          return (
+            <ToasterItem
+              key={record.id}
+              record={record}
+              duration={duration}
+              closeButton={closeButton}
+              paused={hovered || focused || pageHidden}
+              region={region}
+              stack={stacked ? { index, offset, onHeight } : undefined}
+            />
+          );
+        })}
       </ol>
     </section>
   );
@@ -256,11 +287,23 @@ interface ToasterItemProps {
   closeButton: boolean;
   paused: boolean;
   region: RefObject<HTMLElement | null>;
+  /** Stacked: 0 for the newest; the height of the newer toasts above it in the spread-out list. */
+  stack?: { index: number; offset: number; onHeight: (id: ToastId, height: number) => void };
 }
 
-function ToasterItem({ record, duration, closeButton, paused, region }: ToasterItemProps) {
+function ToasterItem({ record, duration, closeButton, paused, region, stack }: ToasterItemProps) {
   const element = useRef<HTMLElement>(null);
   const remaining = useRef(0);
+
+  // Its natural height: the pile squeezes the toasts behind to the front one's height, so measure with that undone.
+  useLayoutEffect(() => {
+    const el = element.current;
+    if (!stack || !el) return;
+    el.style.height = 'auto';
+    const height = el.offsetHeight;
+    el.style.height = '';
+    stack.onHeight(record.id, height);
+  });
 
   // A new version (an update) starts the time again.
   useEffect(() => {
@@ -313,6 +356,8 @@ function ToasterItem({ record, duration, closeButton, paused, region }: ToasterI
       actions={actions}
       onClose={(record.closeButton ?? closeButton) ? () => close(record.id, 'dismiss') : undefined}
       data-state={record.closing ? 'closed' : 'open'}
+      data-front={stack?.index === 0 ? '' : undefined}
+      style={stack && ({ '--toast-index': stack.index, '--toast-offset': `${stack.offset}px` } as CSSProperties)}
     />
   );
 }

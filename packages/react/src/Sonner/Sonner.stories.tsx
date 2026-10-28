@@ -25,11 +25,11 @@ const meta = {
 
 export default meta;
 
-type PlaygroundArgs = { type: ToastType; title: string; description: string; action: boolean; cancel: boolean; closeButton: boolean; position: ToasterPosition; duration: number };
+type PlaygroundArgs = { type: ToastType; title: string; description: string; action: boolean; cancel: boolean; closeButton: boolean; stacked: boolean; position: ToasterPosition; duration: number };
 
 /** Press the button to show a toast with these settings. */
 export const Playground: StoryObj<PlaygroundArgs> = {
-  args: { type: 'default', title: 'Table booked for 4', description: 'Friday, Oct 3 at 7:30 PM · Café Lumière', action: true, cancel: false, closeButton: false, position: 'bottom-right', duration: 4000 },
+  args: { type: 'default', title: 'Table booked for 4', description: 'Friday, Oct 3 at 7:30 PM · Café Lumière', action: true, cancel: false, closeButton: false, stacked: false, position: 'bottom-right', duration: 4000 },
   argTypes: {
     type: { name: 'Type', control: 'select', options: ['default', 'success', 'info', 'warning', 'error', 'loading'] },
     title: { name: 'Title' },
@@ -37,10 +37,11 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     action: { name: 'Action' },
     cancel: { name: 'Cancel' },
     closeButton: { name: 'Close' },
+    stacked: { name: 'Stacked (not in Figma)' },
     position: { control: 'select', options: ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'] },
     duration: { control: { type: 'number', step: 1000 } },
   },
-  render: ({ type, title, description, action, cancel, closeButton, position, duration }) => (
+  render: ({ type, title, description, action, cancel, closeButton, stacked, position, duration }) => (
     <>
       <Button
         variant="outline"
@@ -55,7 +56,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
       >
         Show toast
       </Button>
-      <Toaster position={position} duration={duration} closeButton={closeButton} />
+      <Toaster position={position} duration={duration} closeButton={closeButton} stacked={stacked} />
     </>
   ),
 };
@@ -140,6 +141,39 @@ export const Toasts: StoryObj = {
         </Button>
       </div>
       <Toaster />
+    </>
+  ),
+};
+
+/**
+ * Not in Figma: `stacked` piles the toasts up, the newest in front and the older ones peeking out behind it. Hover or
+ * focus (Alt+T, Tab) spreads them into the list.
+ */
+export const Stacked: StoryObj = {
+  render: () => (
+    <>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        <Button variant="outline" onClick={() => toast.success('Your order is on its way', { description: 'Arriving Friday between 9 and 11 AM.' })}>
+          Success
+        </Button>
+        <Button variant="outline" onClick={() => toast.info('Your driver is 3 minutes away')}>
+          Info
+        </Button>
+        <Button variant="outline" onClick={() => toast('Maya invited you to a trip', { description: 'Weekend in Porto', cancel: { label: 'Decline' }, action: { label: 'Join' } })}>
+          Action and cancel
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => {
+            toast.success('Your order is on its way', { description: 'Arriving Friday between 9 and 11 AM.', duration: 20000 });
+            toast.warning('Your storage is almost full', { duration: 20000 });
+            toast('Maya invited you to a trip', { description: 'Weekend in Porto', cancel: { label: 'Decline' }, action: { label: 'Join' }, duration: 20000 });
+          }}
+        >
+          Show three
+        </Button>
+      </div>
+      <Toaster stacked />
     </>
   ),
 };

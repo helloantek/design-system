@@ -21,6 +21,11 @@
  * Figma Type: Default (no icon), Success, Info, Warning, Error, Loading (the icon spins).
  * Toaster positions: top-left · top-center · top-right · bottom-left · bottom-center · bottom-right; the newest toast is
  * nearest the edge.
+ * Stacked (not in Figma): ds-toaster--stacked piles the toasts up, the newest in front and up to two older ones peeking
+ * 14 px out behind it, 5 % smaller each; [data-expanded] on the toaster (hover or focus inside) spreads them into the
+ * list. The script measures the toasts and sets --toaster-front (the newest one's height), --toaster-sum (all of them)
+ * and --toaster-count on the list, and --toast-index (0 = newest) and --toast-offset (the newer toasts' heights) on
+ * each toast, with data-front on the newest.
  */
 
 @layer ds.components {
@@ -240,7 +245,72 @@
       0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
   }
 
+  /* Stacked: the toasts sit on the edge, one on top of the other, and move out from it. */
+  .ds-toaster--stacked {
+    --toast-dir: -1;
+  }
+
+  .ds-toaster--stacked:is(.ds-toaster--top-left, .ds-toaster--top-center, .ds-toaster--top-right) {
+    --toast-dir: 1;
+  }
+
+  .ds-toaster--stacked .ds-toaster__list {
+    position: relative;
+    display: block;
+    height: calc(var(--toaster-front, 0px) + min(var(--toaster-count, 1) - 1, 2) * var(--ds-spacing-3-5));
+    transition: height var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  .ds-toaster--stacked[data-expanded] .ds-toaster__list {
+    height: calc(var(--toaster-sum, 0px) + (var(--toaster-count, 1) - 1) * var(--ds-spacing-3-5));
+  }
+
+  .ds-toaster--stacked .ds-toast {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform-origin: center bottom;
+    translate: 0 calc(var(--toast-dir) * min(var(--toast-index), 2) * var(--ds-spacing-3-5));
+    scale: calc(1 - var(--toast-index) * 0.05);
+    transition:
+      translate var(--ds-duration-300) var(--ds-ease-out),
+      scale var(--ds-duration-300) var(--ds-ease-out),
+      opacity var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  .ds-toaster--stacked:is(.ds-toaster--top-left, .ds-toaster--top-center, .ds-toaster--top-right) .ds-toast {
+    top: 0;
+    bottom: auto;
+    transform-origin: center top;
+  }
+
+  /* Behind the front one: its height, contents hidden, so only the edge shows. */
+  .ds-toaster--stacked:not([data-expanded]) .ds-toast:not([data-front]) {
+    height: var(--toaster-front);
+    overflow: hidden;
+  }
+
+  .ds-toaster--stacked:not([data-expanded]) .ds-toast:not([data-front]) > * {
+    opacity: 0;
+  }
+
+  .ds-toaster--stacked .ds-toast > * {
+    transition: opacity var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-toaster--stacked[data-expanded] .ds-toast {
+    translate: 0 calc(var(--toast-dir) * (var(--toast-offset) + var(--toast-index) * var(--ds-spacing-3-5)));
+    scale: 1;
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .ds-toaster--stacked .ds-toaster__list,
+    .ds-toaster--stacked .ds-toast,
+    .ds-toaster--stacked .ds-toast > * {
+      transition: none;
+    }
+
     .ds-toaster .ds-toast {
       animation-name: ds-toast-fade-in;
     }

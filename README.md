@@ -350,7 +350,7 @@ Hover draws the dark 1.5 px stroke of Input and Select. Other props (`rows`, `na
 Toasts: short notifications that close on their own. Sort UI 2.0 **Sonner** (Type, Title, Description, actions, Close). Mount `<Toaster />` once near the root and call `toast()` anywhere.
 
 ```tsx
-<Toaster />                                   // position, duration (4000), closeButton, visibleToasts (3)
+<Toaster />                                   // position, duration (4000), closeButton, visibleToasts (3), stacked
 
 toast('Table booked for 4', { description: 'Friday at 7:30 PM', action: { label: 'Undo', onClick: undo } });
 toast.success('Your order is on its way');    // .info · .warning · .error · .loading
@@ -366,8 +366,9 @@ toast.dismiss(id);                            // or toast.dismiss() for all
 | actions | `action` (Default xs button) and `cancel` (Secondary xs); a click closes the toast unless `onClick` calls `event.preventDefault()` | `ds-toast__actions` |
 | Close | `closeButton` on the Toaster or the toast: a round button on the top-left corner | `ds-toast__close` |
 | — | `<Toaster position>`: `top-left` · `top-center` · `top-right` · `bottom-left` · `bottom-center` · `bottom-right` (default) | `ds-toaster` · `ds-toaster--<position>` |
+| — (not in Figma) | `<Toaster stacked>`: a pile, the newest in front and up to two older ones 14 px out behind it, 5 % smaller each; hover or focus inside spreads it into the list | `ds-toaster--stacked` (+ `data-expanded`) |
 
-`<Toast>` draws one toast on its own (for documentation or a custom stack). Accessibility: toasts are added to a polite live region, so screen readers read them out without moving focus; they wait while the pointer is over them, focus is inside or the page is hidden; Alt+T moves focus to the region and Escape returns it. Put anything people must act on in the page too, as a toast closes on its own. Toasts stack 14 px apart (the newest nearest the edge); they do not collapse into a pile like the Sonner library does.
+`<Toast>` draws one toast on its own (for documentation or a custom stack). Accessibility: toasts are added to a polite live region, so screen readers read them out without moving focus; they wait while the pointer is over them, focus is inside or the page is hidden; Alt+T moves focus to the region and Escape returns it. Put anything people must act on in the page too, as a toast closes on its own. By default toasts are listed 14 px apart (the newest nearest the edge), as in Figma; `stacked` piles them up like the Sonner library.
 
 ## Switch
 

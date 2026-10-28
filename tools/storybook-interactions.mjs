@@ -686,6 +686,35 @@ Object.assign(tests, {
     await page.waitForTimeout(300);
     assert.equal(await driver.count(), 0, 'the close button closes it');
   },
+  'sonner: stacked piles toasts behind the newest (14 px out, smaller, its height) and hover or focus spreads them out': async () => {
+    await page.mouse.move(0, 0);
+    await page.goto('http://localhost:6008/iframe.html?id=components-sonner--stacked&viewMode=story');
+    const three = page.getByRole('button', { name: 'Show three' });
+    await three.waitFor();
+    await three.click();
+    await page.mouse.move(0, 0);
+    const items = page.locator('.ds-toaster li');
+    await page.waitForFunction(() => document.querySelectorAll('.ds-toaster li').length === 3);
+    await page.waitForTimeout(500);
+    const boxes = () => items.evaluateAll((els) => els.map((el) => ({ top: el.getBoundingClientRect().top, bottom: el.getBoundingClientRect().bottom, h: el.offsetHeight, front: el.hasAttribute('data-front') })));
+    const piled = await boxes();
+    const front = piled.find((b) => b.front);
+    assert.equal(piled.indexOf(front), 2, 'the newest is in front');
+    assert.deepEqual(piled.map((b) => b.h), [front.h, front.h, front.h], 'the ones behind take its height');
+    assert.ok(Math.abs(front.bottom - piled[1].bottom - 14) < 2 && Math.abs(piled[1].bottom - piled[0].bottom - 14) < 2, 'each peeks 14 px out (bottom edges 14 px apart)');
+    await items.nth(2).hover();
+    await page.waitForTimeout(500);
+    const spread = await boxes();
+    assert.ok(spread[0].bottom <= spread[1].top - 13 && spread[1].bottom <= spread[2].top - 13, 'hover spreads them 14 px apart');
+    assert.equal(spread[1].h, 52, 'each takes its own height again (the warning has no description)');
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(500);
+    await page.keyboard.press('Alt+t');
+    await page.keyboard.press('Tab');
+    await page.waitForTimeout(500);
+    const focused = await boxes();
+    assert.ok(focused[0].bottom <= focused[1].top - 13, 'focus inside spreads them too');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });
