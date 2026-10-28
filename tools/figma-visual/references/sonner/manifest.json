@@ -1,0 +1,75 @@
+{
+ "$comment": "Sort UI 2.0 Sonner (325:134) reference renders (1x PNG, get_screenshot): every Type with the Figma sample title and description, no actions and no Close (both off in the set). Cropped to the toast's own box (Figma's export adds the outside border and the Surface/Popover shadow's margin). renderers/sonner.tsx renders the same Toast. Loading's icon spins in code; the check freezes animations.",
+ "component": "sonner",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "325:134",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "type-default",
+   "nodeId": "325:3",
+   "props": {
+    "Type": "Default"
+   },
+   "target": "#target .ds-toast",
+   "nodeW": 356,
+   "nodeH": 74
+  },
+  {
+   "slug": "type-success",
+   "nodeId": "325:34",
+   "props": {
+    "Type": "Success"
+   },
+   "target": "#target .ds-toast",
+   "nodeW": 356,
+   "nodeH": 94
+  },
+  {
+   "slug": "type-info",
+   "nodeId": "325:46",
+   "props": {
+    "Type": "Info"
+   },
+   "target": "#target .ds-toast",
+   "nodeW": 356,
+   "nodeH": 94
+  },
+  {
+   "slug": "type-warning",
+   "nodeId": "325:59",
+   "props": {
+    "Type": "Warning"
+   },
+   "target": "#target .ds-toast",
+   "nodeW": 356,
+   "nodeH": 94
+  },
+  {
+   "slug": "type-error",
+   "nodeId": "325:72",
+   "props": {
+    "Type": "Error"
+   },
+   "target": "#target .ds-toast",
+   "nodeW": 356,
+   "nodeH": 94
+  },
+  {
+   "slug": "type-loading",
+   "nodeId": "325:85",
+   "props": {
+    "Type": "Loading"
+   },
+   "target": "#target .ds-toast",
+   "nodeW": 356,
+   "nodeH": 94
+  }
+ ]
+}

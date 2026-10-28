@@ -10,6 +10,7 @@ import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
+import { renderSonner } from './sonner';
 import { renderSwitch } from './switch';
 import { renderTextarea } from './textarea';
 import { renderTooltip } from './tooltip';
@@ -35,6 +36,7 @@ export const renderers: Record<string, Renderer> = {
   'radio-card': renderRadioCard,
   select: renderSelect,
   'select-item': renderSelectItem,
+  sonner: renderSonner,
   'status-badge': renderStatusBadge,
   switch: renderSwitch,
   textarea: renderTextarea,

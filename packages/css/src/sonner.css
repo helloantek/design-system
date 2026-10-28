@@ -1,0 +1,328 @@
+/*
+ * Sonner — Sort UI 2.0 component set "Sonner" (node 325:134) on page 325:2 in file 4JnqgEbdlnKgiFrfmiwEZw: a toast
+ * (short, temporary notification) and the toaster, the fixed region that stacks toasts at a corner of the viewport.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works; timing, stacking and
+ * dismissal are the script's job (the React Toaster does them).
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-toaster ds-toaster--bottom-right" aria-label="Notifications" tabindex="-1">
+ *     <ol class="ds-toaster__list" aria-live="polite">
+ *       <li class="ds-toast [ds-toast--success | --info | --warning | --error | --loading]" [data-state="closed"]>
+ *         [<button class="ds-toast__close" aria-label="Close notification"><svg>…</svg></button>]
+ *         [<span class="ds-toast__icon" aria-hidden="true"><svg>…</svg></span>]
+ *         <div class="ds-toast__content">
+ *           <div class="ds-toast__title">Title</div>
+ *           [<div class="ds-toast__description">…</div>]
+ *         </div>
+ *         [<div class="ds-toast__actions">…xs buttons…</div>]
+ *       </li>
+ *     </ol>
+ *   </section>
+ * Figma Type: Default (no icon), Success, Info, Warning, Error, Loading (the icon spins).
+ * Toaster positions: top-left · top-center · top-right · bottom-left · bottom-center · bottom-right; the newest toast is
+ * nearest the edge.
+ * Stacked (not in Figma): ds-toaster--stacked piles the toasts up, the newest in front and up to two older ones peeking
+ * 14 px out behind it, 5 % smaller each; [data-expanded] on the toaster (hover or focus inside) spreads them into the
+ * list. The script measures the toasts and sets --toaster-front (the newest one's height), --toaster-sum (all of them)
+ * and --toaster-count on the list, and --toast-index (0 = newest) and --toast-offset (the newer toasts' heights) on
+ * each toast, with data-front on the newest.
+ */
+
+@layer ds.components {
+  .ds-toaster {
+    position: fixed;
+    z-index: 100;
+    width: calc(var(--ds-spacing-80) + var(--ds-spacing-9));
+    max-width: calc(100vw - 2 * var(--ds-spacing-4));
+    outline: none;
+  }
+
+  .ds-toaster--top-left,
+  .ds-toaster--top-center,
+  .ds-toaster--top-right {
+    top: var(--ds-spacing-6);
+  }
+
+  .ds-toaster--bottom-left,
+  .ds-toaster--bottom-center,
+  .ds-toaster--bottom-right {
+    bottom: var(--ds-spacing-6);
+  }
+
+  .ds-toaster--top-left,
+  .ds-toaster--bottom-left {
+    left: var(--ds-spacing-6);
+  }
+
+  .ds-toaster--top-right,
+  .ds-toaster--bottom-right {
+    right: var(--ds-spacing-6);
+  }
+
+  .ds-toaster--top-center,
+  .ds-toaster--bottom-center {
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  /* Phones: the full width less 16 px on each side. */
+  @media (max-width: 600px) {
+    .ds-toaster {
+      right: var(--ds-spacing-4);
+      left: var(--ds-spacing-4);
+      width: auto;
+      max-width: none;
+      translate: none;
+    }
+  }
+
+  /* The "Types" demo: toasts 14 px apart. */
+  .ds-toaster__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-toaster:is(.ds-toaster--top-left, .ds-toaster--top-center, .ds-toaster--top-right) .ds-toaster__list {
+    flex-direction: column-reverse;
+  }
+
+  /* Figma "Sonner": 356 px wide, 16 px padding, 12 px gap, popover surface with a 1 px border outside the box. */
+  .ds-toast {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-spacing-3);
+    width: calc(var(--ds-spacing-80) + var(--ds-spacing-9));
+    max-width: 100%;
+    padding: var(--ds-spacing-4);
+    border-radius: var(--ds-radius-2xl);
+    background-color: var(--ds-popover);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-toaster .ds-toast {
+    width: 100%;
+    animation: ds-toast-in var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  .ds-toaster:is(.ds-toaster--top-left, .ds-toaster--top-center, .ds-toaster--top-right) .ds-toast {
+    --toast-from: -100%;
+  }
+
+  .ds-toaster .ds-toast[data-state='closed'] {
+    animation: ds-toast-out var(--ds-duration-200) var(--ds-ease-in) forwards;
+    pointer-events: none;
+  }
+
+  @keyframes ds-toast-in {
+    from {
+      opacity: 0;
+      translate: 0 var(--toast-from, 100%);
+    }
+  }
+
+  @keyframes ds-toast-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* Figma "icon": 16 px, 2 px down from the top of the 16 px box, so it centres on the title's first line. */
+  .ds-toast__icon {
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    padding-top: var(--ds-spacing-0-5);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-toast__icon > svg {
+    flex-shrink: 0;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-toast--success .ds-toast__icon {
+    color: var(--ds-palette-blue-solid);
+  }
+
+  .ds-toast--warning .ds-toast__icon {
+    color: var(--ds-palette-orange-solid);
+  }
+
+  .ds-toast--error .ds-toast__icon {
+    color: var(--ds-destructive-foreground);
+  }
+
+  .ds-toast--loading .ds-toast__icon > svg {
+    animation: ds-toast-spin calc(var(--ds-duration-200) * 5) var(--ds-ease-linear) infinite;
+  }
+
+  @keyframes ds-toast-spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+
+  /* Figma "content": title and description, 2 px apart. */
+  .ds-toast__content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  /* Figma "Title": 14/20 medium. */
+  .ds-toast__title {
+    color: var(--ds-popover-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  /* Figma "Description": 14/20 muted. */
+  .ds-toast__description {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Figma "actions": xs buttons (Secondary cancel, Default action), 6 px apart. */
+  .ds-toast__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  /* Figma "Close": a 20 px round button on the top-left corner, popover fill with a 1 px border inside. */
+  .ds-toast__close {
+    position: absolute;
+    top: calc(-1 * (var(--ds-spacing-2) - var(--ds-stroke-width-1)));
+    left: calc(-1 * (var(--ds-spacing-2) - var(--ds-stroke-width-1)));
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-popover);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-popover-foreground);
+    cursor: pointer;
+  }
+
+  .ds-toast__close > svg {
+    width: var(--ds-spacing-3);
+    height: var(--ds-spacing-3);
+  }
+
+  .ds-toast__close:hover {
+    background-color: var(--ds-accent);
+  }
+
+  .ds-toast__close:focus-visible {
+    outline: none;
+    /* As Button: the stroke turns ring and a 30 % ring goes around it. */
+    box-shadow:
+      inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring),
+      0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
+  }
+
+  /* Stacked: the toasts sit on the edge, one on top of the other, and move out from it. */
+  .ds-toaster--stacked {
+    --toast-dir: -1;
+  }
+
+  .ds-toaster--stacked:is(.ds-toaster--top-left, .ds-toaster--top-center, .ds-toaster--top-right) {
+    --toast-dir: 1;
+  }
+
+  .ds-toaster--stacked .ds-toaster__list {
+    position: relative;
+    display: block;
+    height: calc(var(--toaster-front, 0px) + min(var(--toaster-count, 1) - 1, 2) * var(--ds-spacing-3-5));
+    transition: height var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  .ds-toaster--stacked[data-expanded] .ds-toaster__list {
+    height: calc(var(--toaster-sum, 0px) + (var(--toaster-count, 1) - 1) * var(--ds-spacing-3-5));
+  }
+
+  .ds-toaster--stacked .ds-toast {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform-origin: center bottom;
+    translate: 0 calc(var(--toast-dir) * min(var(--toast-index), 2) * var(--ds-spacing-3-5));
+    scale: calc(1 - var(--toast-index) * 0.05);
+    transition:
+      translate var(--ds-duration-300) var(--ds-ease-out),
+      scale var(--ds-duration-300) var(--ds-ease-out),
+      opacity var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  .ds-toaster--stacked:is(.ds-toaster--top-left, .ds-toaster--top-center, .ds-toaster--top-right) .ds-toast {
+    top: 0;
+    bottom: auto;
+    transform-origin: center top;
+  }
+
+  /* Behind the front one: its height, contents hidden, so only the edge shows. */
+  .ds-toaster--stacked:not([data-expanded]) .ds-toast:not([data-front]) {
+    height: var(--toaster-front);
+    overflow: hidden;
+  }
+
+  .ds-toaster--stacked:not([data-expanded]) .ds-toast:not([data-front]) > * {
+    opacity: 0;
+  }
+
+  .ds-toaster--stacked .ds-toast > * {
+    transition: opacity var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-toaster--stacked[data-expanded] .ds-toast {
+    translate: 0 calc(var(--toast-dir) * (var(--toast-offset) + var(--toast-index) * var(--ds-spacing-3-5)));
+    scale: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-toaster--stacked .ds-toaster__list,
+    .ds-toaster--stacked .ds-toast,
+    .ds-toaster--stacked .ds-toast > * {
+      transition: none;
+    }
+
+    .ds-toaster .ds-toast {
+      animation-name: ds-toast-fade-in;
+    }
+
+    @keyframes ds-toast-fade-in {
+      from {
+        opacity: 0;
+      }
+    }
+
+    .ds-toast--loading .ds-toast__icon > svg {
+      animation: none;
+    }
+  }
+}
