@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.9.0
+
+### Minor Changes
+
+- 19c291b: Card (Sort UI 2.0): `Card` (`size`, `as`) with `CardMedia` (16:9), `CardHeader` (`title`, `titleAs`, `description`, `icon`, `action`), `CardContent` and `CardFooter` (`justify`, `muted`).
+
 ## 2.8.0
 
 ### Minor Changes
