@@ -10,6 +10,7 @@ import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
 import { renderSwitch } from './switch';
 import { renderTextarea } from './textarea';
+import { renderTooltip } from './tooltip';
 import type { Renderer } from './types';
 
 // One renderer per component folder in ../references.
@@ -33,4 +34,5 @@ export const renderers: Record<string, Renderer> = {
   'status-badge': renderStatusBadge,
   switch: renderSwitch,
   textarea: renderTextarea,
+  tooltip: renderTooltip,
 };

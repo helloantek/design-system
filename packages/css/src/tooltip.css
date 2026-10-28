@@ -1,0 +1,187 @@
+/*
+ * Tooltip — Sort UI 2.0 component set "Tooltip" (node 165:6171) on page 166:2 in file 4JnqgEbdlnKgiFrfmiwEZw, with
+ * "Kbd" Variant=Inverted, Size=sm in its T slot (the "With keyboard shortcut" demo). Values are Sort UI 2.0 tokens.
+ * Framework-agnostic: any markup with these classes works.
+ *
+ * Markup:
+ *   <span class="ds-tooltip-anchor">
+ *     <button class="ds-button …" aria-describedby="tip">Refund</button>
+ *     <span class="ds-tooltip ds-tooltip--top" id="tip" role="tooltip" [hidden]>
+ *       [<span class="ds-tooltip__icon" aria-hidden="true"><svg…/></span>]
+ *       <span class="ds-tooltip__text">Refund this payment</span>
+ *       [<span class="ds-tooltip__keys"><kbd class="ds-tooltip__kbd">⌘</kbd><kbd class="ds-tooltip__kbd">K</kbd></span>]
+ *     </span>
+ *   </span>
+ * Figma Side: .ds-tooltip--top (default), --bottom, --left, --right: where the tooltip sits, 8 px from the trigger, with
+ * the arrow pointing at it. Without the anchor (e.g. in docs), .ds-tooltip is drawn in place.
+ */
+
+@layer ds.components {
+  .ds-tooltip-anchor {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+  }
+
+  /* Figma "Tooltip": a foreground pill (8 px radius), 4 × 8 px padding, at most 320 px wide; the text wraps after that. */
+  .ds-tooltip {
+    position: relative;
+    z-index: 20;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    width: max-content;
+    max-width: var(--ds-spacing-80);
+    padding: var(--ds-spacing-1) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-foreground);
+    color: var(--ds-background);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-2xs--line-height);
+    /* Figma letter spacing −0.5 %. */
+    letter-spacing: -0.005em;
+    text-align: start;
+    pointer-events: auto;
+  }
+
+  .ds-tooltip[hidden] {
+    display: none;
+  }
+
+  /* Figma "triangle": an 8 px square turned 45°, half of it outside the edge, pointing at the trigger. */
+  .ds-tooltip::after {
+    position: absolute;
+    width: var(--ds-spacing-2);
+    height: var(--ds-spacing-2);
+    border-bottom-right-radius: var(--ds-stroke-width-1);
+    background-color: inherit;
+    content: '';
+  }
+
+  .ds-tooltip--top::after {
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .ds-tooltip--bottom::after {
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%, 50%) rotate(-135deg);
+  }
+
+  .ds-tooltip--left::after {
+    top: 50%;
+    left: 100%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .ds-tooltip--right::after {
+    top: 50%;
+    right: 100%;
+    transform: translate(50%, -50%) rotate(135deg);
+  }
+
+  /* In the anchor the tooltip floats 8 px from the trigger (Figma's demos), centred on it. */
+  .ds-tooltip-anchor > .ds-tooltip {
+    position: absolute;
+  }
+
+  .ds-tooltip-anchor > .ds-tooltip--top {
+    bottom: calc(100% + var(--ds-spacing-2));
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .ds-tooltip-anchor > .ds-tooltip--bottom {
+    top: calc(100% + var(--ds-spacing-2));
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .ds-tooltip-anchor > .ds-tooltip--left {
+    top: 50%;
+    right: calc(100% + var(--ds-spacing-2));
+    translate: 0 -50%;
+  }
+
+  .ds-tooltip-anchor > .ds-tooltip--right {
+    top: 50%;
+    left: calc(100% + var(--ds-spacing-2));
+    translate: 0 -50%;
+  }
+
+  /* An invisible bridge over the 8 px gap, so the pointer can move from the trigger onto the tooltip (WCAG 1.4.13). */
+  .ds-tooltip-anchor > .ds-tooltip::before {
+    position: absolute;
+    content: '';
+  }
+
+  .ds-tooltip-anchor > .ds-tooltip--top::before {
+    inset: 100% 0 auto;
+    height: var(--ds-spacing-2);
+  }
+
+  .ds-tooltip-anchor > .ds-tooltip--bottom::before {
+    inset: auto 0 100%;
+    height: var(--ds-spacing-2);
+  }
+
+  .ds-tooltip-anchor > .ds-tooltip--left::before {
+    inset: 0 auto 0 100%;
+    width: var(--ds-spacing-2);
+  }
+
+  .ds-tooltip-anchor > .ds-tooltip--right::before {
+    inset: 0 100% 0 auto;
+    width: var(--ds-spacing-2);
+  }
+
+  /* Figma "L slot": a 16 px icon. */
+  .ds-tooltip__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  .ds-tooltip__icon > svg {
+    display: block;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-tooltip__text {
+    min-width: 0;
+  }
+
+  /* With keys in the T slot the end padding is 4 px, as in Figma's demo. */
+  .ds-tooltip:has(> .ds-tooltip__keys) {
+    padding-inline-end: var(--ds-spacing-1);
+  }
+
+  /* Figma "Kbd Group" (2 px apart) of "Kbd" Variant=Inverted, Size=sm: 16 px keys on a 20 % background tint. */
+  .ds-tooltip__keys {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: var(--ds-spacing-0-5);
+  }
+
+  .ds-tooltip__kbd {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    padding: 0 var(--ds-spacing-0-5);
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--ds-alpha-background-20);
+    color: var(--ds-background);
+    font-family: inherit;
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+}

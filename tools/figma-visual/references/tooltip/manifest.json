@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 Tooltip (165:6171) reference renders (1x PNG, get_screenshot): every Side, with the Figma sample label. Each render is cropped to the tooltip's own 80 × 24 box (Figma's export adds the arrow, which sits outside it); the arrow is drawn by ::after and checked in the stories. renderers/tooltip.tsx shows the tooltip open next to an outline Button.",
+ "component": "tooltip",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "165:6171",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "side-top",
+   "nodeId": "165:6172",
+   "props": {
+    "Side": "top"
+   },
+   "target": "#target .ds-tooltip",
+   "nodeW": 80,
+   "nodeH": 24
+  },
+  {
+   "slug": "side-bottom",
+   "nodeId": "165:6176",
+   "props": {
+    "Side": "bottom"
+   },
+   "target": "#target .ds-tooltip",
+   "nodeW": 80,
+   "nodeH": 24
+  },
+  {
+   "slug": "side-right",
+   "nodeId": "165:6180",
+   "props": {
+    "Side": "right"
+   },
+   "target": "#target .ds-tooltip",
+   "nodeW": 80,
+   "nodeH": 24
+  },
+  {
+   "slug": "side-left",
+   "nodeId": "165:6184",
+   "props": {
+    "Side": "left"
+   },
+   "target": "#target .ds-tooltip",
+   "nodeW": 80,
+   "nodeH": 24
+  }
+ ]
+}

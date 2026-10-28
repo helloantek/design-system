@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Checkbox, Context Menu, Dropdown Menu, Input, Radio, Select, Switch, Textarea. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Checkbox, Context Menu, Dropdown Menu, Input, Radio, Select, Switch, Textarea, Tooltip. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -329,6 +329,29 @@ A setting that takes effect at once: a native checkbox with `role="switch"`, dra
 
 Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`name`, `value`, `ref`…) go to the input.
 
+## Tooltip
+
+Short help for a control: the WAI-ARIA tooltip. It describes its trigger (`aria-describedby`), shows on hover after `delay` ms (500 by default) or at once on keyboard focus, stays while the pointer moves onto it, and hides on Escape, blur or when the pointer leaves. A click does not show it. Sort UI 2.0 **Tooltip** (Side, Leading slot, Trailing slot) with **Kbd** Variant=Inverted, Size=sm for shortcuts.
+
+```tsx
+<Tooltip content="Refund this payment">
+  <Button variant="outline">Refund</Button>
+</Tooltip>
+<Tooltip content="Search payments" shortcut={['⌘', 'K']} side="bottom">
+  <Button variant="outline" aria-keyshortcuts="Meta+K">Search</Button>
+</Tooltip>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Side = top · bottom · left · right | `side` (default `top`): 8 px from the trigger, centred, the arrow pointing at it | `ds-tooltip--top` · `--bottom` · `--left` · `--right` |
+| Label | `content` (wraps at 320 px) | `ds-tooltip__text` |
+| Leading slot (L slot) | `icon` (16 px, `currentColor`) | `ds-tooltip__icon` |
+| Trailing slot with a Kbd Group | `shortcut`: the keys, e.g. `['⌘', 'K']` (2 px apart; the end padding drops to 4 px) | `ds-tooltip__keys` · `ds-tooltip__kbd` |
+| — | `delay` · `open` / `defaultOpen` / `onOpenChange` · `className` | `ds-tooltip-anchor` |
+
+The trigger must take focus and keep its own name; the tooltip is help, not a label. Like the menus, the tooltip does not flip near the edge of the viewport yet.
+
 ## Context Menu
 
 The menu of actions for whatever is under the pointer: a right-click on the trigger opens it there, and Shift+F10 or the Menu key opens it at the trigger's corner with the first item focused. From then on it behaves like Dropdown Menu (arrows, Home/End, letters, → and ← for submenus, Enter or Space to pick, Escape to close and give focus back). A click outside, Tab, scrolling or resizing closes it. Sort UI 2.0 has no component set for it: its demos are **Dropdown Menu Content**, **Item**, **Label** and **Separator**, so the items are the Dropdown Menu parts.
@@ -424,6 +447,7 @@ These come from the Figma files, not the code:
 - Checkbox (2.0): there is no indeterminate variant; the "Nested" and "Table rows" demos override a checked checkbox with the unchecked fill and a muted minus, which the code draws for `indeterminate`. Checked + Focus and Checked + Invalid draw the stroke in the primary colour, on the primary fill, so only the ring shows. The radius is 5 px, between the xs (4) and sm (6) tokens.
 - Radio (2.0): Choice Card State=Hover fills the card with fill-1; the code keeps the dark 1.5 px hover stroke chosen for Input, Select and the Checkbox cards. In the Choice Card the radio sits level with the top of the title (16 px from the top), while the Field and the earlier Checkbox card demos centre the control on the title's 20 px line (18 px); the code centres it. Focus fills an unchecked card with the page background (`background`), which the code follows.
 - Field (2.0): State=Disabled (Orientation=Horizontal) fades only the label to 50 %; the code fades the description too, for Checkbox, Radio and Switch.
+- Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
 - Textarea (2.0): State=Invalid keeps a filled value in `foreground`, while Input turns it red (`destructive-foreground`); the code follows each. The "Character limit" demo's Progress circle shows 25 % for 85 of 280 characters (30 %); the code draws the real share.
 - Checkbox (2.0): Field Orientation=Horizontal State=Invalid shows the description and the error together, as the vertical Field does; `error` replaces the description, as in Input and Select.

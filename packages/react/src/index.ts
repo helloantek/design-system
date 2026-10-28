@@ -10,3 +10,4 @@ export * from './Radio';
 export * from './Select';
 export * from './Switch';
 export * from './Textarea';
+export * from './Tooltip';
