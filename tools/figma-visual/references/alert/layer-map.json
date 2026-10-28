@@ -25,7 +25,9 @@
       "selector": ".ds-alert__title"
     },
     "Description": {
-      "selector": ".ds-alert__description"
+      "selector": ".ds-alert__description",
+      "skip": ["color"],
+      "$why": "Destructive draws the description in destructive-foreground, not Figma's alpha/destructive/90, for WCAG AA contrast (see README findings). The map is shared by both variants, so the colour is left to the pixel check here."
     },
     "action": {
       "selector": ".ds-alert__action",

@@ -89,12 +89,9 @@
     gap: var(--ds-spacing-1-5);
   }
 
-  .ds-alert--destructive .ds-alert__icon,
-  .ds-alert--destructive .ds-alert__title {
+  /* Figma draws the description in alpha/destructive/90 (3.5:1 on the card in Light, 4:1 in Dark); the code uses
+     destructive-foreground like the title (6.4:1 and 6.2:1), so it meets WCAG AA for 14 px text. */
+  .ds-alert--destructive :is(.ds-alert__icon, .ds-alert__title, .ds-alert__description) {
     color: var(--ds-destructive-foreground);
-  }
-
-  .ds-alert--destructive .ds-alert__description {
-    color: var(--ds-alpha-destructive-90);
   }
 }
