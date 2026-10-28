@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.8.0
+
+### Minor Changes
+
+- 11eb9db: Tooltip (Sort UI 2.0): `Tooltip` describes its trigger and shows on hover (after `delay`) or keyboard focus, stays while the pointer is over it and hides on Escape; `side` (top, bottom, left, right), a leading `icon` and a `shortcut` drawn as inverted Kbd keys.
+
 ## 2.7.0
 
 ### Minor Changes
