@@ -1,0 +1,14 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-tooltip) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "w"
+      ],
+      "$why": "The tooltip hugs its label, whose width follows glyph rasterisation; the size check (\u00b12 px) still covers it."
+    },
+    "Tooltip text": {
+      "selector": ".ds-tooltip__text"
+    }
+  }
+}

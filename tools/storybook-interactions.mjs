@@ -595,6 +595,33 @@ Object.assign(tests, {
     assert.match(await card.evaluate((el) => getComputedStyle(el).boxShadow), /0px 0px 0px 3px/, 'the card shows the ring');
     assert.equal(await shuffle.evaluate((el) => getComputedStyle(el).boxShadow.includes('0px 0px 0px 3px')), false, 'not the switch');
   },
+  'tooltip: describes its trigger; Tab shows it at once, Escape hides it; hover shows it after the delay and keeps it over the tooltip': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-tooltip--default&viewMode=story');
+    const button = page.getByRole('button', { name: 'Refund' });
+    await button.waitFor();
+    const tip = page.getByRole('tooltip', { includeHidden: true });
+    assert.equal(await tip.isVisible(), false, 'hidden at first');
+    assert.equal(await button.getAttribute('aria-describedby'), await tip.getAttribute('id'), 'the tooltip describes the button');
+    await page.keyboard.press('Tab');
+    assert.equal(await tip.isVisible(), true, 'keyboard focus shows it at once');
+    assert.equal(await tip.textContent(), 'Refund this payment');
+    await page.keyboard.press('Escape');
+    assert.equal(await tip.isVisible(), false, 'Escape hides it');
+    await button.blur();
+    // Start the pointer away from the button: an earlier test may have left it where the button now is.
+    await page.mouse.move(0, 0);
+    await button.hover();
+    assert.equal(await tip.isVisible(), false, 'not before the delay');
+    await tip.waitFor({ state: 'visible', timeout: 2000 });
+    const box = await tip.boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 4 });
+    assert.equal(await tip.isVisible(), true, 'it stays while the pointer is over it');
+    await page.mouse.move(0, 0);
+    assert.equal(await tip.isVisible(), false, 'leaving hides it');
+    await button.click();
+    await page.mouse.move(0, 0);
+    assert.equal(await tip.isVisible(), false, 'a click does not show it');
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });
