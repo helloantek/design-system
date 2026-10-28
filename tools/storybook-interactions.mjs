@@ -634,6 +634,58 @@ Object.assign(tests, {
     const media = await page.locator('.ds-card__media').evaluate((el) => ({ radius: getComputedStyle(el).borderTopLeftRadius, ratio: (el.getBoundingClientRect().width / el.getBoundingClientRect().height).toFixed(2) }));
     assert.deepEqual(media, { radius: '20px', ratio: (16 / 9).toFixed(2) }, 'a 16:9 picture rounded with the card');
   },
+  'sonner: a toast shows in a polite live region, closes after its duration and waits while the pointer is over it': async () => {
+    await page.mouse.move(0, 0);
+    await page.goto('http://localhost:6008/iframe.html?id=components-sonner--playground&viewMode=story&args=duration:1000;action:!false');
+    const show = page.getByRole('button', { name: 'Show toast' });
+    await show.waitFor();
+    const region = page.getByRole('region', { name: 'Notifications' });
+    assert.equal(await region.getAttribute('aria-keyshortcuts'), 'Alt+T');
+    assert.equal(await region.locator('ol').getAttribute('aria-live'), 'polite', 'the list is a live region before any toast');
+    await show.click();
+    const item = region.locator('li', { hasText: 'Table booked for 4' });
+    await item.waitFor();
+    await page.waitForTimeout(1500);
+    assert.equal(await item.count(), 0, 'it closes after 1 s');
+    await show.click();
+    await item.waitFor();
+    await item.hover();
+    await page.waitForTimeout(1500);
+    assert.equal(await item.count(), 1, 'it waits while the pointer is over it');
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(1500);
+    assert.equal(await item.count(), 0, 'and closes after the pointer leaves');
+  },
+  'sonner: action and cancel close it; Alt+T moves focus to the toasts and Escape back; promise turns loading into success; close button': async () => {
+    await page.mouse.move(0, 0);
+    await page.goto('http://localhost:6008/iframe.html?id=components-sonner--toasts&viewMode=story');
+    const trigger = page.getByRole('button', { name: 'Action and cancel' });
+    await trigger.waitFor();
+    await trigger.click();
+    const region = page.getByRole('region', { name: 'Notifications' });
+    const invite = region.locator('li', { hasText: 'Maya invited you to a trip' });
+    await invite.waitFor();
+    await page.keyboard.press('Alt+t');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Notifications', 'Alt+T focuses the region');
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Decline');
+    await page.keyboard.press('Escape');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Action and cancel', 'Escape returns focus');
+    await invite.getByRole('button', { name: 'Join' }).click();
+    await region.locator('li', { hasText: "You've joined Weekend in Porto" }).waitFor();
+    await page.waitForTimeout(300);
+    assert.equal(await invite.count(), 0, 'the action closes it');
+    await page.getByRole('button', { name: 'Promise' }).click();
+    const upload = region.locator('li.ds-toast--loading', { hasText: 'Uploading 12 photos…' });
+    await upload.waitFor();
+    await region.locator('li.ds-toast--success', { hasText: '12 photos uploaded' }).waitFor({ timeout: 4000 });
+    await page.goto('http://localhost:6008/iframe.html?id=components-sonner--with-close-button&viewMode=story');
+    await page.getByRole('button', { name: 'Show toast' }).click();
+    const driver = page.locator('li', { hasText: 'Your driver is 3 minutes away' });
+    await driver.getByRole('button', { name: 'Close notification' }).click();
+    await page.waitForTimeout(300);
+    assert.equal(await driver.count(), 0, 'the close button closes it');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });

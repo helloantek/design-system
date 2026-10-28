@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Alert, Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Card, Checkbox, Context Menu, Dropdown Menu, Input, Radio, Select, Switch, Textarea, Tooltip. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Alert, Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Card, Checkbox, Context Menu, Dropdown Menu, Input, Radio, Select, Sonner, Switch, Textarea, Tooltip. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -345,6 +345,30 @@ A native `<textarea>` drawn as the Sort UI 2.0 **Textarea**, in a **Field** for 
 
 Hover draws the dark 1.5 px stroke of Input and Select. Other props (`rows`, `name`, `ref`…) go to the textarea.
 
+## Sonner
+
+Toasts: short notifications that close on their own. Sort UI 2.0 **Sonner** (Type, Title, Description, actions, Close). Mount `<Toaster />` once near the root and call `toast()` anywhere.
+
+```tsx
+<Toaster />                                   // position, duration (4000), closeButton, visibleToasts (3)
+
+toast('Table booked for 4', { description: 'Friday at 7:30 PM', action: { label: 'Undo', onClick: undo } });
+toast.success('Your order is on its way');    // .info · .warning · .error · .loading
+toast.promise(upload(), { loading: 'Uploading…', success: 'Uploaded', error: 'Upload failed' });
+const id = toast.loading('Saving…'); toast.success('Saved', { id });   // update in place
+toast.dismiss(id);                            // or toast.dismiss() for all
+```
+
+| Figma property | React | CSS class |
+|---|---|---|
+| Type = Default · Success · Info · Warning · Error · Loading | `toast.<type>()` or `type`; the icon and its colour (Default has none, Loading spins) | `ds-toast` · `ds-toast--success` · `--info` · `--warning` · `--error` · `--loading` |
+| Title · Description | the first argument; `description` | `ds-toast__title` · `ds-toast__description` |
+| actions | `action` (Default xs button) and `cancel` (Secondary xs); a click closes the toast unless `onClick` calls `event.preventDefault()` | `ds-toast__actions` |
+| Close | `closeButton` on the Toaster or the toast: a round button on the top-left corner | `ds-toast__close` |
+| — | `<Toaster position>`: `top-left` · `top-center` · `top-right` · `bottom-left` · `bottom-center` · `bottom-right` (default) | `ds-toaster` · `ds-toaster--<position>` |
+
+`<Toast>` draws one toast on its own (for documentation or a custom stack). Accessibility: toasts are added to a polite live region, so screen readers read them out without moving focus; they wait while the pointer is over them, focus is inside or the page is hidden; Alt+T moves focus to the region and Escape returns it. Put anything people must act on in the page too, as a toast closes on its own. Toasts stack 14 px apart (the newest nearest the edge); they do not collapse into a pile like the Sonner library does.
+
 ## Switch
 
 A setting that takes effect at once: a native checkbox with `role="switch"`, drawn as the Sort UI 2.0 **Switch**, with **Field** Orientation=Horizontal for labels (the switch at the end, as in every demo) and the choice card for `card`. Space and a click on the label toggle it. Use a Checkbox for choices sent with a form.
@@ -490,6 +514,7 @@ These come from the Figma files, not the code:
 - Radio (2.0): Choice Card State=Hover fills the card with fill-1; the code keeps the dark 1.5 px hover stroke chosen for Input, Select and the Checkbox cards. In the Choice Card the radio sits level with the top of the title (16 px from the top), while the Field and the earlier Checkbox card demos centre the control on the title's 20 px line (18 px); the code centres it. Focus fills an unchecked card with the page background (`background`), which the code follows.
 - Field (2.0): State=Disabled (Orientation=Horizontal) fades only the label to 50 %; the code fades the description too, for Checkbox, Radio and Switch.
 - Alert (2.0): the component set's Destructive sample has a Ghost action and the "Destructive" demo an Outline one; both work. The icons are 17.3 px Lucide instances in a 16 × 20 box (the circle is 14.4 px); the stories pass 17.3 px icons, and any size centres in the box. The Destructive description is `alpha/destructive/90` (#fb2c36 at 90 %): 3.5:1 on the card in Light and 4:1 in Dark, under the 4.5:1 WCAG AA asks for 14 px text; the code draws it in `destructive-foreground` like the title (6.4:1 and 6.2:1).
+- Sonner (2.0): Success draws its icon in blue (`palette/blue-solid`), not green; the code follows Figma. The Default type's sample action is filled with `foreground`, the other types' with `primary` (the same colour in theme-1); the code uses the Button's Default variant. The Close icon's colour is not readable from the file; the code uses `popover-foreground`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

@@ -1,0 +1,25 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-toast) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "$why": "The border is outside the box in Figma, drawn as an outer 1 px shadow before the Surface/Popover shadow."
+    },
+    "icon": {
+      "selector": ".ds-toast__icon"
+    },
+    "icon/VECTOR": {
+      "selector": ".ds-toast__icon svg",
+      "stroke": "svg"
+    },
+    "content": {
+      "selector": ".ds-toast__content"
+    },
+    "Title": {
+      "selector": ".ds-toast__title"
+    },
+    "Description": {
+      "selector": ".ds-toast__description"
+    }
+  }
+}
