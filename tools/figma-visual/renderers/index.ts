@@ -2,6 +2,7 @@ import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
 import { renderButton } from './button';
 import { renderButtonGroup, renderButtonGroupItem } from './button-group';
+import { renderCard } from './card';
 import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './checkbox';
 import { renderContextMenu } from './context-menu';
 import { renderDropdownMenu } from './dropdown-menu';
@@ -21,6 +22,7 @@ export const renderers: Record<string, Renderer> = {
   button: renderButton,
   'button-group': renderButtonGroup,
   'button-group-item': renderButtonGroupItem,
+  card: renderCard,
   checkbox: renderCheckbox,
   'checkbox-card': renderCheckboxCard,
   'checkbox-field': renderCheckboxField,

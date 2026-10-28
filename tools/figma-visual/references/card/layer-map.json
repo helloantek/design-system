@@ -1,0 +1,34 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-card) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "$why": "The card's border is outside its box in Figma, drawn as an outer 1 px shadow."
+    },
+    "header": {
+      "selector": ".ds-card__header"
+    },
+    "header#1": {
+      "selector": ".ds-card__heading",
+      "skip": [
+        "w"
+      ],
+      "$why": "The heading takes the room the action leaves; the action button hugs its label, whose width follows glyph rasterisation."
+    },
+    "Title": {
+      "selector": ".ds-card__title"
+    },
+    "Description": {
+      "selector": ".ds-card__description"
+    },
+    "content": {
+      "selector": ".ds-card__content"
+    },
+    "Body": {
+      "selector": ".ds-card__content"
+    },
+    "footer": {
+      "selector": ".ds-card__footer"
+    }
+  }
+}
