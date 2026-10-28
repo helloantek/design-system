@@ -1,0 +1,100 @@
+/*
+ * Alert — Sort UI 2.0 component set "Alert" (node 219:41) on page 219:2 in file 4JnqgEbdlnKgiFrfmiwEZw: a callout
+ * with an icon, a title, a description and an optional action. Values are Sort UI 2.0 tokens. Framework-agnostic: any
+ * markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-alert [ds-alert--destructive]" role="status | alert">
+ *     [<span class="ds-alert__icon" aria-hidden="true"><svg>…</svg></span>]
+ *     <div class="ds-alert__body">
+ *       <div class="ds-alert__title">Title</div>
+ *       [<div class="ds-alert__description">Text, or a <ul> / <p>s</div>]
+ *     </div>
+ *     [<div class="ds-alert__action">…buttons…</div>]
+ *   </div>
+ * Figma Variant: Default or Destructive (red title, icon and description).
+ */
+
+@layer ds.components {
+  .ds-alert {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-spacing-3-5);
+    min-width: 0;
+    padding: var(--ds-spacing-3-5) var(--ds-spacing-4);
+    border-radius: var(--ds-radius-3xl);
+    background-color: var(--ds-card);
+    /* Figma: a 1 px border stroke outside the box, no shadow. */
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma "icon": a 16 × 20 box, one line tall, so the icon centres on the title's first line. Figma's Lucide icons
+     are 17.3 px and overflow the box evenly. */
+  .ds-alert__icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-text-sm--line-height);
+    color: var(--ds-foreground);
+  }
+
+  .ds-alert__icon > svg {
+    flex-shrink: 0;
+  }
+
+  /* Figma "body": title and description, 2 px apart. */
+  .ds-alert__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  /* Figma "Title": 14/20 medium. */
+  .ds-alert__title {
+    color: var(--ds-card-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  /* Figma "Description": 14/20 muted. */
+  .ds-alert__description {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-alert__description > :is(p, ul, ol) {
+    margin: 0;
+  }
+
+  /* The "With list" demo: the bullets line up with the text above them. */
+  .ds-alert__description > :is(ul, ol) {
+    padding: 0;
+    list-style-position: inside;
+  }
+
+  /* Figma "action": buttons at the end, 6 px apart, level with the title. */
+  .ds-alert__action {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  .ds-alert--destructive .ds-alert__icon,
+  .ds-alert--destructive .ds-alert__title {
+    color: var(--ds-destructive-foreground);
+  }
+
+  .ds-alert--destructive .ds-alert__description {
+    color: var(--ds-alpha-destructive-90);
+  }
+}

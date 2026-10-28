@@ -1,0 +1,35 @@
+{
+ "$comment": "Sort UI 2.0 Alert (219:41) reference renders (1x PNG, get_screenshot): Variant Default and Destructive with the Figma sample slots (circle-alert icon, title, description, an sm action). Cropped to the alert's own box (Figma's export adds the 1 px outside border). renderers/alert.tsx renders the same slots in a 448 px alert.",
+ "component": "alert",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "219:41",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "variant-default",
+   "nodeId": "219:3",
+   "props": {
+    "Variant": "Default"
+   },
+   "target": "#target .ds-alert",
+   "nodeW": 448,
+   "nodeH": 70
+  },
+  {
+   "slug": "variant-destructive",
+   "nodeId": "219:22",
+   "props": {
+    "Variant": "Destructive"
+   },
+   "target": "#target .ds-alert",
+   "nodeW": 448,
+   "nodeH": 70
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-alert) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": ["p", "g"],
+      "$why": "The border is outside the box in Figma, drawn as an outer 1 px shadow. Figma nests the padding and gap in a 'content' frame; in code they are on the root, checked under 'content'."
+    },
+    "content": {
+      "$why": "The alert itself: code has no inner content wrapper."
+    },
+    "icon": {
+      "selector": ".ds-alert__icon"
+    },
+    "icon/VECTOR": {
+      "selector": ".ds-alert__icon svg",
+      "stroke": "svg"
+    },
+    "body": {
+      "selector": ".ds-alert__body",
+      "skip": ["w"],
+      "$why": "The body takes the room the action leaves; the action button hugs its label, whose width follows glyph rasterisation."
+    },
+    "Title": {
+      "selector": ".ds-alert__title"
+    },
+    "Description": {
+      "selector": ".ds-alert__description"
+    },
+    "action": {
+      "selector": ".ds-alert__action",
+      "skip": ["w"],
+      "$why": "Hugs the button, whose width follows the label's glyph rasterisation."
+    }
+  }
+}
