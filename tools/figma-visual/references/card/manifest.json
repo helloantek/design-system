@@ -1,0 +1,35 @@
+{
+ "$comment": "Sort UI 2.0 Card (204:56) reference renders (1x PNG, get_screenshot): Size default and sm with the Figma sample slots (header with an Outline sm action, body text, Cancel and Save in the footer). Cropped to the card's own box (Figma's export adds the outside border and the Surface/Card shadow's margin). renderers/card.tsx renders the same slots in a 448 px card.",
+ "component": "card",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "204:56",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "size-default",
+   "nodeId": "185:7242",
+   "props": {
+    "Size": "default"
+   },
+   "target": "#target .ds-card",
+   "nodeW": 448,
+   "nodeH": 182
+  },
+  {
+   "slug": "size-sm",
+   "nodeId": "204:44",
+   "props": {
+    "Size": "sm"
+   },
+   "target": "#target .ds-card",
+   "nodeW": 448,
+   "nodeH": 166
+  }
+ ]
+}

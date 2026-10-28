@@ -622,6 +622,18 @@ Object.assign(tests, {
     await page.mouse.move(0, 0);
     assert.equal(await tip.isVisible(), false, 'a click does not show it');
   },
+  'card: the title is a heading; the muted footer is a fill-1 band 20 px under the content; media is rounded with the card': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-card--with-action&viewMode=story');
+    await page.waitForSelector('.ds-card');
+    assert.equal(await page.getByRole('heading', { level: 3, name: 'Upcoming bills' }).count(), 1, 'the title is an h3 by default');
+    const footer = page.locator('.ds-card__footer--muted');
+    const style = await footer.evaluate((el) => ({ margin: getComputedStyle(el).marginTop, radius: getComputedStyle(el).borderBottomLeftRadius }));
+    assert.deepEqual(style, { margin: '20px', radius: '20px' });
+    await page.goto('http://localhost:6008/iframe.html?id=components-card--with-image&viewMode=story');
+    await page.waitForSelector('.ds-card__media');
+    const media = await page.locator('.ds-card__media').evaluate((el) => ({ radius: getComputedStyle(el).borderTopLeftRadius, ratio: (el.getBoundingClientRect().width / el.getBoundingClientRect().height).toFixed(2) }));
+    assert.deepEqual(media, { radius: '20px', ratio: (16 / 9).toFixed(2) }, 'a 16:9 picture rounded with the card');
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });

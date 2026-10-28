@@ -1,0 +1,145 @@
+/*
+ * Card — Sort UI 2.0 component set "Card" (node 204:56) on page 180:2 in file 4JnqgEbdlnKgiFrfmiwEZw: a surface with
+ * media, header, content and footer slots. Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these
+ * classes works.
+ *
+ * Markup (parts in [] are optional, in this order):
+ *   <article class="ds-card [ds-card--sm]">
+ *     [<div class="ds-card__media"><img alt="…" src="…"></div>]
+ *     [<div class="ds-card__header">
+ *        [<span class="ds-card__icon">…</span>]
+ *        <div class="ds-card__heading"><h3 class="ds-card__title">Title</h3><p class="ds-card__description">…</p></div>
+ *        [<div class="ds-card__action">…buttons…</div>]
+ *      </div>]
+ *     [<div class="ds-card__content">…</div>]
+ *     [<div class="ds-card__footer [ds-card__footer--muted] [ds-card__footer--start | --between]">…</div>]
+ *   </article>
+ * Figma Size: default (20 px around the parts) or sm (16 px). Content has no padding above or below: the header and
+ * footer give the space, and a card that starts or ends with content gets it there.
+ */
+
+@layer ds.components {
+  .ds-card {
+    --card-pad: var(--ds-spacing-5);
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-3xl);
+    background-color: var(--ds-card);
+    /* Figma: a 1 px border stroke outside the box and the Surface/Card effect style. */
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-card--sm {
+    --card-pad: var(--ds-spacing-4);
+  }
+
+  /* Figma "media": a 16:9 picture over the card's full width, rounded with the card's top corners. */
+  .ds-card__media {
+    overflow: hidden;
+    aspect-ratio: var(--card-media-ratio, 16 / 9);
+    border-radius: var(--ds-radius-3xl) var(--ds-radius-3xl) 0 0;
+    background-color: var(--ds-fill-2);
+  }
+
+  .ds-card__media > :is(img, video, svg, canvas, picture) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Figma "header": title and description, an optional leading icon and an action at the end, 12 px apart. */
+  .ds-card__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-spacing-3);
+    padding: var(--card-pad);
+  }
+
+  .ds-card__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  .ds-card__heading {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+  }
+
+  /* Figma "Title": 16/24 medium. */
+  .ds-card__title {
+    margin: 0;
+    color: var(--ds-card-foreground);
+    font-size: var(--ds-text-base);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-base--line-height);
+  }
+
+  /* Figma "Description": 14/20 muted. */
+  .ds-card__description {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-card__action {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+  }
+
+  /* Figma "content": the card's sides only. */
+  .ds-card__content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--card-pad);
+  }
+
+  .ds-card__content:first-child,
+  .ds-card__media + .ds-card__content {
+    padding-top: var(--card-pad);
+  }
+
+  .ds-card__content:last-child {
+    padding-bottom: var(--card-pad);
+  }
+
+  /* Figma "footer": actions at the end, 8 px apart. */
+  .ds-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--ds-spacing-2);
+    padding: var(--card-pad);
+  }
+
+  .ds-card__footer--start {
+    justify-content: flex-start;
+  }
+
+  .ds-card__footer--between {
+    justify-content: space-between;
+  }
+
+  /* The "With action" demo: a footer on fill-1, rounded with the card's bottom corners, 20 px under the content. */
+  .ds-card__footer--muted {
+    border-radius: 0 0 var(--ds-radius-3xl) var(--ds-radius-3xl);
+    background-color: var(--ds-fill-1);
+  }
+
+  .ds-card__content + .ds-card__footer--muted {
+    margin-top: var(--card-pad);
+  }
+}
