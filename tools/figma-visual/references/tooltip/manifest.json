@@ -29,7 +29,9 @@
    },
    "target": "#target .ds-tooltip",
    "nodeW": 80,
-   "nodeH": 24
+   "nodeH": 24,
+   "pixels": false,
+   "$why": "Figma's export puts the bubble under a 5.66 px arrow, on a half pixel, so the render is resampled: aligned, it differs from side-top (the same bubble) by 5.4 levels on average. The size and spec checks still compare it; side-top covers the pixels."
   },
   {
    "slug": "side-right",
