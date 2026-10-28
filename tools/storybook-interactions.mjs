@@ -715,6 +715,35 @@ Object.assign(tests, {
     const focused = await boxes();
     assert.ok(focused[0].bottom <= focused[1].top - 13, 'focus inside spreads them too');
   },
+  'alert dialog: opens modal and named, focus on Cancel; the backdrop does not close it; Escape and Cancel close it and focus returns; the action runs': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-alert-dialog--demos&viewMode=story');
+    const trigger = page.getByRole('button', { name: 'Delete account' });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-haspopup'), 'dialog');
+    await trigger.click();
+    const dialog = page.getByRole('alertdialog', { name: 'Delete your account?' });
+    await dialog.waitFor();
+    assert.equal(await dialog.evaluate((el) => el.matches(':modal')), true, 'a modal dialog');
+    assert.match(await dialog.evaluate((el) => document.getElementById(el.getAttribute('aria-describedby')).textContent), /permanently deletes/, 'the description describes it');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Cancel', 'focus starts on the safe answer');
+    await page.mouse.click(5, 5);
+    assert.equal(await dialog.isVisible(), true, 'a click on the backdrop does not close it');
+    assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).overflow), 'hidden', 'the page does not scroll');
+    await page.keyboard.press('Escape');
+    assert.equal(await dialog.isVisible(), false, 'Escape closes it');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Delete account', 'focus returns to the trigger');
+    await page.getByRole('button', { name: 'Small', exact: true }).click();
+    const small = page.getByRole('alertdialog', { name: 'Allow notifications?' });
+    await small.waitFor();
+    const widths = await small.locator('.ds-alert-dialog__footer button').evaluateAll((els) => els.map((el) => el.offsetWidth));
+    assert.equal(widths[0], widths[1], 'sm buttons share the width');
+    await small.getByRole('button', { name: "Don't allow" }).click();
+    assert.equal(await small.isVisible(), false, 'Cancel closes it');
+    await page.getByRole('button', { name: 'Media', exact: true }).click();
+    await page.getByRole('alertdialog', { name: 'Share your location?' }).getByRole('button', { name: 'Share location' }).click();
+    assert.equal(await page.getByRole('status').textContent(), 'Location shared', 'the action runs and closes it');
+    assert.equal(await page.getByRole('alertdialog').count(), 0);
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });

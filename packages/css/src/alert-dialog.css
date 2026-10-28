@@ -1,0 +1,160 @@
+/*
+ * Alert Dialog — Sort UI 2.0 component set "Alert Dialog" (node 187:131) on page 187:2 in file 4JnqgEbdlnKgiFrfmiwEZw:
+ * a modal that asks to confirm an action. Values are Sort UI 2.0 tokens. Use a native <dialog> opened with
+ * showModal(): the browser keeps focus inside, makes the page behind inert and draws ::backdrop.
+ *
+ * Markup (parts in [] are optional):
+ *   <dialog class="ds-alert-dialog [ds-alert-dialog--sm] [ds-alert-dialog--destructive]" role="alertdialog"
+ *           aria-labelledby="t" aria-describedby="d">
+ *     <div class="ds-alert-dialog__header">
+ *       [<span class="ds-alert-dialog__media" aria-hidden="true"><svg>…</svg></span>]
+ *       <div class="ds-alert-dialog__heading">
+ *         <h2 class="ds-alert-dialog__title" id="t">Title</h2>
+ *         [<p class="ds-alert-dialog__description" id="d">…</p>]
+ *       </div>
+ *     </div>
+ *     [<div class="ds-alert-dialog__footer">…Outline cancel, then the action…</div>]
+ *   </dialog>
+ * Figma Size: default (448 px, media beside the text, buttons at the end) or sm (320 px, centred, buttons sharing
+ * the width). Media: a 48 px tile with a 20 px icon; --destructive tints it red (the "Destructive" demo).
+ */
+
+@layer ds.components {
+  .ds-alert-dialog {
+    box-sizing: border-box;
+    width: calc(var(--ds-spacing-96) + var(--ds-spacing-16));
+    max-width: calc(100vw - 2 * var(--ds-spacing-4));
+    max-height: calc(100dvh - 2 * var(--ds-spacing-4));
+    padding: 0;
+    overflow: auto;
+    border: 0;
+    border-radius: var(--ds-radius-4xl);
+    background-color: var(--ds-popover);
+    /* Figma: a 1 px border stroke outside the box and the Surface/Dialog effect style. */
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-dialog);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-alert-dialog--sm {
+    width: var(--ds-spacing-80);
+  }
+
+  /* Not in Figma (it draws no backdrop): the page dims behind the dialog. */
+  .ds-alert-dialog::backdrop {
+    background-color: var(--ds-alpha-black-50);
+  }
+
+  .ds-alert-dialog[open] {
+    animation: ds-alert-dialog-in var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-alert-dialog[open]::backdrop {
+    animation: ds-alert-dialog-fade var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  @keyframes ds-alert-dialog-in {
+    from {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+
+  @keyframes ds-alert-dialog-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-alert-dialog[open] {
+      animation-name: ds-alert-dialog-fade;
+    }
+  }
+
+  /* The page behind does not scroll while a dialog is open. */
+  :root:has(.ds-alert-dialog:modal) {
+    overflow: hidden;
+  }
+
+  /* Figma "header": media beside the text, 24 px around and between. */
+  .ds-alert-dialog__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-spacing-6);
+    padding: var(--ds-spacing-6);
+  }
+
+  .ds-alert-dialog--sm .ds-alert-dialog__header {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-spacing-4);
+    text-align: center;
+  }
+
+  /* Figma "Media": a 48 px fill-2 tile, radius lg, with a 20 px icon. */
+  .ds-alert-dialog__media {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-12);
+    height: var(--ds-spacing-12);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-fill-2);
+    color: var(--ds-popover-foreground);
+  }
+
+  .ds-alert-dialog__media > svg {
+    width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+  }
+
+  .ds-alert-dialog--destructive .ds-alert-dialog__media {
+    background-color: var(--ds-alpha-destructive-10);
+    color: var(--ds-destructive-foreground);
+  }
+
+  /* Title and description, 6 px apart. */
+  .ds-alert-dialog__heading {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    align-self: stretch;
+    min-width: 0;
+  }
+
+  /* Figma "Title": 16/24 medium. */
+  .ds-alert-dialog__title {
+    margin: 0;
+    color: var(--ds-popover-foreground);
+    font-size: var(--ds-text-base);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-base--line-height);
+  }
+
+  /* Figma "Description": 14/20 muted. */
+  .ds-alert-dialog__description {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Figma "footer": buttons at the end, 8 px apart, under the header's 24 px. */
+  .ds-alert-dialog__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--ds-spacing-2);
+    padding: 0 var(--ds-spacing-6) var(--ds-spacing-6);
+  }
+
+  /* sm: the buttons share the width. */
+  .ds-alert-dialog--sm .ds-alert-dialog__footer > * {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}

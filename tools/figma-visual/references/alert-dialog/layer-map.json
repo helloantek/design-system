@@ -1,0 +1,35 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-alert-dialog) and how to read it. skip: spec keys not compared for this layer. header is the header slot, header#1 the title-and-description frame inside it.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The border is outside the box in Figma, drawn as an outer 1 px shadow before the Surface/Dialog shadow. Figma's root is a vertical auto-layout with no padding or gap; code stacks the header and footer as blocks."
+    },
+    "header": {
+      "selector": ".ds-alert-dialog__header"
+    },
+    "Media": {
+      "selector": ".ds-alert-dialog__media"
+    },
+    "Media/VECTOR": {
+      "selector": ".ds-alert-dialog__media svg",
+      "stroke": "svg"
+    },
+    "header#1": {
+      "selector": ".ds-alert-dialog__heading"
+    },
+    "Title": {
+      "selector": ".ds-alert-dialog__title"
+    },
+    "Description": {
+      "selector": ".ds-alert-dialog__description"
+    },
+    "footer": {
+      "selector": ".ds-alert-dialog__footer"
+    }
+  }
+}

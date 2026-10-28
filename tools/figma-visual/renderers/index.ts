@@ -1,4 +1,5 @@
 import { renderAlert } from './alert';
+import { renderAlertDialog } from './alert-dialog';
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
 import { renderButton } from './button';
@@ -19,6 +20,7 @@ import type { Renderer } from './types';
 // One renderer per component folder in ../references.
 export const renderers: Record<string, Renderer> = {
   alert: renderAlert,
+  'alert-dialog': renderAlertDialog,
   avatar: renderAvatar,
   'avatar-group': renderAvatarGroup,
   badge: renderBadge,
