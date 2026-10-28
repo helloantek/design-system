@@ -1,5 +1,11 @@
 # @helloantek/ds-react
 
+## 2.10.0
+
+### Minor Changes
+
+- d00236e: Alert (Sort UI 2.0): `Alert` (`variant` default · destructive) with `title`, `description`, `icon` and `action`; a `status` / `alert` live region.
+
 ## 2.9.0
 
 ### Minor Changes
