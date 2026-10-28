@@ -634,6 +634,26 @@ Object.assign(tests, {
     const media = await page.locator('.ds-card__media').evaluate((el) => ({ radius: getComputedStyle(el).borderTopLeftRadius, ratio: (el.getBoundingClientRect().width / el.getBoundingClientRect().height).toFixed(2) }));
     assert.deepEqual(media, { radius: '20px', ratio: (16 / 9).toFixed(2) }, 'a 16:9 picture rounded with the card');
   },
+  'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
+    const save = page.getByRole('button', { name: 'Save changes' });
+    await save.waitFor();
+    assert.equal(await page.getByRole('status').count(), 0, 'no alert before saving');
+    await save.click();
+    const status = page.getByRole('status');
+    assert.match(await status.textContent(), /Your changes have been saved\./);
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Dismiss', 'the action is the next stop');
+    await page.keyboard.press('Enter');
+    assert.equal(await status.count(), 0, 'the action dismisses it');
+    await page.goto('http://localhost:6008/iframe.html?id=components-alert--with-list&viewMode=story');
+    const alert = page.getByRole('alert');
+    await alert.waitFor();
+    assert.equal(await alert.locator('li').count(), 3, 'destructive alerts are assertive; the list sits in the description');
+    await page.goto('http://localhost:6008/iframe.html?id=components-alert--title-only&viewMode=story');
+    await page.waitForSelector('.ds-alert');
+    assert.deepEqual(await page.locator('.ds-alert').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height)), [48, 48]);
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });
