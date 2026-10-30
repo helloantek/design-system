@@ -1,5 +1,11 @@
 # @helloantek/ds-react
 
+## 2.12.0
+
+### Minor Changes
+
+- dc91546: Alert Dialog (Sort UI 2.0): `AlertDialog` (`size` default · sm, `variant`, `media`, `title`, `description`, `trigger` or `open`) with `AlertDialogCancel` and `AlertDialogAction`; a native modal `<dialog>` with `role="alertdialog"`.
+
 ## 2.11.0
 
 ### Minor Changes
