@@ -1,0 +1,21 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-kbd-group) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma wraps the keys in a \"keys\" slot inside the group frame (4 px gap with nothing to space); the code is one row, checked as \"keys\" (2 px)."
+    },
+    "keys": {},
+    "Kbd": {
+      "selector": ".ds-kbd:nth-child(1)"
+    },
+    "Kbd/Key": {
+      "selector": ".ds-kbd:nth-child(1)"
+    },
+    "Kbd#1": {
+      "selector": ".ds-kbd:nth-child(2)"
+    }
+  }
+}

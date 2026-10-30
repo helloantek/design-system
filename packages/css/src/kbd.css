@@ -1,0 +1,77 @@
+/*
+ * Kbd — Sort UI 2.0 component set "Kbd" (node 251:16) and component "Kbd Group" (251:17) on page 251:2 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: a keyboard key, and a row of keys for a shortcut. Values are Sort UI 2.0 tokens.
+ * Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (classes in [] are optional):
+ *   <kbd class="ds-kbd [ds-kbd--inverted] [ds-kbd--sm]">K</kbd>
+ *   <kbd class="ds-kbd"><span aria-hidden="true">⌘</span><span class="ds-kbd__label">Command</span></kbd>   (a spoken name)
+ *   <kbd class="ds-kbd"><svg…icon…/></kbd>                                                            (Figma Icon)
+ *   <kbd class="ds-kbd-group"><kbd class="ds-kbd">⌘</kbd><kbd class="ds-kbd">K</kbd></kbd>            (Kbd Group)
+ * Figma Variant: Default (muted key on fill-2) · Inverted (background-coloured key on a 20 % background tint, for dark
+ * surfaces such as a Tooltip). Figma Size: default 20 px · sm 16 px.
+ */
+
+@layer ds.components {
+  .ds-kbd {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-spacing-1);
+    min-width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+    padding: 0 var(--ds-spacing-1);
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--ds-fill-2);
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-2xs--line-height);
+    /* Figma letter spacing −0.5 %. */
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+  }
+
+  /* Figma Size=sm: 16 px, 2 px side padding. */
+  .ds-kbd--sm {
+    min-width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    padding: 0 var(--ds-spacing-0-5);
+  }
+
+  /* Figma Variant=Inverted: for dark surfaces (Tooltip). */
+  .ds-kbd--inverted {
+    background-color: var(--ds-alpha-background-20);
+    color: var(--ds-background);
+  }
+
+  /* Figma "Icon": an icon instead of (or with) the key text, in the key colour. */
+  .ds-kbd > svg {
+    display: block;
+    flex-shrink: 0;
+    width: var(--ds-spacing-3);
+    height: var(--ds-spacing-3);
+  }
+
+  /* A spoken name for a symbol (⌘ → "Command"): read by screen readers, not shown. */
+  .ds-kbd__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Figma "Kbd Group": the keys of one shortcut, 2 px apart. */
+  .ds-kbd-group {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ds-spacing-0-5);
+    font: inherit;
+  }
+}

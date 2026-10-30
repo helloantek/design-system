@@ -11,6 +11,7 @@ import { renderContextMenu } from './context-menu';
 import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
 import { renderInputGroupDropdown } from './input-group-dropdown';
+import { renderKbd, renderKbdGroup } from './kbd';
 import { renderMarker } from './marker';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
@@ -41,6 +42,8 @@ export const renderers: Record<string, Renderer> = {
   'dropdown-menu': renderDropdownMenu,
   input: renderInput,
   'input-group-dropdown': renderInputGroupDropdown,
+  kbd: renderKbd,
+  'kbd-group': renderKbdGroup,
   marker: renderMarker,
   radio: renderRadio,
   'radio-card': renderRadioCard,

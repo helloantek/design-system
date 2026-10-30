@@ -295,6 +295,31 @@ A native `<input type="checkbox">` drawn as the Sort UI 2.0 **Checkbox**, alone 
 
 Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`name`, `value`, `required`, `ref`…) go to the input.
 
+## Kbd
+
+Keyboard keys and shortcuts: Sort UI 2.0 **Kbd** (Variant, Size, Key, Icon) and **Kbd Group**.
+
+```tsx
+<KbdGroup>
+  <Kbd label="Command">⌘</Kbd>
+  <Kbd>K</Kbd>
+</KbdGroup>
+<Kbd>Space</Kbd>
+<Kbd icon={<CornerDownLeftIcon />} label="Enter" />
+<Kbd variant="inverted" size="sm">Esc</Kbd>   {/* on dark surfaces, as in Tooltip */}
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Variant = Default · Inverted | `variant`: `default` (muted key on fill-2) · `inverted` (background-coloured key on a 20 % background tint, for dark surfaces) | `ds-kbd` · `ds-kbd--inverted` |
+| Size = default · sm | `size`: `default` (20 px) · `sm` (16 px) | `ds-kbd--sm` |
+| Key · Show key | children | — |
+| Icon · Icon swap | `icon` (12 px, the key colour) | `ds-kbd > svg` |
+| — | `label`: a spoken name for a symbol ("Command" for ⌘); the symbol is then hidden from screen readers | `ds-kbd__label` |
+| Kbd Group | `<KbdGroup>`: the keys of one shortcut, 2 px apart (a `<kbd>` of `<kbd>`s, as HTML marks a key combination) | `ds-kbd-group` |
+
+Input's `shortcut` (one key, also `aria-keyshortcuts`) and Tooltip's `shortcut` (Inverted sm keys) draw the same keys; for several keys in an Input, put a `KbdGroup` in `suffix` and set `aria-keyshortcuts` yourself.
+
 ## Marker
 
 A quiet line in a feed or a chat — an event, a date between messages, a step: Sort UI 2.0 **Marker** (Variant, Icon, Trailing icon).
@@ -633,6 +658,7 @@ These come from the Figma files, not the code:
 - Marker (2.0): the "Loading" demo's spinner is a Spinner instance in `foreground`, while the other icons are muted; the code draws it with `loading`. The Border variant's rule is a centred 1 px line on the bottom edge (half outside the box); the code draws it inside.
 - Separator (2.0): the line is a centred 1 px stroke on a 0 px frame, so it takes no space in Figma's layouts (the "Separator" demo puts 16 px between the intro and the line and 16 px after it, 32 px in all); the code's line is 1 px in the layout, so the same gaps add up to 33 px. The "Vertical" demo gives each line a fixed height (20 px between the metadata, 16 px between the icon buttons); the code stretches an upright line to its row and takes `height` for a shorter one.
 - Spinner (2.0): Variant=Default Size=default is 17.3 px (a Lucide 16 px icon in its 17.3 px frame), while Gradient default is 16 px; the code draws both at 16 px. Figma's Default keeps a 1.25 px stroke and Gradient a 1.5 px one at every size; the code follows. The "In buttons" demo shows the spinner in disabled buttons; Button has no loading state, so the stories pass `leadingIcon={<Spinner decorative />}` with `disabled`.
+- Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
