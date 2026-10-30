@@ -48,7 +48,7 @@ A Figma component set can bundle several components under one `Variant` property
 
 ## 5. Review the preview
 
-Each push publishes a Storybook preview of the branch ([previews.md](previews.md)); the pull request links it. Ask design and product to go through its review checklist, and add the component to **Playground/Form** (or a new Playground story) when it belongs in forms or screens with other components.
+Each push publishes a Storybook preview of the branch ([previews.md](previews.md)); the pull request links it. Ask design and product to go through its review checklist, and add the component to **Playground/Form** (fields) or **Playground/Team** (everything else), or to a new Playground story, so every component can be tried with the others.
 
 ## 6. Ship
 
