@@ -1,5 +1,12 @@
 # @helloantek/ds-react
 
+## 2.15.0
+
+### Minor Changes
+
+- 2cb7fe5: Combobox and Textarea get `variant` (`default` · `shadow` · `soft`), the same field styles as Input and Select.
+- a4f9e98: Input Group (Sort UI 2.0): `InputDropdown` (Input Group Dropdown) for a `DropdownMenu` in the T slot; `blockStart` / `blockEnd` / `blockDivider` rows in the same box; `loading` (a spinner and `aria-busy`); `InputAction` `variant="ghost"`, icon-only buttons, and buttons as `prefix` / `suffix`.
+
 ## 2.14.0
 
 ### Minor Changes
