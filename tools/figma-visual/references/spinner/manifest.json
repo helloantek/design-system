@@ -1,0 +1,103 @@
+{
+ "$comment": "Sort UI 2.0 Spinner (261:14) reference renders (1x PNG, get_screenshot): every Variant and Size, still (the check stops the animation at its start). renderers/spinner.tsx renders the spinner in the foreground colour on the page background.",
+ "component": "spinner",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "261:14",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "variant-default-size-sm",
+   "nodeId": "261:5",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm"
+   },
+   "target": "#target .ds-spinner",
+   "nodeW": 12,
+   "nodeH": 12
+  },
+  {
+   "slug": "variant-default-size-default",
+   "nodeId": "261:2",
+   "props": {
+    "Variant": "Default",
+    "Size": "default"
+   },
+   "target": "#target .ds-spinner",
+   "nodeW": 17.3,
+   "nodeH": 17.3
+  },
+  {
+   "slug": "variant-default-size-lg",
+   "nodeId": "261:8",
+   "props": {
+    "Variant": "Default",
+    "Size": "lg"
+   },
+   "target": "#target .ds-spinner",
+   "nodeW": 20,
+   "nodeH": 20
+  },
+  {
+   "slug": "variant-default-size-xl",
+   "nodeId": "261:11",
+   "props": {
+    "Variant": "Default",
+    "Size": "xl"
+   },
+   "target": "#target .ds-spinner",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "variant-gradient-size-sm",
+   "nodeId": "3026:86446",
+   "props": {
+    "Variant": "Gradient",
+    "Size": "sm"
+   },
+   "target": "#target .ds-spinner",
+   "nodeW": 12,
+   "nodeH": 12
+  },
+  {
+   "slug": "variant-gradient-size-default",
+   "nodeId": "3026:86448",
+   "props": {
+    "Variant": "Gradient",
+    "Size": "default"
+   },
+   "target": "#target .ds-spinner",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "variant-gradient-size-lg",
+   "nodeId": "3026:86450",
+   "props": {
+    "Variant": "Gradient",
+    "Size": "lg"
+   },
+   "target": "#target .ds-spinner",
+   "nodeW": 20,
+   "nodeH": 20
+  },
+  {
+   "slug": "variant-gradient-size-xl",
+   "nodeId": "3026:86452",
+   "props": {
+    "Variant": "Gradient",
+    "Size": "xl"
+   },
+   "target": "#target .ds-spinner",
+   "nodeW": 24,
+   "nodeH": 24
+  }
+ ]
+}

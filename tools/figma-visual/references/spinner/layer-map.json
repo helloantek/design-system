@@ -1,0 +1,16 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-spinner) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "Variant=Default Size=default is 17.3 px in Figma (a Lucide 16 px icon in its 17.3 px frame) while Gradient default is 16 px; the code uses 16 px for both. The manifest's size check (2 px) still covers every size."
+    },
+    "VECTOR": {
+      "selector": "svg path",
+      "stroke": "svg"
+    }
+  }
+}

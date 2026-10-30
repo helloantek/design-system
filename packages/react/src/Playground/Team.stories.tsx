@@ -21,6 +21,7 @@ import {
 import { Input, InputDropdown } from '../Input';
 import { Marker } from '../Marker';
 import { Separator } from '../Separator';
+import { Spinner } from '../Spinner';
 import { Toaster, toast } from '../Sonner';
 import { Tooltip } from '../Tooltip';
 
@@ -56,7 +57,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -244,7 +245,7 @@ export const Members: StoryObj = {
         </Card>
 
         <Card as="section" size="sm" aria-label="Activity">
-          <CardHeader title="Activity" />
+          <CardHeader title="Activity" action={<Spinner size="sm" variant="gradient" label="Syncing activity" />} />
           <CardContent>
             <div style={{ display: 'grid', gap: 12 }}>
               <Marker variant="separator">Today</Marker>

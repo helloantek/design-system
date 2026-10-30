@@ -15,6 +15,7 @@ export * from './Radio';
 export * from './Select';
 export * from './Separator';
 export * from './Sonner';
+export * from './Spinner';
 export * from './Switch';
 export * from './Textarea';
 export * from './Tooltip';

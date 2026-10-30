@@ -441,6 +441,24 @@ toast.dismiss(id);                            // or toast.dismiss() for all
 
 `<Toast>` draws one toast on its own (for documentation or a custom stack). Accessibility: toasts are added to a polite live region, so screen readers read them out without moving focus; they wait while the pointer is over them, focus is inside or the page is hidden; Alt+T moves focus to the region and Escape returns it. Put anything people must act on in the page too, as a toast closes on its own. By default toasts are listed 14 px apart (the newest nearest the edge), as in Figma; `stacked` piles them up like the Sonner library.
 
+## Spinner
+
+A turning indicator for work in progress: Sort UI 2.0 **Spinner** (Variant, Size).
+
+```tsx
+<Spinner />                                   {/* role="status", named "Loading" */}
+<Spinner variant="gradient" size="lg" label="Syncing your library" />
+<Button disabled leadingIcon={<Spinner decorative />}>Please wait</Button>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Variant = Default · Gradient | `variant`: `default` (the Lucide loader arc in the current text colour, 1.25 px at every size) · `gradient` (a 1.5 px ring fading from foreground 50 % to 5 %) | `ds-spinner` · `ds-spinner--gradient` |
+| Size = sm · default · lg · xl | `size`: 12 · 16 (default) · 20 · 24 px | `ds-spinner--sm` · `ds-spinner--lg` · `ds-spinner--xl` |
+| — | `label` (default "Loading") names the `role="status"`; `decorative` hides it when the text next to it already says what is happening (a "Please wait" button, a "Processing payment…" row) | — |
+
+It turns once a second (the gradient the other way, so its dark end leads); with reduced motion it turns three times slower instead of stopping, so it still reads as in progress.
+
 ## Switch
 
 A setting that takes effect at once: a native checkbox with `role="switch"`, drawn as the Sort UI 2.0 **Switch**, with **Field** Orientation=Horizontal for labels (the switch at the end, as in every demo) and the choice card for `card`. Space and a click on the label toggle it. Use a Checkbox for choices sent with a form.
@@ -614,6 +632,7 @@ These come from the Figma files, not the code:
 - Combobox (2.0): the field's radius is 10 px (radius/lg) and the menu's 14 px, while Input and Select draw 8 px; the code uses 8 px for all fields and menus. State=Default and Disabled lay the 1 px stroke out, so they are 2 px taller than Focus and Invalid (34 instead of 32 px); the code keeps one height per size. The "Button trigger" demo (a button that opens a list with a search field) is not built yet.
 - Marker (2.0): the "Loading" demo's spinner is a Spinner instance in `foreground`, while the other icons are muted; the code draws it with `loading`. The Border variant's rule is a centred 1 px line on the bottom edge (half outside the box); the code draws it inside.
 - Separator (2.0): the line is a centred 1 px stroke on a 0 px frame, so it takes no space in Figma's layouts (the "Separator" demo puts 16 px between the intro and the line and 16 px after it, 32 px in all); the code's line is 1 px in the layout, so the same gaps add up to 33 px. The "Vertical" demo gives each line a fixed height (20 px between the metadata, 16 px between the icon buttons); the code stretches an upright line to its row and takes `height` for a shorter one.
+- Spinner (2.0): Variant=Default Size=default is 17.3 px (a Lucide 16 px icon in its 17.3 px frame), while Gradient default is 16 px; the code draws both at 16 px. Figma's Default keeps a 1.25 px stroke and Gradient a 1.5 px one at every size; the code follows. The "In buttons" demo shows the spinner in disabled buttons; Button has no loading state, so the stories pass `leadingIcon={<Spinner decorative />}` with `disabled`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
