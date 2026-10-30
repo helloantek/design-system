@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.13.0
+
+### Minor Changes
+
+- 2616096: Combobox (Sort UI 2.0): `Combobox` (`size` default · lg · xl, `multiple` chips, `leadIcon`, `leadMedia`, `error`, `disabled`, `emptyMessage`, `filter`) with the Select's options, groups and separators; the WAI-ARIA combobox with list autocomplete.
+
 ## 2.12.0
 
 ### Minor Changes
