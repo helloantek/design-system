@@ -1,0 +1,27 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-field) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "Field Label": {
+      "selector": ".ds-field__label"
+    },
+    "Legend": {
+      "selector": ".ds-field__label"
+    },
+    "Input": {
+      "selector": ".ds-input",
+      "stroke": "inset-shadow",
+      "skip": [
+        "r",
+        "p"
+      ],
+      "$why": "The design system draws every field at 8 px (Figma 10 px, a known finding); the 10 px side padding sits on the input inside the box."
+    },
+    "Description": {
+      "selector": ".ds-field__caption:not(.ds-field__caption--error)"
+    },
+    "Error": {
+      "selector": ".ds-field__caption--error"
+    }
+  }
+}

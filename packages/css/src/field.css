@@ -1,0 +1,121 @@
+/*
+ * Field — Sort UI 2.0 components "Field" (133:98), "Field Label" (140:5616), "Field Group" (134:43), "Field Set"
+ * (134:63) and "Field Separator" (134:42) on page 132:3 in file 4JnqgEbdlnKgiFrfmiwEZw: the layout around any form
+ * control. The field itself (.ds-field, its label, description, error, Orientation=Horizontal and the Choice Card) lives
+ * in input.css, as every control uses it; this file adds the parts that compose fields. Values are Sort UI 2.0 tokens.
+ *
+ * Markup (classes in [] are optional):
+ *   <div class="ds-field [ds-field--horizontal [ds-field--control-end] | ds-field--responsive] [ds-field--invalid] [ds-field--disabled]">
+ *     <div class="ds-field__label-row">                                       (Figma "Field Label", Variant=Label)
+ *       <label class="ds-field__label" for="c">Label<span class="ds-field__required" aria-hidden="true">*</span>
+ *         <span class="ds-field__helper">(Optional)</span></label>
+ *       [<span class="ds-field__addon">…badge…</span>]                         (Figma "label-addon")
+ *     </div>
+ *     …the control (id="c")…
+ *     <p class="ds-field__caption [ds-field__caption--error]">Description or error</p>
+ *   </div>
+ *   <div class="ds-field-group">…fields 20 px apart…</div>                     (Figma "Field Group")
+ *   <fieldset class="ds-fieldset ds-fieldset--set">                           (Figma "Field Set")
+ *     <legend class="ds-fieldset__legend">Legend</legend><p class="ds-field__caption">Description</p>
+ *     <div class="ds-fieldset__fields">…fields…</div>
+ *   </fieldset>
+ *   <div class="ds-field-separator" role="none"><span class="ds-field-separator__content">or</span></div>
+ */
+
+@layer ds.components {
+  /* A Field Label used on its own (outside .ds-field) keeps the field's type. */
+  .ds-field__label {
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma Field Label "Required": a red asterisk 4 px after the label. */
+  .ds-field__required {
+    margin-left: var(--ds-spacing-1);
+    color: var(--ds-destructive-foreground);
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  /* Any control: the Field knows it is invalid or disabled (the design-system controls also say so themselves). */
+  .ds-field--invalid .ds-field__label {
+    color: var(--ds-destructive-foreground);
+  }
+
+  .ds-field--disabled :is(.ds-field__label, .ds-field__addon) {
+    opacity: 0.5;
+  }
+
+  .ds-field--horizontal.ds-field--disabled .ds-field__caption {
+    opacity: 0.5;
+  }
+
+  /* Not a Figma variant; the "Orientation" demo's "Responsive" field: label and description beside the control, which
+     drops under them when the row is narrower than both. */
+  .ds-field.ds-field--responsive {
+    flex-flow: row wrap;
+    align-items: flex-start;
+    column-gap: var(--ds-spacing-4);
+  }
+
+  .ds-field--responsive > .ds-field__content {
+    flex: 1 1 calc(var(--ds-spacing-12) * 4);
+  }
+
+  .ds-field--responsive > .ds-field__control {
+    flex: 0 1 auto;
+    padding-top: 0;
+  }
+
+  /* Figma "Field Group": fields 20 px apart. */
+  .ds-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-5);
+    min-width: 0;
+  }
+
+  /* Figma "Field Set": a 16/24 legend (Field Label Variant=Legend), the description 6 px under it, the fields 20 px
+     under that (12 px apart). */
+  .ds-fieldset--set .ds-fieldset__legend {
+    font-size: var(--ds-text-base);
+    line-height: var(--ds-text-base--line-height);
+  }
+
+  .ds-fieldset--set > .ds-field__caption {
+    margin-top: calc(var(--ds-spacing-1-5) - var(--ds-spacing-1));
+  }
+
+  .ds-fieldset--set > .ds-fieldset__fields {
+    margin-top: calc(var(--ds-spacing-5) - var(--ds-spacing-1));
+  }
+
+  /* Figma "Field Separator": a 1 px border line across a 20 px row, with optional muted text in its middle. */
+  .ds-field-separator {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--ds-spacing-5);
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-field-separator::before {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+    content: '';
+  }
+
+  /* Content=Text: the text covers the line with the page background, 8 px on each side. */
+  .ds-field-separator__content {
+    position: relative;
+    padding: 0 var(--ds-spacing-2);
+    background-color: var(--ds-background);
+  }
+}

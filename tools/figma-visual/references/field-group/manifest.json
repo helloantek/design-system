@@ -1,0 +1,23 @@
+{
+ "$comment": "Sort UI 2.0 Field Group (134:43) reference render (1x PNG, exportAsync, as for Field Set): two vertical Fields with an Input. renderers/field.tsx renders FieldGroup with the same fields, 320 px wide.",
+ "component": "field-group",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "134:43",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "field-group",
+   "nodeId": "134:43",
+   "props": {},
+   "target": "#target > .ds-field-group",
+   "nodeW": 320,
+   "nodeH": 196
+  }
+ ]
+}

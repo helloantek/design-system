@@ -1,0 +1,30 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-field__label-row) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "div": {
+      "selector": ".ds-field__label",
+      "skip": [
+        "w",
+        "g"
+      ],
+      "$why": "The label hugs its text and spaces Required and Helper with 4 px margins; the add-on is pushed to the end of the row instead of the label filling it."
+    },
+    "Legend": {
+      "selector": ".ds-field__label"
+    },
+    "Required": {
+      "selector": ".ds-field__required"
+    },
+    "Helper": {
+      "selector": ".ds-field__helper"
+    },
+    "label-addon": {
+      "selector": ".ds-field__addon",
+      "skip": [
+        "w"
+      ],
+      "$why": "The add-on hugs its Badge, whose width follows the label text's rasterisation."
+    }
+  }
+}

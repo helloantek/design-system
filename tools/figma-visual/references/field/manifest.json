@@ -1,0 +1,45 @@
+{
+ "$comment": "Sort UI 2.0 Field (133:98) reference renders (1x PNG, get_screenshot): Orientation=Vertical with an Input (Value=Placeholder) in every State; Invalid shows the description and the error. Orientation=Horizontal and the Choice Card are covered by checkbox-field, checkbox-card and radio-card. renderers/field.tsx renders Field with an Input, 320 px wide.",
+ "component": "field",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "133:98",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "state-default",
+   "nodeId": "133:2",
+   "props": {
+    "State": "Default"
+   },
+   "target": "#target > .ds-field",
+   "nodeW": 320,
+   "nodeH": 88
+  },
+  {
+   "slug": "state-invalid",
+   "nodeId": "133:12",
+   "props": {
+    "State": "Invalid"
+   },
+   "target": "#target > .ds-field",
+   "nodeW": 320,
+   "nodeH": 116
+  },
+  {
+   "slug": "state-disabled",
+   "nodeId": "133:22",
+   "props": {
+    "State": "Disabled"
+   },
+   "target": "#target > .ds-field",
+   "nodeW": 320,
+   "nodeH": 88
+  }
+ ]
+}

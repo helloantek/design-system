@@ -1,4 +1,5 @@
 import { useId, useState, type ChangeEvent, type CSSProperties, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
+import { useField } from '../Field/FieldContext';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-textarea*); this component only renders the markup.
 
@@ -32,9 +33,12 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 
 /** Figma "Textarea": a multi-line text field, 64 px tall at least, growing with its text. */
 export function Textarea(props: TextareaProps) {
-  const { label, caption, error, invalid: invalidProp = false, showCount = false, limit, variant = 'default', resizable = false, className, id: idProp, 'aria-describedby': describedBy, onChange, ...rest } = props;
+  const { label, caption, error, invalid: invalidProp = false, showCount = false, limit, variant = 'default', resizable = false, className, id: idProp, 'aria-describedby': describedByProp, disabled: disabledProp, required: requiredProp, onChange, ...rest } = props;
+  // Inside a Field: its ids, its description and its state.
+  const field = useField();
   const autoId = useId();
-  const id = idProp ?? autoId;
+  const id = idProp ?? field?.id ?? autoId;
+  const describedBy = [field?.describedBy, describedByProp].filter(Boolean).join(' ') || undefined;
   const captionId = `${id}-caption`;
   const countId = `${id}-count`;
   const hasError = error !== undefined && error !== null && error !== false;
@@ -47,12 +51,14 @@ export function Textarea(props: TextareaProps) {
   const counting = showCount && max !== undefined;
   const left = counting ? max - length : 0;
   const over = counting && left < 0;
-  const invalid = hasError || invalidProp || over;
+  const invalid = hasError || invalidProp || over || (field?.invalid ?? false);
 
   const textarea = (
     <textarea
       {...rest}
       id={id}
+      disabled={disabledProp ?? field?.disabled}
+      required={requiredProp ?? field?.required}
       className={['ds-textarea', variant !== 'default' && `ds-textarea--${variant}`, resizable && 'ds-textarea--resize'].filter(Boolean).join(' ')}
       aria-invalid={invalid || undefined}
       aria-describedby={[help !== undefined ? captionId : null, counting ? countId : null, describedBy].filter(Boolean).join(' ') || undefined}

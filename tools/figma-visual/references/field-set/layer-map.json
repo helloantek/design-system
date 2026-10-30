@@ -1,0 +1,29 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-fieldset) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "g"
+      ],
+      "$why": "A <fieldset> keeps its legend, description and fields as siblings: the 6 px and 20 px steps are margins (checked through the size), not one gap."
+    },
+    "Header": {
+      "skip": [
+        "w",
+        "h",
+        "p",
+        "g"
+      ],
+      "$why": "Figma groups the legend and description in a Header frame; the code has no wrapper (the legend must be the fieldset's first child). Their sizes and the 6 px step show in the set's height."
+    },
+    "Legend": {
+      "selector": ".ds-fieldset__legend"
+    },
+    "Description": {
+      "selector": ".ds-fieldset > .ds-field__caption"
+    },
+    "fields": {
+      "selector": ".ds-fieldset__fields"
+    }
+  }
+}
