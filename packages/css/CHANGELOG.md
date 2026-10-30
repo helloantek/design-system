@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.16.0
+
+### Minor Changes
+
+- d8fc138: Separator (Sort UI 2.0): a 1 px `border` line, `orientation` `horizontal` (fills the width) or `vertical` (the row's height), decorative by default; `decorative={false}` gives it `role="separator"`.
+
 ## 2.15.1
 
 ## 2.15.0
