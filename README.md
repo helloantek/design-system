@@ -131,6 +131,8 @@ Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group*
 <Input label="Website" prefix="https://" suffix=".com" />
 <Input label="Invite" placeholder="mail@domain.com" action={<InputAction onClick={send}>Send</InputAction>} />
 <Input label="Email" error="Enter a valid address" />
+<Input blockStart="Client" defaultValue="Northlight Studio" />
+<Input aria-label="Amount" prefix="$" action={<DropdownMenu align="end" trigger={<InputDropdown>USD</InputDropdown>}>…</DropdownMenu>} />
 ```
 
 | Figma property | React prop | CSS class |
@@ -146,7 +148,10 @@ Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group*
 | Leading icon · Trailing icon | `leadIcon` · `tailIcon` | `ds-input__icon` |
 | Kbd in the T slot | `shortcut` (also `aria-keyshortcuts`) | `ds-input__shortcut` |
 | L slot · T slot text | `prefix` · `suffix` | `ds-input__affix` |
-| Button (Outline xs) in the T slot | `action={<InputAction>…</InputAction>}` | `ds-input__action` |
+| Button (Outline or Ghost xs) in the T slot | `action={<InputAction>…</InputAction>}` (`variant="ghost"`; an icon alone makes it 24 px square); in the L / T slot as `prefix` / `suffix` (the stepper demo) | `ds-input__action` · `--ghost` |
+| Input Group Dropdown (State = Default · Hover · Focus · Disabled) | `<InputDropdown icon>` as a `DropdownMenu` trigger, passed as `action`; disabled with its Input | `ds-input__dropdown` |
+| Input Group Block start · Block end | `blockStart` (names the input without a `label`) · `blockEnd` (describes it); `blockDivider` for the "Dividers" demo | `ds-input--block` · `ds-input__row` · `ds-input__block` · `--end` · `--divider` |
+| — (the "Loading" demo) | `loading` (`true` / `'start'` for the leading icon, `'end'` for the trailing one): a turning spinner and `aria-busy` | `ds-input__icon--spin` |
 | — | `addonBefore` · `addonAfter`: segments split off by a line | `ds-input__addon` |
 
 ## Select
@@ -573,6 +578,7 @@ These come from the Figma files, not the code:
 - Hover (2.0): Input, Select and Checkbox have no Hover state (Button has one). On hover the code draws a dark 1.5 px stroke (`muted-foreground`, `stroke-width-3`) on Input, Select and choice cards, without new tokens; Figma should add the state.
 - Input (2.0): State=Invalid's stroke and ring are bound to Tailwind class names ("border-destructive dark:border-destructive/50", "ring-destructive/20 …") instead of variables; the code uses `invalid-border` and `invalid-ring`. There is no Invalid + Focus variant; the code keeps the red stroke and ring while focused.
 - Input (2.0): Input Group's prefix/suffix text is 13 px in the component but 14 px in the demo frames; the code follows the component.
+- Input Group (2.0): Input Group Dropdown Focus puts the button on the page background with a 3 px ring, while other controls use a 2 px ring with a stroke; the code follows Figma. The "Button" demo's last field joins a Default button to the input's edge; the code offers `addonAfter` with any content but no joined-button style yet.
 - Input (2.0): Input Group Filled + Invalid keeps the value black, while Input Filled + Invalid turns it red; the code follows Input. Field Invalid shows the description and the error together; `error` replaces the description, as before.
 - Input (2.0): disabled prefix/suffix text (muted at 50 %) is 2.1:1 (WCAG exempts disabled controls, but axe reports it).
 - Select (2.0): State=Invalid's stroke and ring are bound to Tailwind class names, as in Input; unlike Input, the value stays black.

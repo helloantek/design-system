@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { CSSProperties } from 'react';
-import { RiAtLine, RiInformationFill } from '@remixicon/react';
+import { useState, type CSSProperties } from 'react';
+import { RiAddLine, RiAtLine, RiCloseLine, RiFileCopyLine, RiInformationFill, RiMoreLine, RiSearchLine, RiSubtractLine, RiUserLine } from '@remixicon/react';
 import { Button } from '../Button';
-import { Input, InputAction, type InputSize, type InputVariant } from './Input';
+import { DropdownMenu, DropdownMenuItem } from '../DropdownMenu';
+import { Input, InputAction, InputDropdown, type InputSize, type InputVariant } from './Input';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=82-50';
 
@@ -160,4 +161,163 @@ export const Themes: StoryObj = {
       ))}
     </div>
   ),
+};
+
+/** Figma Input Group "Dropdown" demo: an Input Group Dropdown (in a DropdownMenu) in the T slot. */
+export const InputGroupDropdown: StoryObj = {
+  render: function InputGroupDropdown() {
+    const [scope, setScope] = useState('Search in...');
+    const [currency, setCurrency] = useState('USD');
+    const [where, setWhere] = useState('Messages');
+    return (
+      <div style={{ display: 'grid', gap: 12 }}>
+        <Input
+          aria-label="File name"
+          placeholder="Enter file name"
+          action={
+            <DropdownMenu align="end" aria-label="File actions" trigger={<InputAction variant="ghost" aria-label="More file actions"><RiMoreLine /></InputAction>}>
+              <DropdownMenuItem>Rename</DropdownMenuItem>
+              <DropdownMenuItem>Duplicate</DropdownMenuItem>
+            </DropdownMenu>
+          }
+        />
+        <Input
+          aria-label="Search query"
+          placeholder="Enter search query"
+          action={
+            <DropdownMenu align="end" trigger={<InputDropdown aria-label={`Search scope: ${scope}`}>{scope}</InputDropdown>}>
+              {['Documentation', 'Blog posts', 'Changelog'].map((label) => (
+                <DropdownMenuItem key={label} onClick={() => setScope(label)}>
+                  {label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenu>
+          }
+        />
+        <Input
+          aria-label="Amount"
+          prefix="$"
+          placeholder="0.00"
+          action={
+            <DropdownMenu align="end" trigger={<InputDropdown aria-label={`Currency: ${currency}`}>{currency}</InputDropdown>}>
+              {['USD', 'EUR', 'PLN'].map((label) => (
+                <DropdownMenuItem key={label} onClick={() => setCurrency(label)}>
+                  {label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenu>
+          }
+        />
+        <Input
+          aria-label="Search"
+          placeholder="Search..."
+          leadIcon={<RiSearchLine />}
+          action={
+            <DropdownMenu align="end" trigger={<InputDropdown aria-label={`Search in: ${where}`}>{where}</InputDropdown>}>
+              {['Messages', 'Files', 'People'].map((label) => (
+                <DropdownMenuItem key={label} onClick={() => setWhere(label)}>
+                  {label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenu>
+          }
+        />
+      </div>
+    );
+  },
+};
+
+/** Figma Input Group "Button" demo: Outline and Ghost xs buttons, an icon button and a stepper. */
+export const InputGroupButtons: StoryObj = {
+  render: function InputGroupButtons() {
+    const [count, setCount] = useState(0);
+    return (
+      <div style={{ display: 'grid', gap: 12 }}>
+        <Input aria-label="Search" placeholder="Search" leadIcon={<RiSearchLine />} action={<InputAction>Search</InputAction>} />
+        <Input aria-label="Search (ghost)" placeholder="Search" leadIcon={<RiSearchLine />} action={<InputAction variant="ghost">Search</InputAction>} />
+        <Input
+          aria-label="Profile link"
+          readOnly
+          defaultValue="https://example.com/u/shiryoku"
+          action={
+            <InputAction variant="ghost" aria-label="Copy link" onClick={() => navigator.clipboard?.writeText('https://example.com/u/shiryoku')}>
+              <RiFileCopyLine />
+            </InputAction>
+          }
+        />
+        <Input
+          aria-label="Quantity"
+          inputMode="numeric"
+          value={count}
+          onChange={(event) => setCount(Number(event.target.value) || 0)}
+          style={{ textAlign: 'center' }}
+          prefix={
+            <InputAction variant="ghost" aria-label="Decrease" onClick={() => setCount((c) => c - 1)}>
+              <RiSubtractLine />
+            </InputAction>
+          }
+          suffix={
+            <InputAction variant="ghost" aria-label="Increase" onClick={() => setCount((c) => c + 1)}>
+              <RiAddLine />
+            </InputAction>
+          }
+        />
+      </div>
+    );
+  },
+};
+
+/** Figma Input Group "Alignment" demo: inline text, and Block start / Block end rows in the same box. */
+export const InputGroupAlignment: StoryObj = {
+  decorators: [(Story) => <div style={{ width: 380 }}>{Story()}</div>],
+  render: () => (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <Input aria-label="Invoice number" prefix="INV-" defaultValue="2048" />
+        <Input aria-label="Payment terms" suffix="days" defaultValue="30" />
+      </div>
+      <Input blockStart="Client" defaultValue="Northlight Studio" />
+      <Input aria-label="Project" defaultValue="Design and build of the new site" blockEnd="Shown on the invoice PDF" />
+    </div>
+  ),
+};
+
+/** Figma Input Group "Dividers" demo: add-ons and a Block end split off by lines. */
+export const InputGroupDividers: StoryObj = {
+  decorators: [(Story) => <div style={{ width: 380 }}>{Story()}</div>],
+  render: () => (
+    <div style={{ display: 'grid', gap: 12 }}>
+      <Input aria-label="Website" addonBefore="https://" placeholder="example" addonAfter=".com" />
+      <Input blockStart="Release notes" blockDivider placeholder="What changed in 2.5.0?" />
+    </div>
+  ),
+};
+
+/** Figma Input Group "Loading" and "Character count" demos. */
+export const InputGroupStatus: StoryObj = {
+  render: function InputGroupStatus() {
+    const [name, setName] = useState('Shiryoku');
+    return (
+      <div style={{ display: 'grid', gap: 16 }}>
+        <Input aria-label="Workspace" defaultValue="Shiryoku" loading />
+        <Input aria-label="Team URL" prefix="example.com/" defaultValue="design-team" suffix="Checking" loading="end" />
+        <Input
+          label="Display name"
+          caption="Shown on your profile and comments."
+          leadIcon={<RiUserLine />}
+          maxLength={24}
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          suffix={`${name.length}/24`}
+          action={
+            name ? (
+              <InputAction variant="ghost" aria-label="Clear" onClick={() => setName('')}>
+                <RiCloseLine />
+              </InputAction>
+            ) : undefined
+          }
+        />
+      </div>
+    );
+  },
 };
