@@ -388,6 +388,7 @@ A native `<textarea>` drawn as the Sort UI 2.0 **Textarea**, in a **Field** for 
 |---|---|---|
 | Value = Placeholder · Filled | `placeholder` · `value` / `defaultValue` | `ds-textarea` (`::placeholder`) |
 | State = Focus | focus (ring stroke and a 2 px ring) | `:focus` |
+| — (one style in 2.0) | `variant`: `default` · `shadow` (+ Shadow/xs) · `soft` (borderless, tinted), as Input and Select | `ds-textarea--shadow` · `--soft` |
 | State = Disabled | `disabled` (the box at 50 %, and the label) | `:disabled` |
 | State = Invalid | `invalid`, or `error` (replaces the description) | `[aria-invalid="true"]` |
 | Field Label · Description | `label` · `caption` | `ds-field__label` · `ds-field__caption` |
@@ -482,6 +483,7 @@ A text field that filters a list: Sort UI 2.0 **Combobox** (Size, Value, State, 
 | Figma property | React prop | CSS class |
 |---|---|---|
 | Size = default · lg · xl | `size` (32 · 36 · 40 px) | `ds-field--default` · `--lg` · `--xl` on `ds-combobox` |
+| — (one style in 2.0) | `variant`: `default` · `shadow` (+ Shadow/xs) · `soft` (borderless, tinted), as Input and Select | `ds-combobox__field--shadow` · `--soft` |
 | Value = Placeholder · Filled | `placeholder`; `value` / `defaultValue` / `onValueChange` | `ds-combobox__input` |
 | State = Focus · Invalid · Disabled | focus inside the field; `error`; `disabled` | `ds-combobox__field` · `--invalid` · `--disabled` |
 | Leading icon · Leading slot | `leadIcon` (16 px); `leadMedia` (20 px, e.g. an Avatar) | `ds-combobox__icon` · `ds-combobox__media` |

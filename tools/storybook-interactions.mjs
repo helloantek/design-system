@@ -773,6 +773,23 @@ Object.assign(tests, {
     await link.focus();
     assert.equal(await page.evaluate(() => document.activeElement.textContent), 'View receipt', 'the receipt link takes focus');
   },
+  'field styles: Combobox and Textarea draw default, shadow and soft exactly as Input and Select': async () => {
+    const look = (selector) => page.locator(selector).evaluateAll((els) => els.map((el) => ({ bg: getComputedStyle(el).backgroundColor, shadow: getComputedStyle(el).boxShadow })));
+    await page.goto('http://localhost:6008/iframe.html?id=components-input--styles&viewMode=story');
+    await page.waitForSelector('.ds-input');
+    const input = await look('.ds-input');
+    await page.goto('http://localhost:6008/iframe.html?id=components-select--all-states&viewMode=story');
+    await page.waitForSelector('.ds-select__trigger');
+    const select = await look('.ds-field:first-of-type .ds-select__trigger, .ds-select__trigger--shadow, .ds-select__trigger--soft');
+    for (const [id, selector] of [['components-combobox--styles', '.ds-combobox__field'], ['components-textarea--styles', '.ds-textarea']]) {
+      await page.goto(`http://localhost:6008/iframe.html?id=${id}&viewMode=story`);
+      await page.waitForSelector(selector);
+      const styles = await look(selector);
+      assert.deepEqual(styles.map((s) => s.bg), input.map((s) => s.bg), `${id}: the same fills as Input (default, shadow, soft)`);
+      assert.deepEqual(styles.map((s) => s.shadow), input.map((s) => s.shadow), `${id}: the same stroke and shadow as Input`);
+    }
+    assert.ok(select.some((s) => s.bg === input[2].bg), 'Select soft has the same fill too');
+  },
   'combobox: typing filters and announces the count; arrows and Enter pick; Escape closes then clears; no results; an emptied field clears': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-combobox--single-selection&viewMode=story');
     const input = page.getByRole('combobox', { name: 'Framework' });
