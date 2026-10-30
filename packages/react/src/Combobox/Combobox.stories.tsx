@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Avatar } from '../Avatar';
 import { Button } from '../Button';
 import type { SelectItem } from '../Select';
-import { Combobox, type ComboboxSize } from './Combobox';
+import { Combobox, type ComboboxSize, type ComboboxVariant } from './Combobox';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=111-2';
 
@@ -84,11 +84,12 @@ const searchIcon = (
 
 const box = (children: ReactNode) => <div style={{ width: 280 }}>{children}</div>;
 
-type PlaygroundArgs = { size: ComboboxSize; multiple: boolean; leadIcon: boolean; invalid: boolean; disabled: boolean; placeholder: string };
+type PlaygroundArgs = { variant: ComboboxVariant; size: ComboboxSize; multiple: boolean; leadIcon: boolean; invalid: boolean; disabled: boolean; placeholder: string };
 
 export const Playground: StoryObj<PlaygroundArgs> = {
-  args: { size: 'default', multiple: false, leadIcon: false, invalid: false, disabled: false, placeholder: 'Select a framework' },
+  args: { variant: 'default', size: 'default', multiple: false, leadIcon: false, invalid: false, disabled: false, placeholder: 'Select a framework' },
   argTypes: {
+    variant: { name: 'Style', control: 'inline-radio', options: ['default', 'shadow', 'soft'], description: 'As Input and Select' },
     size: { name: 'Size', control: 'inline-radio', options: ['default', 'lg', 'xl'] },
     multiple: { name: 'Chips (multiple)' },
     leadIcon: { name: 'Leading icon' },
@@ -96,12 +97,12 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     disabled: { name: 'Disabled' },
     placeholder: { name: 'Placeholder' },
   },
-  render: ({ size, multiple, leadIcon, invalid, disabled, placeholder }) =>
+  render: ({ variant, size, multiple, leadIcon, invalid, disabled, placeholder }) =>
     box(
       multiple ? (
-        <Combobox key="multiple" multiple label="Frameworks" options={frameworks} size={size} leadIcon={leadIcon ? searchIcon : undefined} error={invalid ? 'Pick at least one framework.' : undefined} disabled={disabled} placeholder={placeholder} />
+        <Combobox key="multiple" multiple label="Frameworks" options={frameworks} variant={variant} size={size} leadIcon={leadIcon ? searchIcon : undefined} error={invalid ? 'Pick at least one framework.' : undefined} disabled={disabled} placeholder={placeholder} />
       ) : (
-        <Combobox key="single" label="Framework" options={frameworks} size={size} leadIcon={leadIcon ? searchIcon : undefined} error={invalid ? 'Pick a framework.' : undefined} disabled={disabled} placeholder={placeholder} />
+        <Combobox key="single" label="Framework" options={frameworks} variant={variant} size={size} leadIcon={leadIcon ? searchIcon : undefined} error={invalid ? 'Pick a framework.' : undefined} disabled={disabled} placeholder={placeholder} />
       ),
     ),
 };
@@ -184,6 +185,17 @@ export const Themes: StoryObj = {
           <Combobox multiple aria-label={`Frameworks ${scheme}`} options={frameworks} defaultValue={['sveltekit', 'nextjs']} />
           <Combobox aria-label={`Timezone ${scheme}`} options={timezones} placeholder="Select a timezone" leadIcon={searchIcon} defaultOpen />
         </div>
+      ))}
+    </div>
+  ),
+};
+
+/** Style, as Input and Select: default (the Sort UI 2.0 field), shadow (+ Shadow/xs) and soft (borderless, tinted). */
+export const Styles: StoryObj = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 240px)', gap: 16 }}>
+      {(['default', 'shadow', 'soft'] as const).map((variant) => (
+        <Combobox key={variant} variant={variant} label={variant} caption="Caption text" options={frameworks} placeholder="Select a framework" />
       ))}
     </div>
   ),

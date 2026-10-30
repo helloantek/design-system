@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type CSSProperties } from 'react';
 import { Button } from '../Button';
-import { Textarea } from './Textarea';
+import { Textarea, type TextareaVariant } from './Textarea';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=99-2';
 
@@ -18,10 +18,11 @@ const meta = {
 
 export default meta;
 
-type PlaygroundArgs = { state: 'Default' | 'Invalid' | 'Disabled'; label: string; caption: string; error: string; placeholder: string; showCount: boolean; maxLength: number };
+type PlaygroundArgs = { variant: TextareaVariant; state: 'Default' | 'Invalid' | 'Disabled'; label: string; caption: string; error: string; placeholder: string; showCount: boolean; maxLength: number };
 
 export const Playground: StoryObj<PlaygroundArgs> = {
   args: {
+    variant: 'default',
     state: 'Default',
     label: 'Summary',
     caption: 'Shown at the top of the release notes and in the changelog feed.',
@@ -31,6 +32,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     maxLength: 280,
   },
   argTypes: {
+    variant: { name: 'Style', control: 'inline-radio', options: ['default', 'shadow', 'soft'], description: 'As Input and Select' },
     state: { name: 'State', control: 'inline-radio', options: ['Default', 'Invalid', 'Disabled'], description: 'Focus: click or press Tab' },
     label: { name: 'Field Label' },
     caption: { name: 'Description' },
@@ -39,9 +41,10 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     showCount: { name: 'Character limit' },
     maxLength: { name: 'Max length', if: { arg: 'showCount' } },
   },
-  render: ({ state, label, caption, error, placeholder, showCount, maxLength }) => (
+  render: ({ variant, state, label, caption, error, placeholder, showCount, maxLength }) => (
     <div style={{ width: 360 }}>
       <Textarea
+        variant={variant}
         label={label}
         caption={caption}
         error={state === 'Invalid' ? error : undefined}
@@ -169,6 +172,17 @@ export const Themes: StoryObj = {
           <Textarea label="Bio" placeholder="A couple of lines teammates will see on your profile" error="Add a couple of lines about yourself." />
           <Textarea label="Internal notes" placeholder="Only workspace admins can edit this field" disabled />
         </div>
+      ))}
+    </div>
+  ),
+};
+
+/** Style, as Input and Select: default (the Sort UI 2.0 field), shadow (+ Shadow/xs) and soft (borderless, tinted). */
+export const Styles: StoryObj = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 280px)', gap: 16 }}>
+      {(['default', 'shadow', 'soft'] as const).map((variant) => (
+        <Textarea key={variant} variant={variant} label={variant} caption="Caption text" placeholder="What changed in this release and why?" />
       ))}
     </div>
   ),

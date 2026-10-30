@@ -19,6 +19,8 @@
  *   </div>
  * Figma State: Focus = :focus (a text field shows focus however it was reached), Hover (ours) = :hover,
  * Invalid = [aria-invalid="true"] (+ .ds-field__caption--error), Disabled = :disabled.
+ * Style (as Input and Select): default is the Sort UI 2.0 field; .ds-textarea--shadow adds Shadow/xs; .ds-textarea--soft is
+ * a borderless tinted field.
  * Value=Placeholder / Filled = empty / filled. The box is at least 64 px tall and grows with its text (Figma: Hug).
  */
 
@@ -27,6 +29,8 @@
     /* The Figma stroke (1 px, inside) is the first inset shadow, so it never changes the size. */
     --textarea-stroke: var(--ds-field-border);
     --textarea-ring: 0 0 #0000;
+    --textarea-bg: var(--ds-field);
+    --textarea-shadow: 0 0 #0000;
 
     box-sizing: border-box;
     display: block;
@@ -38,8 +42,8 @@
     /* 8 px like Input (Figma draws 10 px; the design system uses one control radius, see the README). */
     border-radius: var(--ds-radius-md);
     outline: none;
-    background-color: var(--ds-field);
-    box-shadow: inset 0 0 0 var(--textarea-stroke-width, var(--ds-stroke-width-1)) var(--textarea-stroke), var(--textarea-ring);
+    background-color: var(--textarea-bg);
+    box-shadow: inset 0 0 0 var(--textarea-stroke-width, var(--ds-stroke-width-1)) var(--textarea-stroke), var(--textarea-ring), var(--textarea-shadow);
     color: var(--ds-foreground);
     caret-color: var(--ds-foreground);
     font-family: var(--ds-font-sans);
@@ -51,6 +55,16 @@
     /* Figma: the box hugs its text. Browsers without field-sizing keep the 64 px and scroll. */
     field-sizing: content;
     resize: none;
+  }
+
+  /* Style, as Input and Select: Shadow adds Shadow/xs; Soft is a borderless field on fill-1. */
+  .ds-textarea--shadow {
+    --textarea-shadow: var(--ds-shadow-xs);
+  }
+
+  .ds-textarea--soft {
+    --textarea-bg: var(--ds-fill-1);
+    --textarea-stroke: transparent;
   }
 
   .ds-textarea--resize {
@@ -70,6 +84,7 @@
 
   /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */
   .ds-textarea:focus {
+    --textarea-bg: var(--ds-field);
     --textarea-stroke: var(--ds-ring);
     --textarea-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
   }

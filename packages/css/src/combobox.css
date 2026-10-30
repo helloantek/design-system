@@ -25,6 +25,7 @@
  *     </div>
  *     <p class="ds-field__caption">Caption text</p>
  *   </div>
+ * Style (as Input and Select): default is the Sort UI 2.0 field; --shadow adds Shadow/xs; --soft is a borderless tinted field.
  * Figma Size: .ds-field--default (32 px), --lg (36 px), --xl (40 px). State: Focus = focus inside the field,
  * Invalid = --invalid, Disabled = --disabled; Hover (ours, as in Input and Select) = :hover.
  */
@@ -35,6 +36,8 @@
     --combobox-stroke: var(--ds-field-border);
     --combobox-stroke-width: var(--ds-stroke-width-1);
     --combobox-ring: 0 0 #0000;
+    --combobox-bg: var(--ds-field);
+    --combobox-shadow: 0 0 #0000;
     --combobox-height: var(--ds-spacing-8);
     --combobox-pad-y: var(--ds-spacing-1-5);
     --combobox-pad-x: var(--ds-spacing-2-5);
@@ -49,8 +52,8 @@
     padding-right: var(--combobox-end);
     /* 8 px like Input and Select (Figma draws 10 px). */
     border-radius: var(--ds-radius-md);
-    background-color: var(--ds-field);
-    box-shadow: inset 0 0 0 var(--combobox-stroke-width) var(--combobox-stroke), var(--combobox-ring);
+    background-color: var(--combobox-bg);
+    box-shadow: inset 0 0 0 var(--combobox-stroke-width) var(--combobox-stroke), var(--combobox-ring), var(--combobox-shadow);
     font-family: var(--ds-font-sans);
     font-size: var(--ds-text-xs);
     font-weight: var(--ds-font-weight-normal);
@@ -77,6 +80,16 @@
     --combobox-media-pad: var(--ds-spacing-3);
   }
 
+  /* Style, as Input and Select: Shadow adds Shadow/xs; Soft is a borderless field on fill-1. */
+  .ds-combobox__field--shadow {
+    --combobox-shadow: var(--ds-shadow-xs);
+  }
+
+  .ds-combobox__field--soft {
+    --combobox-bg: var(--ds-fill-1);
+    --combobox-stroke: transparent;
+  }
+
   /* Hover (not a Figma state; ours, as in Input and Select): a dark 1.5 px stroke. Not while focused, invalid or disabled. */
   .ds-combobox__field:hover:not(:focus-within, .ds-combobox__field--invalid, .ds-combobox__field--disabled) {
     --combobox-stroke: var(--ds-muted-foreground);
@@ -85,6 +98,7 @@
 
   /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */
   .ds-combobox__field:focus-within {
+    --combobox-bg: var(--ds-field);
     --combobox-stroke: var(--ds-ring);
     --combobox-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
   }

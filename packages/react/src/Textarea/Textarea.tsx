@@ -2,6 +2,9 @@ import { useId, useState, type ChangeEvent, type CSSProperties, type ReactNode, 
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-textarea*); this component only renders the markup.
 
+/** As Input and Select: Sort UI 2.0 has one field style (`default`); `shadow` adds Shadow/xs, `soft` is a borderless tinted field. */
+export type TextareaVariant = 'default' | 'shadow' | 'soft';
+
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   ref?: Ref<HTMLTextAreaElement>;
   /** Figma "Field Label". Rendered as a <label> tied to the textarea. */
@@ -19,6 +22,8 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   showCount?: boolean;
   /** A soft limit for `showCount`: past it the count goes negative and red, and the textarea is marked invalid. */
   limit?: number;
+  /** Field style, as Input and Select. */
+  variant?: TextareaVariant;
   /** Lets the user drag the height (off by default: the box grows with its text, as in Figma). */
   resizable?: boolean;
   /** Class for the outer field element. */
@@ -27,7 +32,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 
 /** Figma "Textarea": a multi-line text field, 64 px tall at least, growing with its text. */
 export function Textarea(props: TextareaProps) {
-  const { label, caption, error, invalid: invalidProp = false, showCount = false, limit, resizable = false, className, id: idProp, 'aria-describedby': describedBy, onChange, ...rest } = props;
+  const { label, caption, error, invalid: invalidProp = false, showCount = false, limit, variant = 'default', resizable = false, className, id: idProp, 'aria-describedby': describedBy, onChange, ...rest } = props;
   const autoId = useId();
   const id = idProp ?? autoId;
   const captionId = `${id}-caption`;
@@ -48,7 +53,7 @@ export function Textarea(props: TextareaProps) {
     <textarea
       {...rest}
       id={id}
-      className={['ds-textarea', resizable && 'ds-textarea--resize'].filter(Boolean).join(' ')}
+      className={['ds-textarea', variant !== 'default' && `ds-textarea--${variant}`, resizable && 'ds-textarea--resize'].filter(Boolean).join(' ')}
       aria-invalid={invalid || undefined}
       aria-describedby={[help !== undefined ? captionId : null, counting ? countId : null, describedBy].filter(Boolean).join(' ') || undefined}
       onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {

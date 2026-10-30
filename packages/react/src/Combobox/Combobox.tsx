@@ -8,6 +8,8 @@ import type { SelectCaption, SelectGroup, SelectItem, SelectOption, SelectSepara
 
 /** Figma "Size": 32, 36 and 40 px tall. */
 export type ComboboxSize = 'default' | 'lg' | 'xl';
+/** As Input and Select: Sort UI 2.0 has one field style (`default`); `shadow` adds Shadow/xs, `soft` is a borderless tinted field. */
+export type ComboboxVariant = 'default' | 'shadow' | 'soft';
 
 /** Other props (`aria-*`, `data-*`, `autoComplete`…) go to the input. */
 interface ComboboxBaseProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'value' | 'defaultValue' | 'onChange' | 'role' | 'type' | 'placeholder'> {
@@ -24,6 +26,8 @@ interface ComboboxBaseProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   error?: ReactNode;
   /** Figma Size. */
   size?: ComboboxSize;
+  /** Field style, as Input and Select. */
+  variant?: ComboboxVariant;
   /** Figma "Leading icon", e.g. a search icon (16 px, `currentColor`). */
   leadIcon?: ReactNode;
   /** Figma "Leading slot": a 20 px picture before the text, e.g. the selected person's `<Avatar size="xs">`. */
@@ -102,6 +106,7 @@ export function Combobox(props: ComboboxProps) {
     caption,
     error,
     size = 'default',
+    variant = 'default',
     leadIcon,
     leadMedia,
     disabled = false,
@@ -305,7 +310,7 @@ export function Combobox(props: ComboboxProps) {
     );
   };
 
-  const fieldClasses = ['ds-combobox__field', invalid && 'ds-combobox__field--invalid', disabled && 'ds-combobox__field--disabled'].filter(Boolean).join(' ');
+  const fieldClasses = ['ds-combobox__field', variant !== 'default' && `ds-combobox__field--${variant}`, invalid && 'ds-combobox__field--invalid', disabled && 'ds-combobox__field--disabled'].filter(Boolean).join(' ');
 
   return (
     <div className={['ds-field', `ds-field--${size}`, 'ds-combobox', className].filter(Boolean).join(' ')}>
