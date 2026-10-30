@@ -286,8 +286,10 @@ const tests = {
     await open('playground-form--sign-up');
     const submitted = page.getByTestId('submitted');
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.equal(await page.locator('.ds-field__caption--error').count(), 3);
+    assert.equal(await page.locator('.ds-field__caption--error').count(), 4);
+    assert.equal(await page.getByText('Fix 4 fields to continue').count(), 1, 'an Alert sums up the errors');
     await page.getByLabel('Name').fill('Jane Doe');
+    await page.getByLabel('I accept the terms of service').check();
     await page.getByLabel('Email').fill('jane@example.com');
     await page.getByRole('combobox', { name: 'Role' }).click();
     await page.getByRole('option', { name: 'Engineer' }).click();
@@ -297,12 +299,47 @@ const tests = {
     await page.getByRole('option', { name: 'Design' }).click();
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', plan: 'free', teams: ['web', 'design'] });
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: '', plan: 'free', billing: 'monthly', bio: '', terms: 'on', teams: ['web', 'design'] });
+    await page.getByRole('region', { name: 'Notifications' }).getByText('Account created').first().waitFor();
+    await page.getByRole('combobox', { name: 'Timezone' }).fill('war');
+    await page.getByRole('option', { name: '(GMT+1) Warsaw' }).click();
+    await page.getByRole('radio', { name: /Yearly/ }).check();
+    await page.getByLabel('About you').fill('Design systems');
+    await page.getByLabel('Product updates').check();
+    await page.getByRole('button', { name: 'Create account' }).click();
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: 'warsaw', plan: 'free', billing: 'yearly', bio: 'Design systems', updates: 'on', terms: 'on', teams: ['web', 'design'] });
     await page.getByRole('button', { name: 'Reset' }).click();
     assert.equal(await page.getByRole('combobox', { name: 'Role' }).textContent(), 'Select a role', 'form reset clears the Select');
     assert.equal(await page.getByRole('combobox', { name: 'Plan' }).textContent(), 'Free', 'and restores its defaultValue');
     assert.equal(await page.getByRole('combobox', { name: 'Teams' }).textContent(), 'Select teams');
     assert.equal(await submitted.count(), 0);
+  },
+  'playground team: filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
+    const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
+    await rows.first().waitFor();
+    assert.equal(await rows.count(), 5);
+    await page.getByRole('button', { name: 'Pending', exact: true }).click();
+    assert.equal(await rows.count(), 2);
+    await page.getByRole('button', { name: 'All', exact: true }).click();
+    await page.getByRole('button', { name: 'Search in: Name' }).click();
+    await page.getByRole('menuitem', { name: 'Email' }).click();
+    await page.getByLabel('Search members').fill('priya@');
+    assert.equal(await rows.count(), 1);
+    await page.getByLabel('Search members').fill('');
+    await page.getByRole('button', { name: 'More actions for Priya Raman' }).click();
+    await page.getByRole('menuitemradio', { name: 'Admin' }).click();
+    assert.equal(await rows.nth(2).locator('.ds-badge').last().textContent(), 'Admin');
+    await page.getByRole('region', { name: 'Notifications' }).getByText('Priya Raman is now Admin').first().waitFor();
+    await rows.nth(1).locator('div[tabindex]').first().click({ button: 'right', position: { x: 200, y: 10 } });
+    await page.getByRole('menuitem', { name: 'Remove from team' }).click();
+    const dialog = page.getByRole('alertdialog', { name: 'Remove Jonas Lindqvist?' });
+    await dialog.waitFor();
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Cancel', 'focus starts on Cancel');
+    await dialog.getByRole('button', { name: 'Remove' }).click();
+    await dialog.waitFor({ state: 'hidden' });
+    assert.equal(await rows.count(), 4);
+    assert.equal(await page.getByText('Jonas Lindqvist was removed').count() >= 1, true, 'logged in the activity and as a toast');
   },
 };
 
