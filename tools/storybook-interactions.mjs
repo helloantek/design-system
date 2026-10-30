@@ -343,9 +343,13 @@ const tests = {
     await username.fill('ada.lovelace');
     assert.equal(await username.getAttribute('aria-invalid'), null, 'a valid value clears the error');
     assert.equal(await page.locator('.ds-field__caption--error').count(), 0);
-    await page.goto('http://localhost:6008/iframe.html?id=components-field--native-control&viewMode=story');
-    await page.locator('input[type=date]').waitFor();
-    assert.equal(await page.getByLabel('Birthday').getAttribute('aria-describedby') !== null, true, 'a native element gets the id and the description as attributes');
+    await page.goto('http://localhost:6008/iframe.html?id=components-field--date-input&viewMode=story');
+    await page.locator('.ds-input input[type=date]').waitFor();
+    assert.equal(await page.getByLabel('Birthday').getAttribute('aria-describedby') !== null, true, 'a date Input takes the label and the description');
+    await page.goto('http://localhost:6008/iframe.html?id=components-field--native-element&viewMode=story');
+    const quality = page.getByRole('combobox', { name: 'Audio quality', description: 'A plain <select>, drawn by the browser.' });
+    await quality.waitFor();
+    assert.equal(await quality.evaluate((el) => el.tagName), 'SELECT', 'a native element gets the id and the description as attributes');
     await page.goto('http://localhost:6008/iframe.html?id=components-field--orientation&viewMode=story');
     await page.getByRole('group', { name: 'Vertical' }).waitFor();
     assert.equal(await page.getByRole('group', { name: 'Vertical' }).evaluate((el) => getComputedStyle(el.querySelector('legend')).fontSize), '16px', 'Field Set legend: 16 px');

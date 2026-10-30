@@ -217,12 +217,30 @@ export const Separator: StoryObj = {
   ),
 };
 
-/** A native element gets the wiring as attributes. */
-export const NativeControl: StoryObj = {
+/** A date in a Field: the design system's Input with `type="date"` (the calendar icon and the date format come from the browser until Date Picker). */
+export const DateInput: StoryObj = {
   render: () => (
     <div style={{ width: 320 }}>
       <Field label="Birthday" description="We send a song on the day.">
-        <input type="date" style={{ height: 32, font: 'inherit' }} />
+        <Input type="date" />
+      </Field>
+    </div>
+  ),
+};
+
+/**
+ * Any element works: a plain `<select>` gets the id, the description and the state as attributes. The Field styles only
+ * its label, description and error, so the element keeps the browser's own look; use Select for the design system's.
+ */
+export const NativeElement: StoryObj = {
+  render: () => (
+    <div style={{ width: 320 }}>
+      <Field label="Audio quality" description="A plain <select>, drawn by the browser.">
+        <select defaultValue="high">
+          <option value="normal">Normal</option>
+          <option value="high">High</option>
+          <option value="lossless">Lossless</option>
+        </select>
       </Field>
     </div>
   ),
