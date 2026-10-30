@@ -1,0 +1,35 @@
+{
+ "$comment": "Sort UI 2.0 Alert Dialog (187:131) reference renders (1x PNG, get_screenshot): Size default and sm with the Figma sample slots (trash-2 media, title, description, Outline Cancel, Destructive Delete account). Cropped to the dialog's own box (Figma's export adds the outside border and the Surface/Dialog shadow's margin). renderers/alert-dialog.tsx draws the open dialog's markup in the page.",
+ "component": "alert-dialog",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "187:131",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "size-default",
+   "nodeId": "187:38",
+   "props": {
+    "Size": "default"
+   },
+   "target": "#target .ds-alert-dialog",
+   "nodeW": 448,
+   "nodeH": 174
+  },
+  {
+   "slug": "size-sm",
+   "nodeId": "187:99",
+   "props": {
+    "Size": "sm"
+   },
+   "target": "#target .ds-alert-dialog",
+   "nodeW": 320,
+   "nodeH": 258
+  }
+ ]
+}

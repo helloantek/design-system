@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Alert, Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Card, Checkbox, Context Menu, Dropdown Menu, Input, Radio, Select, Sonner, Switch, Textarea, Tooltip. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Alert, Alert Dialog, Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Card, Checkbox, Context Menu, Dropdown Menu, Input, Radio, Select, Sonner, Switch, Textarea, Tooltip. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -212,6 +212,32 @@ A callout for a short message: Sort UI 2.0 **Alert** (Variant) with an icon, a t
 | action | `action`: small buttons at the end | `ds-alert__action` |
 
 It is a live region, so an alert added while the page is open is read out: `role="status"` by default and `role="alert"` when destructive. Pass another `role`, or `role={undefined}` for an alert that is part of the page from the start.
+
+## Alert Dialog
+
+A modal that asks to confirm an action: Sort UI 2.0 **Alert Dialog** (Size, Media, footer). A native `<dialog>` opened with `showModal()` and `role="alertdialog"`.
+
+```tsx
+<AlertDialog
+  trigger={<Button variant="destructive">Delete account</Button>}
+  variant="destructive"
+  media={<TrashIcon />}
+  title="Delete your account?"
+  description="This permanently deletes your profile. You can't undo this."
+>
+  <AlertDialogCancel>Cancel</AlertDialogCancel>
+  <AlertDialogAction variant="destructive" onClick={deleteAccount}>Delete account</AlertDialogAction>
+</AlertDialog>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Size = default · sm | `size`: 448 px with the media beside the text, or 320 px centred with the buttons sharing the width | `ds-alert-dialog` · `ds-alert-dialog--sm` |
+| Media | `media`: a 20 px icon on a 48 px tile; `variant="destructive"` tints it red (the "Destructive" demo) | `ds-alert-dialog__media` · `ds-alert-dialog--destructive` |
+| Title · Description | `title` (`titleAs`, `h2` by default) names the dialog; `description` describes it | `ds-alert-dialog__title` · `__description` |
+| footer | children: `AlertDialogCancel` (Outline) then `AlertDialogAction` (Default, or `variant="destructive"`) | `ds-alert-dialog__footer` |
+
+Open it with `trigger`, or control it with `open` / `onOpenChange`. Focus starts on Cancel and stays in the dialog; the page behind is inert and does not scroll; Escape and Cancel close it and focus goes back to the trigger. A click on the backdrop does not close it, as it asks for an answer. The action closes it after `onClick` unless that calls `event.preventDefault()` (to keep it open while saving).
 
 ## Card
 
@@ -516,6 +542,7 @@ These come from the Figma files, not the code:
 - Field (2.0): State=Disabled (Orientation=Horizontal) fades only the label to 50 %; the code fades the description too, for Checkbox, Radio and Switch.
 - Alert (2.0): the component set's Destructive sample has a Ghost action and the "Destructive" demo an Outline one; both work. The icons are 17.3 px Lucide instances in a 16 × 20 box (the circle is 14.4 px); the stories pass 17.3 px icons, and any size centres in the box. The Destructive description is `alpha/destructive/90` (#fb2c36 at 90 %): 3.5:1 on the card in Light and 4:1 in Dark, under the 4.5:1 WCAG AA asks for 14 px text; the code draws it in `destructive-foreground` like the title (6.4:1 and 6.2:1).
 - Sonner (2.0): Success draws its icon in blue (`palette/blue-solid`), not green; the code follows Figma. The Default type's sample action is filled with `foreground`, the other types' with `primary` (the same colour in theme-1); the code uses the Button's Default variant. The Close icon's colour is not readable from the file; the code uses `popover-foreground`.
+- Alert Dialog (2.0): Figma draws no backdrop; the code dims the page with `alpha/black/50`. The "Destructive" demo tints the media with `alpha/destructive/10` and a `destructive-foreground` icon, which the code offers as `variant="destructive"`; the component set has only the fill-2 tile.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
