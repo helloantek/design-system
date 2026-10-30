@@ -6,6 +6,7 @@ import { renderButton } from './button';
 import { renderButtonGroup, renderButtonGroupItem } from './button-group';
 import { renderCard } from './card';
 import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './checkbox';
+import { renderCombobox } from './combobox';
 import { renderContextMenu } from './context-menu';
 import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
@@ -31,6 +32,7 @@ export const renderers: Record<string, Renderer> = {
   checkbox: renderCheckbox,
   'checkbox-card': renderCheckboxCard,
   'checkbox-field': renderCheckboxField,
+  combobox: renderCombobox,
   'context-menu': renderContextMenu,
   'dropdown-menu': renderDropdownMenu,
   input: renderInput,

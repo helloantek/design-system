@@ -11,7 +11,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
-**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Alert, Alert Dialog, Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Card, Checkbox, Context Menu, Dropdown Menu, Input, Radio, Select, Sonner, Switch, Textarea, Tooltip. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
+**Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Alert, Alert Dialog, Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Card, Checkbox, Combobox, Context Menu, Dropdown Menu, Input, Radio, Select, Sonner, Switch, Textarea, Tooltip. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
 ## Using it in a project
 
@@ -445,6 +445,27 @@ Short help for a control: the WAI-ARIA tooltip. It describes its trigger (`aria-
 
 The trigger must take focus and keep its own name; the tooltip is help, not a label. Like the menus, the tooltip does not flip near the edge of the viewport yet.
 
+## Combobox
+
+A text field that filters a list: Sort UI 2.0 **Combobox** (Size, Value, State, Leading icon / slot, Chips) with Combobox Content (the Select's options, groups and separators) and Combobox Empty. The WAI-ARIA combobox with list autocomplete.
+
+```tsx
+<Combobox label="New owner" options={people} leadIcon={<SearchIcon />} placeholder="Search teammates" />
+<Combobox multiple aria-label="Frameworks" options={frameworks} defaultValue={['sveltekit', 'nextjs']} />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Size = default · lg · xl | `size` (32 · 36 · 40 px) | `ds-field--default` · `--lg` · `--xl` on `ds-combobox` |
+| Value = Placeholder · Filled | `placeholder`; `value` / `defaultValue` / `onValueChange` | `ds-combobox__input` |
+| State = Focus · Invalid · Disabled | focus inside the field; `error`; `disabled` | `ds-combobox__field` · `--invalid` · `--disabled` |
+| Leading icon · Leading slot | `leadIcon` (16 px); `leadMedia` (20 px, e.g. an Avatar) | `ds-combobox__icon` · `ds-combobox__media` |
+| Chips | `multiple`: each value is a chip with a × (Backspace in the field removes the last one) | `ds-combobox__chip` · `__chip-label` · `__chip-remove` |
+| Combobox Content | `options`: the Select's `SelectOption` (`description`, `icon`, `media`, `caption`, `disabled`), groups and separators | `ds-select__menu` · `ds-select__option` … (select.css) |
+| Combobox Empty | `emptyMessage` (default "No results.") | `ds-combobox__empty` |
+
+Typing filters the options (the label contains the text, ignoring case and accents; pass `filter` to change it) and reads out the number of results; ↓ / ↑ move, Enter picks, Escape closes the list and, when it is closed, clears the text. A click on the chevron opens and closes the list. A single field shows the selected label; emptying it and leaving clears the value. `name` submits the value through a hidden input (one per value with `multiple`).
+
 ## Context Menu
 
 The menu of actions for whatever is under the pointer: a right-click on the trigger opens it there, and Shift+F10 or the Menu key opens it at the trigger's corner with the first item focused. From then on it behaves like Dropdown Menu (arrows, Home/End, letters, → and ← for submenus, Enter or Space to pick, Escape to close and give focus back). A click outside, Tab, scrolling or resizing closes it. Sort UI 2.0 has no component set for it: its demos are **Dropdown Menu Content**, **Item**, **Label** and **Separator**, so the items are the Dropdown Menu parts.
@@ -543,6 +564,7 @@ These come from the Figma files, not the code:
 - Alert (2.0): the component set's Destructive sample has a Ghost action and the "Destructive" demo an Outline one; both work. The icons are 17.3 px Lucide instances in a 16 × 20 box (the circle is 14.4 px); the stories pass 17.3 px icons, and any size centres in the box. The Destructive description is `alpha/destructive/90` (#fb2c36 at 90 %): 3.5:1 on the card in Light and 4:1 in Dark, under the 4.5:1 WCAG AA asks for 14 px text; the code draws it in `destructive-foreground` like the title (6.4:1 and 6.2:1).
 - Sonner (2.0): Success draws its icon in blue (`palette/blue-solid`), not green; the code follows Figma. The Default type's sample action is filled with `foreground`, the other types' with `primary` (the same colour in theme-1); the code uses the Button's Default variant. The Close icon's colour is not readable from the file; the code uses `popover-foreground`.
 - Alert Dialog (2.0): Figma draws no backdrop; the code dims the page with `alpha/black/50`. The "Destructive" demo tints the media with `alpha/destructive/10` and a `destructive-foreground` icon, which the code offers as `variant="destructive"`; the component set has only the fill-2 tile.
+- Combobox (2.0): the field's radius is 10 px (radius/lg) and the menu's 14 px, while Input and Select draw 8 px; the code uses 8 px for all fields and menus. State=Default and Disabled lay the 1 px stroke out, so they are 2 px taller than Focus and Invalid (34 instead of 32 px); the code keeps one height per size. The "Button trigger" demo (a button that opens a list with a search field) is not built yet.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
