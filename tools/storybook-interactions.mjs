@@ -319,6 +319,27 @@ const tests = {
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).getAttribute('aria-expanded'), 'false', 'and closes its list');
     assert.equal(await submitted.count(), 0);
   },
+  'spinner: a named status that turns (slower with reduced motion); decorative in buttons; sizes and a 1.25 px arc at every size': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-spinner--variants-and-sizes&viewMode=story');
+    const spinners = page.getByRole('status');
+    await spinners.first().waitFor();
+    assert.equal(await spinners.count(), 8);
+    assert.equal(await page.getByRole('status', { name: 'Loading (default, sm)' }).count(), 1);
+    const sizes = await page.locator('.ds-spinner').evaluateAll((els) => els.map((el) => el.offsetWidth));
+    assert.deepEqual(sizes.slice(0, 4).map(Math.round), [12, 16, 20, 24], 'Figma Size: 12, 16, 20 and 24 px (the box turns, so it is read unturned)');
+    const anim = await page.locator('.ds-spinner').evaluateAll((els) => els.map((el) => { const cs = getComputedStyle(el); return [cs.animationName, cs.animationDuration, cs.animationIterationCount, cs.animationDirection]; }));
+    assert.deepEqual(anim[0], ['ds-spinner-turn', '1s', 'infinite', 'normal']);
+    assert.equal(anim[4][3], 'reverse', 'the gradient turns the other way, so its dark end leads');
+    assert.deepEqual(await page.locator('.ds-spinner:not(.ds-spinner--gradient) svg path').evaluateAll((els) => els.map((el) => getComputedStyle(el).strokeWidth)), ['1.25px', '1.25px', '1.25px', '1.25px']);
+    assert.deepEqual(await page.locator('.ds-spinner:not(.ds-spinner--gradient) svg path').evaluateAll((els) => els.map((el) => getComputedStyle(el).vectorEffect)), Array(4).fill('non-scaling-stroke'), 'the stroke does not scale with the size');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    assert.equal(await page.locator('.ds-spinner').first().evaluate((el) => getComputedStyle(el).animationDuration), '3s', 'reduced motion: three times slower, still turning');
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('http://localhost:6008/iframe.html?id=components-spinner--in-buttons&viewMode=story');
+    await page.locator('.ds-spinner').first().waitFor();
+    assert.equal(await page.getByRole('status').count(), 0, 'decorative spinners are hidden; the button label says it');
+    assert.deepEqual(await page.locator('.ds-spinner').evaluateAll((els) => els.map((el) => getComputedStyle(el.querySelector('path')).stroke === getComputedStyle(el.closest('button')).color)), [true, true, true], 'the arc takes the button label colour');
+  },
   'separator: decorative by default, role separator on request; across fills the width, upright takes the row height': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-separator--profile&viewMode=story');
     const lines = page.locator('.ds-separator');

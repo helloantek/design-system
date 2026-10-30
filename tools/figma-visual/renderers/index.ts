@@ -16,6 +16,7 @@ import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
 import { renderSeparator } from './separator';
 import { renderSonner } from './sonner';
+import { renderSpinner } from './spinner';
 import { renderSwitch } from './switch';
 import { renderTextarea } from './textarea';
 import { renderTooltip } from './tooltip';
@@ -47,6 +48,7 @@ export const renderers: Record<string, Renderer> = {
   'select-item': renderSelectItem,
   separator: renderSeparator,
   sonner: renderSonner,
+  spinner: renderSpinner,
   'status-badge': renderStatusBadge,
   switch: renderSwitch,
   textarea: renderTextarea,
