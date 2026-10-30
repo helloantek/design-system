@@ -491,7 +491,7 @@ A text field that filters a list: Sort UI 2.0 **Combobox** (Size, Value, State, 
 | Combobox Content | `options`: the Select's `SelectOption` (`description`, `icon`, `media`, `caption`, `disabled`), groups and separators | `ds-select__menu` · `ds-select__option` … (select.css) |
 | Combobox Empty | `emptyMessage` (default "No results.") | `ds-combobox__empty` |
 
-Typing filters the options (the label contains the text, ignoring case and accents; pass `filter` to change it) and reads out the number of results; ↓ / ↑ move, Enter picks, Escape closes the list and, when it is closed, clears the text. A click on the chevron opens and closes the list. A single field shows the selected label; emptying it and leaving clears the value. `name` submits the value through a hidden input (one per value with `multiple`).
+Typing filters the options (the label contains the text, ignoring case and accents; pass `filter` to change it) and reads out the number of results; ↓ / ↑ move, Enter picks, Escape closes the list and, when it is closed, clears the text. A click on the chevron opens and closes the list. A single field shows the selected label; emptying it and leaving clears the value. `name` submits the value through a hidden input (one per value with `multiple`), and resetting the form restores `defaultValue` and clears typed text.
 
 ## Context Menu
 
