@@ -715,6 +715,28 @@ Object.assign(tests, {
     const focused = await boxes();
     assert.ok(focused[0].bottom <= focused[1].top - 13, 'focus inside spreads them too');
   },
+  'marker: separator centres the text between equal rules; border sits 8 px under; loading spins (not with reduced motion); links stay reachable': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-marker--variants&viewMode=story');
+    const separator = page.locator('.ds-marker--separator');
+    await separator.waitFor();
+    const rules = await separator.evaluate((el) => ['::before', '::after'].map((p) => parseFloat(getComputedStyle(el, p).width)));
+    assert.ok(Math.abs(rules[0] - rules[1]) < 0.5 && rules[0] > 100, `equal rules either side (${rules})`);
+    const border = await page.locator('.ds-marker--border').evaluate((el) => ({ pad: getComputedStyle(el).paddingBottom, h: el.offsetHeight }));
+    assert.deepEqual(border, { pad: '8px', h: 28 });
+    await page.goto('http://localhost:6008/iframe.html?id=components-marker--loading&viewMode=story');
+    const spin = page.locator('.ds-marker__icon--spin svg');
+    await spin.waitFor();
+    assert.notEqual(await spin.evaluate((el) => getComputedStyle(el).animationName), 'none', 'the spinner turns');
+    assert.equal(await page.locator('[aria-current="step"]').textContent(), 'Comparing guest reviews…');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    assert.equal(await spin.evaluate((el) => getComputedStyle(el).animationName), 'none', 'reduced motion stops it');
+    await page.emulateMedia({ reducedMotion: null });
+    await page.goto('http://localhost:6008/iframe.html?id=components-marker--chat&viewMode=story');
+    const link = page.getByRole('link', { name: 'View receipt' });
+    await link.waitFor();
+    await link.focus();
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'View receipt', 'the receipt link takes focus');
+  },
   'combobox: typing filters and announces the count; arrows and Enter pick; Escape closes then clears; no results; an emptied field clears': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-combobox--single-selection&viewMode=story');
     const input = page.getByRole('combobox', { name: 'Framework' });

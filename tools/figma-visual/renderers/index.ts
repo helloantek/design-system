@@ -10,6 +10,7 @@ import { renderCombobox } from './combobox';
 import { renderContextMenu } from './context-menu';
 import { renderDropdownMenu } from './dropdown-menu';
 import { renderInput } from './input';
+import { renderMarker } from './marker';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
 import { renderSonner } from './sonner';
@@ -36,6 +37,7 @@ export const renderers: Record<string, Renderer> = {
   'context-menu': renderContextMenu,
   'dropdown-menu': renderDropdownMenu,
   input: renderInput,
+  marker: renderMarker,
   radio: renderRadio,
   'radio-card': renderRadioCard,
   select: renderSelect,

@@ -1,0 +1,45 @@
+{
+ "$comment": "Sort UI 2.0 Marker (357:29) reference renders (1x PNG, get_screenshot): every Variant with the Figma sample text and the arrow-right-left icon, no trailing icon. renderers/marker.tsx renders the same 448 px marker on the page background.",
+ "component": "marker",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "357:29",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "variant-default",
+   "nodeId": "357:3",
+   "props": {
+    "Variant": "Default"
+   },
+   "target": "#target .ds-marker",
+   "nodeW": 448,
+   "nodeH": 20
+  },
+  {
+   "slug": "variant-separator",
+   "nodeId": "357:10",
+   "props": {
+    "Variant": "Separator"
+   },
+   "target": "#target .ds-marker",
+   "nodeW": 448,
+   "nodeH": 20
+  },
+  {
+   "slug": "variant-border",
+   "nodeId": "357:21",
+   "props": {
+    "Variant": "Border"
+   },
+   "target": "#target .ds-marker",
+   "nodeW": 448,
+   "nodeH": 28
+  }
+ ]
+}

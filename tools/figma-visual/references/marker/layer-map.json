@@ -1,0 +1,32 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-marker) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "Icon/VECTOR": {
+      "selector": ".ds-marker__icon svg",
+      "stroke": "svg"
+    },
+    "content": {
+      "selector": ".ds-marker__content",
+      "skip": [
+        "w"
+      ],
+      "$why": "Separator: the text hugs its width, which follows glyph rasterisation; Default and Border: the row less the icon."
+    },
+    "content/TEXT": {
+      "selector": ".ds-marker__content"
+    },
+    "Rule/VECTOR": {
+      "skip": [
+        "stroke"
+      ],
+      "$why": "The rules are ::before and ::after, which the check cannot select; the pixels cover them."
+    },
+    "Border": {
+      "skip": [
+        "stroke"
+      ],
+      "$why": "The bottom rule is an inset shadow on the marker; the pixels cover it."
+    }
+  }
+}
