@@ -176,6 +176,21 @@ export function Combobox(props: ComboboxProps) {
     setStatus(flat.length ? `${flat.length} ${flat.length === 1 ? 'result' : 'results'}` : typeof emptyMessage === 'string' ? emptyMessage : 'No results');
   }, [open, query, flat.length]);
 
+  // Like a native field, an uncontrolled Combobox goes back to defaultValue when its form is reset; typed text goes.
+  const defaultsKey = (toList(props.defaultValue) ?? []).join('\n');
+  useEffect(() => {
+    const form = inputRef.current?.form;
+    if (!form) return;
+    const reset = () => {
+      setUncontrolled(toList(props.defaultValue) ?? []);
+      setQuery(null);
+      setOpen(false);
+      setHighlighted(null);
+    };
+    form.addEventListener('reset', reset);
+    return () => form.removeEventListener('reset', reset);
+  }, [defaultsKey]);
+
   const setRef = (node: HTMLInputElement | null) => {
     inputRef.current = node;
     if (typeof ref === 'function') ref(node);

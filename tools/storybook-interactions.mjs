@@ -312,6 +312,11 @@ const tests = {
     assert.equal(await page.getByRole('combobox', { name: 'Role' }).textContent(), 'Select a role', 'form reset clears the Select');
     assert.equal(await page.getByRole('combobox', { name: 'Plan' }).textContent(), 'Free', 'and restores its defaultValue');
     assert.equal(await page.getByRole('combobox', { name: 'Teams' }).textContent(), 'Select teams');
+    assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).inputValue(), '', 'form reset clears the Combobox');
+    await page.getByRole('combobox', { name: 'Timezone' }).fill('tok');
+    await page.getByRole('button', { name: 'Reset' }).click();
+    assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).inputValue(), '', 'and its typed text');
+    assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).getAttribute('aria-expanded'), 'false', 'and closes its list');
     assert.equal(await submitted.count(), 0);
   },
   'playground team: filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
