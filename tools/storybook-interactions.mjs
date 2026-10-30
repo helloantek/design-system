@@ -319,6 +319,29 @@ const tests = {
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).getAttribute('aria-expanded'), 'false', 'and closes its list');
     assert.equal(await submitted.count(), 0);
   },
+  'kbd: keys are <kbd>s (a group is a <kbd> of <kbd>s, 2 px apart); symbols carry spoken names; sizes and Inverted colours': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-kbd--shortcuts&viewMode=story');
+    const groups = page.locator('kbd.ds-kbd-group');
+    await groups.first().waitFor();
+    assert.equal(await groups.count(), 3);
+    assert.deepEqual(await groups.first().locator('kbd.ds-kbd').evaluateAll((els) => els.map((el) => el.tagName)), ['KBD', 'KBD'], 'a combination is a <kbd> of <kbd>s');
+    assert.equal(await groups.first().evaluate((el) => getComputedStyle(el).columnGap), '2px');
+    const next = page.locator('dd').nth(1);
+    assert.equal(await next.locator('.ds-kbd__label').first().textContent(), 'Command');
+    assert.equal(await next.locator('.ds-kbd [aria-hidden]').first().textContent(), '⌘', 'the symbol is hidden from screen readers');
+    assert.equal(await next.locator('.ds-kbd__label').first().evaluate((el) => el.getBoundingClientRect().width), 1, 'the spoken name takes no space');
+    const space = page.locator('dd').first().locator('.ds-kbd');
+    assert.deepEqual(await space.evaluate((el) => { const cs = getComputedStyle(el); return [el.offsetHeight, cs.paddingLeft, cs.fontSize, cs.fontWeight, cs.color, cs.backgroundColor]; }), [20, '4px', '12px', '500', 'rgb(98, 98, 98)', 'rgba(115, 115, 115, 0.08)'], 'Default: 20 px, 4 px padding, 12 px medium, muted on fill-2');
+    await page.goto('http://localhost:6008/iframe.html?id=components-kbd--variants-and-sizes&viewMode=story');
+    await page.locator('.ds-kbd').first().waitFor();
+    assert.deepEqual(await page.locator('.ds-kbd--sm').first().evaluate((el) => [el.offsetHeight, el.offsetWidth, getComputedStyle(el).paddingLeft]), [16, 16, '2px'], 'sm: 16 px, 2 px padding');
+    assert.deepEqual(await page.locator('.ds-kbd--inverted').first().evaluate((el) => { const cs = getComputedStyle(el); return [cs.color, cs.backgroundColor]; }), ['rgb(252, 252, 252)', 'rgba(252, 252, 252, 0.2)'], 'Inverted: background-coloured key on a 20 % background tint');
+    assert.equal(await page.locator('.ds-kbd svg').first().evaluate((el) => el.getBoundingClientRect().width), 12, 'Icon: 12 px');
+    await page.goto('http://localhost:6008/iframe.html?id=components-kbd--in-an-input&viewMode=story');
+    await page.getByRole('textbox', { name: 'Search' }).waitFor();
+    assert.equal(await page.getByRole('textbox', { name: 'Search' }).getAttribute('aria-keyshortcuts'), 'Meta+K');
+    assert.equal(await page.getByRole('textbox', { name: 'Message' }).getAttribute('aria-keyshortcuts'), '↵');
+  },
   'spinner: a named status that turns (slower with reduced motion); decorative in buttons; sizes and a 1.25 px arc at every size': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-spinner--variants-and-sizes&viewMode=story');
     const spinners = page.getByRole('status');

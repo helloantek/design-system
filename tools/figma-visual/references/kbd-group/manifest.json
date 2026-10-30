@@ -1,0 +1,25 @@
+{
+ "$comment": "Sort UI 2.0 Kbd Group (251:17) reference render (1x PNG, exportAsync: the group sits on the canvas without a frame, so get_screenshot draws it on a grey backdrop): its default keys, ⌘ and K. renderers/kbd.tsx renders the same group on the page background.",
+ "component": "kbd-group",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "251:17",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "group",
+   "nodeId": "251:17",
+   "props": {
+    "Keys": "⌘ K"
+   },
+   "target": "#target .ds-kbd-group",
+   "nodeW": 42,
+   "nodeH": 20
+  }
+ ]
+}

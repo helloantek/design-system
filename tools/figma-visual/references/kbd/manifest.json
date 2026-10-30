@@ -1,0 +1,59 @@
+{
+ "$comment": "Sort UI 2.0 Kbd (251:16) reference renders (1x PNG, get_screenshot): every Variant and Size with the default key, \u2318. Figma renders them on white, so the Inverted keys (a 20 % background tint with a background-coloured key) are white on white here; their colours are checked by spec.json, and in context by the Tooltip references. renderers/kbd.tsx renders the same keys on the page background.",
+ "component": "kbd",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "251:16",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "variant-default-size-default",
+   "nodeId": "251:4",
+   "props": {
+    "Variant": "Default",
+    "Size": "default"
+   },
+   "target": "#target .ds-kbd",
+   "nodeW": 20,
+   "nodeH": 20
+  },
+  {
+   "slug": "variant-inverted-size-default",
+   "nodeId": "251:12",
+   "props": {
+    "Variant": "Inverted",
+    "Size": "default"
+   },
+   "target": "#target .ds-kbd",
+   "nodeW": 20,
+   "nodeH": 20
+  },
+  {
+   "slug": "variant-default-size-sm",
+   "nodeId": "255:80",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm"
+   },
+   "target": "#target .ds-kbd",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "variant-inverted-size-sm",
+   "nodeId": "255:83",
+   "props": {
+    "Variant": "Inverted",
+    "Size": "sm"
+   },
+   "target": "#target .ds-kbd",
+   "nodeW": 16,
+   "nodeH": 16
+  }
+ ]
+}

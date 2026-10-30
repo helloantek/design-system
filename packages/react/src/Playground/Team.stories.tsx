@@ -19,6 +19,7 @@ import {
   DropdownMenuSeparator,
 } from '../DropdownMenu';
 import { Input, InputDropdown } from '../Input';
+import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
 import { Separator } from '../Separator';
 import { Spinner } from '../Spinner';
@@ -57,7 +58,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -236,7 +237,22 @@ export const Members: StoryObj = {
               <Separator orientation="vertical" style={{ height: 16 }} />
               {pending.length} pending
             </span>
-            <Tooltip content="Right-click a member, or press Shift+F10 on it, for the same actions">
+            <Tooltip
+              content={
+                <>
+                  Right-click a member, or press{' '}
+                  <KbdGroup>
+                    <Kbd variant="inverted" size="sm">
+                      Shift
+                    </Kbd>
+                    <Kbd variant="inverted" size="sm">
+                      F10
+                    </Kbd>
+                  </KbdGroup>{' '}
+                  on it, for the same actions
+                </>
+              }
+            >
               <Button variant="ghost" size="sm">
                 Tips
               </Button>
