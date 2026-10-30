@@ -1,0 +1,280 @@
+/*
+ * Combobox — Sort UI 2.0 component set "Combobox" (node 492:8967) and the components "Combobox Content" (112:52),
+ * "Combobox Empty" (112:60) and "Combobox Chip" (112:77) on page 111:2 in file 4JnqgEbdlnKgiFrfmiwEZw: a text field
+ * that filters a list of options. Values are Sort UI 2.0 tokens. The label and caption reuse .ds-field (input.css);
+ * the menu and its options reuse the Select's (.ds-select__menu, .ds-select__option… in select.css), as Figma's
+ * Combobox Content holds Select Items. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (classes in [] are optional; ARIA follows the WAI-ARIA combobox with list autocomplete):
+ *   <div class="ds-field ds-field--default ds-combobox">
+ *     <label class="ds-field__label" for="c">Label</label>
+ *     <div class="ds-select__anchor">
+ *       <div class="ds-combobox__field [ds-combobox__field--invalid] [ds-combobox__field--disabled]">
+ *         [<span class="ds-combobox__media" aria-hidden="true">…20 px avatar…</span>]
+ *         <div class="ds-combobox__body">
+ *           [<span class="ds-combobox__icon" aria-hidden="true"><svg…search…/></span>]
+ *           [<span class="ds-combobox__chip"><span class="ds-combobox__chip-label">Next.js</span>
+ *              <button class="ds-combobox__chip-remove" tabindex="-1" aria-label="Remove Next.js"><svg…x…/></button></span>…]
+ *           <input class="ds-combobox__input" id="c" role="combobox" aria-autocomplete="list" aria-expanded="true"
+ *                  aria-controls="m" placeholder="Select…">
+ *         </div>
+ *         <button class="ds-combobox__toggle" tabindex="-1" aria-label="Show options"><svg…chevron…/></button>
+ *       </div>
+ *       <div class="ds-select__menu" id="m" role="listbox">…Select options, groups and separators…
+ *         [<div class="ds-combobox__empty">No results.</div>]</div>
+ *     </div>
+ *     <p class="ds-field__caption">Caption text</p>
+ *   </div>
+ * Figma Size: .ds-field--default (32 px), --lg (36 px), --xl (40 px). State: Focus = focus inside the field,
+ * Invalid = --invalid, Disabled = --disabled; Hover (ours, as in Input and Select) = :hover.
+ */
+
+@layer ds.components {
+  .ds-combobox__field {
+    /* The Figma stroke (1 px, inside) is the first inset shadow, so it never changes the size. */
+    --combobox-stroke: var(--ds-field-border);
+    --combobox-stroke-width: var(--ds-stroke-width-1);
+    --combobox-ring: 0 0 #0000;
+    --combobox-height: var(--ds-spacing-8);
+    --combobox-pad-y: var(--ds-spacing-1-5);
+    --combobox-pad-x: var(--ds-spacing-2-5);
+    --combobox-end: var(--ds-spacing-1);
+    --combobox-media-pad: var(--ds-spacing-2);
+
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: var(--combobox-height);
+    padding-right: var(--combobox-end);
+    /* 8 px like Input and Select (Figma draws 10 px). */
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-field);
+    box-shadow: inset 0 0 0 var(--combobox-stroke-width) var(--combobox-stroke), var(--combobox-ring);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-xs--line-height);
+    /* Figma letter spacing −0.5 %. */
+    letter-spacing: -0.005em;
+    cursor: text;
+  }
+
+  /* Figma Size: height, Body padding and the chevron's distance from the edge. */
+  .ds-field--lg .ds-combobox__field {
+    --combobox-height: var(--ds-spacing-9);
+    --combobox-pad-y: var(--ds-spacing-2);
+    --combobox-pad-x: var(--ds-spacing-3);
+    --combobox-end: var(--ds-spacing-1-5);
+    --combobox-media-pad: var(--ds-spacing-2-5);
+  }
+
+  .ds-field--xl .ds-combobox__field {
+    --combobox-height: var(--ds-spacing-10);
+    --combobox-pad-y: var(--ds-spacing-2-5);
+    --combobox-pad-x: var(--ds-spacing-3);
+    --combobox-end: var(--ds-spacing-2);
+    --combobox-media-pad: var(--ds-spacing-3);
+  }
+
+  /* Hover (not a Figma state; ours, as in Input and Select): a dark 1.5 px stroke. Not while focused, invalid or disabled. */
+  .ds-combobox__field:hover:not(:focus-within, .ds-combobox__field--invalid, .ds-combobox__field--disabled) {
+    --combobox-stroke: var(--ds-muted-foreground);
+    --combobox-stroke-width: var(--ds-stroke-width-3);
+  }
+
+  /* Figma State=Focus: the stroke turns to the ring colour, plus a 2 px ring. */
+  .ds-combobox__field:focus-within {
+    --combobox-stroke: var(--ds-ring);
+    --combobox-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma State=Invalid: red stroke and ring; focus keeps them. */
+  .ds-combobox__field--invalid,
+  .ds-combobox__field--invalid:focus-within {
+    --combobox-stroke: var(--ds-invalid-border);
+    --combobox-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-invalid-ring);
+  }
+
+  /* Figma State=Disabled: the whole field at 50 %. */
+  .ds-combobox__field--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Figma "L slot": a 20 px picture (e.g. the selected person's Avatar) before the Body. */
+  .ds-combobox__media {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+    padding-left: var(--combobox-media-pad);
+  }
+
+  .ds-combobox__media > :is(svg, img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Figma "Body": the icon, chips and text, 8 px apart; chips wrap onto rows 4 px apart. */
+  .ds-combobox__body {
+    display: flex;
+    flex: 1 1 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-spacing-1) var(--ds-spacing-2);
+    min-width: 0;
+    padding: var(--combobox-pad-y) var(--combobox-pad-x);
+  }
+
+  /* With chips the Body is 4 px taller in Figma than the text (the 20 px chips sit 4 px below the top), so the rows
+     of chips keep 4 px from the edges. */
+  .ds-combobox__body:has(.ds-combobox__chip) {
+    padding-block: var(--ds-spacing-1);
+  }
+
+  .ds-combobox__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-combobox__icon > svg {
+    display: block;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* Figma "Text": the typed text, 13/20. */
+  .ds-combobox__input {
+    flex: 1 1 var(--ds-spacing-12);
+    min-width: var(--ds-spacing-12);
+    height: var(--ds-text-xs--line-height);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--ds-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+  }
+
+  .ds-combobox__input::placeholder {
+    color: var(--ds-muted-foreground);
+    opacity: 1;
+  }
+
+  .ds-combobox__input:disabled {
+    cursor: not-allowed;
+  }
+
+  /* Figma "Chevron button": a 24 px round button with the 16 px chevron; it opens and closes the list. */
+  .ds-combobox__toggle {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-6);
+    height: var(--ds-spacing-6);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-full);
+    background: transparent;
+    color: var(--ds-muted-foreground);
+    cursor: pointer;
+  }
+
+  .ds-combobox__toggle > svg {
+    display: block;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-combobox__toggle:hover:not(:disabled) {
+    background-color: var(--ds-accent);
+  }
+
+  .ds-combobox__toggle:disabled {
+    cursor: not-allowed;
+  }
+
+  /* Figma "Combobox Chip": 20 px pill, control fill, 1 px border outside the box and Shadow/xs; 4 px between chips
+     (the Body's 8 px gap less 4). */
+  .ds-combobox__chip {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    max-width: 100%;
+    height: var(--ds-spacing-5);
+    margin-inline-end: calc(var(--ds-spacing-1) - var(--ds-spacing-2));
+    padding: 0 var(--ds-spacing-0-5) 0 var(--ds-spacing-2);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-control);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-control-border), var(--ds-shadow-xs);
+    cursor: default;
+  }
+
+  /* Chip "Label": 12/16 medium. */
+  .ds-combobox__chip-label {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-2xs--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Chip "Remove": an 18 px Ghost xs icon button with a 12 px ×. */
+  .ds-combobox__chip-remove {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-md);
+    background: transparent;
+    color: var(--ds-muted-foreground);
+    cursor: pointer;
+  }
+
+  .ds-combobox__chip-remove > svg {
+    display: block;
+    width: var(--ds-spacing-3);
+    height: var(--ds-spacing-3);
+  }
+
+  .ds-combobox__chip-remove:hover {
+    background-color: var(--ds-accent);
+    color: var(--ds-foreground);
+  }
+
+  /* Figma "Combobox Empty": "No results." centred, 14/20 muted, 8 px above and below. */
+  .ds-combobox__empty {
+    padding: var(--ds-spacing-2) 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    text-align: center;
+  }
+
+  /* Announces the number of results and removed chips to screen readers; takes no space. */
+  .ds-combobox__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

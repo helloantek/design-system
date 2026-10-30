@@ -715,6 +715,61 @@ Object.assign(tests, {
     const focused = await boxes();
     assert.ok(focused[0].bottom <= focused[1].top - 13, 'focus inside spreads them too');
   },
+  'combobox: typing filters and announces the count; arrows and Enter pick; Escape closes then clears; no results; an emptied field clears': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-combobox--single-selection&viewMode=story');
+    const input = page.getByRole('combobox', { name: 'Framework' });
+    await input.waitFor();
+    assert.equal(await input.inputValue(), 'Next.js', 'the selection shows in the field');
+    await input.click();
+    assert.equal(await input.getAttribute('aria-expanded'), 'true', 'a click opens the list');
+    assert.equal(await page.getByRole('option').count(), 6, 'every option shows before typing');
+    await input.fill('nu');
+    assert.deepEqual(await page.getByRole('option').allTextContents(), ['Nuxt.js'], 'typing filters');
+    assert.equal(await page.locator('.ds-combobox__status').textContent(), '1 result', 'the count is read out');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await input.getAttribute('aria-activedescendant'), await page.getByRole('option', { name: 'Nuxt.js' }).getAttribute('id'));
+    await page.keyboard.press('Enter');
+    assert.equal(await input.inputValue(), 'Nuxt.js');
+    assert.equal(await input.getAttribute('aria-expanded'), 'false', 'Enter picks and closes');
+    await input.fill('zz');
+    assert.equal(await page.locator('.ds-combobox__empty').textContent(), 'No results.');
+    await page.keyboard.press('Escape');
+    assert.equal(await input.getAttribute('aria-expanded'), 'false', 'Escape closes the list');
+    await page.keyboard.press('Escape');
+    assert.equal(await input.inputValue(), '', 'Escape on a closed list clears the text');
+    await page.keyboard.type('re');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    assert.equal(await input.inputValue(), 'React');
+    await input.fill('');
+    await page.keyboard.press('Tab');
+    assert.equal(await input.inputValue(), '', 'an emptied field clears the value on blur');
+    await page.goto('http://localhost:6008/iframe.html?id=components-combobox--groups&viewMode=story');
+    const zone = page.getByRole('combobox', { name: 'Timezone' });
+    await zone.waitFor();
+    await zone.fill('pa');
+    assert.deepEqual(await page.getByRole('group').evaluateAll((els) => els.map((el) => el.textContent)), ['Americas(GMT-3) São Paulo', 'Europe(GMT+1) Paris'], 'empty groups go');
+    assert.equal(await page.locator('.ds-select__separator').count(), 1, 'one separator between what is left');
+  },
+  'combobox: multiple keeps the list open and adds chips; × and Backspace remove them and say so': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-combobox--multiple-selection&viewMode=story');
+    const input = page.getByRole('combobox', { name: 'Frameworks' });
+    await input.waitFor();
+    const chips = page.locator('.ds-combobox__chip-label');
+    assert.deepEqual(await chips.allTextContents(), ['SvelteKit', 'Next.js']);
+    await input.click();
+    assert.equal(await page.getByRole('listbox').getAttribute('aria-multiselectable'), 'true');
+    await page.getByRole('option', { name: 'Remix' }).click();
+    assert.deepEqual(await chips.allTextContents(), ['SvelteKit', 'Next.js', 'Remix'], 'a click adds a chip');
+    assert.equal(await input.getAttribute('aria-expanded'), 'true', 'the list stays open');
+    assert.equal(await page.locator('.ds-combobox__status').textContent(), 'Remix added');
+    await page.getByRole('button', { name: 'Remove SvelteKit' }).click();
+    assert.deepEqual(await chips.allTextContents(), ['Next.js', 'Remix'], '× removes a chip');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('role')), 'combobox', 'focus stays in the field');
+    await page.keyboard.press('Backspace');
+    assert.deepEqual(await chips.allTextContents(), ['Next.js'], 'Backspace removes the last chip');
+    assert.equal(await page.locator('.ds-combobox__status').textContent(), 'Remix removed');
+  },
   'alert dialog: opens modal and named, focus on Cancel; the backdrop does not close it; Escape and Cancel close it and focus returns; the action runs': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert-dialog--demos&viewMode=story');
     const trigger = page.getByRole('button', { name: 'Delete account' });

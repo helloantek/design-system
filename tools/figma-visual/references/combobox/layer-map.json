@@ -1,0 +1,34 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-combobox__field) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "h",
+        "r",
+        "p",
+        "g"
+      ],
+      "$why": "Height: Figma lays the stroke out in Default and Disabled (2 px taller, see the manifest); the size check allows it. Radius: 8 px like Input and Select (Figma's Combobox draws 10 px with radius/lg; its Input draws 8). The padding sits on the Body and the chevron's edge distance is the field's right padding."
+    },
+    "Body": {
+      "selector": ".ds-combobox__body",
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "The Body takes the width the chevron leaves (Figma draws 250 or 252 px depending on the stroke); its height follows the field's."
+    },
+    "Text": {
+      "selector": ".ds-combobox__input",
+      "text": "placeholder-if-empty"
+    },
+    "Chevron button": {
+      "selector": ".ds-combobox__toggle"
+    },
+    "chevron-down/VECTOR": {
+      "selector": ".ds-combobox__toggle svg",
+      "stroke": "svg"
+    }
+  }
+}

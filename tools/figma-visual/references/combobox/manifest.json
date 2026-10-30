@@ -1,0 +1,99 @@
+{
+ "$comment": "Sort UI 2.0 Combobox (492:8967) reference renders (1x PNG, get_screenshot) with the Figma sample text: Placeholder in every State, Filled at each Size. Focus and Invalid are cropped to the field's box (Figma's export adds the 2 px ring). renderers/combobox.tsx renders a 280 px field. Figma lays the field's 1 px inside stroke out in State=Default and Disabled, so those variants are 2 px taller than Focus and Invalid (34, 38 and 42 px instead of 32, 36 and 40) with the content 1 px lower; the code keeps one height per size, within maxSizeDelta and the pixel thresholds.",
+ "component": "combobox",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "492:8967",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-placeholder-default",
+   "nodeId": "491:236",
+   "props": {
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Default"
+   },
+   "target": "#target .ds-combobox__field",
+   "nodeW": 280,
+   "nodeH": 34
+  },
+  {
+   "slug": "default-placeholder-focus",
+   "nodeId": "491:260",
+   "props": {
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Focus"
+   },
+   "target": "#target .ds-combobox__field",
+   "nodeW": 280,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-placeholder-disabled",
+   "nodeId": "491:284",
+   "props": {
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-combobox__field",
+   "nodeW": 280,
+   "nodeH": 34
+  },
+  {
+   "slug": "default-placeholder-invalid",
+   "nodeId": "491:308",
+   "props": {
+    "Size": "default",
+    "Value": "Placeholder",
+    "State": "Invalid"
+   },
+   "target": "#target .ds-combobox__field",
+   "nodeW": 280,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-filled-default",
+   "nodeId": "491:332",
+   "props": {
+    "Size": "default",
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-combobox__field",
+   "nodeW": 280,
+   "nodeH": 34
+  },
+  {
+   "slug": "lg-filled-default",
+   "nodeId": "492:380",
+   "props": {
+    "Size": "lg",
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-combobox__field",
+   "nodeW": 280,
+   "nodeH": 38
+  },
+  {
+   "slug": "xl-filled-default",
+   "nodeId": "492:572",
+   "props": {
+    "Size": "xl",
+    "Value": "Filled",
+    "State": "Default"
+   },
+   "target": "#target .ds-combobox__field",
+   "nodeW": 280,
+   "nodeH": 42
+  }
+ ]
+}
