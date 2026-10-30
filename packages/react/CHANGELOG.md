@@ -1,5 +1,11 @@
 # @helloantek/ds-react
 
+## 2.18.0
+
+### Minor Changes
+
+- 18c89e2: Kbd and Kbd Group (Sort UI 2.0): `Kbd` with `variant` `default` or `inverted` (for dark surfaces), `size` `default` or `sm`, `icon` and a spoken `label` for symbols; `KbdGroup` puts the keys of one shortcut 2 px apart.
+
 ## 2.17.0
 
 ### Minor Changes
