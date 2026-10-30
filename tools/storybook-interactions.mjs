@@ -319,6 +319,26 @@ const tests = {
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).getAttribute('aria-expanded'), 'false', 'and closes its list');
     assert.equal(await submitted.count(), 0);
   },
+  'separator: decorative by default, role separator on request; across fills the width, upright takes the row height': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-separator--profile&viewMode=story');
+    const lines = page.locator('.ds-separator');
+    await lines.first().waitFor();
+    assert.equal(await lines.count(), 3);
+    assert.deepEqual(await lines.evaluateAll((els) => els.map((el) => el.getAttribute('role'))), ['none', 'none', 'none'], 'decorative: hidden from screen readers');
+    const [across, upright] = await lines.evaluateAll((els) => els.slice(0, 2).map((el) => { const r = el.getBoundingClientRect(); return [r.width, r.height]; }));
+    assert.deepEqual(across, [320, 1], 'horizontal: the container width, 1 px');
+    assert.deepEqual(upright, [1, 20], 'vertical: 1 px, the height of the stats row');
+    assert.equal(await lines.first().evaluate((el) => getComputedStyle(el).borderTopColor), 'rgba(10, 10, 10, 0.1)', 'the border token (Light)');
+    await page.goto('http://localhost:6008/iframe.html?id=components-separator--vertical&viewMode=story');
+    await page.locator('.ds-separator').first().waitFor();
+    assert.equal(await page.locator('.ds-separator').last().evaluate((el) => el.getBoundingClientRect().height), 16, 'a set height wins over the row (16 px between icon buttons)');
+    await page.goto('http://localhost:6008/iframe.html?id=components-separator--semantic&viewMode=story');
+    await page.getByRole('separator').waitFor();
+    assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), null, 'horizontal is the default orientation');
+    await page.goto('http://localhost:6008/iframe.html?id=components-separator--playground&viewMode=story&args=orientation:vertical;decorative:!false');
+    await page.getByRole('separator').waitFor();
+    assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
+  },
   'playground team: filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');

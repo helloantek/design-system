@@ -13,6 +13,7 @@ export * from './Input';
 export * from './Marker';
 export * from './Radio';
 export * from './Select';
+export * from './Separator';
 export * from './Sonner';
 export * from './Switch';
 export * from './Textarea';

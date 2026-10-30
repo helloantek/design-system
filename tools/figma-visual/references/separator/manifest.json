@@ -1,0 +1,35 @@
+{
+ "$comment": "Sort UI 2.0 Separator (237:6) reference renders (1x PNG, get_screenshot): both Orientations at the component set's sizes (448 px across, 40 px upright). Figma draws a centred 1 px stroke on a 0 px frame, so the renders are 1 px thick. renderers/separator.tsx renders the same lines on the page background.",
+ "component": "separator",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "237:6",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "orientation-horizontal",
+   "nodeId": "237:2",
+   "props": {
+    "Orientation": "Horizontal"
+   },
+   "target": "#target .ds-separator",
+   "nodeW": 448,
+   "nodeH": 0
+  },
+  {
+   "slug": "orientation-vertical",
+   "nodeId": "237:4",
+   "props": {
+    "Orientation": "Vertical"
+   },
+   "target": "#target .ds-separator",
+   "nodeW": 0,
+   "nodeH": 40
+  }
+ ]
+}
