@@ -1,0 +1,15 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-separator) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "Figma's frame is 0 px thick with a centred stroke; the code's line is 1 px in the layout (the size check allows it). Its length follows the container (448 px wide, or the 40 px row)."
+    },
+    "line": {
+      "$why": "The line is the separator's own 1 px border (border-top across, border-left upright)."
+    }
+  }
+}

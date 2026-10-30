@@ -1,0 +1,28 @@
+/*
+ * Separator — Sort UI 2.0 component set "Separator" (node 237:6) on page 236:2 in file 4JnqgEbdlnKgiFrfmiwEZw: a 1 px
+ * line between groups of content, across (Horizontal) or upright between items in a row (Vertical). Values are Sort UI
+ * 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (classes in [] are optional):
+ *   <div class="ds-separator" role="none"></div>                           (decorative: hidden from screen readers)
+ *   <div class="ds-separator ds-separator--vertical" role="separator" aria-orientation="vertical"></div>
+ * Figma Orientation: Horizontal (default) fills its container's width; Vertical takes the height of the row it sits in
+ * (Figma's 40 px sample is a fixed height; set `height` for a shorter line, as the "Vertical" demo's 16 px between
+ * icon buttons).
+ */
+
+@layer ds.components {
+  /* Figma draws a centred 1 px `border` stroke on a 0 px frame; the code gives the line its 1 px in the layout. */
+  .ds-separator {
+    flex-shrink: 0;
+    align-self: stretch;
+    margin: 0;
+    border: 0 solid var(--ds-border);
+    border-top-width: var(--ds-stroke-width-1);
+  }
+
+  .ds-separator--vertical {
+    border-top-width: 0;
+    border-left-width: var(--ds-stroke-width-1);
+  }
+}

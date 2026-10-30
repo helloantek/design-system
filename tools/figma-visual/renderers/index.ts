@@ -14,6 +14,7 @@ import { renderInputGroupDropdown } from './input-group-dropdown';
 import { renderMarker } from './marker';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
+import { renderSeparator } from './separator';
 import { renderSonner } from './sonner';
 import { renderSwitch } from './switch';
 import { renderTextarea } from './textarea';
@@ -44,6 +45,7 @@ export const renderers: Record<string, Renderer> = {
   'radio-card': renderRadioCard,
   select: renderSelect,
   'select-item': renderSelectItem,
+  separator: renderSeparator,
   sonner: renderSonner,
   'status-badge': renderStatusBadge,
   switch: renderSwitch,

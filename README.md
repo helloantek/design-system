@@ -397,6 +397,25 @@ A native `<textarea>` drawn as the Sort UI 2.0 **Textarea**, in a **Field** for 
 
 Hover draws the dark 1.5 px stroke of Input and Select. Other props (`rows`, `name`, `ref`…) go to the textarea.
 
+## Separator
+
+A 1 px line between groups of content: Sort UI 2.0 **Separator** (Orientation).
+
+```tsx
+<Separator />
+<div style={{ display: 'flex', gap: 16 }}>
+  248 posts <Separator orientation="vertical" /> 12.4k followers
+</div>
+<Separator decorative={false} />   {/* role="separator": sections a screen reader should hear as separate */}
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Orientation = Horizontal · Vertical | `orientation`: `horizontal` (default) fills the container's width; `vertical` takes the height of its row (set `height` for a shorter line) | `ds-separator` · `ds-separator--vertical` |
+| — | `decorative` (default `true`: `role="none"`); `false` gives `role="separator"` and `aria-orientation="vertical"` when upright | — |
+
+The line is the element's own 1 px `border` (`--ds-border`), so it works in any flex or grid layout and in every brand and scheme.
+
 ## Sonner
 
 Toasts: short notifications that close on their own. Sort UI 2.0 **Sonner** (Type, Title, Description, actions, Close). Mount `<Toaster />` once near the root and call `toast()` anywhere.
@@ -594,6 +613,7 @@ These come from the Figma files, not the code:
 - Alert Dialog (2.0): Figma draws no backdrop; the code dims the page with `alpha/black/50`. The "Destructive" demo tints the media with `alpha/destructive/10` and a `destructive-foreground` icon, which the code offers as `variant="destructive"`; the component set has only the fill-2 tile.
 - Combobox (2.0): the field's radius is 10 px (radius/lg) and the menu's 14 px, while Input and Select draw 8 px; the code uses 8 px for all fields and menus. State=Default and Disabled lay the 1 px stroke out, so they are 2 px taller than Focus and Invalid (34 instead of 32 px); the code keeps one height per size. The "Button trigger" demo (a button that opens a list with a search field) is not built yet.
 - Marker (2.0): the "Loading" demo's spinner is a Spinner instance in `foreground`, while the other icons are muted; the code draws it with `loading`. The Border variant's rule is a centred 1 px line on the bottom edge (half outside the box); the code draws it inside.
+- Separator (2.0): the line is a centred 1 px stroke on a 0 px frame, so it takes no space in Figma's layouts (the "Separator" demo puts 16 px between the intro and the line and 16 px after it, 32 px in all); the code's line is 1 px in the layout, so the same gaps add up to 33 px. The "Vertical" demo gives each line a fixed height (20 px between the metadata, 16 px between the icon buttons); the code stretches an upright line to its row and takes `height` for a shorter one.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
