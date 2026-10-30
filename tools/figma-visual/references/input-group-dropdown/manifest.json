@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 Input Group Dropdown (1336:21480) reference renders (1x PNG, get_screenshot): every State with the Figma sample (square-dashed icon, \"Dropdown\", chevron). Focus is cropped to the button's box (Figma's export adds the 3 px ring). renderers/input-group-dropdown.tsx renders the button outside an input, with the input's text style.",
+ "component": "input-group-dropdown",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "1336:21480",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "state-default",
+   "nodeId": "1336:21479",
+   "props": {
+    "State": "Default"
+   },
+   "target": "#target .ds-input__dropdown",
+   "nodeW": 100,
+   "nodeH": 20
+  },
+  {
+   "slug": "state-hover",
+   "nodeId": "1336:21477",
+   "props": {
+    "State": "Hover"
+   },
+   "target": "#target .ds-input__dropdown",
+   "nodeW": 100,
+   "nodeH": 20
+  },
+  {
+   "slug": "state-focus",
+   "nodeId": "1341:2902",
+   "props": {
+    "State": "Focus"
+   },
+   "target": "#target .ds-input__dropdown",
+   "nodeW": 100,
+   "nodeH": 20
+  },
+  {
+   "slug": "state-disabled",
+   "nodeId": "1336:21478",
+   "props": {
+    "State": "Disabled"
+   },
+   "target": "#target .ds-input__dropdown",
+   "nodeW": 100,
+   "nodeH": 20
+  }
+ ]
+}

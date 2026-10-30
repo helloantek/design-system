@@ -19,10 +19,15 @@
  *         [<kbd class="ds-input__shortcut">/</kbd>]
  *       </div>
  *       [<span class="ds-input__addon ds-input__addon--end">.com</span>]
- *       [<button class="ds-input__action" type="button">Send</button>]
+ *       [<button class="ds-input__action [ds-input__action--ghost]" type="button">Send</button>]
+ *       [<button class="ds-input__dropdown" type="button">USD<svg…chevron…/></button>]   (Input Group Dropdown)
  *     </div>
  *     <p class="ds-field__caption">Caption text</p>
  *   </div>
+ * Input Group "Block start" / "Block end": the box becomes a column, .ds-input--block, holding
+ *   [<div class="ds-input__block [ds-input__block--divider]">Client</div>]
+ *   <div class="ds-input__row">…the add-ons, control, action as above…</div>
+ *   [<div class="ds-input__block ds-input__block--end [ds-input__block--divider]">Shown on the invoice PDF</div>]
  * Figma Size: .ds-field--default (32 px, the default), .ds-field--lg (36 px), .ds-field--xl (40 px);
  * .ds-input--<size> does the same without the field.
  * Figma State: Focus = :focus-within, Hover (ours) = :hover, Invalid = .ds-input--invalid (+ .ds-field__caption--error),
@@ -378,6 +383,23 @@
     color: var(--input-tail-icon);
   }
 
+  /* The Input Group "Loading" demo: a turning spinner in place of an icon. */
+  .ds-input__icon--spin > svg {
+    animation: ds-input-spin calc(var(--ds-duration-200) * 5) var(--ds-ease-linear) infinite;
+  }
+
+  @keyframes ds-input-spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-input__icon--spin > svg {
+      animation: none;
+    }
+  }
+
   /* Input Group "L slot" / "T slot" text: 10 px from the edge (12 px in xl), the Body's side padding from the value. */
   .ds-input__affix {
     flex-shrink: 0;
@@ -465,5 +487,137 @@
 
   .ds-input__action:disabled {
     cursor: not-allowed;
+  }
+
+  /* A button as the L or T slot (the "Button" demo's stepper): 4 px from the edge, like the action. */
+  .ds-input__affix:has(> .ds-input__action) {
+    margin-left: calc(var(--ds-spacing-1) - var(--input-pad-x));
+  }
+
+  .ds-input__affix--end:has(> .ds-input__action) {
+    margin-right: calc(var(--ds-spacing-1) - var(--input-pad-x));
+    margin-left: calc(var(--input-pad-x) - var(--ds-spacing-2));
+  }
+
+  .ds-input__affix > .ds-input__action {
+    margin: 0;
+  }
+
+  /* Ghost (the Figma demos' copy, clear, − and + buttons and "Search"): no fill or stroke until hovered. */
+  .ds-input__action--ghost {
+    --action-bg: transparent;
+    --action-stroke: transparent;
+
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--action-stroke), var(--action-ring);
+  }
+
+  .ds-input__action--ghost:hover:not(:disabled) {
+    --action-bg: var(--ds-accent);
+  }
+
+  /* An icon alone: a 24 px square with the 16 px icon. */
+  .ds-input__action:has(> svg:only-child) {
+    justify-content: center;
+    width: var(--ds-spacing-6);
+    padding: 0;
+  }
+
+  .ds-input__action > svg {
+    display: block;
+    flex-shrink: 0;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* Figma "Input Group Dropdown": a 20 px menu button in the T slot, 8 px from the edge: 13/20 medium label with 14 px
+     icons, 4 px apart. Hover fades it to 70 %, Focus puts it on the page background with a 3 px ring. */
+  .ds-input__dropdown {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    align-self: center;
+    gap: var(--ds-spacing-1);
+    height: var(--ds-spacing-5);
+    margin: 0 var(--ds-spacing-2) 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    background: transparent;
+    color: var(--ds-foreground);
+    font: inherit;
+    font-weight: var(--ds-font-weight-medium);
+    letter-spacing: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ds-input__dropdown > svg {
+    display: block;
+    flex-shrink: 0;
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+  }
+
+  .ds-input__dropdown:hover:not(:disabled) {
+    opacity: 0.7;
+  }
+
+  .ds-input__dropdown:focus-visible {
+    background-color: var(--ds-background);
+    box-shadow: 0 0 0 calc(var(--ds-stroke-width-4) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-input__dropdown:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* A Dropdown Menu in the input: its trigger sits centred in the row and its menu may leave the box. */
+  .ds-input:has(> .ds-dropdown, > .ds-input__row > .ds-dropdown) {
+    overflow: visible;
+  }
+
+  .ds-input > .ds-dropdown,
+  .ds-input__row > .ds-dropdown {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  /* Figma Input Group "start" / "end" (Block start / Block end): rows above and below the input in the same box, 13/20
+     medium muted, at the input's side padding; 6 px from the top or bottom edge. */
+  .ds-input--block {
+    flex-direction: column;
+  }
+
+  .ds-input__row {
+    display: flex;
+    align-items: stretch;
+    min-height: var(--input-height);
+  }
+
+  .ds-input__block {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-1-5) var(--input-pad-x) 0;
+    color: var(--ds-muted-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-input__block--end {
+    padding: 0 var(--input-pad-x) var(--ds-spacing-1-5);
+  }
+
+  /* The "Dividers" demo: a field-border line between the block and the input, 6 px on both sides of the text. */
+  .ds-input__block--divider {
+    padding-block: var(--ds-spacing-1-5);
+    box-shadow: inset 0 calc(-1 * var(--ds-stroke-width-1)) 0 var(--ds-field-border);
+  }
+
+  .ds-input__block--end.ds-input__block--divider {
+    box-shadow: inset 0 var(--ds-stroke-width-1) 0 var(--ds-field-border);
   }
 }

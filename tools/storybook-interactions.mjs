@@ -715,6 +715,42 @@ Object.assign(tests, {
     const focused = await boxes();
     assert.ok(focused[0].bottom <= focused[1].top - 13, 'focus inside spreads them too');
   },
+  'input group: a dropdown in the T slot opens over the page and sets its label; blocks name and describe the input; stepper, clear and loading': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-input--input-group-dropdown&viewMode=story');
+    const currency = page.getByRole('button', { name: 'Currency: USD' });
+    await currency.waitFor();
+    await currency.click();
+    assert.equal(await currency.getAttribute('aria-expanded'), 'true');
+    const eur = page.getByRole('menuitem', { name: 'EUR' });
+    const box = await eur.boundingBox();
+    assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.closest('[role="menuitem"]')?.textContent, { x: box.x + box.width / 2, y: box.y + box.height / 2 }), 'EUR', 'the menu is not clipped by the input');
+    await eur.click();
+    assert.equal(await page.getByRole('button', { name: 'Currency: EUR' }).textContent(), 'EUR');
+    await page.goto('http://localhost:6008/iframe.html?id=components-input--input-group-alignment&viewMode=story');
+    const client = page.getByRole('textbox', { name: 'Client' });
+    await client.waitFor();
+    assert.equal(await client.inputValue(), 'Northlight Studio', 'Block start names the input');
+    const project = page.getByRole('textbox', { name: 'Project' });
+    assert.equal(await page.evaluate((id) => document.getElementById(id).textContent, (await project.getAttribute('aria-describedby')).split(' ')[0]), 'Shown on the invoice PDF', 'Block end describes it');
+    await page.getByText('Shown on the invoice PDF').click();
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Project', 'a click on a block focuses the input');
+    await page.goto('http://localhost:6008/iframe.html?id=components-input--input-group-buttons&viewMode=story');
+    const quantity = page.getByRole('textbox', { name: 'Quantity' });
+    await quantity.waitFor();
+    await page.getByRole('button', { name: 'Increase' }).click();
+    await page.getByRole('button', { name: 'Increase' }).click();
+    await page.getByRole('button', { name: 'Decrease' }).click();
+    assert.equal(await quantity.inputValue(), '1');
+    await page.goto('http://localhost:6008/iframe.html?id=components-input--input-group-status&viewMode=story');
+    const workspace = page.getByRole('textbox', { name: 'Workspace' });
+    await workspace.waitFor();
+    assert.equal(await workspace.getAttribute('aria-busy'), 'true', 'loading marks the input busy');
+    assert.notEqual(await page.locator('.ds-input__icon--spin svg').first().evaluate((el) => getComputedStyle(el).animationName), 'none');
+    const name = page.getByRole('textbox', { name: 'Display name' });
+    await page.getByRole('button', { name: 'Clear' }).click();
+    assert.equal(await name.inputValue(), '');
+    assert.equal(await page.getByRole('button', { name: 'Clear' }).count(), 0, 'the clear button goes with the text');
+  },
   'marker: separator centres the text between equal rules; border sits 8 px under; loading spins (not with reduced motion); links stay reachable': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-marker--variants&viewMode=story');
     const separator = page.locator('.ds-marker--separator');
