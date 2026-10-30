@@ -1,5 +1,11 @@
 # @helloantek/ds-react
 
+## 2.14.0
+
+### Minor Changes
+
+- dfea8ac: Marker (Sort UI 2.0): `Marker` (`variant` default · separator · border, `icon`, `trailingIcon`, `loading`), a quiet line for events, dates and steps in a feed or a chat.
+
 ## 2.13.0
 
 ### Minor Changes
