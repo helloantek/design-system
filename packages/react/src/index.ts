@@ -10,6 +10,7 @@ export * from './Combobox';
 export * from './ContextMenu';
 export * from './DropdownMenu';
 export * from './Input';
+export * from './Marker';
 export * from './Radio';
 export * from './Select';
 export * from './Sonner';

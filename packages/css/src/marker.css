@@ -1,0 +1,102 @@
+/*
+ * Marker — Sort UI 2.0 component set "Marker" (node 357:29) on page 357:2 in file 4JnqgEbdlnKgiFrfmiwEZw: a quiet
+ * line in a feed or a chat (an event, a date, a step) with an optional icon. Values are Sort UI 2.0 tokens.
+ * Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-marker [ds-marker--separator | ds-marker--border]">
+ *     [<span class="ds-marker__icon [ds-marker__icon--spin]" aria-hidden="true"><svg>…</svg></span>]
+ *     <span class="ds-marker__content">Sofia moved Combobox to Ready for review</span>
+ *     [<span class="ds-marker__icon" aria-hidden="true"><svg>…</svg></span>]   (Figma "Trailing icon")
+ *   </div>
+ * Figma Variant: Default; Separator (centred between two rules, e.g. a date); Border (a rule under the line).
+ */
+
+@layer ds.components {
+  .ds-marker {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    min-height: var(--ds-spacing-4);
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma "Icon" and "Trailing icon": 16 px, muted, 1.25 px stroke. */
+  .ds-marker__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-marker__icon > svg {
+    display: block;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* The "Loading" demo: the step in progress has a spinner in the foreground colour. */
+  .ds-marker__icon--spin {
+    color: var(--ds-foreground);
+  }
+
+  .ds-marker__icon--spin > svg {
+    animation: ds-marker-spin calc(var(--ds-duration-200) * 5) var(--ds-ease-linear) infinite;
+  }
+
+  @keyframes ds-marker-spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-marker__icon--spin > svg {
+      animation: none;
+    }
+  }
+
+  /* Figma "content": the text takes the row. Links in it keep the muted colour, underlined. */
+  .ds-marker__content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ds-marker__content a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ds-marker__content a:hover {
+    color: var(--ds-foreground);
+  }
+
+  /* Variant=Separator: 1 px border rules on both sides; the text hugs its width with 4 px on each side. */
+  .ds-marker--separator::before,
+  .ds-marker--separator::after {
+    content: '';
+    flex: 1 1 0;
+    min-width: var(--ds-spacing-4);
+    height: var(--ds-stroke-width-1);
+    background-color: var(--ds-border);
+  }
+
+  .ds-marker--separator .ds-marker__content {
+    flex: 0 1 auto;
+    padding: 0 var(--ds-spacing-1);
+    text-align: center;
+  }
+
+  /* Variant=Border: a 1 px border rule along the bottom, 8 px under the text. */
+  .ds-marker--border {
+    padding-bottom: var(--ds-spacing-2);
+    box-shadow: inset 0 calc(-1 * var(--ds-stroke-width-1)) 0 var(--ds-border);
+  }
+}
