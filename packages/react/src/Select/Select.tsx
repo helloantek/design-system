@@ -1,4 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode, type Ref } from 'react';
+import { useField } from '../Field/FieldContext';
 import { Badge } from '../Badge';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-select*); this component renders the markup and the
@@ -164,20 +165,25 @@ export function Select(props: SelectProps) {
     leadIcon,
     tailIcon,
     indicator = 'check',
-    disabled = false,
+    disabled: disabledProp,
     defaultOpen = false,
     name,
-    required,
+    required: requiredProp,
     id: idProp,
     className,
     onClick,
     onKeyDown: onKeyDownProp,
     onBlur,
-    'aria-describedby': describedBy,
+    'aria-describedby': describedByProp,
     ...rest
   } = props;
+  // Inside a Field: its ids, its description and its state.
+  const field = useField();
   const autoId = useId();
-  const id = idProp ?? autoId;
+  const id = idProp ?? field?.id ?? autoId;
+  const disabled = disabledProp ?? field?.disabled ?? false;
+  const required = requiredProp ?? field?.required;
+  const describedBy = [field?.describedBy, describedByProp].filter(Boolean).join(' ') || undefined;
   const labelId = `${id}-label`;
   const menuId = `${id}-menu`;
   const captionId = `${id}-caption`;
@@ -201,7 +207,8 @@ export function Select(props: SelectProps) {
   const selected = flat.filter((o) => values.includes(o.value));
   // First selected option: where keyboard navigation and type-ahead start.
   const selectedIndex = flat.findIndex((o) => values.includes(o.value));
-  const invalid = error !== undefined && error !== null && error !== false;
+  const hasError = error !== undefined && error !== null && error !== false;
+  const invalid = hasError || (field?.invalid ?? false);
 
   // Tags with tagsOverflow="count": how many badges fit on one row next to the "+N" badge, measured on an
   // invisible copy of every badge (and of the widest counter) whenever the values or the row's width change.
@@ -238,7 +245,7 @@ export function Select(props: SelectProps) {
   const leadMedia = !multiple ? selected[0]?.media : undefined;
   const shown = counting ? selected.slice(0, fit) : selected;
   const hidden = counting ? selected.slice(fit) : [];
-  const help = invalid ? error : caption;
+  const help = hasError ? error : caption;
 
   const setRef = (node: HTMLDivElement | null) => {
     triggerRef.current = node;
@@ -440,7 +447,7 @@ export function Select(props: SelectProps) {
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-controls={menuId}
-          aria-labelledby={label !== undefined ? labelId : undefined}
+          aria-labelledby={label !== undefined ? labelId : ariaLabel === undefined ? (field?.labelId ?? rest['aria-labelledby']) : undefined}
           aria-label={label === undefined ? ariaLabel : undefined}
           aria-describedby={[help !== undefined ? captionId : null, describedBy].filter(Boolean).join(' ') || undefined}
           aria-activedescendant={open && highlighted >= 0 ? optionId(highlighted) : undefined}
@@ -561,7 +568,7 @@ export function Select(props: SelectProps) {
         </span>
       )}
       {help !== undefined && (
-        <p id={captionId} className={invalid ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
+        <p id={captionId} className={hasError ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
           {help}
         </p>
       )}

@@ -319,6 +319,44 @@ const tests = {
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).getAttribute('aria-expanded'), 'false', 'and closes its list');
     assert.equal(await submitted.count(), 0);
   },
+  'field: wires label, description and error to Input, Select and native controls; disabled and required pass down; Field Set and Separator': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-field--states&viewMode=story');
+    const inputs = page.getByRole('textbox', { name: 'Label' });
+    await inputs.first().waitFor();
+    assert.equal(await inputs.count(), 3, 'the Field label names each Input');
+    assert.equal(await page.getByRole('textbox', { name: 'Label', description: 'Description This field is required.' }).getAttribute('aria-invalid'), 'true', 'Invalid: described by the description and the error, marked invalid');
+    assert.equal(await page.locator('.ds-field--invalid > .ds-field__label').evaluate((el) => getComputedStyle(el).color), 'rgb(193, 0, 7)', 'and the label turns red');
+    assert.equal(await inputs.nth(2).isDisabled(), true, 'Disabled: the Input is disabled');
+    assert.equal(await page.locator('.ds-field--disabled > .ds-field__label').evaluate((el) => getComputedStyle(el).opacity), '0.5');
+    await page.goto('http://localhost:6008/iframe.html?id=components-field--new-project&viewMode=story');
+    const region = page.getByRole('combobox', { name: 'Region' });
+    await region.waitFor();
+    await page.getByText('Region', { exact: true }).click();
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-labelledby') && document.getElementById(document.activeElement.getAttribute('aria-labelledby'))?.textContent), 'Region', 'a click on the label focuses the Select it names');
+    assert.equal(await page.getByRole('textbox', { name: 'Project name' }).getAttribute('aria-describedby') !== null, true);
+    await page.goto('http://localhost:6008/iframe.html?id=components-field--validation&viewMode=story');
+    const username = page.getByRole('textbox', { name: 'Username' });
+    await username.waitFor();
+    assert.equal(await username.getAttribute('required'), '', 'Required: the control is required');
+    assert.equal(await page.locator('.ds-field__required').getAttribute('aria-hidden'), 'true', 'the asterisk is not read');
+    assert.equal(await username.getAttribute('aria-invalid'), 'true');
+    await username.fill('ada.lovelace');
+    assert.equal(await username.getAttribute('aria-invalid'), null, 'a valid value clears the error');
+    assert.equal(await page.locator('.ds-field__caption--error').count(), 0);
+    await page.goto('http://localhost:6008/iframe.html?id=components-field--date-input&viewMode=story');
+    await page.locator('.ds-input input[type=date]').waitFor();
+    assert.equal(await page.getByLabel('Birthday').getAttribute('aria-describedby') !== null, true, 'a date Input takes the label and the description');
+    await page.goto('http://localhost:6008/iframe.html?id=components-field--native-element&viewMode=story');
+    const quality = page.getByRole('combobox', { name: 'Audio quality', description: 'A plain <select>, drawn by the browser.' });
+    await quality.waitFor();
+    assert.equal(await quality.evaluate((el) => el.tagName), 'SELECT', 'a native element gets the id and the description as attributes');
+    await page.goto('http://localhost:6008/iframe.html?id=components-field--orientation&viewMode=story');
+    await page.getByRole('group', { name: 'Vertical' }).waitFor();
+    assert.equal(await page.getByRole('group', { name: 'Vertical' }).evaluate((el) => getComputedStyle(el.querySelector('legend')).fontSize), '16px', 'Field Set legend: 16 px');
+    assert.equal(await page.locator('.ds-field-separator').first().getAttribute('role'), 'none');
+    const crossfade = page.locator('.ds-field--responsive');
+    assert.equal(await crossfade.evaluate((el) => getComputedStyle(el).flexWrap), 'wrap', 'responsive: beside, wrapping when narrow');
+  },
   'kbd: keys are <kbd>s (a group is a <kbd> of <kbd>s, 2 px apart); symbols carry spoken names; sizes and Inverted colours': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-kbd--shortcuts&viewMode=story');
     const groups = page.locator('kbd.ds-kbd-group');

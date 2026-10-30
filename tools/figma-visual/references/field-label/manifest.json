@@ -1,0 +1,25 @@
+{
+ "$comment": "Sort UI 2.0 Field Label (140:5616) reference render (1x PNG, get_screenshot): Variant=Label with Required, Helper and the label-addon Badge, as the component set shows it. Variant=Legend is the Field Set's legend (field-set). renderers/field.tsx renders FieldLabel with a pill Badge, 320 px wide.",
+ "component": "field-label",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "140:5616",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "variant-label",
+   "nodeId": "140:5624",
+   "props": {
+    "Variant": "Label"
+   },
+   "target": "#target > .ds-field__label-row",
+   "nodeW": 320,
+   "nodeH": 20
+  }
+ ]
+}

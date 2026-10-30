@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type InputHTMLAttributes, type KeyboardEvent, type ReactNode, type Ref } from 'react';
+import { useField } from '../Field/FieldContext';
 import type { SelectCaption, SelectGroup, SelectItem, SelectOption, SelectSeparator } from '../Select';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-combobox*, and ds-select* for the menu and its options);
@@ -109,22 +110,27 @@ export function Combobox(props: ComboboxProps) {
     variant = 'default',
     leadIcon,
     leadMedia,
-    disabled = false,
+    disabled: disabledProp,
     emptyMessage = 'No results.',
     filter = contains,
     onInputChange,
     defaultOpen = false,
     name,
-    required,
+    required: requiredProp,
     id: idProp,
     className,
     onKeyDown: onKeyDownProp,
     onBlur,
-    'aria-describedby': describedBy,
+    'aria-describedby': describedByProp,
     ...rest
   } = props;
+  // Inside a Field: its ids, its description and its state.
+  const field = useField();
   const autoId = useId();
-  const id = idProp ?? autoId;
+  const id = idProp ?? field?.id ?? autoId;
+  const disabled = disabledProp ?? field?.disabled ?? false;
+  const required = requiredProp ?? field?.required;
+  const describedBy = [field?.describedBy, describedByProp].filter(Boolean).join(' ') || undefined;
   const menuId = `${id}-menu`;
   const captionId = `${id}-caption`;
 
@@ -142,8 +148,9 @@ export function Combobox(props: ComboboxProps) {
   const optionId = (value: string) => `${id}-option-${all.findIndex((o) => o.value === value)}`;
   const labelId = `${id}-label`;
   const selected = values.map((v) => all.find((o) => o.value === v)).filter((o): o is SelectOption => o !== undefined);
-  const invalid = error !== undefined && error !== null && error !== false;
-  const help = invalid ? error : caption;
+  const hasError = error !== undefined && error !== null && error !== false;
+  const invalid = hasError || (field?.invalid ?? false);
+  const help = hasError ? error : caption;
 
   // The list after filtering: empty groups go, and separators only stay between what is left.
   const visible = useMemo(() => {
@@ -452,7 +459,7 @@ export function Combobox(props: ComboboxProps) {
         {status}
       </span>
       {help !== undefined && (
-        <p id={captionId} className={invalid ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
+        <p id={captionId} className={hasError ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
           {help}
         </p>
       )}

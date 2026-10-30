@@ -1,0 +1,35 @@
+{
+ "$comment": "Sort UI 2.0 Field Separator (134:42) reference renders (1x PNG, get_screenshot): Content=None and Content=Text (\"or\"). renderers/field.tsx renders FieldSeparator 320 px wide on the page background.",
+ "component": "field-separator",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "134:42",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "content-none",
+   "nodeId": "134:34",
+   "props": {
+    "Content": "None"
+   },
+   "target": "#target > .ds-field-separator",
+   "nodeW": 320,
+   "nodeH": 20
+  },
+  {
+   "slug": "content-text",
+   "nodeId": "134:38",
+   "props": {
+    "Content": "Text"
+   },
+   "target": "#target > .ds-field-separator",
+   "nodeW": 320,
+   "nodeH": 20
+  }
+ ]
+}

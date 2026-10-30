@@ -122,6 +122,39 @@ A short label: status, category, count or a removable value. Covers every Figma 
 | ↩ Label | `children` | `ds-badge__label` |
 | Close Icon | `onRemove` (+ `removeLabel`, default "Remove <label>"; `removeButton={false}` draws it as a pointer target inside another control) | `ds-badge__remove` |
 
+## Field
+
+The layout around any form control: Sort UI 2.0 **Field** (Orientation, Control, State, Description, Error), **Field Label** (Required, Helper, label-addon), **Field Group**, **Field Set** and **Field Separator**. Input, Select, Combobox and Textarea already draw a vertical Field with `label` / `caption` / `error`, and Checkbox, Radio and Switch a horizontal one and the Choice Card (`card`); `Field` puts any control in one, wires it and composes forms.
+
+```tsx
+<FieldSet legend="Profile" description="How others see you.">
+  <Field label="Display name" required helper="(shown publicly)" description="3–30 characters." error={nameError}>
+    <Input />
+  </Field>
+  <Field label="Region">
+    <Select options={regions} />
+  </Field>
+  <FieldSeparator>or</FieldSeparator>
+  <Field label="Crossfade" orientation="responsive" description="Seconds of overlap.">
+    <input type="range" />
+  </Field>
+</FieldSet>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Field Orientation = Vertical · Horizontal | `orientation`: `vertical` (default) · `horizontal` · `responsive` (not in Figma: beside the control until the row is too narrow) | `ds-field` · `ds-field--horizontal` · `ds-field--responsive` |
+| Control = Start · End | `control` (horizontal) | `ds-field--control-end` |
+| State = Invalid · Disabled | `error` (under the description; label and control turn red) or `invalid` · `disabled` (disables the control, fades the label) | `ds-field--invalid` · `ds-field--disabled` |
+| Description · Show Description | `description` | `ds-field__caption` |
+| Field Label Required · Helper · label-addon | `required` (a red asterisk, not read; the control gets `required`) · `helper` · `labelAddon` | `ds-field__required` · `ds-field__helper` · `ds-field__addon` |
+| Field Group | `<FieldGroup>`: fields 20 px apart | `ds-field-group` |
+| Field Set (Field Label Variant=Legend) | `<FieldSet legend description disabled>`: a `<fieldset>`, 16/24 legend, fields 20 px under the description | `ds-fieldset ds-fieldset--set` |
+| Field Separator Content = None · Text | `<FieldSeparator>` (children: the text) | `ds-field-separator` · `__content` |
+| — | `<FieldLabel htmlFor required helper addon>` on its own | `ds-field__label` |
+
+The Field gives its control the id (for `<label for>`), `aria-describedby` (description and error), invalid, disabled and required: Input, Select, Combobox and Textarea read them, a native element (`<input>`, `<select>`) receives them as attributes, and a custom control reads them with `useField()`. A Radio or Checkbox group takes the Field Set look with `className="ds-fieldset--set"`.
+
 ## Input
 
 Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group** and **Field**.
@@ -659,6 +692,7 @@ These come from the Figma files, not the code:
 - Separator (2.0): the line is a centred 1 px stroke on a 0 px frame, so it takes no space in Figma's layouts (the "Separator" demo puts 16 px between the intro and the line and 16 px after it, 32 px in all); the code's line is 1 px in the layout, so the same gaps add up to 33 px. The "Vertical" demo gives each line a fixed height (20 px between the metadata, 16 px between the icon buttons); the code stretches an upright line to its row and takes `height` for a shorter one.
 - Spinner (2.0): Variant=Default Size=default is 17.3 px (a Lucide 16 px icon in its 17.3 px frame), while Gradient default is 16 px; the code draws both at 16 px. Figma's Default keeps a 1.25 px stroke and Gradient a 1.5 px one at every size; the code follows. The "In buttons" demo shows the spinner in disabled buttons; Button has no loading state, so the stories pass `leadingIcon={<Spinner decorative />}` with `disabled`.
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
+- Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

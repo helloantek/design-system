@@ -1,0 +1,12 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-field-group) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma wraps the fields in a \"fields\" slot inside the group (no gap to space); the code is one stack, checked as \"fields\" (20 px)."
+    },
+    "fields": {}
+  }
+}

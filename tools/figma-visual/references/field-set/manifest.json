@@ -1,0 +1,23 @@
+{
+ "$comment": "Sort UI 2.0 Field Set (134:63) reference render (1x PNG, exportAsync: it sits on the canvas without a frame, so get_screenshot draws it on a grey backdrop): the Legend, the Description and three Radio fields, the second checked. renderers/field.tsx renders FieldSet with the same radios, 320 px wide.",
+ "component": "field-set",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "134:63",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "field-set",
+   "nodeId": "134:63",
+   "props": {},
+   "target": "#target > .ds-fieldset",
+   "nodeW": 320,
+   "nodeH": 154
+  }
+ ]
+}

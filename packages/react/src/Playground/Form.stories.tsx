@@ -6,6 +6,7 @@ import { Button } from '../Button';
 import { Card, CardContent, CardFooter, CardHeader } from '../Card';
 import { Checkbox } from '../Checkbox';
 import { Combobox } from '../Combobox';
+import { FieldSeparator } from '../Field';
 import { Input, type InputSize, type InputVariant } from '../Input';
 import { Radio, RadioGroup } from '../Radio';
 import { Select, type SelectItem } from '../Select';
@@ -57,7 +58,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A sign-up form in a Card, made of Input, Select, Combobox, Textarea, Radio, Switch, Checkbox, Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
+          'A sign-up form in a Card, made of Input, Select, Combobox, Textarea, Radio, Switch, Checkbox, Field Separator, Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -115,6 +116,7 @@ export const SignUp: StoryObj<Args> = {
             <Select {...field} name="role" label="Role" placeholder="Select a role" options={roles} error={errors.role} />
             <Select {...field} name="teams" label="Teams" placeholder="Select teams" options={teams} multiple caption="Pick all that apply" />
             <Combobox {...field} name="timezone" label="Timezone" placeholder="Search timezones" options={timezones} leadIcon={<RiSearchLine />} />
+            <FieldSeparator>Subscription</FieldSeparator>
             <Select {...field} name="plan" label="Plan" placeholder="Select a plan" options={plans} defaultValue="free" caption="You can change it later" />
             <RadioGroup name="billing" label="Billing" defaultValue="monthly" columns={2} disabled={disabled}>
               <Radio value="monthly" label="Monthly" />

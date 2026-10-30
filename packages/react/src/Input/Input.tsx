@@ -1,4 +1,5 @@
 import { createContext, useContext, useId, useRef, type ButtonHTMLAttributes, type InputHTMLAttributes, type MouseEvent, type ReactNode, type Ref } from 'react';
+import { useField } from '../Field/FieldContext';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-input*); this component only renders the markup.
 
@@ -80,12 +81,17 @@ export function Input(props: InputProps) {
     loading = false,
     className,
     id: idProp,
-    disabled = false,
-    'aria-describedby': describedBy,
+    disabled: disabledProp,
+    required: requiredProp,
+    'aria-describedby': describedByProp,
     ...rest
   } = props;
+  // Inside a Field: its ids, its description and its state.
+  const field = useField();
   const autoId = useId();
-  const id = idProp ?? autoId;
+  const id = idProp ?? field?.id ?? autoId;
+  const disabled = disabledProp ?? field?.disabled ?? false;
+  const describedBy = [field?.describedBy, describedByProp].filter(Boolean).join(' ') || undefined;
   const captionId = `${id}-caption`;
   const blockStartId = `${id}-block-start`;
   const blockEndId = `${id}-block-end`;
@@ -93,8 +99,9 @@ export function Input(props: InputProps) {
   const loadingAt = loading === true ? 'start' : loading || null;
   const lead = loadingAt === 'start' ? spinner : leadIcon;
   const tail = loadingAt === 'end' ? spinner : tailIcon;
-  const invalid = error !== undefined && error !== null && error !== false;
-  const help = invalid ? error : caption;
+  const hasError = error !== undefined && error !== null && error !== false;
+  const invalid = hasError || (field?.invalid ?? false);
+  const help = hasError ? error : caption;
   const localRef = useRef<HTMLInputElement | null>(null);
 
   const setRef = (node: HTMLInputElement | null) => {
@@ -133,6 +140,7 @@ export function Input(props: InputProps) {
             id={id}
             className="ds-input__native"
             disabled={disabled}
+            required={requiredProp ?? field?.required}
             aria-invalid={invalid || undefined}
             aria-busy={loadingAt ? true : rest['aria-busy']}
             aria-labelledby={label === undefined && blockStart !== undefined && rest['aria-label'] === undefined ? (rest['aria-labelledby'] ?? blockStartId) : rest['aria-labelledby']}
@@ -178,7 +186,7 @@ export function Input(props: InputProps) {
         )}
       </div>
       {help !== undefined && (
-        <p id={captionId} className={invalid ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
+        <p id={captionId} className={hasError ? 'ds-field__caption ds-field__caption--error' : 'ds-field__caption'}>
           {help}
         </p>
       )}

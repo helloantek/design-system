@@ -1,0 +1,22 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-field-separator) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "Line": {
+      "skip": [
+        "stroke"
+      ],
+      "$why": "The line is the separator's ::before, which the check cannot select; the pixels cover it."
+    },
+    "Content": {
+      "selector": ".ds-field-separator__content",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs the text, whose width follows glyph rasterisation."
+    },
+    "Content/TEXT": {
+      "selector": ".ds-field-separator__content"
+    }
+  }
+}
