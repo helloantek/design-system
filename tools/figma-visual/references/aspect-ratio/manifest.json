@@ -1,0 +1,95 @@
+{
+ "$comment": "Sort UI 2.0 Aspect Ratio (336:14958) reference renders (1x PNG, get_screenshot): every ratio, 120 px wide, filled with the sample photo. renderers/aspect-ratio.tsx renders AspectRatio with the same photo (Figma's 2:3 render, which is the whole photo).",
+ "component": "aspect-ratio",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "336:14958",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "ratio-1-1",
+   "nodeId": "336:14959",
+   "props": {
+    "ratio": "1-1"
+   },
+   "target": "#target > .ds-aspect-ratio",
+   "nodeW": 120,
+   "nodeH": 120
+  },
+  {
+   "slug": "ratio-4-3",
+   "nodeId": "336:14960",
+   "props": {
+    "ratio": "4-3"
+   },
+   "target": "#target > .ds-aspect-ratio",
+   "nodeW": 120,
+   "nodeH": 90
+  },
+  {
+   "slug": "ratio-3-2",
+   "nodeId": "336:14961",
+   "props": {
+    "ratio": "3-2"
+   },
+   "target": "#target > .ds-aspect-ratio",
+   "nodeW": 120,
+   "nodeH": 80
+  },
+  {
+   "slug": "ratio-16-9",
+   "nodeId": "336:14962",
+   "props": {
+    "ratio": "16-9"
+   },
+   "target": "#target > .ds-aspect-ratio",
+   "nodeW": 120,
+   "nodeH": 67.5
+  },
+  {
+   "slug": "ratio-21-9",
+   "nodeId": "336:14963",
+   "props": {
+    "ratio": "21-9"
+   },
+   "target": "#target > .ds-aspect-ratio",
+   "nodeW": 120,
+   "nodeH": 51.5
+  },
+  {
+   "slug": "ratio-2-3",
+   "nodeId": "336:14964",
+   "props": {
+    "ratio": "2-3"
+   },
+   "target": "#target > .ds-aspect-ratio",
+   "nodeW": 120,
+   "nodeH": 180
+  },
+  {
+   "slug": "ratio-3-4",
+   "nodeId": "336:14965",
+   "props": {
+    "ratio": "3-4"
+   },
+   "target": "#target > .ds-aspect-ratio",
+   "nodeW": 120,
+   "nodeH": 160
+  },
+  {
+   "slug": "ratio-9-16",
+   "nodeId": "336:14966",
+   "props": {
+    "ratio": "9-16"
+   },
+   "target": "#target > .ds-aspect-ratio",
+   "nodeW": 120,
+   "nodeH": 213.5
+  }
+ ]
+}

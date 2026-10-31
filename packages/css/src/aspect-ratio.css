@@ -1,0 +1,42 @@
+/*
+ * Aspect Ratio — Sort UI 2.0 component set "Aspect Ratio" (node 336:14958) on page 336:14955 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: a box that keeps a width-to-height ratio and fills it with its picture or video, cropped
+ * from the middle. Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (classes in [] are optional):
+ *   <div class="ds-aspect-ratio [ds-aspect-ratio--rounded]" style="--aspect-ratio: 16 / 9">
+ *     <img src="…" alt="…">                       (or <video>, <iframe>, or any content)
+ *   </div>
+ * Figma ratio: 1-1, 4-3, 3-2, 16-9, 21-9, 2-3, 3-4, 9-16 (any ratio works). Rounded: the demos' 12 px corners.
+ */
+
+@layer ds.components {
+  .ds-aspect-ratio {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--aspect-ratio, 1);
+    overflow: hidden;
+  }
+
+  /* The picture fills the box and is cropped from the middle (Figma's image fill, Fill). */
+  .ds-aspect-ratio > :is(img, video, iframe, picture, svg, canvas) {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: cover;
+  }
+
+  .ds-aspect-ratio > picture > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* The demos round the box (12 px). */
+  .ds-aspect-ratio--rounded {
+    border-radius: var(--ds-radius-xl);
+  }
+}

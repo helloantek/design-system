@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type ReactNode } from 'react';
 import { RiDeleteBinLine, RiFilter3Line, RiMailLine, RiMoreLine, RiRefreshLine, RiSearchLine, RiShieldUserLine, RiUserAddLine } from '@remixicon/react';
 import { Alert } from '../Alert';
+import { AspectRatio } from '../AspectRatio';
+import { aspectRatioPhoto } from '../AspectRatio/AspectRatio.fixtures';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel } from '../AlertDialog';
 import { Avatar, AvatarGroup } from '../Avatar';
 import { Badge, type BadgeColor } from '../Badge';
@@ -60,7 +62,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -285,6 +287,9 @@ export const Members: StoryObj = {
           <CardHeader title="Activity" action={<Spinner size="sm" variant="gradient" label="Syncing activity" />} />
           <CardContent>
             <div style={{ display: 'grid', gap: 12 }}>
+              <AspectRatio ratio="21:9" rounded>
+                <img src={aspectRatioPhoto} alt="The team at the last offsite" />
+              </AspectRatio>
               <Progress label="Seats" value={members.length} max={10} valueLabel={`${members.length} of 10`} />
               <Marker variant="separator">Today</Marker>
               {activity.map((line, i) => (
