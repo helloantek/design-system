@@ -6,7 +6,7 @@ import { Button } from '../Button';
 import { Card, CardContent, CardFooter, CardHeader } from '../Card';
 import { Checkbox } from '../Checkbox';
 import { Combobox } from '../Combobox';
-import { FieldSeparator } from '../Field';
+import { Field, FieldGroup, FieldSeparator, FieldSet } from '../Field';
 import { Input, type InputSize, type InputVariant } from '../Input';
 import { Radio, RadioGroup } from '../Radio';
 import { Select, type SelectItem } from '../Select';
@@ -58,7 +58,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A sign-up form in a Card, made of Input, Select, Combobox, Textarea, Radio, Switch, Checkbox, Field Separator, Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
+          'A sign-up form in a Card, made of Input, Select, Combobox, Textarea, Radio, Switch, Checkbox, Field (Field, Field Group, Field Set, Field Separator), Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -109,13 +109,16 @@ export const SignUp: StoryObj<Args> = {
           }
         />
         <CardContent>
-          <form id="sign-up" onSubmit={onSubmit} noValidate style={{ display: 'grid', gap: 20 }}>
+          <form id="sign-up" onSubmit={onSubmit} noValidate>
+            <FieldGroup>
             {errorCount > 0 && <Alert variant="destructive" title={`Fix ${errorCount} ${errorCount === 1 ? 'field' : 'fields'} to continue`} />}
             <Input {...field} name="name" label="Name" placeholder="Jane Doe" leadIcon={<RiUser3Line />} error={errors.name} />
             <Input {...field} name="email" type="email" label="Email" placeholder="mail@domain.com" leadIcon={<RiAtLine />} caption="We never share it" error={errors.email} />
             <Select {...field} name="role" label="Role" placeholder="Select a role" options={roles} error={errors.role} />
             <Select {...field} name="teams" label="Teams" placeholder="Select teams" options={teams} multiple caption="Pick all that apply" />
-            <Combobox {...field} name="timezone" label="Timezone" placeholder="Search timezones" options={timezones} leadIcon={<RiSearchLine />} />
+            <Field label="Timezone" description="Reminders follow it" disabled={disabled}>
+              <Combobox variant={variant} size={size} name="timezone" placeholder="Search timezones" options={timezones} leadIcon={<RiSearchLine />} />
+            </Field>
             <FieldSeparator>Subscription</FieldSeparator>
             <Select {...field} name="plan" label="Plan" placeholder="Select a plan" options={plans} defaultValue="free" caption="You can change it later" />
             <RadioGroup name="billing" label="Billing" defaultValue="monthly" columns={2} disabled={disabled}>
@@ -123,8 +126,11 @@ export const SignUp: StoryObj<Args> = {
               <Radio value="yearly" label="Yearly" caption="2 months free" />
             </RadioGroup>
             <Textarea variant={variant} disabled={disabled} name="bio" label="About you" placeholder="What do you work on?" showCount limit={160} />
-            <Switch name="updates" label="Product updates" caption="One email a month" disabled={disabled} />
+            <FieldSet legend="Notifications" description="You can change these any time.">
+              <Switch name="updates" label="Product updates" caption="One email a month" disabled={disabled} />
+            </FieldSet>
             <Checkbox name="terms" label="I accept the terms of service" error={errors.terms} disabled={disabled} />
+            </FieldGroup>
           </form>
         </CardContent>
         <CardFooter>
