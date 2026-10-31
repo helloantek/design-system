@@ -199,6 +199,24 @@ The layout around any form control: Sort UI 2.0 **Field** (Orientation, Control,
 
 The Field gives its control the id (for `<label for>`), `aria-describedby` (description and error), invalid, disabled and required: Input, Select, Combobox and Textarea read them, a native element (`<input>`, `<select>`) receives them as attributes, and a custom control reads them with `useField()`. A Radio or Checkbox group takes the Field Set look with `className="ds-fieldset--set"`.
 
+## Hover Card
+
+A card that previews what is behind a link while the pointer rests on it: Sort UI 2.0 **Hover Card** (content).
+
+```tsx
+<HoverCard trigger={<a href="/@priya">Priya Raman</a>}>
+  …avatar, name, a line about them…
+</HoverCard>
+```
+
+| Figma property / layer | React prop | CSS class |
+|---|---|---|
+| content | children | `ds-hover-card__content` (16 px padding, parts 12 px apart) |
+| — (the demos' placements) | `side`: `bottom` (default) · `top` · `left` · `right`; `align`: `center` (default) · `start` · `end` | `ds-hover-card__content--top` · `--left` · `--right`, `--start` · `--end` |
+| width 288 | `width` | `--hover-card-width` |
+
+It opens `openDelay` (700 ms) after the pointer rests on the trigger, or at once when the trigger gets keyboard focus; it stays while the pointer or focus is on the trigger or the card (Tab moves into it), closes `closeDelay` (300 ms) after the pointer leaves, and Escape closes it. It is a convenience for sighted users and is not announced, so the link must make sense on its own; use Popover for content people have to reach. `open`, `defaultOpen` and `onOpenChange` work as usual.
+
 ## Input
 
 Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group** and **Field**.
@@ -877,6 +895,7 @@ These come from the Figma files, not the code:
 - Dialog (2.0): Figma draws no backdrop; the code dims the page (alpha black 50, as for Alert Dialog). The "Sticky footer" demo fills the footer with `muted`, which the component has no property for; the code offers `footerVariant="muted"`. Demo widths vary (400, 448, 480, 600 px) without a size property; the code offers `width`.
 - Sheet (2.0): Figma draws top and bottom 800 px wide and left and right 640 px tall as samples; the code fills the screen's width or height. The panel has no radius and no backdrop in Figma; the code keeps the square edges and dims the page like Dialog. Several demos put two buttons side by side in the footer while the component stacks them; the code stacks direct children and lets a row inside lay out its own.
 - Drawer (2.0): the component centres the sample body text when down or up; the code centres only the heading, so fields and lists in the content stay start-aligned (centre a paragraph yourself, as the Step goal demo does). The "side" drawer has a Swipe handle property but draws no handle; the code shows none. There is no Close button in Figma, yet several side demos draw one; the code offers `closeButton`. Figma draws no backdrop; the code dims the page like Dialog.
+- Hover Card (2.0): the surface matches Popover (288 px, 14 px radius, Surface/Popover) but with 16 px padding all round and no header. Figma has no placement or timing; the code opens below the link after 700 ms and offers `side`, `align`, `openDelay` and `closeDelay`. The sample's separator is a 0 px line; the code's is 1 px, so the card is 1 px taller.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

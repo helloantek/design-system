@@ -1,0 +1,54 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-hover-card__content) and how to read it. skip: spec keys not compared for this layer. Person, Avatar, Names, Name, Role, Body, Separator and Footer are Figma's sample content, drawn the same way in the renderer.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": [
+        "g",
+        "h"
+      ],
+      "$why": "The border is outside the box in Figma, drawn as an outer 1 px shadow before the Surface/Popover shadow. Figma's root has no gap around its one slot; code puts the slot's 12 px gap on the card itself. Its height is 1 px taller: Figma's separator is a 0 px line with a centred stroke, the code's a 1 px border in the layout (the pixel check allows it)."
+    },
+    "content": {
+      "skip": [
+        "w",
+        "h",
+        "p"
+      ],
+      "$why": "Figma's content slot is the card's inner box; in code the parts sit directly in the card, which carries the 16 px padding and the 12 px gap."
+    },
+    "Person": {
+      "selector": ".hc-person"
+    },
+    "Avatar": {
+      "selector": ".hc-person .ds-avatar__image",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The Avatar's picture box carries the size, radius and fill (as in references/avatar); Figma's auto layout has nothing to lay out."
+    },
+    "Names": {
+      "selector": ".hc-names"
+    },
+    "Name": {
+      "selector": ".hc-name"
+    },
+    "Role": {
+      "selector": ".hc-role"
+    },
+    "Body": {
+      "selector": ".hc-body"
+    },
+    "Separator": {
+      "selector": ".ds-separator",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma's line is 0 px thick with a centred stroke; the code's separator is a 1 px border in the layout."
+    },
+    "Footer": {
+      "selector": ".hc-footer"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+ "$comment": "Sort UI 2.0 Hover Card (167:2, a single component) reference render (1x PNG, exportAsync: get_screenshot puts a top-level component on a grey backdrop) with the Figma sample content: a person (Avatar lg fallback PR, Priya Raman, Staff designer · Foundations), a body, a separator and a 12 px footer. Cropped to the card's own box (Figma's export adds the outside border and the Surface/Popover shadow's margin). renderers/hover-card.tsx draws the open card with the same content.",
+ "component": "hover-card",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "167:2",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "hover-card",
+   "nodeId": "167:2",
+   "props": {},
+   "target": "#target .ds-hover-card__content",
+   "nodeW": 288,
+   "nodeH": 200
+  }
+ ]
+}
