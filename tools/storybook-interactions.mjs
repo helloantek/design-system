@@ -474,10 +474,17 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
+    await page.getByRole('button', { name: 'Invite link' }).click();
+    const invite = page.getByRole('dialog', { name: 'Invite link' });
+    await invite.waitFor();
+    await invite.getByRole('button', { name: 'Copy invite link' }).click();
+    await page.getByRole('region', { name: 'Notifications' }).getByText('Invite link copied').first().waitFor();
+    await invite.getByRole('button', { name: 'Reset link' }).click();
+    assert.equal(await invite.isVisible(), false, 'Reset link closes the popover');
     assert.equal(await rows.count(), 5);
     await page.getByRole('button', { name: 'Pending', exact: true }).click();
     assert.equal(await rows.count(), 2);
@@ -1070,6 +1077,57 @@ Object.assign(tests, {
     await page.getByRole('alertdialog', { name: 'Share your location?' }).getByRole('button', { name: 'Share location' }).click();
     assert.equal(await page.getByRole('status').textContent(), 'Location shared', 'the action runs and closes it');
     assert.equal(await page.getByRole('alertdialog').count(), 0);
+  },
+  'popover: the trigger controls a named non-modal dialog; focus moves in; Escape returns focus; a click outside and PopoverClose close it; placement': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-popover--share-playlist&viewMode=story');
+    const trigger = page.getByRole('button', { name: 'Share' });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-haspopup'), 'dialog');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'false');
+    assert.equal(await page.getByRole('dialog').count(), 0, 'closed at first');
+    await trigger.click();
+    const dialog = page.getByRole('dialog', { name: 'Share this playlist' });
+    await dialog.waitFor();
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.equal(await trigger.getAttribute('aria-controls'), await dialog.getAttribute('id'), 'the trigger controls the panel');
+    assert.equal(await dialog.evaluate((el) => el.matches(':modal')), false, 'not modal');
+    assert.match(await dialog.evaluate((el) => document.getElementById(el.getAttribute('aria-describedby')).textContent), /Anyone with the link/, 'the description describes it');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Playlist link', 'focus moves to the first control');
+    const [t, d] = await Promise.all([trigger.boundingBox(), dialog.boundingBox()]);
+    assert.equal(Math.round(d.y - (t.y + t.height)), 4, '4 px under the trigger');
+    assert.equal(Math.round(d.x), Math.round(t.x), 'align start lines up with the trigger');
+    assert.equal(Math.round(d.width), 288, '288 px wide');
+    await page.keyboard.press('Escape');
+    assert.equal(await dialog.isVisible(), false, 'Escape closes it');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Share', 'focus returns to the trigger');
+    await trigger.click();
+    await dialog.waitFor();
+    await page.mouse.click(700, 500);
+    assert.equal(await dialog.isVisible(), false, 'a click outside closes it');
+    await trigger.click();
+    await dialog.waitFor();
+    await trigger.click();
+    assert.equal(await dialog.isVisible(), false, 'the trigger toggles it');
+    await page.goto('http://localhost:6008/iframe.html?id=components-popover--with-form&viewMode=story');
+    await page.getByRole('button', { name: 'Price alert' }).click();
+    const form = page.getByRole('dialog', { name: 'Price alert' });
+    await form.waitFor();
+    await form.getByRole('button', { name: 'Save alert' }).click();
+    assert.equal(await form.isVisible(), false, 'PopoverClose closes it');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Price alert', 'and focus returns to the trigger');
+    await page.goto('http://localhost:6008/iframe.html?id=components-popover--notifications&viewMode=story');
+    const bell = page.getByRole('button', { name: 'Notifications' });
+    await bell.click();
+    const list = page.getByRole('dialog', { name: 'Notifications' });
+    await list.waitFor();
+    const [b, l] = await Promise.all([bell.boundingBox(), list.boundingBox()]);
+    assert.equal(Math.round(l.x + l.width), Math.round(b.x + b.width), 'align end lines up with the trigger end');
+    assert.equal(Math.round(l.width), 320, 'width sets the panel width');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Mark all as read', 'focus moves to the first button');
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await list.isVisible(), true, 'focus on the trigger keeps it open');
+    await page.evaluate(() => document.body.appendChild(Object.assign(document.createElement('button'), { textContent: 'Outside' })).focus());
+    assert.equal(await list.isVisible(), false, 'focus leaving the trigger and the panel closes it');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

@@ -14,7 +14,7 @@ The sidebar title says which build you are looking at (`helloantek DS · preview
 
 - **Components/…**: each component's Playground (change props in the Controls panel), every Figma variant and state, sizes and brands.
 - **Playground/Form**: a sign-up form in a Card, built only from design-system fields (Input, Select, Combobox, Textarea, Radio, Switch, Checkbox, Field Separator) with a Tooltip, an error Alert and a toast. Tab through it, submit it empty to see errors, fill it and check the submitted data, reset it, switch brand and scheme in the toolbar.
-- **Playground/Team**: a team settings page with everything that is not a field: Card, Avatar and Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Aspect Ratio, Empty, Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog (remove a member), Marker and toasts.
+- **Playground/Team**: a team settings page with everything that is not a field: Card, Avatar and Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Aspect Ratio, Empty, Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog (remove a member), Popover (the invite link), Marker and toasts.
 
 Each new component is added to one of them on its own branch ([playbook.md](playbook.md)).
 - The **Accessibility** panel runs axe on the current story.

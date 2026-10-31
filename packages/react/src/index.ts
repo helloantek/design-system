@@ -15,6 +15,7 @@ export * from './Field';
 export * from './Input';
 export * from './Kbd';
 export * from './Marker';
+export * from './Popover';
 export * from './Progress';
 export * from './Radio';
 export * from './Select';

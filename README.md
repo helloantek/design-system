@@ -417,6 +417,29 @@ A quiet line in a feed or a chat — an event, a date between messages, a step: 
 
 It is plain text: give a list of steps `role="list"` / `listitem` (and `aria-current="step"`) or put markers in your own list, as the "Loading" story does.
 
+## Popover
+
+A small non-modal panel that opens from a button, with a title, a description and any content: Sort UI 2.0 **Popover** (header, content, Actions).
+
+```tsx
+<Popover trigger={<Button variant="outline">Share</Button>} title="Share this playlist" description="Anyone with the link can listen along." align="start">
+  <Input aria-label="Playlist link" readOnly defaultValue="https://sort.fm/p/late-night-focus" />
+  <PopoverActions>
+    <PopoverClose><Button size="sm">Done</Button></PopoverClose>
+  </PopoverActions>
+</Popover>
+```
+
+| Figma property / layer | React prop | CSS class |
+|---|---|---|
+| header: Title, Description | `title`, `description` | `ds-popover__header`, `__title`, `__description` |
+| content | children | `ds-popover__body` |
+| Actions | `PopoverActions` | `ds-popover__actions` |
+| — (the demos' placements) | `side`: `bottom` (default) · `top` · `left` · `right`; `align`: `center` (default) · `start` · `end` | `ds-popover__content--top` · `--left` · `--right`, `--start` · `--end` |
+| width 288 | `width` (any CSS length) | `--popover-width` |
+
+The trigger gets `aria-haspopup="dialog"`, `aria-expanded` and `aria-controls`; the panel is a `role="dialog"` named by its title (or `aria-label`). It opens 4 px from the trigger and focus moves to its first control. Escape closes it and returns focus to the trigger; a click outside or focus leaving the trigger and the panel closes it. `PopoverClose` makes a button inside close it. `open`, `defaultOpen` and `onOpenChange` work as usual.
+
 ## Progress
 
 How far a task has got: Sort UI 2.0 **Progress** (Variant, header, footer) and **Progress circle** (Value).
@@ -762,6 +785,7 @@ These come from the Figma files, not the code:
 - Empty (2.0): the icon is a 17.3 px Lucide frame (a 16 px icon) in the 32 px tile; the code draws 16 px icons. The "No results" demo's search field spans the content (336 px), which the code does for any Field inside an Empty.
 - Progress (2.0): the Progress circle's ring is 10 % of its size in the component (80 % inner radius) and 7.5 % in the "Circle" demo (85 %); the code defaults to 10 % and takes `thickness`. The demo's red ring (alpha/destructive/10 track, destructive indicator) is not a variant; the code offers it as `variant="destructive"`. Figma has no indeterminate state; the code slides a third of the bar while there is no value.
 - Aspect Ratio (2.0): the component set has square corners and the demos round them (12 px, radius-xl); the code offers `rounded`. Card's media uses an Aspect Ratio instance in Figma; `CardMedia` keeps its own `ratio` for now.
+- Popover (2.0): the panel keeps its 14 px radius (radius-14) like the other surfaces (Card, Alert Dialog, Sonner); menus and controls use 8 px. The header slot is a horizontal auto-layout with a 12 px gap that never shows (it holds one frame); the code draws the header as the title-and-description column. Figma has no placement property; the demos show bottom and top, the code adds `side` and `align`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
