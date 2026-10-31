@@ -1,5 +1,12 @@
 # @helloantek/ds-css
 
+## 2.23.0
+
+### Minor Changes
+
+- c6ccc64: Dialog (Sort UI 2.0): `Dialog` opens a modal window from its `trigger` with a `title`, a `description`, the Close button (`closeButton`), any content and a `footer`; `DialogClose` makes a button close it. Focus moves inside and stays there; Escape, Close or a click on the backdrop closes it and returns focus. It is 448 px wide (`width`), the content scrolls past the viewport while the header and footer stay, `footerVariant="muted"` fills the footer and `bodyPadding="flush"` drops the content's padding.
+- d668059: Popover (Sort UI 2.0): `Popover` opens a 288 px non-modal panel from its `trigger`, with a `title`, a `description` and any content; `PopoverActions` lines up its buttons and `PopoverClose` makes one close it. `side` (`bottom`, `top`, `left`, `right`) and `align` (`center`, `start`, `end`) place it 4 px from the trigger; `width` changes its width. Focus moves into it, Escape closes it and returns focus to the trigger, a click outside closes it.
+
 ## 2.22.0
 
 ### Minor Changes
