@@ -1,5 +1,11 @@
 # @helloantek/ds-react
 
+## 2.21.0
+
+### Minor Changes
+
+- 53a8eb8: Progress and Progress circle (Sort UI 2.0): `Progress` with `value` of `max`, `variant` `default` or `dashed` (steps), `label`, `valueLabel` and `description`, indeterminate without a value; `ProgressCircle` with `value`, `size`, `thickness`, `variant="destructive"` and a label in the middle. Both are labelled `role="progressbar"`s.
+
 ## 2.20.0
 
 ### Minor Changes
