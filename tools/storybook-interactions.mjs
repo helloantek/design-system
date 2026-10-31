@@ -474,7 +474,7 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: the invite link popover, the team settings dialog, the activity sheet, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
@@ -498,6 +498,13 @@ const tests = {
     assert.match(await log.textContent(), /Everything that happened in Nova/, 'the sheet shows the activity');
     await log.getByRole('button', { name: 'Done' }).click();
     assert.equal(await log.isVisible(), false, 'Done closes the sheet');
+    await page.getByRole('button', { name: 'Add seats' }).click();
+    const seats = page.getByRole('dialog', { name: 'Add seats' });
+    await seats.waitFor();
+    await seats.getByRole('button', { name: 'More seats' }).click();
+    await seats.getByRole('button', { name: 'Add 6 seats' }).click();
+    assert.equal(await seats.isVisible(), false, 'the drawer closes');
+    await page.getByText('5 of 16', { exact: true }).waitFor();
     assert.equal(await rows.count(), 5);
     await page.getByRole('button', { name: 'Pending', exact: true }).click();
     assert.equal(await rows.count(), 2);
@@ -1265,6 +1272,65 @@ Object.assign(tests, {
     assert.equal(await keys.getByText('Archive', { exact: true }).isVisible(), true, 'the search filters the list');
     assert.equal(await keys.getByText('Compose', { exact: true }).count(), 0);
     await page.keyboard.press('Escape');
+  },
+  'drawer: a floating modal panel (down at the bottom, side on the end edge, up at the top); a long swipe on the handle closes it, a short one springs back; Escape, the backdrop and DrawerClose close it and focus returns': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-drawer--demos&viewMode=story');
+    const vw = await page.evaluate(() => innerWidth);
+    const vh = await page.evaluate(() => innerHeight);
+    const settle = (loc) => loc.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+    const trigger = page.getByRole('button', { name: 'Step goal' });
+    await trigger.waitFor();
+    await trigger.click();
+    const drawer = page.getByRole('dialog', { name: 'Daily step goal' });
+    await settle(drawer);
+    assert.equal(await drawer.evaluate((el) => el.matches(':modal')), true, 'a modal dialog');
+    const box = await drawer.boundingBox();
+    assert.deepEqual([Math.round(box.width), Math.round(vh - (box.y + box.height)), Math.round(box.x + box.width / 2)], [384, 8, Math.round(vw / 2)], 'down: 8 px above the bottom, centred');
+    assert.equal(await drawer.locator('.ds-drawer__title').evaluate((el) => getComputedStyle(el).textAlign), 'center', 'the heading is centred');
+    assert.equal(await page.evaluate(() => document.activeElement.closest('dialog') !== null), true, 'focus moves inside');
+    const handle = drawer.locator('.ds-drawer__handle');
+    assert.equal(await handle.getAttribute('aria-hidden'), 'true');
+    const h = await handle.boundingBox();
+    await page.mouse.move(h.x + h.width / 2, h.y + h.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(h.x + h.width / 2, h.y + 30, { steps: 5 });
+    await page.mouse.up();
+    await page.waitForTimeout(400);
+    assert.equal(await drawer.isVisible(), true, 'a short swipe springs back');
+    assert.equal(await drawer.evaluate((el) => el.style.translate), '', 'and the panel returns to its place');
+    await page.mouse.move(h.x + h.width / 2, h.y + h.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(h.x + h.width / 2, h.y + box.height / 2, { steps: 10 });
+    await page.mouse.up();
+    assert.equal(await drawer.isVisible(), false, 'a long swipe down closes it');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Step goal', 'focus returns to the trigger');
+    await trigger.click();
+    await settle(drawer);
+    await drawer.getByRole('button', { name: 'More steps' }).click();
+    await drawer.getByRole('button', { name: 'Save goal' }).click();
+    assert.equal(await drawer.isVisible(), false, 'DrawerClose closes it');
+    assert.equal(await page.getByRole('status').textContent(), 'Goal set to 8,500 steps');
+
+    await page.getByRole('button', { name: 'Notifications' }).click();
+    const side = page.getByRole('dialog', { name: 'Updates' });
+    await settle(side);
+    const s = await side.boundingBox();
+    assert.deepEqual([Math.round(s.width), Math.round(vw - (s.x + s.width)), Math.round(s.y), Math.round(s.height)], [384, 8, 8, vh - 16], 'side: 384 px wide, 8 px from the end edge, full height');
+    assert.equal(await side.locator('.ds-drawer__handle').count(), 0, 'no handle on the side');
+    await side.getByRole('button', { name: 'Mentions' }).click();
+    assert.equal(await side.getByRole('list', { name: 'Recent' }).getByRole('listitem').count(), 2);
+    await page.mouse.click(20, vh / 2);
+    assert.equal(await side.isVisible(), false, 'a click on the backdrop closes it');
+
+    await page.getByRole('button', { name: 'From the top' }).click();
+    const top = page.getByRole('dialog', { name: "You're offline" });
+    await settle(top);
+    const t = await top.boundingBox();
+    assert.equal(Math.round(t.y), 8, 'up: 8 px below the top');
+    const th = await top.locator('.ds-drawer__handle').boundingBox();
+    assert.ok(th.y > t.y + t.height - 20, 'the handle sits at the bottom');
+    await page.keyboard.press('Escape');
+    assert.equal(await top.isVisible(), false, 'Escape closes it');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

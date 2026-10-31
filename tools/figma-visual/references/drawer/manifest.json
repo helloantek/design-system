@@ -1,0 +1,48 @@
+{
+ "$comment": "Sort UI 2.0 Drawer (195:109) reference renders (1x PNG, get_screenshot): every Direction with the Figma sample slots (Drawer title, the description, the Lorem Ipsum body, Default Continue over Outline Cancel) and the Swipe handle (down and up). Cropped to the drawer's own box (Figma's export adds the outside border and the Surface/Dialog shadow's margin); the rounded corners show the page background. renderers/drawer.tsx draws the open drawer's markup in the page at the Figma frame's size (side 624 px tall).",
+ "component": "drawer",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "195:109",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "direction-down",
+   "nodeId": "195:3",
+   "props": {
+    "Direction": "down",
+    "Swipe handle": true
+   },
+   "target": "#target .ds-drawer",
+   "nodeW": 664,
+   "nodeH": 270
+  },
+  {
+   "slug": "direction-up",
+   "nodeId": "195:32",
+   "props": {
+    "Direction": "up",
+    "Swipe handle": true
+   },
+   "target": "#target .ds-drawer",
+   "nodeW": 664,
+   "nodeH": 270
+  },
+  {
+   "slug": "direction-side",
+   "nodeId": "195:83",
+   "props": {
+    "Direction": "side",
+    "Swipe handle": true
+   },
+   "target": "#target .ds-drawer",
+   "nodeW": 384,
+   "nodeH": 624
+  }
+ ]
+}

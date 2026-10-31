@@ -67,8 +67,16 @@ export function ModalPanel({
   style,
   onClose,
   onClick,
+  before,
+  after,
   ...rest
-}: ModalPanelProps & { block: string; modifiers?: (string | false)[] }) {
+}: ModalPanelProps & {
+  block: string;
+  modifiers?: (string | false)[];
+  /** Internal: drawn inside the panel before the header and after the footer (Drawer's swipe handle). */
+  before?: ReactNode;
+  after?: ReactNode;
+}) {
   const [uncontrolled, setUncontrolled] = useState(defaultOpen);
   const open = openProp ?? uncontrolled;
   const dialog = useRef<HTMLDialogElement>(null);
@@ -130,6 +138,7 @@ export function ModalPanel({
         }}
       >
         <CloseContext.Provider value={() => setOpen(false)}>
+          {before}
           {hasHeader && (
             <div className={`${block}__header`}>
               <div className={`${block}__heading`}>
@@ -149,11 +158,15 @@ export function ModalPanel({
           )}
           {children !== undefined && <div className={cx(`${block}__body`, bodyPadding === 'flush' && `${block}__body--flush`)}>{children}</div>}
           {footer !== undefined && <div className={cx(`${block}__footer`, footerVariant === 'muted' && `${block}__footer--muted`)}>{footer}</div>}
+          {after}
         </CloseContext.Provider>
       </dialog>
     </>
   );
 }
+
+/** Closes the panel from a part drawn inside it. */
+export const useModalClose = () => useContext(CloseContext);
 
 /** Wraps a button that closes the panel after its own click (unless it calls `event.preventDefault()`). */
 export function ModalClose({ children }: { children: ReactElement<{ onClick?: (event: MouseEvent<HTMLElement>) => void }> }) {
