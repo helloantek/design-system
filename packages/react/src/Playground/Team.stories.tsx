@@ -18,6 +18,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
 } from '../DropdownMenu';
+import { Empty } from '../Empty';
 import { Input, InputDropdown } from '../Input';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
@@ -58,7 +59,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -223,7 +224,26 @@ export const Members: StoryObj = {
                   </li>
                 ))}
               </ul>
-              {shown.length === 0 && <p style={{ margin: 0, color: 'var(--ds-muted-foreground)', fontSize: 14, textAlign: 'center' }}>No members match.</p>}
+              {shown.length === 0 && (
+                <Empty
+                  icon={<RiSearchLine />}
+                  title="No members match"
+                  titleAs="p"
+                  description="Try another name or email, or show everyone."
+                  actions={
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setQuery('');
+                        setView('all');
+                      }}
+                    >
+                      Show everyone
+                    </Button>
+                  }
+                />
+              )}
             </div>
           </CardContent>
           <CardFooter justify="between" muted>

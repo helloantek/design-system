@@ -1,0 +1,35 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-empty) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "EmptyHeader": {
+      "selector": ".ds-empty__header"
+    },
+    "Media": {
+      "selector": ".ds-empty__media"
+    },
+    "Media/VECTOR": {
+      "selector": ".ds-empty__media svg path",
+      "stroke": "svg"
+    },
+    "div": {
+      "selector": ".ds-empty__text"
+    },
+    "Title": {
+      "selector": ".ds-empty__title"
+    },
+    "Description": {
+      "selector": ".ds-empty__description"
+    },
+    "Slot": {
+      "selector": ".ds-empty__content"
+    },
+    "Buttons": {
+      "selector": ".ds-empty__actions",
+      "skip": [
+        "w"
+      ],
+      "$why": "The row hugs its button, whose width follows the label's rasterisation (the Button check covers it)."
+    }
+  }
+}

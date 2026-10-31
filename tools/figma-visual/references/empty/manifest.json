@@ -1,0 +1,23 @@
+{
+ "$comment": "Sort UI 2.0 Empty (575:7008) reference render (1x PNG, exportAsync: it sits on the canvas without a frame, so get_screenshot draws it on a grey backdrop): the clipboard-check icon tile, the sample title and description, and one Default button. renderers/empty.tsx renders Empty 384 px wide on the page background.",
+ "component": "empty",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "575:7008",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "empty",
+   "nodeId": "575:7008",
+   "props": {},
+   "target": "#target > .ds-empty",
+   "nodeW": 384,
+   "nodeH": 212
+  }
+ ]
+}

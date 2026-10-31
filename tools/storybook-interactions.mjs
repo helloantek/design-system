@@ -319,6 +319,23 @@ const tests = {
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).getAttribute('aria-expanded'), 'false', 'and closes its list');
     assert.equal(await submitted.count(), 0);
   },
+  'empty: a heading with its description; the icon tile is decorative; actions side by side; a search field spans the width': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-empty--trips&viewMode=story');
+    await page.getByRole('heading', { name: 'No trips yet', level: 3 }).waitFor();
+    assert.equal(await page.locator('.ds-empty__media--icon').getAttribute('aria-hidden'), 'true');
+    assert.deepEqual(await page.locator('.ds-empty__media--icon').evaluate((el) => { const cs = getComputedStyle(el); return [el.offsetWidth, cs.borderTopLeftRadius, cs.backgroundColor]; }), [32, '8px', 'rgba(115, 115, 115, 0.08)'], 'Media: a 32 px fill-2 tile, 8 px radius');
+    const [a, b] = await page.locator('.ds-empty__actions .ds-button').evaluateAll((els) => els.map((el) => el.getBoundingClientRect()));
+    assert.equal(Math.round(b.left - a.right), 8, 'buttons 8 px apart on one row');
+    assert.equal(a.top, b.top);
+    await page.goto('http://localhost:6008/iframe.html?id=components-empty--in-a-card&viewMode=story');
+    await page.getByRole('heading', { name: 'No deployments yet', level: 2 }).waitFor();
+    await page.goto('http://localhost:6008/iframe.html?id=components-empty--no-results&viewMode=story');
+    const search = page.getByRole('textbox', { name: 'Search restaurants' });
+    await search.waitFor();
+    assert.equal(await page.locator('.ds-empty__content > .ds-field').evaluate((el) => el.getBoundingClientRect().width), await page.locator('.ds-empty__content').evaluate((el) => el.getBoundingClientRect().width), 'the search field spans the content');
+    await page.getByRole('button', { name: 'Clear filters' }).click();
+    assert.equal(await search.inputValue(), '');
+  },
   'field: wires label, description and error to Input, Select and native controls; disabled and required pass down; Field Set and Separator': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-field--states&viewMode=story');
     const inputs = page.getByRole('textbox', { name: 'Label' });
