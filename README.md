@@ -77,6 +77,24 @@ Sort UI 2.0 ([Figma `40:2125`](https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwE
 
 Changed from 1.3: variants `primary` → `default`, `soft`/`dashed`/`ghost-muted` are gone (closest: `secondary`, `outline`, `ghost`); sizes `lg`/`md`/`sm`/`xs`/`2xs` → `xl`/`lg`/`default`/`sm`/`xs`; `shape` (one radius now), `loading` (no Figma state; use a Spinner next to the label once it exists) and the Press state are gone; `leadIcon`/`tailIcon` → `leadingIcon`/`trailingIcon`.
 
+## Aspect Ratio
+
+A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
+
+```tsx
+<AspectRatio ratio="16:9" rounded>
+  <img src="/cover.jpg" alt="Lake at dusk" />
+</AspectRatio>
+<AspectRatio ratio={4 / 5}><video src="/clip.mp4" controls /></AspectRatio>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| ratio = 1-1 · 4-3 · 3-2 · 16-9 · 21-9 · 2-3 · 3-4 · 9-16 | `ratio`: `"1:1"` (default) · `"4:3"` · `"3:2"` · `"16:9"` · `"21:9"` · `"2:3"` · `"3:4"` · `"9:16"`, or a number (width / height) | `ds-aspect-ratio` (`--aspect-ratio`) |
+| — (the demos' 12 px corners) | `rounded` | `ds-aspect-ratio--rounded` |
+
+The box takes its container's width; an `img`, `video`, `iframe`, `picture`, `svg` or `canvas` inside fills it and is cropped from the middle (`object-fit: cover`), like Figma's image fill.
+
 ## Avatar
 
 A person's picture, initials or an icon, with an optional badge, and avatar groups. Sort UI 2.0 **Avatar**, **Avatar Badge** and **Avatar Group**; the Sort UI 1.3 **Status Badge** stays available (like Badge).
@@ -743,6 +761,7 @@ These come from the Figma files, not the code:
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.
 - Empty (2.0): the icon is a 17.3 px Lucide frame (a 16 px icon) in the 32 px tile; the code draws 16 px icons. The "No results" demo's search field spans the content (336 px), which the code does for any Field inside an Empty.
 - Progress (2.0): the Progress circle's ring is 10 % of its size in the component (80 % inner radius) and 7.5 % in the "Circle" demo (85 %); the code defaults to 10 % and takes `thickness`. The demo's red ring (alpha/destructive/10 track, destructive indicator) is not a variant; the code offers it as `variant="destructive"`. Figma has no indeterminate state; the code slides a third of the bar while there is no value.
+- Aspect Ratio (2.0): the component set has square corners and the demos round them (12 px, radius-xl); the code offers `rounded`. Card's media uses an Aspect Ratio instance in Figma; `CardMedia` keeps its own `ratio` for now.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

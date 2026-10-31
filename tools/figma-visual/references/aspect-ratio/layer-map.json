@@ -1,0 +1,6 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-aspect-ratio) and how to read it.",
+  "layers": {
+    "root": {}
+  }
+}

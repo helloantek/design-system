@@ -319,6 +319,18 @@ const tests = {
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).getAttribute('aria-expanded'), 'false', 'and closes its list');
     assert.equal(await submitted.count(), 0);
   },
+  'aspect ratio: keeps the ratio at any width; the picture fills it, cropped from the middle; rounded is 12 px': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-aspect-ratio--ratios&viewMode=story');
+    await page.locator('.ds-aspect-ratio').first().waitFor();
+    const boxes = await page.locator('.ds-aspect-ratio').evaluateAll((els) => els.map((el) => Math.round((el.offsetHeight / el.offsetWidth) * 1000) / 1000));
+    const expected = [1, 3 / 4, 2 / 3, 9 / 16, 9 / 21, 3 / 2, 4 / 3, 16 / 9];
+    boxes.forEach((r, i) => assert.ok(Math.abs(r - expected[i]) < 0.01, `ratio ${i}: ${r} ≠ ${expected[i]}`));
+    assert.deepEqual(await page.locator('.ds-aspect-ratio img').first().evaluate((el) => { const cs = getComputedStyle(el); return [cs.objectFit, el.offsetWidth, el.offsetHeight]; }), ['cover', 120, 120], 'the picture fills the box, cropped');
+    await page.goto('http://localhost:6008/iframe.html?id=components-aspect-ratio--demo&viewMode=story');
+    const demo = page.locator('.ds-aspect-ratio');
+    await demo.waitFor();
+    assert.deepEqual(await demo.evaluate((el) => [el.offsetWidth, el.offsetHeight, getComputedStyle(el).borderTopLeftRadius]), [320, 180, '12px']);
+  },
   'progress: a named progressbar with its value as text; dashed steps; indeterminate has no value; the circle fills from 12 o\'clock': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-progress--demo&viewMode=story');
     const copying = page.getByRole('progressbar', { name: 'Copying', description: '2.5GB of 5GB' });
