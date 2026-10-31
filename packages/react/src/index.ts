@@ -9,6 +9,7 @@ export * from './Card';
 export * from './Checkbox';
 export * from './Combobox';
 export * from './ContextMenu';
+export * from './Dialog';
 export * from './DropdownMenu';
 export * from './Empty';
 export * from './Field';

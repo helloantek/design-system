@@ -474,7 +474,7 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: the invite link popover, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, the team settings dialog, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
@@ -485,6 +485,13 @@ const tests = {
     await page.getByRole('region', { name: 'Notifications' }).getByText('Invite link copied').first().waitFor();
     await invite.getByRole('button', { name: 'Reset link' }).click();
     assert.equal(await invite.isVisible(), false, 'Reset link closes the popover');
+    await page.getByRole('button', { name: 'Team settings' }).click();
+    const settings = page.getByRole('dialog', { name: 'Team settings' });
+    await settings.waitFor();
+    await settings.getByRole('textbox', { name: 'Team name' }).fill('Nova');
+    await settings.getByRole('button', { name: 'Save' }).click();
+    assert.equal(await settings.isVisible(), false, 'Save closes the dialog');
+    await page.getByRole('heading', { name: 'Nova members' }).waitFor();
     assert.equal(await rows.count(), 5);
     await page.getByRole('button', { name: 'Pending', exact: true }).click();
     assert.equal(await rows.count(), 2);
@@ -1128,6 +1135,68 @@ Object.assign(tests, {
     assert.equal(await list.isVisible(), true, 'focus on the trigger keeps it open');
     await page.evaluate(() => document.body.appendChild(Object.assign(document.createElement('button'), { textContent: 'Outside' })).focus());
     assert.equal(await list.isVisible(), false, 'focus leaving the trigger and the panel closes it');
+  },
+  'dialog: opens modal and named; focus moves in and stays; Escape, Close, the backdrop and DialogClose close it and focus returns; the body scrolls, the footer stays; a form inside validates': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-dialog--demos&viewMode=story');
+    const trigger = page.getByRole('button', { name: 'Edit profile' });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-haspopup'), 'dialog');
+    await trigger.click();
+    const dialog = page.getByRole('dialog', { name: 'Edit profile' });
+    await dialog.waitFor();
+    assert.equal(await dialog.evaluate((el) => el.matches(':modal')), true, 'a modal dialog');
+    assert.match(await dialog.evaluate((el) => document.getElementById(el.getAttribute('aria-describedby')).textContent), /Make changes/, 'the description describes it');
+    assert.equal(await page.evaluate(() => document.activeElement.closest('dialog') !== null), true, 'focus moves inside');
+    assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).overflow), 'hidden', 'the page does not scroll');
+    await dialog.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+    assert.equal(Math.round((await dialog.boundingBox()).width), 448, '448 px wide once it has scaled in');
+    await page.keyboard.press('Escape');
+    assert.equal(await dialog.isVisible(), false, 'Escape closes it');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Edit profile', 'focus returns to the trigger');
+    await trigger.click();
+    await dialog.getByRole('button', { name: 'Close' }).click();
+    assert.equal(await dialog.isVisible(), false, 'the Close button closes it');
+    await trigger.click();
+    await dialog.waitFor();
+    await page.mouse.click(5, 5);
+    assert.equal(await dialog.isVisible(), false, 'a click on the backdrop closes it');
+    await trigger.click();
+    await dialog.getByRole('textbox', { name: 'Name', exact: true }).click();
+    assert.equal(await dialog.isVisible(), true, 'a click inside keeps it open');
+    await dialog.getByRole('button', { name: 'Save changes' }).click();
+    assert.equal(await dialog.isVisible(), false, 'DialogClose closes it');
+    assert.equal(await page.getByRole('status').textContent(), 'Profile saved', 'and the action runs');
+
+    await page.getByRole('button', { name: 'Sticky footer' }).click();
+    const terms = page.getByRole('dialog', { name: 'Terms of service' });
+    await terms.waitFor();
+    await terms.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+    const body = terms.locator('.ds-dialog__body');
+    assert.equal(await body.evaluate((el) => el.scrollHeight > el.clientHeight), true, 'the body scrolls');
+    const footerBefore = await terms.locator('.ds-dialog__footer').boundingBox();
+    await body.evaluate((el) => el.scrollTo(0, el.scrollHeight));
+    assert.deepEqual(await terms.locator('.ds-dialog__footer').boundingBox(), footerBefore, 'the footer stays');
+    await terms.getByRole('button', { name: 'Accept' }).click();
+    assert.equal(await page.getByRole('status').textContent(), 'Terms accepted');
+
+    await page.getByRole('button', { name: 'In a form' }).click();
+    const card = page.getByRole('dialog', { name: 'Add a payment card' });
+    await card.waitFor();
+    await card.getByRole('button', { name: 'Add card' }).click();
+    assert.equal(await card.isVisible(), true, 'an invalid form keeps it open');
+    assert.match(await card.getByRole('textbox', { name: 'Card number' }).getAttribute('aria-invalid'), /true/);
+    await card.getByRole('textbox', { name: 'Card number' }).fill('4242 4242 4242 4242');
+    await card.getByRole('button', { name: 'Add card' }).click();
+    assert.equal(await card.isVisible(), false, 'submitting closes it');
+    assert.equal(await page.getByRole('status').textContent(), 'Card ending 4242 added');
+
+    await page.getByRole('button', { name: 'No close button' }).click();
+    const privacy = page.getByRole('dialog', { name: 'We value your privacy' });
+    await privacy.waitFor();
+    assert.equal(await privacy.getByRole('button', { name: 'Close' }).count(), 0, 'no Close button');
+    const header = await privacy.locator('.ds-dialog__header').evaluate((el) => getComputedStyle(el).paddingRight);
+    assert.equal(header, '24px', '24 px on the right without the button');
+    await page.keyboard.press('Escape');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

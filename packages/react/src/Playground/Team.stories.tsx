@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type ReactNode } from 'react';
-import { RiDeleteBinLine, RiFileCopyLine, RiFilter3Line, RiLinkM, RiMailLine, RiMoreLine, RiRefreshLine, RiSearchLine, RiShieldUserLine, RiUserAddLine } from '@remixicon/react';
+import { RiDeleteBinLine, RiFileCopyLine, RiFilter3Line, RiLinkM, RiMailLine, RiMoreLine, RiRefreshLine, RiSearchLine, RiSettings3Line, RiShieldUserLine, RiUserAddLine } from '@remixicon/react';
 import { Alert } from '../Alert';
 import { AspectRatio } from '../AspectRatio';
 import { aspectRatioPhoto } from '../AspectRatio/AspectRatio.fixtures';
@@ -21,6 +21,8 @@ import {
   DropdownMenuSeparator,
 } from '../DropdownMenu';
 import { Empty } from '../Empty';
+import { Dialog, DialogClose } from '../Dialog';
+import { Field, FieldGroup } from '../Field';
 import { Input, InputAction, InputDropdown } from '../Input';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
@@ -28,6 +30,7 @@ import { Popover, PopoverActions, PopoverClose } from '../Popover';
 import { Progress, ProgressCircle } from '../Progress';
 import { Separator } from '../Separator';
 import { Spinner } from '../Spinner';
+import { Switch } from '../Switch';
 import { Toaster, toast } from '../Sonner';
 import { Tooltip } from '../Tooltip';
 
@@ -63,7 +66,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -78,6 +81,8 @@ export const Members: StoryObj = {
     const [query, setQuery] = useState('');
     const [searchIn, setSearchIn] = useState<'Name' | 'Email'>('Name');
     const [showRoles, setShowRoles] = useState(true);
+    const [teamName, setTeamName] = useState('Orbit');
+    const [settingsOpen, setSettingsOpen] = useState(false);
     const [removing, setRemoving] = useState<Member | null>(null);
     const [activity, setActivity] = useState<ReactNode[]>(['Mira created the workspace', 'Jonas joined as Admin']);
 
@@ -123,10 +128,45 @@ export const Members: StoryObj = {
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 560px) 280px', gap: 16, alignItems: 'start', fontFamily: 'var(--ds-font-sans)' }}>
         <Card as="section" aria-label="Team members">
           <CardHeader
-            title="Team members"
+            title={`${teamName} members`}
             description="Invite people and choose what they can do."
             action={
               <div style={{ display: 'flex', gap: 8 }}>
+                <Dialog
+                  trigger={<Button variant="ghost" size="sm" icon={<RiSettings3Line />} aria-label="Team settings" />}
+                  open={settingsOpen}
+                  onOpenChange={setSettingsOpen}
+                  title="Team settings"
+                  description="The name shows in invites and on the team's page."
+                  footer={
+                    <>
+                      <DialogClose>
+                        <Button variant="outline">Cancel</Button>
+                      </DialogClose>
+                      <Button type="submit" form="team-settings">
+                        Save
+                      </Button>
+                    </>
+                  }
+                >
+                  <form
+                    id="team-settings"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      const name = String(new FormData(event.currentTarget).get('team') ?? '').trim() || teamName;
+                      setTeamName(name);
+                      toast.success(`Team renamed to ${name}`);
+                      setSettingsOpen(false);
+                    }}
+                  >
+                    <FieldGroup>
+                      <Field label="Team name">
+                        <Input name="team" defaultValue={teamName} />
+                      </Field>
+                      <Switch name="invites" label="Members can invite people" caption="Otherwise only Admins send invites." defaultChecked />
+                    </FieldGroup>
+                  </form>
+                </Dialog>
                 <Popover
                   align="end"
                   trigger={<Button variant="ghost" size="sm" icon={<RiLinkM />} aria-label="Invite link" />}

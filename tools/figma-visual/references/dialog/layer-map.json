@@ -1,0 +1,18 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-dialog) and how to read it. skip: spec keys not compared for this layer. header is the header slot, header#1 the title-and-description frame inside it, action the Close button's frame.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": ["p", "g"],
+      "$why": "The border is outside the box in Figma, drawn as an outer 1 px shadow before the Surface/Dialog shadow. Figma's root is a vertical auto-layout with no padding or gap; code stacks the header, body and footer in a flex column."
+    },
+    "header": { "selector": ".ds-dialog__header" },
+    "header#1": { "selector": ".ds-dialog__heading" },
+    "Title": { "selector": ".ds-dialog__title" },
+    "Description": { "selector": ".ds-dialog__description" },
+    "action": { "selector": ".ds-dialog__close", "skip": ["p", "g", "fill"], "$why": "Figma wraps the Close button in a 28 px frame; code uses the Ghost sm icon-only Button itself, whose own padding draws the same 28 px box." },
+    "content": { "selector": ".ds-dialog__body" },
+    "Body": { "selector": ".ds-dialog__body > p" },
+    "footer": { "selector": ".ds-dialog__footer" }
+  }
+}
