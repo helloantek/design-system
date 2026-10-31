@@ -22,6 +22,7 @@ import { renderProgress, renderProgressCircle } from './progress';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
 import { renderSeparator } from './separator';
+import { renderSheet } from './sheet';
 import { renderSonner } from './sonner';
 import { renderSpinner } from './spinner';
 import { renderSwitch } from './switch';
@@ -67,6 +68,7 @@ export const renderers: Record<string, Renderer> = {
   select: renderSelect,
   'select-item': renderSelectItem,
   separator: renderSeparator,
+  sheet: renderSheet,
   sonner: renderSonner,
   spinner: renderSpinner,
   'status-badge': renderStatusBadge,

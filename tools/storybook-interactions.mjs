@@ -474,7 +474,7 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: the invite link popover, the team settings dialog, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, the team settings dialog, the activity sheet, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
@@ -492,6 +492,12 @@ const tests = {
     await settings.getByRole('button', { name: 'Save' }).click();
     assert.equal(await settings.isVisible(), false, 'Save closes the dialog');
     await page.getByRole('heading', { name: 'Nova members' }).waitFor();
+    await page.getByRole('button', { name: 'View all' }).click();
+    const log = page.getByRole('dialog', { name: 'Activity log' });
+    await log.waitFor();
+    assert.match(await log.textContent(), /Everything that happened in Nova/, 'the sheet shows the activity');
+    await log.getByRole('button', { name: 'Done' }).click();
+    assert.equal(await log.isVisible(), false, 'Done closes the sheet');
     assert.equal(await rows.count(), 5);
     await page.getByRole('button', { name: 'Pending', exact: true }).click();
     assert.equal(await rows.count(), 2);
@@ -1196,6 +1202,68 @@ Object.assign(tests, {
     assert.equal(await privacy.getByRole('button', { name: 'Close' }).count(), 0, 'no Close button');
     const header = await privacy.locator('.ds-dialog__header').evaluate((el) => getComputedStyle(el).paddingRight);
     assert.equal(header, '24px', '24 px on the right without the button');
+    await page.keyboard.press('Escape');
+  },
+  'sheet: a modal panel on its side (right and left full-height, bottom full-width); focus inside; Escape, Close, the backdrop and SheetClose close it and focus returns; the footer stacks full-width buttons': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-sheet--demos&viewMode=story');
+    const vw = await page.evaluate(() => innerWidth);
+    const vh = await page.evaluate(() => innerHeight);
+    const settle = (loc) => loc.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+    const trigger = page.getByRole('button', { name: 'Edit profile' });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-haspopup'), 'dialog');
+    await trigger.click();
+    const sheet = page.getByRole('dialog', { name: 'Edit profile' });
+    await sheet.waitFor();
+    await settle(sheet);
+    assert.equal(await sheet.evaluate((el) => el.matches(':modal')), true, 'a modal dialog');
+    const box = await sheet.boundingBox();
+    assert.deepEqual([Math.round(box.x + box.width), Math.round(box.y), Math.round(box.width), Math.round(box.height)], [vw, 0, 384, vh], 'right: 384 px wide, full height, on the right edge');
+    assert.equal(await page.evaluate(() => document.activeElement.closest('dialog') !== null), true, 'focus moves inside');
+    const buttons = await sheet.locator('.ds-sheet__footer button').evaluateAll((els) => els.map((el) => [el.textContent, el.offsetWidth]));
+    assert.deepEqual(buttons, [['Save changes', 336], ['Cancel', 336]], 'the footer stacks full-width buttons, the main action first');
+    await page.keyboard.press('Escape');
+    assert.equal(await sheet.isVisible(), false, 'Escape closes it');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Edit profile', 'focus returns to the trigger');
+    await trigger.click();
+    await settle(sheet);
+    await sheet.getByRole('button', { name: 'Close' }).click();
+    assert.equal(await sheet.isVisible(), false, 'Close closes it');
+    await trigger.click();
+    await settle(sheet);
+    await page.mouse.click(20, vh / 2);
+    assert.equal(await sheet.isVisible(), false, 'a click on the backdrop closes it');
+    await trigger.click();
+    await settle(sheet);
+    await sheet.getByRole('button', { name: 'Save changes' }).click();
+    assert.equal(await sheet.isVisible(), false, 'SheetClose closes it');
+    assert.equal(await page.getByRole('status').textContent(), 'Profile saved');
+
+    await page.getByRole('button', { name: 'Delivery time' }).click();
+    const bottom = page.getByRole('dialog', { name: 'Delivery time' });
+    await settle(bottom);
+    const b = await bottom.boundingBox();
+    assert.deepEqual([Math.round(b.x), Math.round(b.y + b.height), Math.round(b.width)], [0, vh, vw], 'bottom: full width on the bottom edge');
+    assert.ok(b.height < vh / 2, 'as tall as its content');
+    await bottom.getByRole('button', { name: '7–8 PM' }).click();
+    await bottom.getByRole('button', { name: 'Confirm 7–8 PM' }).click();
+    assert.equal(await page.getByRole('status').textContent(), 'Delivery at 7–8 PM');
+
+    await page.getByRole('button', { name: 'Comments' }).click();
+    const left = page.getByRole('dialog', { name: 'Comments' });
+    await settle(left);
+    const l = await left.boundingBox();
+    assert.deepEqual([Math.round(l.x), Math.round(l.height)], [0, vh], 'left: full height on the left edge');
+    await page.keyboard.press('Escape');
+
+    await page.getByRole('button', { name: 'Keyboard shortcuts' }).click();
+    const keys = page.getByRole('dialog', { name: 'Keyboard shortcuts' });
+    await settle(keys);
+    const body = keys.locator('.ds-sheet__body');
+    assert.equal(await body.evaluate((el) => el.scrollHeight > el.clientHeight || el.clientHeight > 0), true);
+    await keys.getByRole('textbox', { name: 'Search shortcuts' }).fill('archive');
+    assert.equal(await keys.getByText('Archive', { exact: true }).isVisible(), true, 'the search filters the list');
+    assert.equal(await keys.getByText('Compose', { exact: true }).count(), 0);
     await page.keyboard.press('Escape');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {

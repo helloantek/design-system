@@ -21,6 +21,7 @@ export * from './Progress';
 export * from './Radio';
 export * from './Select';
 export * from './Separator';
+export * from './Sheet';
 export * from './Sonner';
 export * from './Spinner';
 export * from './Switch';

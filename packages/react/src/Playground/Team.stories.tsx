@@ -29,6 +29,7 @@ import { Marker } from '../Marker';
 import { Popover, PopoverActions, PopoverClose } from '../Popover';
 import { Progress, ProgressCircle } from '../Progress';
 import { Separator } from '../Separator';
+import { Sheet, SheetClose } from '../Sheet';
 import { Spinner } from '../Spinner';
 import { Switch } from '../Switch';
 import { Toaster, toast } from '../Sonner';
@@ -66,7 +67,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -351,7 +352,36 @@ export const Members: StoryObj = {
         </Card>
 
         <Card as="section" size="sm" aria-label="Activity">
-          <CardHeader title="Activity" action={<Spinner size="sm" variant="gradient" label="Syncing activity" />} />
+          <CardHeader
+            title="Activity"
+            action={
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Spinner size="sm" variant="gradient" label="Syncing activity" />
+                <Sheet
+                  trigger={
+                    <Button variant="ghost" size="sm">
+                      View all
+                    </Button>
+                  }
+                  title="Activity log"
+                  description={`Everything that happened in ${teamName}.`}
+                  footer={
+                    <SheetClose>
+                      <Button variant="outline">Done</Button>
+                    </SheetClose>
+                  }
+                >
+                  <Marker variant="separator">Today</Marker>
+                  {activity.map((line, i) => (
+                    <Marker key={i}>{line}</Marker>
+                  ))}
+                  <Marker variant="separator">Earlier</Marker>
+                  <Marker>Mira created the team page</Marker>
+                  <Marker>Seats raised from 5 to 10</Marker>
+                </Sheet>
+              </div>
+            }
+          />
           <CardContent>
             <div style={{ display: 'grid', gap: 12 }}>
               <AspectRatio ratio="21:9" rounded>

@@ -563,6 +563,36 @@ A 1 px line between groups of content: Sort UI 2.0 **Separator** (Orientation).
 
 The line is the element's own 1 px `border` (`--ds-border`), so it works in any flex or grid layout and in every brand and scheme.
 
+## Sheet
+
+A modal panel along an edge of the screen: Sort UI 2.0 **Sheet** (Side, header, content, footer, Close button).
+
+```tsx
+<Sheet
+  trigger={<Button variant="outline">Edit profile</Button>}
+  side="right"
+  title="Edit profile"
+  description="Make changes to your profile here. Click save when you're done."
+  footer={<>
+    <SheetClose><Button>Save changes</Button></SheetClose>
+    <SheetClose><Button variant="outline">Cancel</Button></SheetClose>
+  </>}
+>
+  …fields…
+</Sheet>
+```
+
+| Figma property / layer | React prop | CSS class |
+|---|---|---|
+| Side = right · left · top · bottom | `side` (default `right`) | `ds-sheet--right` · `--left` · `--top` · `--bottom` |
+| header: Title, Description | `title` (`titleAs`), `description` | `ds-sheet__header`, `__heading`, `__title`, `__description` |
+| Close button = true · false | `closeButton` (default `true`), `closeLabel` | `ds-sheet__close` |
+| content | children; `bodyPadding="flush"` | `ds-sheet__body`, `--flush` |
+| footer | `footer`; `footerVariant="muted"` | `ds-sheet__footer`, `--muted` |
+| width 384 (left, right) | `width` | `--sheet-width` |
+
+Left and right sheets are full-height and 384 px wide; top and bottom are full-width and as tall as their content. The footer stacks full-width buttons, the main action first (put a row in a `div` for side-by-side buttons). The content scrolls; the header and footer stay. It behaves like Dialog (the two share their code): a native modal `<dialog>` that slides in from its edge (fades with reduced motion), keeps focus inside, closes on Escape, Close or a click on the backdrop and returns focus to the trigger. `SheetClose` makes a button close it.
+
 ## Sonner
 
 Toasts: short notifications that close on their own. Sort UI 2.0 **Sonner** (Type, Title, Description, actions, Close). Mount `<Toaster />` once near the root and call `toast()` anywhere.
@@ -815,6 +845,7 @@ These come from the Figma files, not the code:
 - Aspect Ratio (2.0): the component set has square corners and the demos round them (12 px, radius-xl); the code offers `rounded`. Card's media uses an Aspect Ratio instance in Figma; `CardMedia` keeps its own `ratio` for now.
 - Popover (2.0): the panel keeps its 14 px radius (radius-14) like the other surfaces (Card, Alert Dialog, Sonner); menus and controls use 8 px. The header slot is a horizontal auto-layout with a 12 px gap that never shows (it holds one frame); the code draws the header as the title-and-description column. Figma has no placement property; the demos show bottom and top, the code adds `side` and `align`.
 - Dialog (2.0): Figma draws no backdrop; the code dims the page (alpha black 50, as for Alert Dialog). The "Sticky footer" demo fills the footer with `muted`, which the component has no property for; the code offers `footerVariant="muted"`. Demo widths vary (400, 448, 480, 600 px) without a size property; the code offers `width`.
+- Sheet (2.0): Figma draws top and bottom 800 px wide and left and right 640 px tall as samples; the code fills the screen's width or height. The panel has no radius and no backdrop in Figma; the code keeps the square edges and dims the page like Dialog. Several demos put two buttons side by side in the footer while the component stacks them; the code stacks direct children and lets a row inside lay out its own.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

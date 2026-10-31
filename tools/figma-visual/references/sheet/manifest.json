@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 Sheet (188:115) reference renders (1x PNG, get_screenshot): every Side with the Figma sample slots (Sheet title, the description, the Close button, the body text, Default Save changes and Outline Cancel stacked). Cropped to the sheet's own box (Figma's export adds the outside border and the Surface/Dialog shadow's margin). Figma draws left and right 640 px tall and top and bottom 800 px wide; renderers/sheet.tsx draws the open sheet's markup in the page at those sizes.",
+ "component": "sheet",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "188:115",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "side-right",
+   "nodeId": "188:2",
+   "props": {
+    "Side": "right"
+   },
+   "target": "#target .ds-sheet",
+   "nodeW": 384,
+   "nodeH": 640
+  },
+  {
+   "slug": "side-left",
+   "nodeId": "188:34",
+   "props": {
+    "Side": "left"
+   },
+   "target": "#target .ds-sheet",
+   "nodeW": 384,
+   "nodeH": 640
+  },
+  {
+   "slug": "side-top",
+   "nodeId": "188:61",
+   "props": {
+    "Side": "top"
+   },
+   "target": "#target .ds-sheet",
+   "nodeW": 800,
+   "nodeH": 238
+  },
+  {
+   "slug": "side-bottom",
+   "nodeId": "188:88",
+   "props": {
+    "Side": "bottom"
+   },
+   "target": "#target .ds-sheet",
+   "nodeW": 800,
+   "nodeH": 238
+  }
+ ]
+}
