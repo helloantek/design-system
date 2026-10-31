@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.22.0
+
+### Minor Changes
+
+- a64f306: Aspect Ratio (Sort UI 2.0): `AspectRatio` keeps a `ratio` (`1:1`, `4:3`, `3:2`, `16:9`, `21:9`, `2:3`, `3:4`, `9:16` or a number) at its container's width; the picture, video or iframe inside fills it, cropped from the middle. `rounded` gives the demos' 12 px corners.
+
 ## 2.21.0
 
 ### Minor Changes
