@@ -1,0 +1,128 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{n as t}from"./iframe-DL_efjdW.js";var n;function r(){return(r=e((()=>{n={color:{light:{background:`#fcfcfc`,foreground:`#0a0a0a`,card:`#ffffff`,"card-foreground":`#0a0a0a`,popover:`#ffffff`,"popover-foreground":`#0a0a0a`,primary:`#0a0a0a`,"primary-foreground":`#ffffff`,"primary-border":`#26262666`,"primary-border-disabled":`#0a0a0a66`,secondary:`#f5f5f5`,"secondary-foreground":`#0a0a0a`,muted:`#f5f5f5`,"muted-foreground":`#626262`,accent:`#73737314`,"accent-foreground":`#0a0a0a`,destructive:`#fb2c36`,"destructive-foreground":`#c10007`,border:`#0a0a0a1a`,input:`#0a0a0a1a`,ring:`#a1a1a1`,"chart-1":`#53eafd`,"chart-2":`#7c86ff`,"chart-3":`#ffb86a`,"chart-4":`#00d492`,"chart-5":`#00786f`,"chart-6":`#f5f5f5`,sidebar:`#fafafa`,"sidebar-foreground":`#0a0a0a`,"sidebar-primary":`#0a0a0a`,"sidebar-primary-foreground":`#ffffff`,"sidebar-accent":`#73737314`,"sidebar-accent-foreground":`#0a0a0a`,"sidebar-border":`#0a0a0a1a`,"alpha-background-5":`#fcfcfc0d`,"sidebar-ring":`#a1a1a1`,control:`#ffffff`,"control-hover":`#fcfcfc`,"alpha-foreground-5":`#0a0a0a0d`,"alpha-foreground-10":`#0a0a0a1a`,"alpha-foreground-15":`#0a0a0a26`,"alpha-foreground-20":`#0a0a0a33`,"alpha-foreground-30":`#0a0a0a4d`,"alpha-foreground-40":`#0a0a0a66`,"alpha-foreground-50":`#0a0a0a80`,"alpha-foreground-60":`#0a0a0a99`,"alpha-foreground-70":`#0a0a0ab3`,"alpha-foreground-80":`#0a0a0acc`,"alpha-foreground-90":`#0a0a0ae6`,"alpha-background-10":`#fcfcfc1a`,"alpha-background-15":`#fcfcfc26`,"alpha-black-5":`#0000000d`,"alpha-background-20":`#fcfcfc33`,"alpha-white-5":`#ffffff0d`,"alpha-white-10":`#ffffff1a`,"alpha-white-15":`#ffffff26`,"alpha-white-20":`#ffffff33`,"alpha-white-30":`#ffffff4d`,"alpha-white-40":`#ffffff66`,"alpha-white-50":`#ffffff80`,"alpha-white-60":`#ffffff99`,"alpha-white-70":`#ffffffb3`,"alpha-white-80":`#ffffffcc`,"alpha-white-90":`#ffffffe6`,"alpha-black-10":`#0000001a`,"alpha-black-15":`#00000026`,"alpha-black-20":`#00000033`,"alpha-background-30":`#fcfcfc4d`,"alpha-background-40":`#fcfcfc66`,"alpha-background-50":`#fcfcfc80`,"alpha-background-60":`#fcfcfc99`,"alpha-background-70":`#fcfcfcb3`,"alpha-background-80":`#fcfcfccc`,"alpha-background-90":`#fcfcfce6`,"alpha-black-30":`#0000004d`,"alpha-black-40":`#00000066`,"alpha-black-50":`#00000080`,"alpha-black-60":`#00000099`,"alpha-black-70":`#000000b3`,"alpha-black-80":`#000000cc`,"alpha-black-90":`#000000e6`,"alpha-destructive-5":`#fb2c360d`,"alpha-destructive-10":`#fb2c361a`,"alpha-destructive-15":`#fb2c3626`,"alpha-destructive-20":`#fb2c3633`,"alpha-destructive-30":`#fb2c364d`,"alpha-destructive-40":`#fb2c3666`,"alpha-destructive-50":`#fb2c3680`,"alpha-destructive-60":`#fb2c3699`,"alpha-destructive-70":`#fb2c36b3`,"alpha-destructive-80":`#fb2c36cc`,"alpha-destructive-90":`#fb2c36e6`,"alpha-primary-5":`#0a0a0a0d`,"alpha-primary-10":`#0a0a0a1a`,"alpha-primary-15":`#0a0a0a26`,"alpha-primary-20":`#0a0a0a33`,"alpha-primary-30":`#0a0a0a4d`,"alpha-primary-40":`#0a0a0a66`,"alpha-primary-50":`#0a0a0a80`,"alpha-primary-60":`#0a0a0a99`,"alpha-primary-70":`#0a0a0ab3`,"alpha-primary-80":`#0a0a0acc`,"alpha-primary-90":`#0a0a0ae6`,"alpha-ring-30":`#a1a1a14d`,"control-border":`#0a0a0a1a`,raised:`#ffffff`,field:`#73737306`,"field-border":`#0a0a0a1a`,"fill-1":`#7373730d`,"fill-2":`#73737314`,"fill-3":`#7373731f`,"fill-4":`#73737329`,"palette-blue-tint":`#dbeafe`,"palette-blue-tint-strong":`#bedbff`,"palette-blue-solid":`#2b7fff`,"palette-blue-text":`#1447e6`,"palette-green-tint":`#dcfce7`,"palette-green-tint-strong":`#b9f8cf`,"palette-green-solid":`#00c950`,"palette-green-text":`#008236`,"palette-cyan-tint":`#cefafe`,"palette-cyan-tint-strong":`#a2f4fd`,"palette-cyan-solid":`#00b8db`,"palette-cyan-text":`#007595`,"palette-orange-tint":`#ffedd4`,"palette-orange-tint-strong":`#ffd6a7`,"palette-orange-solid":`#ff6900`,"palette-orange-text":`#ca3500`,"palette-lime-tint":`#ecfcca`,"palette-lime-tint-strong":`#d8f999`,"palette-lime-solid":`#7ccf00`,"palette-lime-text":`#497d00`,"palette-fuchsia-tint":`#fae8ff`,"palette-fuchsia-tint-strong":`#f6cfff`,"palette-fuchsia-solid":`#e12afb`,"palette-fuchsia-text":`#a800b7`,"unchecked-thumb":`#ffffff`,"invalid-border":`#fb2c36`,"invalid-ring":`#fb2c3633`,"syntax-foreground":`#0a0a0a`,"syntax-comment":`#626262`,"syntax-keyword":`#e7000b`,"syntax-string":`#162456`,"syntax-constant":`#1447e6`,"syntax-function":`#5d0ec0`,"syntax-variable":`#e17100`,"syntax-tag":`#008236`,"syntax-added":`#00c95014`,"syntax-removed":`#fb2c3614`,"syntax-added-word":`#00c95033`,"syntax-removed-word":`#fb2c3633`,"chart-7":`#fb64b6`,"chart-8":`#c4b4ff`,"chart-9":`#9ae600`,"chart-10":`#0069a8`,"palette-red-tint":`#ffe2e2`,"palette-red-tint-strong":`#ffc9c9`,"palette-red-solid":`#fb2c36`,"palette-red-text":`#c10007`,"palette-amber-tint":`#fef3c6`,"palette-amber-tint-strong":`#fee685`,"palette-amber-solid":`#fe9a00`,"palette-amber-text":`#bb4d00`,"palette-violet-tint":`#ede9fe`,"palette-violet-tint-strong":`#ddd6ff`,"palette-violet-solid":`#8e51ff`,"palette-violet-text":`#7008e7`,"palette-pink-tint":`#fce7f3`,"palette-pink-tint-strong":`#fccee8`,"palette-pink-solid":`#f6339a`,"palette-pink-text":`#c6005c`,"palette-teal-tint":`#cbfbf1`,"palette-teal-tint-strong":`#96f7e4`,"palette-teal-solid":`#00bba7`,"palette-teal-text":`#00786f`,"text/subtle":`#4e4e55`,"text/white-default":`#ffffff`,"bg/state/ghost":`#27272a00`,"bg/state/ghost-hover":`#27272a0f`,"border/default":`#27272a1a`,"border/darker":`#27272a26`,"border/highlight":`#27272a66`,"icon/white-default":`#ffffff`,"icon/default-muted":`#6f6f77`,"bg/badge/default":`#ffffff`,"bg/badge/gray":`#27272a0f`,"bg/badge/red":`#ee6e6c1a`,"bg/badge/orange":`#f38f361a`,"bg/badge/lime":`#abe4351a`,"bg/badge/green":`#66dc7e1a`,"bg/badge/cyan":`#4ad0ef1a`,"bg/badge/blue":`#65a0fd1a`,"bg/badge/violet":`#a185fd1a`,"bg/badge/fuchsia":`#dd72fa1a`,"bg/badge/pink":`#ea6eb31a`,"bg/basic/gray-accent":`#6f6f77`,"bg/basic/red-accent":`#e74341`,"bg/basic/red-strong":`#b11e1b`,"bg/basic/orange-accent":`#f27313`,"bg/basic/orange-strong":`#a73b0c`,"bg/basic/lime-accent":`#90cd22`,"bg/basic/lime-strong":`#557c18`,"bg/basic/green-accent":`#4fc660`,"bg/basic/green-strong":`#33803f`,"bg/basic/cyan-accent":`#3eb5d7`,"bg/basic/cyan-strong":`#297392`,"bg/basic/blue-accent":`#437dfc`,"bg/basic/blue-strong":`#2147dd`,"bg/basic/violet-accent":`#8655fd`,"bg/basic/violet-strong":`#6717de`,"bg/basic/fuchsia-accent":`#cf3ff3`,"bg/basic/fuchsia-strong":`#9a15b1`,"bg/basic/pink-accent":`#e34798`,"bg/basic/pink-strong":`#b61a5c`,"icon/black-disabled":`#27272a59`},dark:{background:`#0a0a0a`,foreground:`#fafafa`,card:`#171717`,"card-foreground":`#fafafa`,popover:`#1e1e1e`,"popover-foreground":`#fafafa`,primary:`#fafafa`,"primary-foreground":`#000000`,"primary-border":`#ffffff1a`,"primary-border-disabled":`#ffffff26`,secondary:`#121212`,"secondary-foreground":`#fafafa`,muted:`#171717`,"muted-foreground":`#a1a1a1`,accent:`#ffffff1a`,"accent-foreground":`#fafafa`,destructive:`#fb2c36`,"destructive-foreground":`#ff6467`,border:`#ffffff1a`,input:`#ffffff1a`,ring:`#737373`,"chart-1":`#53eafd`,"chart-2":`#7c86ff`,"chart-3":`#ffb86a`,"chart-4":`#00d492`,"chart-5":`#00786f`,"chart-6":`#404040`,sidebar:`#171717`,"sidebar-foreground":`#fafafa`,"sidebar-primary":`#fafafa`,"sidebar-primary-foreground":`#000000`,"sidebar-accent":`#ffffff1a`,"sidebar-accent-foreground":`#fafafa`,"sidebar-border":`#ffffff1a`,"alpha-background-5":`#0a0a0a0d`,"sidebar-ring":`#737373`,control:`#262626`,"control-hover":`#1e1e1e`,"alpha-foreground-5":`#fafafa0d`,"alpha-foreground-10":`#fafafa1a`,"alpha-foreground-15":`#fafafa26`,"alpha-foreground-20":`#fafafa33`,"alpha-foreground-30":`#fafafa4d`,"alpha-foreground-40":`#fafafa66`,"alpha-foreground-50":`#fafafa80`,"alpha-foreground-60":`#fafafa99`,"alpha-foreground-70":`#fafafab3`,"alpha-foreground-80":`#fafafacc`,"alpha-foreground-90":`#fafafae6`,"alpha-background-10":`#0a0a0a1a`,"alpha-background-15":`#0a0a0a26`,"alpha-black-5":`#0000000d`,"alpha-background-20":`#0a0a0a33`,"alpha-white-5":`#ffffff0d`,"alpha-white-10":`#ffffff1a`,"alpha-white-15":`#ffffff26`,"alpha-white-20":`#ffffff33`,"alpha-white-30":`#ffffff4d`,"alpha-white-40":`#ffffff66`,"alpha-white-50":`#ffffff80`,"alpha-white-60":`#ffffff99`,"alpha-white-70":`#ffffffb3`,"alpha-white-80":`#ffffffcc`,"alpha-white-90":`#ffffffe6`,"alpha-black-10":`#0000001a`,"alpha-black-15":`#00000026`,"alpha-black-20":`#00000033`,"alpha-background-30":`#0a0a0a4d`,"alpha-background-40":`#0a0a0a66`,"alpha-background-50":`#0a0a0a80`,"alpha-background-60":`#0a0a0a99`,"alpha-background-70":`#0a0a0ab3`,"alpha-background-80":`#0a0a0acc`,"alpha-background-90":`#0a0a0ae6`,"alpha-black-30":`#0000004d`,"alpha-black-40":`#00000066`,"alpha-black-50":`#00000080`,"alpha-black-60":`#00000099`,"alpha-black-70":`#000000b3`,"alpha-black-80":`#000000cc`,"alpha-black-90":`#000000e6`,"alpha-destructive-5":`#fb2c360d`,"alpha-destructive-10":`#fb2c361a`,"alpha-destructive-15":`#fb2c3626`,"alpha-destructive-20":`#fb2c3633`,"alpha-destructive-30":`#fb2c364d`,"alpha-destructive-40":`#fb2c3666`,"alpha-destructive-50":`#fb2c3680`,"alpha-destructive-60":`#fb2c3699`,"alpha-destructive-70":`#fb2c36b3`,"alpha-destructive-80":`#fb2c36cc`,"alpha-destructive-90":`#fb2c36e6`,"alpha-primary-5":`#fafafa0d`,"alpha-primary-10":`#fafafa1a`,"alpha-primary-15":`#fafafa26`,"alpha-primary-20":`#fafafa33`,"alpha-primary-30":`#fafafa4d`,"alpha-primary-40":`#fafafa66`,"alpha-primary-50":`#fafafa80`,"alpha-primary-60":`#fafafa99`,"alpha-primary-70":`#fafafab3`,"alpha-primary-80":`#fafafacc`,"alpha-primary-90":`#fafafae6`,"alpha-ring-30":`#7373734d`,"control-border":`#ffffff1a`,raised:`#ffffff1a`,field:`#ffffff06`,"field-border":`#ffffff26`,"fill-1":`#ffffff0d`,"fill-2":`#ffffff1a`,"fill-3":`#ffffff24`,"fill-4":`#ffffff2e`,"palette-blue-tint":`#2b7fff40`,"palette-blue-tint-strong":`#2b7fff66`,"palette-blue-solid":`#2b7fff`,"palette-blue-text":`#bedbff`,"palette-green-tint":`#00c95040`,"palette-green-tint-strong":`#00c95066`,"palette-green-solid":`#00c950`,"palette-green-text":`#b9f8cf`,"palette-cyan-tint":`#00b8db40`,"palette-cyan-tint-strong":`#00b8db66`,"palette-cyan-solid":`#00b8db`,"palette-cyan-text":`#a2f4fd`,"palette-orange-tint":`#ff690040`,"palette-orange-tint-strong":`#ff690066`,"palette-orange-solid":`#ff6900`,"palette-orange-text":`#ffd6a7`,"palette-lime-tint":`#7ccf0040`,"palette-lime-tint-strong":`#7ccf0066`,"palette-lime-solid":`#7ccf00`,"palette-lime-text":`#d8f999`,"palette-fuchsia-tint":`#e12afb40`,"palette-fuchsia-tint-strong":`#e12afb66`,"palette-fuchsia-solid":`#e12afb`,"palette-fuchsia-text":`#f6cfff`,"unchecked-thumb":`#737373`,"invalid-border":`#fb2c3680`,"invalid-ring":`#fb2c3666`,"syntax-foreground":`#fafafa`,"syntax-comment":`#a1a1a1`,"syntax-keyword":`#ff6467`,"syntax-string":`#bedbff`,"syntax-constant":`#51a2ff`,"syntax-function":`#a684ff`,"syntax-variable":`#ffb86a`,"syntax-tag":`#7bf1a8`,"syntax-added":`#00c95026`,"syntax-removed":`#fb2c361a`,"syntax-added-word":`#00c9504d`,"syntax-removed-word":`#fb2c364d`,"chart-7":`#fb64b6`,"chart-8":`#c4b4ff`,"chart-9":`#9ae600`,"chart-10":`#0069a8`,"palette-red-tint":`#fb2c3640`,"palette-red-tint-strong":`#fb2c3666`,"palette-red-solid":`#fb2c36`,"palette-red-text":`#ffc9c9`,"palette-amber-tint":`#fe9a0040`,"palette-amber-tint-strong":`#fe9a0066`,"palette-amber-solid":`#fe9a00`,"palette-amber-text":`#fee685`,"palette-violet-tint":`#8e51ff40`,"palette-violet-tint-strong":`#8e51ff66`,"palette-violet-solid":`#8e51ff`,"palette-violet-text":`#ddd6ff`,"palette-pink-tint":`#f6339a40`,"palette-pink-tint-strong":`#f6339a66`,"palette-pink-solid":`#f6339a`,"palette-pink-text":`#fccee8`,"palette-teal-tint":`#00bba740`,"palette-teal-tint-strong":`#00bba766`,"palette-teal-solid":`#00bba7`,"palette-teal-text":`#96f7e4`,"text/subtle":`#ffffffb2`,"text/white-default":`#18181b`,"bg/state/ghost":`#ffffff00`,"bg/state/ghost-hover":`#ffffff14`,"border/default":`#ffffff1a`,"border/darker":`#ffffff26`,"border/highlight":`#ffffff66`,"icon/white-default":`#18181b`,"icon/default-muted":`#ffffff80`,"bg/badge/default":`#ffffff1a`,"bg/badge/gray":`#ffffff1a`,"bg/badge/red":`#ee6e6c1a`,"bg/badge/orange":`#f38f361a`,"bg/badge/lime":`#abe4351a`,"bg/badge/green":`#66dc7e1a`,"bg/badge/cyan":`#4ad0ef1a`,"bg/badge/blue":`#65a0fd1a`,"bg/badge/violet":`#a185fd1a`,"bg/badge/fuchsia":`#dd72fa1a`,"bg/badge/pink":`#ea6eb31a`,"bg/basic/gray-accent":`#6f6f77`,"bg/basic/red-accent":`#e74341`,"bg/basic/red-strong":`#ed6664`,"bg/basic/orange-accent":`#f27313`,"bg/basic/orange-strong":`#f38f36`,"bg/basic/lime-accent":`#90cd22`,"bg/basic/lime-strong":`#abe435`,"bg/basic/green-accent":`#4fc660`,"bg/basic/green-strong":`#66dc7e`,"bg/basic/cyan-accent":`#3eb5d7`,"bg/basic/cyan-strong":`#4ad0ef`,"bg/basic/blue-accent":`#437dfc`,"bg/basic/blue-strong":`#65a0fd`,"bg/basic/violet-accent":`#8655fd`,"bg/basic/violet-strong":`#a185fd`,"bg/basic/fuchsia-accent":`#cf3ff3`,"bg/basic/fuchsia-strong":`#dd72fa`,"bg/basic/pink-accent":`#e34798`,"bg/basic/pink-strong":`#ea6eb3`,"icon/black-disabled":`#27272a59`}},dimension:{"radius-none":0,"radius-xs":4,"radius-sm":6,"radius-md":8,"radius-lg":10,"radius-xl":12,"radius-2xl":16,"radius-3xl":20,"radius-4xl":24,"radius-full":9999,"radius-14":14,"spacing-0":0,"spacing-0-5":2,"spacing-1":4,"spacing-1-5":6,"spacing-2":8,"spacing-2-5":10,"spacing-3":12,"spacing-3-5":14,"spacing-4":16,"spacing-5":20,"spacing-6":24,"spacing-7":28,"spacing-8":32,"spacing-9":36,"spacing-10":40,"spacing-11":44,"spacing-12":48,"spacing-14":56,"spacing-16":64,"spacing-18":72,"spacing-20":80,"spacing-24":96,"spacing-28":112,"spacing-32":128,"spacing-36":144,"spacing-40":160,"spacing-44":176,"spacing-48":192,"spacing-52":208,"spacing-56":224,"spacing-60":240,"spacing-64":256,"spacing-72":288,"spacing-80":320,"spacing-96":384,"stroke-width-1":1,"stroke-width-2":1.25,"stroke-width-3":1.5,"stroke-width-4":2,spacing:4,"text-2xs":12,"text-2xs--line-height":16,"text-sm":14,"text-sm--line-height":20,"text-base":16,"text-base--line-height":24,"text-lg":18,"text-lg--line-height":28,"text-xl":20,"text-xl--line-height":28,"text-2xl":24,"text-2xl--line-height":32,"text-3xl":30,"text-3xl--line-height":36,"text-4xl":36,"text-4xl--line-height":40,"text-6xl":48,"text-6xl--line-height":48,"text-7xl":60,"text-7xl--line-height":60,"text-8xl":72,"text-8xl--line-height":72,"text-9xl":96,"text-9xl--line-height":96,"text-xs":13,"text-xs--line-height":20,"text-5xl":40,"text-5xl--line-height":44},fontWeight:{"font-weight-normal":400,"font-weight-medium":500,"font-weight-semibold":600,"font-weight-bold":700,"font-weight-540":540},fontFamily:{"font-sans":`Inter`,"font-heading":`Inter`,"font-mono":`Geist Mono`},effect:{"opacity-0":`0`,"opacity-5":`0.05`,"opacity-10":`0.1`,"opacity-15":`0.15`,"opacity-20":`0.2`,"opacity-25":`0.25`,"opacity-30":`0.3`,"opacity-40":`0.4`,"opacity-50":`0.5`,"opacity-60":`0.6`,"opacity-70":`0.7`,"opacity-80":`0.8`,"opacity-90":`0.9`,"opacity-100":`1`,"duration-100":`100ms`,"duration-150":`150ms`,"duration-200":`200ms`,"duration-300":`300ms`,"ease-linear":`cubic-bezier(0, 0, 1, 1)`,"ease-in":`cubic-bezier(0.4, 0, 1, 1)`,"ease-out":`cubic-bezier(0, 0, 0.2, 1)`,"ease-in-out":`cubic-bezier(0.4, 0, 0.2, 1)`,"shadow-2xs":`0px 2px 2px -1px #40404008, 0px 1px 1px -1px #4040400f`,"shadow-xs":`0px 1px 2px 0px #0000000a`,"shadow-sm":`0px 1px 3px 0px #0000000f, 0px 1px 2px -1px #0000000f`,"shadow-md":`0px 4px 12px -1px #0000000f, 0px 2px 8px -2px #0000000f`,"shadow-lg":`0px 10px 15px -3px #00000012, 0px 4px 6px -4px #00000012`,"shadow-xl":`0px 20px 25px -5px #00000012, 0px 8px 10px -6px #00000012`,"shadow-2xl":`0px 25px 50px -12px #00000033`,"controls-primary-control":`0px 3px 3px -2px #00000033, inset 0px 0px 3px 0px #ffffff33, inset 0px 1px 0px 0px #ffffff33`,"controls-primary-control-disabled":`0px 3px 3px -2px #00000033, inset 0px 0px 3px 0px #ffffff33, inset 0px 1px 0px 0px #ffffff80`,"controls-secondary-control":`0px 2px 3px -1px #00000008, 0px 1px 2px -1px #0000000a, inset 0px 1px 0px 0px #ffffff26, inset 0px -1px 0px 0px #00000014`,"surface-dialog":`0px 20px 25px -5px #00000012, 0px 8px 10px -6px #00000012, inset 0px 1px 0px 0px #ffffff26`,"surface-card":`0px 2px 2px -1px #40404008, 0px 1px 1px -1px #4040400f, inset 0px 1px 0px 0px #ffffff26`,"surface-popover":`0px 10px 15px -3px #00000012, 0px 4px 6px -4px #00000012, inset 0px 1px 0px 0px #ffffff26`}}})))()}function i({names:e}){return(0,a.jsx)(`div`,{style:{display:`grid`,gridTemplateColumns:`repeat(auto-fill, minmax(200px, 1fr))`,gap:12},children:e.map(e=>(0,a.jsxs)(`div`,{style:{display:`grid`,gridTemplateColumns:`32px 1fr`,gap:8,alignItems:`center`},children:[(0,a.jsx)(`span`,{style:{width:32,height:32,borderRadius:`var(--ds-radius-sm)`,background:`var(${s(e)})`,boxShadow:`inset 0 0 0 1px var(--ds-border)`}}),(0,a.jsx)(`span`,{style:f,children:e})]},e))})}var a,o,s,c,l,u,d,f,p,m,h,g,_;function v(){return(v=e((()=>{r(),a=t(),o=e=>!e.includes(`/`),s=e=>`--ds-${e}`,c=Object.keys(n.color.light).filter(o),l=[[`Surfaces and text`,e=>!/^(alpha|palette|chart|syntax|sidebar)-/.test(e)],[`Palette`,e=>e.startsWith(`palette-`)],[`Alpha`,e=>e.startsWith(`alpha-`)],[`Chart`,e=>e.startsWith(`chart-`)],[`Sidebar`,e=>e.startsWith(`sidebar`)],[`Syntax`,e=>e.startsWith(`syntax-`)]],u=Object.entries(n.dimension).filter(([e])=>o(e)),d={title:`Foundations/Sort UI 2.0`,parameters:{layout:`fullscreen`,docs:{description:{component:"Tokens of Sort UI 2.0, generated from the Figma file into `@helloantek/ds-tokens` next to the 1.3 tokens while components migrate. Names follow Figma’s code syntax with the `--ds-` prefix: `var(--muted-foreground)` → `--ds-muted-foreground`, `calc(var(--spacing) * 2)` → `--ds-spacing-2`."}}}},f={fontFamily:`var(--ds-font-sans)`,fontSize:12,lineHeight:`16px`,color:`var(--ds-muted-foreground)`},p=(e,t)=>(0,a.jsxs)(`section`,{style:{display:`grid`,gap:12},children:[(0,a.jsx)(`h2`,{style:{margin:0,fontFamily:`var(--ds-font-sans)`,fontSize:`var(--ds-text-base)`,lineHeight:`var(--ds-text-base--line-height)`,fontWeight:`var(--ds-font-weight-medium)`,color:`var(--ds-foreground)`},children:e}),t]}),m={render:()=>(0,a.jsx)(`div`,{style:{display:`grid`,gridTemplateColumns:`1fr 1fr`},children:[`light`,`dark`].map(e=>(0,a.jsxs)(`div`,{"data-ds-brand":`theme-1`,"data-ds-scheme":e,style:{background:`var(--ds-background)`,padding:24,display:`grid`,gap:32,alignContent:`start`},children:[(0,a.jsx)(`div`,{style:f,children:e===`light`?`Light`:`Dark`}),l.map(([e,t])=>p(e,(0,a.jsx)(i,{names:c.filter(t)})))]},e))})},h={render:()=>(0,a.jsxs)(`div`,{style:{padding:24,display:`grid`,gap:16,background:`var(--ds-background)`,color:`var(--ds-foreground)`,fontFamily:`var(--ds-font-sans)`},children:[u.filter(([e])=>/^text-[\w]+$/.test(e)).sort((e,t)=>e[1]-t[1]).map(([e,t])=>(0,a.jsxs)(`div`,{style:{display:`grid`,gridTemplateColumns:`220px 1fr`,alignItems:`baseline`,gap:16},children:[(0,a.jsxs)(`span`,{style:f,children:[e,` · `,t,`/`,n.dimension[`${e}--line-height`]]}),(0,a.jsx)(`span`,{style:{fontSize:`var(${s(e)})`,lineHeight:`var(${s(e)}--line-height)`},children:`The quick brown fox`})]},e)),(0,a.jsx)(`div`,{style:{display:`flex`,gap:24},children:Object.entries(n.fontWeight).filter(([e])=>e.startsWith(`font-weight-`)).map(([e,t])=>(0,a.jsxs)(`span`,{style:{fontWeight:t},children:[e.replace(`font-weight-`,``),` `,t]},e))})]})},g={render:()=>{let e={width:64,height:64,background:`var(--ds-card)`,boxShadow:`inset 0 0 0 1px var(--ds-border)`},t=Object.keys(n.effect).filter(e=>/^(shadow|controls|surface)-/.test(e));return(0,a.jsxs)(`div`,{style:{padding:24,display:`grid`,gap:32,background:`var(--ds-background)`},children:[p(`Radius`,(0,a.jsx)(`div`,{style:{display:`flex`,flexWrap:`wrap`,gap:16},children:u.filter(([e])=>e.startsWith(`radius-`)).sort((e,t)=>e[1]-t[1]).map(([t,n])=>(0,a.jsxs)(`div`,{style:{display:`grid`,gap:6,justifyItems:`center`},children:[(0,a.jsx)(`span`,{style:{...e,borderRadius:`var(${s(t)})`}}),(0,a.jsxs)(`span`,{style:f,children:[t.replace(`radius-`,``),` · `,n]})]},t))})),p(`Spacing`,(0,a.jsx)(`div`,{style:{display:`grid`,gap:4},children:u.filter(([e])=>/^spacing-/.test(e)).map(([e,t])=>(0,a.jsxs)(`div`,{style:{display:`grid`,gridTemplateColumns:`120px 1fr`,alignItems:`center`,gap:8},children:[(0,a.jsxs)(`span`,{style:f,children:[e,` · `,t]}),(0,a.jsx)(`span`,{style:{width:`var(${s(e)})`,height:8,background:`var(--ds-palette-blue-solid)`,borderRadius:2}})]},e))})),p(`Shadows`,(0,a.jsx)(`div`,{style:{display:`flex`,flexWrap:`wrap`,gap:24},children:t.map(e=>(0,a.jsxs)(`div`,{style:{display:`grid`,gap:8,justifyItems:`center`},children:[(0,a.jsx)(`span`,{style:{width:96,height:64,borderRadius:`var(--ds-radius-lg)`,background:`var(--ds-card)`,boxShadow:`var(${s(e)})`}}),(0,a.jsx)(`span`,{style:f,children:e})]},e))}))]})}},_=[`Colors`,`Typography`,`Shapes`],m.parameters={...m.parameters,docs:{...m.parameters?.docs,source:{originalSource:`{
+  render: () => <div style={{
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr'
+  }}>
+      {(['light', 'dark'] as const).map(scheme => <div key={scheme} data-ds-brand="theme-1" data-ds-scheme={scheme} style={{
+      background: 'var(--ds-background)',
+      padding: 24,
+      display: 'grid',
+      gap: 32,
+      alignContent: 'start'
+    }}>
+          <div style={label}>{scheme === 'light' ? 'Light' : 'Dark'}</div>
+          {groups.map(([title, test]) => section(title, <Swatches names={colors.filter(test)} />))}
+        </div>)}
+    </div>
+}`,...m.parameters?.docs?.source},description:{story:`Every colour in Light and Dark.`,...m.parameters?.docs?.description}}},h.parameters={...h.parameters,docs:{...h.parameters?.docs,source:{originalSource:`{
+  render: () => <div style={{
+    padding: 24,
+    display: 'grid',
+    gap: 16,
+    background: 'var(--ds-background)',
+    color: 'var(--ds-foreground)',
+    fontFamily: 'var(--ds-font-sans)'
+  }}>
+      {dims.filter(([n]) => /^text-[\\w]+$/.test(n)).sort((a, b) => a[1] - b[1]).map(([n, v]) => <div key={n} style={{
+      display: 'grid',
+      gridTemplateColumns: '220px 1fr',
+      alignItems: 'baseline',
+      gap: 16
+    }}>
+            <span style={label}>
+              {n} · {v}/{tokens.dimension[\`\${n}--line-height\`]}
+            </span>
+            <span style={{
+        fontSize: \`var(\${cssName(n)})\`,
+        lineHeight: \`var(\${cssName(n)}--line-height)\`
+      }}>The quick brown fox</span>
+          </div>)}
+      <div style={{
+      display: 'flex',
+      gap: 24
+    }}>
+        {Object.entries(tokens.fontWeight).filter(([n]) => n.startsWith('font-weight-')).map(([n, w]) => <span key={n} style={{
+        fontWeight: w
+      }}>
+              {n.replace('font-weight-', '')} {w}
+            </span>)}
+      </div>
+    </div>
+}`,...h.parameters?.docs?.source},description:{story:`Text sizes with their line heights, and weights.`,...h.parameters?.docs?.description}}},g.parameters={...g.parameters,docs:{...g.parameters?.docs,source:{originalSource:`{
+  render: () => {
+    const box: CSSProperties = {
+      width: 64,
+      height: 64,
+      background: 'var(--ds-card)',
+      boxShadow: 'inset 0 0 0 1px var(--ds-border)'
+    };
+    const shadows = Object.keys(tokens.effect).filter(n => /^(shadow|controls|surface)-/.test(n));
+    return <div style={{
+      padding: 24,
+      display: 'grid',
+      gap: 32,
+      background: 'var(--ds-background)'
+    }}>
+        {section('Radius', <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 16
+      }}>
+            {dims.filter(([n]) => n.startsWith('radius-')).sort((a, b) => a[1] - b[1]).map(([n, v]) => <div key={n} style={{
+          display: 'grid',
+          gap: 6,
+          justifyItems: 'center'
+        }}>
+                  <span style={{
+            ...box,
+            borderRadius: \`var(\${cssName(n)})\`
+          }} />
+                  <span style={label}>
+                    {n.replace('radius-', '')} · {v}
+                  </span>
+                </div>)}
+          </div>)}
+        {section('Spacing', <div style={{
+        display: 'grid',
+        gap: 4
+      }}>
+            {dims.filter(([n]) => /^spacing-/.test(n)).map(([n, v]) => <div key={n} style={{
+          display: 'grid',
+          gridTemplateColumns: '120px 1fr',
+          alignItems: 'center',
+          gap: 8
+        }}>
+                  <span style={label}>
+                    {n} · {v}
+                  </span>
+                  <span style={{
+            width: \`var(\${cssName(n)})\`,
+            height: 8,
+            background: 'var(--ds-palette-blue-solid)',
+            borderRadius: 2
+          }} />
+                </div>)}
+          </div>)}
+        {section('Shadows', <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 24
+      }}>
+            {shadows.map(n => <div key={n} style={{
+          display: 'grid',
+          gap: 8,
+          justifyItems: 'center'
+        }}>
+                <span style={{
+            width: 96,
+            height: 64,
+            borderRadius: 'var(--ds-radius-lg)',
+            background: 'var(--ds-card)',
+            boxShadow: \`var(\${cssName(n)})\`
+          }} />
+                <span style={label}>{n}</span>
+              </div>)}
+          </div>)}
+      </div>;
+  }
+}`,...g.parameters?.docs?.source},description:{story:`Radius, spacing and shadows (effect styles).`,...g.parameters?.docs?.description}}}})))()}v();export{m as Colors,g as Shapes,h as Typography,_ as __namedExportsOrder,d as default};
