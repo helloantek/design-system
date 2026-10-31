@@ -1,0 +1,35 @@
+{
+ "component": "progress",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "$comment": "Sort UI 2.0 Progress (650:32007) reference renders (1x PNG, get_screenshot): Variant=Default at 54 % and Dashed at 3 of 10 steps, with the sample header and footer. renderers/progress.tsx renders Progress 448 px wide.",
+ "componentSet": "650:32007",
+ "entries": [
+  {
+   "slug": "variant-default",
+   "nodeId": "245:4",
+   "props": {
+    "Variant": "Default"
+   },
+   "target": "#target > .ds-progress",
+   "nodeW": 448,
+   "nodeH": 68
+  },
+  {
+   "slug": "variant-dashed",
+   "nodeId": "650:32008",
+   "props": {
+    "Variant": "Dashed"
+   },
+   "target": "#target > .ds-progress",
+   "nodeW": 448,
+   "nodeH": 68
+  }
+ ]
+}

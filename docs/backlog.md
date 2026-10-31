@@ -11,7 +11,7 @@ Figma variants that are not implemented yet, and the component each one becomes.
 | Select Menu positioning | Flip/shift near the viewport edge | CSS anchor positioning or a small positioning helper. |
 | Input · Variant = Tags, Inline tags | `Tag` + `TagInput` | `Tag` is reusable on its own (filters, chips). |
 | Input · Variant = Quantity, Quantity 2 | `NumberInput` (stepper) | Native `type="number"` semantics, `−`/`+` or chevron buttons, min/max/step. |
-| Progress circle | `ProgressCircle` | Textarea draws its own 16 px ring for the character count (`ds-textarea__progress`); a standalone component should take it over. |
+| Textarea's character-count ring | `ProgressCircle` in Textarea | `ProgressCircle` exists; Textarea still draws its own 16 px ring (`ds-textarea__progress`), which should reuse it. |
 | Input · Variant = Lead button | `FileInput` | Wraps `<input type="file">`; shows the chosen file name. |
 
 Each one follows [playbook.md](playbook.md) and is done when [definition-of-done.md](definition-of-done.md) holds.

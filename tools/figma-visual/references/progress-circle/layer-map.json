@@ -1,0 +1,22 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-progress-circle) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "track": {
+      "skip": [
+        "w",
+        "h",
+        "fill"
+      ],
+      "$why": "Figma draws the ring as an ellipse with an 80 % inner radius, filled; the code strokes an SVG circle (stroke, not fill), so the colour is not readable as a fill. The pixels cover it."
+    },
+    "indicator": {
+      "skip": [
+        "w",
+        "h",
+        "fill"
+      ],
+      "$why": "As the track: an SVG stroke from 12 o'clock; the pixels cover its colour and its 25 % arc."
+    }
+  }
+}
