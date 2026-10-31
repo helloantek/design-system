@@ -1,0 +1,117 @@
+/*
+ * Empty — Sort UI 2.0 component "Empty" (node 575:7008) on page 227:46 in file 4JnqgEbdlnKgiFrfmiwEZw: what a view shows
+ * when it has nothing yet (no items, no results), with a way forward. Values are Sort UI 2.0 tokens. Framework-agnostic:
+ * any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-empty">
+ *     <div class="ds-empty__header">
+ *       [<div class="ds-empty__media ds-empty__media--icon" aria-hidden="true"><svg…/></div>]   (Figma "Media", an icon tile)
+ *       [<div class="ds-empty__media">…an Avatar Group or a picture…</div>]
+ *       <div class="ds-empty__text">
+ *         <h3 class="ds-empty__title">No deployments yet</h3>
+ *         [<p class="ds-empty__description">Connect a repository…</p>]
+ *       </div>
+ *     </div>
+ *     [<div class="ds-empty__content">…buttons, a search field, a link…</div>]                (Figma "Slot")
+ *   </div>
+ */
+
+@layer ds.components {
+  /* 24 px padding; the header and the content 16 px apart, centred. */
+  .ds-empty {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-spacing-4);
+    min-width: 0;
+    padding: var(--ds-spacing-6);
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+    text-align: center;
+  }
+
+  /* Figma "EmptyHeader": the media 16 px above the text. */
+  .ds-empty__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-spacing-4);
+    width: 100%;
+  }
+
+  .ds-empty__media {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Figma "Media" with an icon: a 32 px fill-2 tile, 8 px radius, the icon muted. */
+  .ds-empty__media--icon {
+    width: var(--ds-spacing-8);
+    height: var(--ds-spacing-8);
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-fill-2);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-empty__media--icon > svg {
+    display: block;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* Title 16/24 medium and description 14/20 muted, 4 px apart. */
+  .ds-empty__text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    width: 100%;
+  }
+
+  .ds-empty__title {
+    margin: 0;
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-base);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-base--line-height);
+  }
+
+  .ds-empty__description {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-empty__description a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Figma "Slot": the way forward, its parts 12 px apart; buttons sit side by side 8 px apart. */
+  .ds-empty__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-spacing-3);
+    width: 100%;
+  }
+
+  /* A field (e.g. a search in "No results") takes the full width. */
+  .ds-empty__content > .ds-field {
+    align-self: stretch;
+  }
+
+  .ds-empty__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--ds-spacing-2);
+  }
+}
