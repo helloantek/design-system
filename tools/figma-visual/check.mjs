@@ -185,8 +185,10 @@ for (const component of components) {
     }
     // Let the browser repaint after the interaction before taking the screenshot.
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+    // fullPage: a render taller or wider than the 600 × 300 viewport (a 640 px Sheet) is captured whole, not cut off.
     const shot = await page.screenshot({
       clip: { x: box.x - PAD, y: box.y - PAD, width: box.width + PAD * 2, height: box.height + PAD * 2 },
+      fullPage: true,
       animations: 'disabled',
     });
     // Exact values (while Hover/Press/Focus is still active).
