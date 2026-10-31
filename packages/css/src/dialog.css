@@ -1,0 +1,166 @@
+/*
+ * Dialog — Sort UI 2.0 component "Dialog" (node 182:2) on page 180:3 in file 4JnqgEbdlnKgiFrfmiwEZw: a modal window
+ * with a header (title, description, Close button), any content and a footer of actions. Values are Sort UI 2.0
+ * tokens. Use a native <dialog> opened with showModal(): the browser keeps focus inside, makes the page behind inert
+ * and draws ::backdrop.
+ *
+ * Markup (parts in [] are optional):
+ *   <dialog class="ds-dialog" aria-labelledby="t" aria-describedby="d">
+ *     [<div class="ds-dialog__header">                                            (Figma "header")
+ *       <div class="ds-dialog__heading"><h2 class="ds-dialog__title" id="t">Edit profile</h2>
+ *         [<p class="ds-dialog__description" id="d">…</p>]</div>
+ *       [<button class="ds-button ds-button--ghost ds-button--size-sm ds-button--icon-only ds-dialog__close"
+ *                aria-label="Close">…x…</button>]                                 (Figma "Close button")
+ *     </div>]
+ *     <div class="ds-dialog__body">…</div>                                         (Figma "content")
+ *     [<div class="ds-dialog__footer [ds-dialog__footer--muted]">…actions…</div>]  (Figma "footer")
+ *   </dialog>
+ * 448 px wide (--dialog-width changes it). The dialog never grows past the viewport: the body scrolls, the header and
+ * the footer stay.
+ */
+
+@layer ds.components {
+  .ds-dialog {
+    box-sizing: border-box;
+    flex-direction: column;
+    width: var(--dialog-width, calc(var(--ds-spacing-96) + var(--ds-spacing-16)));
+    max-width: calc(100vw - 2 * var(--ds-spacing-4));
+    max-height: calc(100dvh - 2 * var(--ds-spacing-4));
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--ds-radius-4xl);
+    background-color: var(--ds-popover);
+    /* Figma: a 1 px border stroke outside the box and the Surface/Dialog effect style. */
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-dialog);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-dialog[open] {
+    display: flex;
+    animation: ds-dialog-in var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  /* Not in Figma (it draws no backdrop): the page dims behind the dialog. */
+  .ds-dialog::backdrop {
+    background-color: var(--ds-alpha-black-50);
+  }
+
+  .ds-dialog[open]::backdrop {
+    animation: ds-dialog-fade var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  @keyframes ds-dialog-in {
+    from {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+
+  @keyframes ds-dialog-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-dialog[open] {
+      animation-name: ds-dialog-fade;
+    }
+  }
+
+  /* The page behind does not scroll while a dialog is open. */
+  :root:has(.ds-dialog:modal) {
+    overflow: hidden;
+  }
+
+  /* Figma "header": the heading and the Close button, 12 px apart; 24 px left and bottom, 16 px top and right (the
+     28 px button sits in the corner; the heading's 8 px top padding lines the title up 24 px from the top). */
+  .ds-dialog__header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: flex-start;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-4) var(--ds-spacing-4) var(--ds-spacing-6) var(--ds-spacing-6);
+  }
+
+  /* Figma "No close button": 24 px on the right too. */
+  .ds-dialog__header:not(:has(> .ds-dialog__close)) {
+    padding-right: var(--ds-spacing-6);
+  }
+
+  .ds-dialog__heading {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+    padding-top: var(--ds-spacing-2);
+  }
+
+  /* Figma "Title": 16/24 medium. */
+  .ds-dialog__title {
+    margin: 0;
+    color: var(--ds-popover-foreground);
+    font-size: var(--ds-text-base);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-base--line-height);
+  }
+
+  /* Figma "Description": 14/20 muted. */
+  .ds-dialog__description {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-dialog__close {
+    flex-shrink: 0;
+  }
+
+  /* Figma "content": 24 px on the sides, its parts 16 px apart; it scrolls when the dialog reaches the viewport. */
+  .ds-dialog__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-4);
+    min-height: 0;
+    padding: 0 var(--ds-spacing-6);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .ds-dialog__body:first-child {
+    padding-top: var(--ds-spacing-6);
+  }
+
+  .ds-dialog__body:last-child {
+    padding-bottom: var(--ds-spacing-6);
+  }
+
+  /* Figma "content" with no padding (the Settings and Welcome demos): media or a layout of its own fills it. */
+  .ds-dialog__body--flush,
+  .ds-dialog__body--flush:first-child,
+  .ds-dialog__body--flush:last-child {
+    padding: 0;
+  }
+
+  /* Figma "footer": buttons at the end, 8 px apart, 24 px around. */
+  .ds-dialog__footer {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-6);
+  }
+
+  /* Figma "Sticky footer" demo: the footer on the muted fill, under the scrolling body. */
+  .ds-dialog__footer--muted {
+    background-color: var(--ds-muted);
+  }
+}

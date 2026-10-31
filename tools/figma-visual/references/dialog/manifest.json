@@ -1,0 +1,25 @@
+{
+ "$comment": "Sort UI 2.0 Dialog (182:2, a single component) reference render (1x PNG, exportAsync: get_screenshot puts a top-level component on a grey backdrop) with the Figma sample slots: Dialog title, the description, the Close button, the body text and the footer (Outline Cancel, Default Continue). Cropped to the dialog's own box (Figma's export adds the outside border and the Surface/Dialog shadow's margin). renderers/dialog.tsx draws the open dialog's markup in the page.",
+ "component": "dialog",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "182:2",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "dialog",
+   "nodeId": "182:2",
+   "props": {
+    "Close button": true
+   },
+   "target": "#target .ds-dialog",
+   "nodeW": 448,
+   "nodeH": 238
+  }
+ ]
+}

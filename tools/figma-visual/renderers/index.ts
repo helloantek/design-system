@@ -9,6 +9,7 @@ import { renderCard } from './card';
 import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './checkbox';
 import { renderCombobox } from './combobox';
 import { renderContextMenu } from './context-menu';
+import { renderDialog } from './dialog';
 import { renderDropdownMenu } from './dropdown-menu';
 import { renderEmpty } from './empty';
 import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, renderFieldSet } from './field';
@@ -45,6 +46,7 @@ export const renderers: Record<string, Renderer> = {
   'checkbox-field': renderCheckboxField,
   combobox: renderCombobox,
   'context-menu': renderContextMenu,
+  dialog: renderDialog,
   'dropdown-menu': renderDropdownMenu,
   empty: renderEmpty,
   field: renderField,

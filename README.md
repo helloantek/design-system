@@ -699,6 +699,34 @@ The menu of actions for whatever is under the pointer: a right-click on the trig
 
 The menu is `position: fixed` in place, not portalled, so it inherits the brand and scheme of its section; an ancestor with a `transform` or `filter` would move it.
 
+## Dialog
+
+A modal window with a header, any content and a footer of actions: Sort UI 2.0 **Dialog** (header, content, footer, Close button).
+
+```tsx
+<Dialog
+  trigger={<Button variant="outline">Edit profile</Button>}
+  title="Edit profile"
+  description="Make changes to your profile here. Click save when you're done."
+  footer={<>
+    <DialogClose><Button variant="outline">Cancel</Button></DialogClose>
+    <Button type="submit" form="profile">Save changes</Button>
+  </>}
+>
+  <form id="profile">…</form>
+</Dialog>
+```
+
+| Figma property / layer | React prop | CSS class |
+|---|---|---|
+| header: Title, Description | `title` (`titleAs`), `description` | `ds-dialog__header`, `__heading`, `__title`, `__description` |
+| Close button = true · false | `closeButton` (default `true`), `closeLabel` | `ds-dialog__close` (a Ghost sm Button) |
+| content | children; `bodyPadding="flush"` for media or a layout of its own | `ds-dialog__body`, `--flush` |
+| footer | `footer`; `footerVariant="muted"` (the "Sticky footer" demo) | `ds-dialog__footer`, `--muted` |
+| width 448 (demos 400–600) | `width` (any CSS length) | `--dialog-width` |
+
+A native modal `<dialog>`: focus moves to its first control and stays inside, the page behind is inert and does not scroll. Escape, the Close button or a click on the backdrop closes it and focus goes back to the trigger; `DialogClose` makes a button close it. It never grows past the viewport: the content scrolls, the header and footer stay. `open`, `defaultOpen` and `onOpenChange` work as usual; without a `title`, give `aria-label`. Use Alert Dialog to ask for a confirmation.
+
 ## Dropdown Menu
 
 A button that opens a menu of actions: the WAI-ARIA menu button (Enter, Space or the arrows open it; arrows, Home/End and type-ahead move; Enter or Space picks; → and ← open and close submenus; Escape closes; focus goes back to the button). Sort UI 2.0 **Dropdown Menu Trigger**, **Content**, **Item**, **Label**, **Separator** and **User Profile**. Radio items are ours: Figma draws them as Checkbox items.
@@ -786,6 +814,7 @@ These come from the Figma files, not the code:
 - Progress (2.0): the Progress circle's ring is 10 % of its size in the component (80 % inner radius) and 7.5 % in the "Circle" demo (85 %); the code defaults to 10 % and takes `thickness`. The demo's red ring (alpha/destructive/10 track, destructive indicator) is not a variant; the code offers it as `variant="destructive"`. Figma has no indeterminate state; the code slides a third of the bar while there is no value.
 - Aspect Ratio (2.0): the component set has square corners and the demos round them (12 px, radius-xl); the code offers `rounded`. Card's media uses an Aspect Ratio instance in Figma; `CardMedia` keeps its own `ratio` for now.
 - Popover (2.0): the panel keeps its 14 px radius (radius-14) like the other surfaces (Card, Alert Dialog, Sonner); menus and controls use 8 px. The header slot is a horizontal auto-layout with a 12 px gap that never shows (it holds one frame); the code draws the header as the title-and-description column. Figma has no placement property; the demos show bottom and top, the code adds `side` and `align`.
+- Dialog (2.0): Figma draws no backdrop; the code dims the page (alpha black 50, as for Alert Dialog). The "Sticky footer" demo fills the footer with `muted`, which the component has no property for; the code offers `footerVariant="muted"`. Demo widths vary (400, 448, 480, 600 px) without a size property; the code offers `width`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
