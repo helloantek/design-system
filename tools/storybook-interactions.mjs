@@ -319,6 +319,30 @@ const tests = {
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).getAttribute('aria-expanded'), 'false', 'and closes its list');
     assert.equal(await submitted.count(), 0);
   },
+  'progress: a named progressbar with its value as text; dashed steps; indeterminate has no value; the circle fills from 12 o\'clock': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-progress--demo&viewMode=story');
+    const copying = page.getByRole('progressbar', { name: 'Copying', description: '2.5GB of 5GB' });
+    await copying.waitFor();
+    assert.deepEqual(await copying.evaluate((el) => [el.getAttribute('aria-valuenow'), el.getAttribute('aria-valuemax'), el.getAttribute('aria-valuetext')]), ['54', '100', '54%']);
+    assert.equal(await copying.locator('.ds-progress__indicator').evaluate((el) => Math.round((el.getBoundingClientRect().width / el.parentElement.getBoundingClientRect().width) * 100)), 54, 'the indicator covers 54 % of the track');
+    assert.equal(await page.getByRole('progressbar', { name: 'Storage' }).getAttribute('aria-valuetext'), 'Used: 70GB of 100GB');
+    const steps = page.getByRole('progressbar', { name: 'Steps' });
+    assert.equal(await steps.locator('.ds-progress__step').count(), 10, 'one segment per step');
+    assert.equal(await steps.locator('.ds-progress__step--done').count(), 3);
+    await page.goto('http://localhost:6008/iframe.html?id=components-progress--controlled&viewMode=story');
+    const checklist = page.getByRole('progressbar', { name: 'Launch checklist' });
+    await checklist.waitFor();
+    await page.getByLabel('Schedule nightly backups').check();
+    assert.equal(await checklist.getAttribute('aria-valuetext'), '3 of 5 done', 'the bar follows the checklist');
+    await page.goto('http://localhost:6008/iframe.html?id=components-progress--indeterminate&viewMode=story');
+    const exportBar = page.getByRole('progressbar', { name: 'Preparing your export' });
+    await exportBar.waitFor();
+    assert.equal(await exportBar.getAttribute('aria-valuenow'), null, 'indeterminate: no value');
+    await page.goto('http://localhost:6008/iframe.html?id=components-progress--circle&viewMode=story');
+    const js = page.getByRole('progressbar', { name: 'JavaScript' });
+    await js.waitFor();
+    assert.deepEqual(await js.evaluate((el) => [el.getAttribute('aria-valuetext'), el.offsetWidth, getComputedStyle(el.querySelector('.ds-progress-circle__indicator')).strokeDasharray]), ['25%', 96, '25px, 100px'], 'the circle: its label as the value, 96 px, a quarter of the ring');
+  },
   'empty: a heading with its description; the icon tile is decorative; actions side by side; a search field spans the width': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-empty--trips&viewMode=story');
     await page.getByRole('heading', { name: 'No trips yet', level: 3 }).waitFor();

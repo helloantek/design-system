@@ -1,0 +1,35 @@
+{
+ "component": "progress-circle",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "$comment": "Sort UI 2.0 Progress circle (463:27591) reference renders (1x PNG, get_screenshot): Value=Empty and Filled (25 %), 72 px. renderers/progress.tsx renders ProgressCircle at 0 and 25.",
+ "componentSet": "463:27591",
+ "entries": [
+  {
+   "slug": "value-empty",
+   "nodeId": "463:27620",
+   "props": {
+    "Value": "Empty"
+   },
+   "target": "#target > .ds-progress-circle",
+   "nodeW": 72,
+   "nodeH": 72
+  },
+  {
+   "slug": "value-filled",
+   "nodeId": "463:27622",
+   "props": {
+    "Value": "Filled"
+   },
+   "target": "#target > .ds-progress-circle",
+   "nodeW": 72,
+   "nodeH": 72
+  }
+ ]
+}

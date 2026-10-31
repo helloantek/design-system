@@ -1,0 +1,33 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-progress) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "header": {
+      "selector": ".ds-progress__header"
+    },
+    "Label": {
+      "selector": ".ds-progress__label"
+    },
+    "Value": {
+      "selector": ".ds-progress__value"
+    },
+    "Track": {
+      "selector": ".ds-progress__track"
+    },
+    "Indicator": {
+      "selector": ".ds-progress__indicator"
+    },
+    "track-dashed": {
+      "selector": ".ds-progress__track--dashed"
+    },
+    "div": {
+      "selector": ".ds-progress__step:nth-child(1)"
+    },
+    "div#3": {
+      "selector": ".ds-progress__step:nth-child(4)"
+    },
+    "Description": {
+      "selector": ".ds-progress__description"
+    }
+  }
+}

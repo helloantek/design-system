@@ -1,0 +1,194 @@
+/*
+ * Progress — Sort UI 2.0 component sets "Progress" (node 650:32007) and "Progress circle" (463:27591) on page 245:2 in
+ * file 4JnqgEbdlnKgiFrfmiwEZw: how far a task has got, as a bar (Default, or Dashed in steps) or a ring. Values are
+ * Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-progress">
+ *     [<div class="ds-progress__header"><span class="ds-progress__label" id="l">Copying</span>
+ *       <span class="ds-progress__value">54%</span></div>]                                   (Figma "header")
+ *     <div class="ds-progress__track" role="progressbar" aria-labelledby="l" aria-valuenow="54">
+ *       <div class="ds-progress__indicator" style="--progress: 54"></div>                   (Figma "track")
+ *     </div>
+ *     [<p class="ds-progress__description">2.5GB of 5GB</p>]                                 (Figma "footer")
+ *   </div>
+ *   Variant=Dashed: the track is <div class="ds-progress__track ds-progress__track--dashed" …> holding one
+ *   <span class="ds-progress__step [ds-progress__step--done]"></span> per step.
+ *   No value (indeterminate): .ds-progress__track--indeterminate, without aria-valuenow.
+ *
+ *   <div class="ds-progress-circle [ds-progress-circle--destructive]" role="progressbar" aria-valuenow="75" style="--progress: 75">
+ *     <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="ds-progress-circle__track" cx="50" cy="50" r="45"/>
+ *       <circle class="ds-progress-circle__indicator" cx="50" cy="50" r="45" pathLength="100"/></svg>
+ *     [<span class="ds-progress-circle__label">75%</span>]
+ *   </div>
+ */
+
+@layer ds.components {
+  /* The header, the track and the footer 12 px apart. */
+  .ds-progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    min-width: 0;
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma "header": the label at the start, the value at the end. */
+  .ds-progress__header {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ds-spacing-3);
+  }
+
+  .ds-progress__label {
+    color: var(--ds-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-progress__value,
+  .ds-progress__description {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  .ds-progress__value {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Figma "Track": 4 px, fully rounded, fill-2; the indicator is primary and the track clips it. */
+  .ds-progress__track {
+    position: relative;
+    height: var(--ds-spacing-1);
+    overflow: hidden;
+    /* Figma's 16 px radius: fully round at 4 px. */
+    border-radius: var(--ds-radius-2xl);
+    background-color: var(--ds-fill-2);
+  }
+
+  .ds-progress__indicator {
+    width: calc(var(--progress, 0) * 1%);
+    height: 100%;
+    background-color: var(--ds-primary);
+    transition: width var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  /* Not in Figma: with no value yet, a third of the bar slides across. */
+  .ds-progress__track--indeterminate .ds-progress__indicator {
+    position: absolute;
+    width: 33%;
+    animation: ds-progress-slide calc(var(--ds-duration-300) * 5) var(--ds-ease-in-out) infinite;
+  }
+
+  @keyframes ds-progress-slide {
+    from {
+      left: -33%;
+    }
+
+    to {
+      left: 100%;
+    }
+  }
+
+  /* Variant=Dashed: one 4 px segment per step, 4 px apart; done steps are primary. */
+  .ds-progress__track--dashed {
+    display: flex;
+    gap: var(--ds-spacing-1);
+    overflow: visible;
+    border-radius: 0;
+    background: none;
+  }
+
+  .ds-progress__step {
+    flex: 1 1 0;
+    border-radius: var(--ds-radius-2xl);
+    background-color: var(--ds-fill-2);
+  }
+
+  .ds-progress__step--done {
+    background-color: var(--ds-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-progress__indicator {
+      transition: none;
+    }
+
+    .ds-progress__track--indeterminate .ds-progress__indicator {
+      left: 0;
+      width: 100%;
+      animation: none;
+      opacity: 0.5;
+    }
+  }
+
+  /* Figma "Progress circle": a 72 px ring (inner radius 80 %, so the ring is 10 % of the size), fill-2, the value in
+     primary clockwise from 12 o'clock; a label in its middle. --progress-circle-size and --progress-circle-thickness
+     (in % of the size, the "Circle" demo uses 7.5) change it. */
+  .ds-progress-circle {
+    --progress-circle-size: var(--ds-spacing-18);
+    --progress-circle-thickness: 10;
+    --progress-circle-track: var(--ds-fill-2);
+    --progress-circle-indicator: var(--ds-primary);
+
+    position: relative;
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: var(--progress-circle-size);
+    height: var(--progress-circle-size);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* The "Circle" demo's warning: a destructive ring on a 10 % destructive track, the label in destructive-foreground. */
+  .ds-progress-circle--destructive {
+    --progress-circle-track: var(--ds-alpha-destructive-10);
+    --progress-circle-indicator: var(--ds-destructive);
+
+    color: var(--ds-destructive-foreground);
+  }
+
+  .ds-progress-circle > svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    rotate: -90deg;
+  }
+
+  .ds-progress-circle > svg > circle {
+    fill: none;
+    stroke-width: var(--progress-circle-thickness);
+    r: calc(50px - var(--progress-circle-thickness) * 0.5px);
+  }
+
+  .ds-progress-circle__track {
+    stroke: var(--progress-circle-track);
+  }
+
+  .ds-progress-circle__indicator {
+    stroke: var(--progress-circle-indicator);
+    stroke-dasharray: var(--progress, 0) 100;
+    transition: stroke-dasharray var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  .ds-progress-circle__label {
+    position: relative;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-progress-circle__indicator {
+      transition: none;
+    }
+  }
+}
