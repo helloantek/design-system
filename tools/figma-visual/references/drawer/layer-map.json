@@ -1,0 +1,45 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-drawer) and how to read it. skip: spec keys not compared for this layer. header is the header slot, header#1 the title-and-description frame inside it; Swipe handle is the 12 px strip and Bar its pill.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The border is outside the box in Figma, drawn as an outer 1 px shadow before the Surface/Dialog shadow. Figma's root is a vertical (side: horizontal, with a Content frame) auto-layout with no padding or gap; code stacks the parts in a flex column."
+    },
+    "Swipe handle": {
+      "selector": ".ds-drawer__handle",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma's handle is a horizontal auto-layout holding the bar; code centres a ::before pill in a flex strip."
+    },
+    "Bar": {
+      "selector": ".ds-drawer__bar"
+    },
+    "header": {
+      "selector": ".ds-drawer__header"
+    },
+    "header#1": {
+      "selector": ".ds-drawer__heading"
+    },
+    "Title": {
+      "selector": ".ds-drawer__title"
+    },
+    "Description": {
+      "selector": ".ds-drawer__description"
+    },
+    "content": {
+      "selector": ".ds-drawer__body"
+    },
+    "Body": {
+      "selector": ".ds-drawer__body > p"
+    },
+    "footer": {
+      "selector": ".ds-drawer__footer"
+    }
+  }
+}

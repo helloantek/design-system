@@ -757,6 +757,36 @@ A modal window with a header, any content and a footer of actions: Sort UI 2.0 *
 
 A native modal `<dialog>`: focus moves to its first control and stays inside, the page behind is inert and does not scroll. Escape, the Close button or a click on the backdrop closes it and focus goes back to the trigger; `DialogClose` makes a button close it. It never grows past the viewport: the content scrolls, the header and footer stay. `open`, `defaultOpen` and `onOpenChange` work as usual; without a `title`, give `aria-label`. Use Alert Dialog to ask for a confirmation.
 
+## Drawer
+
+A rounded modal panel that comes in from the bottom, the top or the side, with a swipe handle: Sort UI 2.0 **Drawer** (Direction, Swipe handle, header, content, footer).
+
+```tsx
+<Drawer
+  trigger={<Button variant="outline">Step goal</Button>}
+  title="Daily step goal"
+  description="Set how many steps you want to walk each day."
+  footer={<>
+    <DrawerClose><Button>Save goal</Button></DrawerClose>
+    <DrawerClose><Button variant="outline">Cancel</Button></DrawerClose>
+  </>}
+>
+  …
+</Drawer>
+```
+
+| Figma property / layer | React prop | CSS class |
+|---|---|---|
+| Direction = down · up · side | `direction` (default `down`) | `ds-drawer--down` · `--up` · `--side` |
+| Swipe handle = true · false | `swipeHandle` (default `true`; down and up) | `ds-drawer__handle`, `__bar` |
+| header: Title, Description | `title` (`titleAs`), `description` | `ds-drawer__header`, `__heading`, `__title`, `__description` |
+| — (not in Figma) | `closeButton` (default `false`), `closeLabel` | `ds-drawer__close` |
+| content | children; `bodyPadding="flush"` | `ds-drawer__body`, `--flush` |
+| footer | `footer`; `footerVariant="muted"` | `ds-drawer__footer`, `--muted` |
+| width 664 (down, up) · 384 (side) | `width` | `--drawer-width` |
+
+It floats 8 px from its edge with 24 px corners: down and up are centred and 664 px wide with a centred heading, side is full-height and 384 px wide on the end edge. Dragging the handle towards the edge moves the drawer with the pointer; letting go past a quarter of its height (or after a quick flick) closes it, otherwise it springs back. The handle is decorative for assistive technology: Escape, a click on the backdrop or a `DrawerClose` button closes the drawer too, and focus goes back to the trigger. The footer stacks full-width buttons, the main action first; the content scrolls while the header and footer stay. Drawer shares its modal code with Dialog and Sheet.
+
 ## Dropdown Menu
 
 A button that opens a menu of actions: the WAI-ARIA menu button (Enter, Space or the arrows open it; arrows, Home/End and type-ahead move; Enter or Space picks; → and ← open and close submenus; Escape closes; focus goes back to the button). Sort UI 2.0 **Dropdown Menu Trigger**, **Content**, **Item**, **Label**, **Separator** and **User Profile**. Radio items are ours: Figma draws them as Checkbox items.
@@ -846,6 +876,7 @@ These come from the Figma files, not the code:
 - Popover (2.0): the panel keeps its 14 px radius (radius-14) like the other surfaces (Card, Alert Dialog, Sonner); menus and controls use 8 px. The header slot is a horizontal auto-layout with a 12 px gap that never shows (it holds one frame); the code draws the header as the title-and-description column. Figma has no placement property; the demos show bottom and top, the code adds `side` and `align`.
 - Dialog (2.0): Figma draws no backdrop; the code dims the page (alpha black 50, as for Alert Dialog). The "Sticky footer" demo fills the footer with `muted`, which the component has no property for; the code offers `footerVariant="muted"`. Demo widths vary (400, 448, 480, 600 px) without a size property; the code offers `width`.
 - Sheet (2.0): Figma draws top and bottom 800 px wide and left and right 640 px tall as samples; the code fills the screen's width or height. The panel has no radius and no backdrop in Figma; the code keeps the square edges and dims the page like Dialog. Several demos put two buttons side by side in the footer while the component stacks them; the code stacks direct children and lets a row inside lay out its own.
+- Drawer (2.0): the component centres the sample body text when down or up; the code centres only the heading, so fields and lists in the content stay start-aligned (centre a paragraph yourself, as the Step goal demo does). The "side" drawer has a Swipe handle property but draws no handle; the code shows none. There is no Close button in Figma, yet several side demos draw one; the code offers `closeButton`. Figma draws no backdrop; the code dims the page like Dialog.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

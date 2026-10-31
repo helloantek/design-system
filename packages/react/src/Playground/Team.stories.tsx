@@ -22,6 +22,7 @@ import {
 } from '../DropdownMenu';
 import { Empty } from '../Empty';
 import { Dialog, DialogClose } from '../Dialog';
+import { Drawer, DrawerClose } from '../Drawer';
 import { Field, FieldGroup } from '../Field';
 import { Input, InputAction, InputDropdown } from '../Input';
 import { Kbd, KbdGroup } from '../Kbd';
@@ -67,7 +68,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -84,6 +85,8 @@ export const Members: StoryObj = {
     const [showRoles, setShowRoles] = useState(true);
     const [teamName, setTeamName] = useState('Orbit');
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [seats, setSeats] = useState(10);
+    const [extraSeats, setExtraSeats] = useState(5);
     const [removing, setRemoving] = useState<Member | null>(null);
     const [activity, setActivity] = useState<ReactNode[]>(['Mira created the workspace', 'Jonas joined as Admin']);
 
@@ -324,7 +327,7 @@ export const Members: StoryObj = {
                   <Avatar key={m.id} initials={initials(m.name)} name={m.name} />
                 ))}
               </AvatarGroup>
-              {members.length} of 10 seats used
+              {members.length} of {seats} seats used
               <Separator orientation="vertical" style={{ height: 16 }} />
               {pending.length} pending
             </span>
@@ -391,7 +394,42 @@ export const Members: StoryObj = {
                 <ProgressCircle value={72} size="40px" thickness={12} aria-label="Profiles complete" />
                 72 % of profiles are complete
               </div>
-              <Progress label="Seats" value={members.length} max={10} valueLabel={`${members.length} of 10`} />
+              <Progress label="Seats" value={members.length} max={seats} valueLabel={`${members.length} of ${seats}`} />
+              <Drawer
+                trigger={
+                  <Button variant="outline" size="sm">
+                    Add seats
+                  </Button>
+                }
+                width="384px"
+                title="Add seats"
+                description="€12 per seat a month, billed with your plan."
+                footer={
+                  <>
+                    <DrawerClose>
+                      <Button
+                        onClick={() => {
+                          setSeats((n) => n + extraSeats);
+                          toast.success(`${extraSeats} seats added`);
+                        }}
+                      >
+                        Add {extraSeats} seats
+                      </Button>
+                    </DrawerClose>
+                    <DrawerClose>
+                      <Button variant="outline">Cancel</Button>
+                    </DrawerClose>
+                  </>
+                }
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24 }}>
+                  <Button variant="outline" aria-label="Fewer seats" disabled={extraSeats <= 1} onClick={() => setExtraSeats((n) => n - 1)} icon={<span aria-hidden>−</span>} />
+                  <span aria-live="polite" style={{ fontSize: 32, lineHeight: '40px', fontWeight: 600, color: 'var(--ds-foreground)' }}>
+                    {extraSeats}
+                  </span>
+                  <Button variant="outline" aria-label="More seats" onClick={() => setExtraSeats((n) => n + 1)} icon={<span aria-hidden>+</span>} />
+                </div>
+              </Drawer>
               <Marker variant="separator">Today</Marker>
               {activity.map((line, i) => (
                 <Marker key={i}>{line}</Marker>
