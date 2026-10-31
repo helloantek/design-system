@@ -413,7 +413,7 @@ How far a task has got: Sort UI 2.0 **Progress** (Variant, header, footer) and *
 
 | Figma property | React prop | CSS class |
 |---|---|---|
-| Variant = Default · Dashed | `variant`: one bar · one 4 px segment per step (`max` steps, `value` done) | `ds-progress__track` · `ds-progress__track--dashed` · `ds-progress__step--done` |
+| Variant = Default · Dashed | `variant`: one bar · one 4 px segment per step (`max` steps, `value` done; meant for a handful of steps, as Figma's 10) | `ds-progress__track` · `ds-progress__track--dashed` · `ds-progress__step--done` |
 | header › Label · Value | `label` (names the bar; otherwise `aria-label`) · `valueLabel` (default "54%" or "3/10"; read as the value; `false` hides it) | `ds-progress__label` · `ds-progress__value` |
 | track › Indicator | `value` of `max` (default 100); none: indeterminate (a sliding third; with reduced motion a still, half-tint bar) | `ds-progress__indicator` (`--progress`) · `ds-progress__track--indeterminate` |
 | footer › Description | `description` (also describes the bar) | `ds-progress__description` |

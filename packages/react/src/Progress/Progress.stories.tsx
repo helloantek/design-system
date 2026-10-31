@@ -20,20 +20,25 @@ export default meta;
 
 const muted: CSSProperties = { fontFamily: 'var(--ds-font-sans)', fontSize: 14, lineHeight: '20px', fontWeight: 500, color: 'var(--ds-muted-foreground)', letterSpacing: '-0.005em' };
 
-type PlaygroundArgs = { variant: ProgressVariant; value: number; max: number; label: string; description: string };
+type PlaygroundArgs = { variant: ProgressVariant; value: number; steps: number; label: string; description: string };
 
 export const Playground: StoryObj<PlaygroundArgs> = {
-  args: { variant: 'default', value: 54, max: 100, label: 'Overall', description: '2.5GB of 5GB' },
+  args: { variant: 'default', value: 54, steps: 10, label: 'Overall', description: '2.5GB of 5GB' },
   argTypes: {
     variant: { name: 'Variant', control: 'inline-radio', options: ['default', 'dashed'] },
-    value: { name: 'Value', control: { type: 'range', min: 0, max: 100 } },
-    max: { name: 'Max (steps when dashed)', control: { type: 'number', min: 1 } },
+    value: { name: 'Value (%)', control: { type: 'range', min: 0, max: 100 } },
+    steps: { name: 'Steps (Dashed)', control: { type: 'range', min: 2, max: 20 }, description: 'Dashed draws one segment per step (max)' },
     label: { name: 'Label' },
     description: { name: 'Description' },
   },
-  render: ({ variant, value, max, label, description }) => (
-    <div style={{ width: 448 }}>
-      <Progress variant={variant} value={value} max={max} label={label || undefined} aria-label={label ? undefined : 'Progress'} description={description || undefined} />
+  // Dashed counts steps: the value becomes that share of the steps (54 % of 10 → 5 of 10), as one segment per step.
+  render: ({ variant, value, steps, label, description }) => (
+    <div style={{ width: 'min(448px, calc(100vw - 32px))' }}>
+      {variant === 'dashed' ? (
+        <Progress variant="dashed" value={Math.round((value / 100) * steps)} max={steps} label={label || undefined} aria-label={label ? undefined : 'Progress'} description={description || undefined} />
+      ) : (
+        <Progress value={value} label={label || undefined} aria-label={label ? undefined : 'Progress'} description={description || undefined} />
+      )}
     </div>
   ),
 };
