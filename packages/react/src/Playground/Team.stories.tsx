@@ -25,7 +25,7 @@ import { Input, InputAction, InputDropdown } from '../Input';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
 import { Popover, PopoverActions, PopoverClose } from '../Popover';
-import { Progress } from '../Progress';
+import { Progress, ProgressCircle } from '../Progress';
 import { Separator } from '../Separator';
 import { Spinner } from '../Spinner';
 import { Toaster, toast } from '../Sonner';
@@ -63,7 +63,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -317,6 +317,10 @@ export const Members: StoryObj = {
               <AspectRatio ratio="21:9" rounded>
                 <img src={aspectRatioPhoto} alt="The team at the last offsite" />
               </AspectRatio>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, color: 'var(--ds-muted-foreground)' }}>
+                <ProgressCircle value={72} size="40px" thickness={12} aria-label="Profiles complete" />
+                72 % of profiles are complete
+              </div>
               <Progress label="Seats" value={members.length} max={10} valueLabel={`${members.length} of 10`} />
               <Marker variant="separator">Today</Marker>
               {activity.map((line, i) => (
