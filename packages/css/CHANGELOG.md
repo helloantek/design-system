@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.20.0
+
+### Minor Changes
+
+- 42c10bc: Empty (Sort UI 2.0): `icon` (a 32 px tile) or `media`, `title` (`titleAs` for the heading level), `description`, `actions` side by side and anything under them (a search field spans the width).
+
 ## 2.19.0
 
 ### Minor Changes
