@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type ReactNode } from 'react';
-import { RiDeleteBinLine, RiFilter3Line, RiMailLine, RiMoreLine, RiRefreshLine, RiSearchLine, RiShieldUserLine, RiUserAddLine } from '@remixicon/react';
+import { RiDeleteBinLine, RiFileCopyLine, RiFilter3Line, RiLinkM, RiMailLine, RiMoreLine, RiRefreshLine, RiSearchLine, RiShieldUserLine, RiUserAddLine } from '@remixicon/react';
 import { Alert } from '../Alert';
 import { AspectRatio } from '../AspectRatio';
 import { aspectRatioPhoto } from '../AspectRatio/AspectRatio.fixtures';
@@ -21,9 +21,10 @@ import {
   DropdownMenuSeparator,
 } from '../DropdownMenu';
 import { Empty } from '../Empty';
-import { Input, InputDropdown } from '../Input';
+import { Input, InputAction, InputDropdown } from '../Input';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
+import { Popover, PopoverActions, PopoverClose } from '../Popover';
 import { Progress, ProgressCircle } from '../Progress';
 import { Separator } from '../Separator';
 import { Spinner } from '../Spinner';
@@ -62,7 +63,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -125,23 +126,49 @@ export const Members: StoryObj = {
             title="Team members"
             description="Invite people and choose what they can do."
             action={
-              <DropdownMenu
-                align="end"
-                trigger={
-                  <Button variant="outline" size="sm" leadingIcon={<RiUserAddLine />}>
-                    Invite
-                  </Button>
-                }
-              >
-                <DropdownMenuGroup label="Invite as">
-                  <DropdownMenuItem icon={<RiShieldUserLine />} onClick={() => toast.success('Invite link for Admins copied')}>
-                    Admin
-                  </DropdownMenuItem>
-                  <DropdownMenuItem icon={<RiUserAddLine />} onClick={() => toast.success('Invite link for Members copied')}>
-                    Member
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenu>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <Popover
+                  align="end"
+                  trigger={<Button variant="ghost" size="sm" icon={<RiLinkM />} aria-label="Invite link" />}
+                  title="Invite link"
+                  description="Anyone with the link joins as a Member."
+                >
+                  <Input
+                    aria-label="Link"
+                    readOnly
+                    defaultValue="https://sort.team/join/acme-7f3k"
+                    action={
+                      <InputAction aria-label="Copy invite link" onClick={() => toast.success('Invite link copied')}>
+                        <RiFileCopyLine />
+                      </InputAction>
+                    }
+                  />
+                  <PopoverActions>
+                    <PopoverClose>
+                      <Button variant="outline" size="sm" onClick={() => toast.info('A new invite link was created')}>
+                        Reset link
+                      </Button>
+                    </PopoverClose>
+                  </PopoverActions>
+                </Popover>
+                <DropdownMenu
+                  align="end"
+                  trigger={
+                    <Button variant="outline" size="sm" leadingIcon={<RiUserAddLine />}>
+                      Invite
+                    </Button>
+                  }
+                >
+                  <DropdownMenuGroup label="Invite as">
+                    <DropdownMenuItem icon={<RiShieldUserLine />} onClick={() => toast.success('Invite link for Admins copied')}>
+                      Admin
+                    </DropdownMenuItem>
+                    <DropdownMenuItem icon={<RiUserAddLine />} onClick={() => toast.success('Invite link for Members copied')}>
+                      Member
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenu>
+              </div>
             }
           />
           <CardContent>

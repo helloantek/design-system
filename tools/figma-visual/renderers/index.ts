@@ -16,6 +16,7 @@ import { renderInput } from './input';
 import { renderInputGroupDropdown } from './input-group-dropdown';
 import { renderKbd, renderKbdGroup } from './kbd';
 import { renderMarker } from './marker';
+import { renderPopover } from './popover';
 import { renderProgress, renderProgressCircle } from './progress';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
@@ -56,6 +57,7 @@ export const renderers: Record<string, Renderer> = {
   kbd: renderKbd,
   'kbd-group': renderKbdGroup,
   marker: renderMarker,
+  popover: renderPopover,
   progress: renderProgress,
   'progress-circle': renderProgressCircle,
   radio: renderRadio,

@@ -1,0 +1,138 @@
+/*
+ * Popover — Sort UI 2.0 component "Popover" (node 151:2) on page 148:3 in file 4JnqgEbdlnKgiFrfmiwEZw: a small,
+ * non-modal panel that opens from a trigger, with a title, a description and any content (a field, a list, actions).
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-popover">
+ *     <button class="ds-button …" aria-haspopup="dialog" aria-expanded="true" aria-controls="p">Share</button>
+ *     <div class="ds-popover__content [ds-popover__content--top | --left | --right] [--start | --end]" id="p"
+ *          role="dialog" aria-labelledby="t">
+ *       [<div class="ds-popover__header"><h2 class="ds-popover__title" id="t">Share this playlist</h2>
+ *         <p class="ds-popover__description">Anyone with the link can listen along.</p></div>]   (Figma "header")
+ *       <div class="ds-popover__body">…</div>                                                   (Figma "content")
+ *     </div>
+ *   </div>
+ * Side: bottom (default), top, left, right, 4 px from the trigger; align: center (default), start, end.
+ */
+
+@layer ds.components {
+  .ds-popover {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+  }
+
+  /* Figma "Popover": 288 px, popover fill, 14 px radius, a 1 px border outside and the Surface/Popover effect. */
+  .ds-popover__content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: var(--popover-width, var(--ds-spacing-72));
+    max-width: calc(100vw - var(--ds-spacing-8));
+    border-radius: var(--ds-radius-14);
+    outline: none;
+    background-color: var(--ds-popover);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    text-align: start;
+  }
+
+  /* In .ds-popover the panel pops up 4 px from the trigger, centred on it; on its own it stays in the flow. */
+  .ds-popover > .ds-popover__content {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + var(--ds-spacing-1));
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .ds-popover > .ds-popover__content--start {
+    left: 0;
+    translate: none;
+  }
+
+  .ds-popover > .ds-popover__content--end {
+    right: 0;
+    left: auto;
+    translate: none;
+  }
+
+  .ds-popover > .ds-popover__content--top {
+    top: auto;
+    bottom: calc(100% + var(--ds-spacing-1));
+  }
+
+  .ds-popover > :is(.ds-popover__content--left, .ds-popover__content--right) {
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .ds-popover > .ds-popover__content--left {
+    right: calc(100% + var(--ds-spacing-1));
+    left: auto;
+  }
+
+  .ds-popover > .ds-popover__content--right {
+    left: calc(100% + var(--ds-spacing-1));
+  }
+
+  .ds-popover > :is(.ds-popover__content--left, .ds-popover__content--right).ds-popover__content--start {
+    top: 0;
+    translate: none;
+  }
+
+  .ds-popover > :is(.ds-popover__content--left, .ds-popover__content--right).ds-popover__content--end {
+    top: auto;
+    bottom: 0;
+    translate: none;
+  }
+
+  .ds-popover__content[hidden] {
+    display: none;
+  }
+
+  /* Figma "header": 16 px padding; the title 16/24 medium and the description 14/20 muted, 4 px apart. */
+  .ds-popover__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    padding: var(--ds-spacing-4);
+  }
+
+  .ds-popover__title {
+    margin: 0;
+    color: var(--ds-popover-foreground);
+    font-size: var(--ds-text-base);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-base--line-height);
+  }
+
+  .ds-popover__description {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Figma "content": 16 px padding under the header (16 px on top without one); its parts 12 px apart. */
+  .ds-popover__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-4);
+  }
+
+  .ds-popover__body:first-child {
+    padding-top: var(--ds-spacing-4);
+  }
+
+  /* Figma "Actions": buttons side by side, 8 px apart. */
+  .ds-popover__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-2);
+  }
+}

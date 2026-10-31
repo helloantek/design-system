@@ -1,0 +1,23 @@
+{
+ "$comment": "Sort UI 2.0 Popover (151:2, a single component) reference render (1x PNG, exportAsync: get_screenshot puts a top-level component on a grey backdrop) with the Figma sample slots: Title, Description, the body text and the Actions (Outline sm Copy variable, Ghost sm View usages). Cropped to the popover's own box (Figma's export adds the outside border and the Surface/Popover shadow's margin). renderers/popover.tsx renders the open Popover.",
+ "component": "popover",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "151:2",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "popover",
+   "nodeId": "151:2",
+   "props": {},
+   "target": "#target .ds-popover__content",
+   "nodeW": 288,
+   "nodeH": 176
+  }
+ ]
+}

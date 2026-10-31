@@ -1,0 +1,25 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-popover__content) and how to read it. skip: spec keys not compared for this layer. header is the header slot, header#1 the title-and-description frame inside it; content is the content slot.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": ["p", "g"],
+      "$why": "The border is outside the box in Figma, drawn as an outer 1 px shadow before the Surface/Popover shadow. Figma's root is a vertical auto-layout with no padding or gap; code stacks the header and the body in a flex column."
+    },
+    "header": {
+      "selector": ".ds-popover__header",
+      "skip": ["g"],
+      "$why": "Figma's header slot is a horizontal auto-layout holding one frame, so its 12 px gap never shows; code's header is the title-and-description column itself."
+    },
+    "header#1": {
+      "selector": ".ds-popover__header",
+      "skip": ["w", "h", "p"],
+      "$why": "The title-and-description frame inside the slot; in code they sit directly in the header, which carries the slot's padding."
+    },
+    "Title": { "selector": ".ds-popover__title" },
+    "Description": { "selector": ".ds-popover__description" },
+    "content": { "selector": ".ds-popover__body" },
+    "Body": { "selector": ".ds-popover__body > p" },
+    "Actions": { "selector": ".ds-popover__actions", "skip": ["w"], "$why": "Hugs the buttons in Figma; code's row spans the body (the buttons keep their widths)." }
+  }
+}
