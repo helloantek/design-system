@@ -29,4 +29,5 @@ export * from './Spinner';
 export * from './Switch';
 export * from './Textarea';
 export * from './Toggle';
+export * from './ToggleGroup';
 export * from './Tooltip';

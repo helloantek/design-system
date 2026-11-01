@@ -1,0 +1,77 @@
+/*
+ * Toggle Group — Sort UI 2.0 component set "Toggle Group" (node 128:1073) on page 126:5 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: a set of Toggles where one (single) or several (multiple) can be on. Values are Sort UI 2.0
+ * tokens.
+ *
+ * Markup:
+ *   <div class="ds-toggle-group [ds-toggle-group--vertical] [ds-toggle-group--spacing-1 | --spacing-0]
+ *               [ds-toggle-group--outline]" role="group" aria-label="Platform">
+ *     <button class="ds-toggle [ds-toggle--outline]" aria-pressed="false">Web</button> …
+ *   </div>
+ * Figma Spacing: 2 (default) puts the items 8 px apart, 1 puts them 4 px apart, 0 joins them in one pill (horizontal)
+ * or a 16 px rounded box (vertical); a joined Outline group has one border and 1 px dividers between the items.
+ */
+
+@layer ds.components {
+  .ds-toggle-group {
+    position: relative;
+    display: inline-flex;
+    gap: var(--ds-spacing-2);
+    vertical-align: middle;
+  }
+
+  .ds-toggle-group--spacing-1 {
+    gap: var(--ds-spacing-1);
+  }
+
+  .ds-toggle-group--vertical {
+    flex-direction: column;
+  }
+
+  /* Vertical items share the group's width (the widest item's, or the width you give the group). */
+  .ds-toggle-group--vertical > .ds-toggle {
+    width: 100%;
+  }
+
+  /* Figma Spacing=0: the items touch, square inside a pill (horizontal) or a 16 px box (vertical). */
+  .ds-toggle-group--spacing-0 {
+    gap: 0;
+    overflow: hidden;
+    border-radius: var(--ds-radius-full);
+  }
+
+  .ds-toggle-group--spacing-0.ds-toggle-group--vertical {
+    border-radius: var(--ds-radius-2xl);
+  }
+
+  .ds-toggle-group--spacing-0 > .ds-toggle {
+    border-radius: 0;
+  }
+
+  /* A joined toggle's ring would be clipped by the group: it is drawn inside instead. */
+  .ds-toggle-group--spacing-0 > .ds-toggle:focus-visible {
+    --tg-ring: inset 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Joined Outline: one border around the group (above the items' fills) and 1 px dividers between the items. */
+  .ds-toggle-group--spacing-0.ds-toggle-group--outline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    pointer-events: none;
+  }
+
+  .ds-toggle-group--spacing-0.ds-toggle-group--outline > .ds-toggle {
+    --tg-stroke: transparent;
+  }
+
+  .ds-toggle-group--spacing-0.ds-toggle-group--outline > .ds-toggle + .ds-toggle {
+    box-shadow: inset var(--ds-stroke-width-1) 0 0 0 var(--ds-border), var(--tg-ring);
+  }
+
+  .ds-toggle-group--spacing-0.ds-toggle-group--outline.ds-toggle-group--vertical > .ds-toggle + .ds-toggle {
+    box-shadow: inset 0 var(--ds-stroke-width-1) 0 0 var(--ds-border), var(--tg-ring);
+  }
+}
