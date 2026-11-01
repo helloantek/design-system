@@ -282,7 +282,7 @@ const tests = {
     assert.equal(Math.round(boxes[1] - boxes[0]), 24, 'default: 32 px avatars overlap by 8 px');
     assert.equal(await group.getByRole('img', { name: 'and 3 more' }).textContent(), '+3');
   },
-  'playground form: validation, submitted data and reset': async () => {
+  'playground form: validation, submitted data (with the reminder slider) and reset': async () => {
     await open('playground-form--sign-up');
     const submitted = page.getByTestId('submitted');
     await page.getByRole('button', { name: 'Create account' }).click();
@@ -299,19 +299,23 @@ const tests = {
     await page.getByRole('option', { name: 'Design' }).click();
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: '', plan: 'free', billing: 'monthly', bio: '', terms: 'on', teams: ['web', 'design'] });
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: '', plan: 'free', billing: 'monthly', bio: '', reminder: '15', terms: 'on', teams: ['web', 'design'] });
     await page.getByRole('region', { name: 'Notifications' }).getByText('Account created').first().waitFor();
     await page.getByRole('combobox', { name: 'Timezone' }).fill('war');
     await page.getByRole('option', { name: '(GMT+1) Warsaw' }).click();
     await page.getByRole('radio', { name: /Yearly/ }).check();
     await page.getByLabel('About you').fill('Design systems');
     await page.getByLabel('Product updates').check();
+    await page.getByRole('slider', { name: 'Remind me before events' }).focus();
+    await page.keyboard.press('ArrowRight');
+    await page.getByText('20 min', { exact: true }).waitFor();
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: 'warsaw', plan: 'free', billing: 'yearly', bio: 'Design systems', updates: 'on', terms: 'on', teams: ['web', 'design'] });
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: 'warsaw', plan: 'free', billing: 'yearly', bio: 'Design systems', updates: 'on', reminder: '20', terms: 'on', teams: ['web', 'design'] });
     await page.getByRole('button', { name: 'Reset' }).click();
     assert.equal(await page.getByRole('combobox', { name: 'Role' }).textContent(), 'Select a role', 'form reset clears the Select');
     assert.equal(await page.getByRole('combobox', { name: 'Plan' }).textContent(), 'Free', 'and restores its defaultValue');
     assert.equal(await page.getByRole('combobox', { name: 'Teams' }).textContent(), 'Select teams');
+    assert.equal(await page.getByRole('slider', { name: 'Remind me before events' }).getAttribute('aria-valuenow'), '15', 'reset restores the slider');
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).inputValue(), '', 'form reset clears the Combobox');
     await page.getByRole('combobox', { name: 'Timezone' }).fill('tok');
     await page.getByRole('button', { name: 'Reset' }).click();
@@ -1522,6 +1526,72 @@ Object.assign(tests, {
     assert.equal(widths[0], widths[1], 'full width: the tabs share the width');
     await account.getByRole('tab', { name: 'Create account' }).click();
     assert.equal(await page.getByRole('textbox', { name: 'Work email' }).isVisible(), true, 'the controlled tabs switch the form');
+  },
+  'slider: each thumb is a named role=slider; arrows, Page Up/Down, Home and End move it; a click or drag on the track moves the nearest thumb; range thumbs cannot cross; disabled ignores input; a form gets the value': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-slider--default&viewMode=story');
+    const stagger = page.getByRole('slider', { name: 'Stagger' });
+    await stagger.waitFor();
+    assert.deepEqual(await stagger.evaluate((el) => [el.getAttribute('aria-valuenow'), el.getAttribute('aria-valuemin'), el.getAttribute('aria-valuemax'), el.getAttribute('aria-valuetext'), el.getAttribute('aria-orientation')]), ['80', '0', '160', '80 ms', 'horizontal']);
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('role')), 'slider', 'Tab reaches the thumb');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await stagger.getAttribute('aria-valuenow'), '85', 'ArrowRight adds a step (5)');
+    await page.keyboard.press('PageDown');
+    assert.equal(await stagger.getAttribute('aria-valuenow'), '35', 'Page Down takes ten steps');
+    await page.keyboard.press('End');
+    assert.equal(await stagger.getAttribute('aria-valuenow'), '160', 'End goes to max');
+    await page.getByText('160 ms', { exact: true }).waitFor();
+    await page.keyboard.press('Home');
+    assert.equal(await stagger.getAttribute('aria-valuenow'), '0', 'Home goes to min');
+    assert.equal(await stagger.evaluate((el) => getComputedStyle(el).boxShadow.includes('4px')), true, 'a focused thumb draws the 4 px ring');
+    const track = page.locator('.ds-slider__track').first();
+    const box = await track.boundingBox();
+    await page.mouse.click(box.x + 8 + (box.width - 16) * 0.75, box.y + box.height / 2);
+    assert.equal(await stagger.getAttribute('aria-valuenow'), '120', 'a click on the track moves the thumb there');
+    await page.mouse.move(box.x + 8 + (box.width - 16) * 0.75, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + 8 + (box.width - 16) * 0.25, box.y + box.height / 2, { steps: 5 });
+    assert.equal(await stagger.getAttribute('data-dragging'), '', 'the dragged thumb is marked');
+    await page.mouse.up();
+    assert.equal(await stagger.getAttribute('aria-valuenow'), '40', 'a drag moves it');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-slider--range&viewMode=story');
+    const low = page.getByRole('slider', { name: 'Shortest delay' });
+    const high = page.getByRole('slider', { name: 'Longest delay' });
+    await low.waitFor();
+    assert.equal(await low.getAttribute('aria-valuetext'), '40 ms');
+    assert.equal(await low.getAttribute('aria-valuemax'), '120', 'the low thumb stops at the high one');
+    await high.focus();
+    await page.keyboard.press('Home');
+    assert.equal(await high.getAttribute('aria-valuenow'), '40', 'the high thumb cannot pass the low one');
+    await page.keyboard.press('End');
+    const rbox = await page.locator('.ds-slider__track').first().boundingBox();
+    await page.mouse.click(rbox.x + rbox.width - 10, rbox.y + rbox.height / 2);
+    assert.equal(await high.getAttribute('aria-valuenow'), '160', 'a click moves the nearer thumb');
+    await page.mouse.click(rbox.x + 10, rbox.y + rbox.height / 2);
+    assert.equal(await low.getAttribute('aria-valuenow'), '0');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-slider--vertical&viewMode=story');
+    const bass = page.getByRole('slider', { name: 'Bass' });
+    await bass.waitFor();
+    assert.equal(await bass.getAttribute('aria-orientation'), 'vertical');
+    await bass.focus();
+    await page.keyboard.press('ArrowUp');
+    assert.equal(await bass.getAttribute('aria-valuenow'), '46', 'ArrowUp raises a vertical slider');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-slider--disabled&viewMode=story');
+    const locked = page.getByRole('slider', { name: 'Locked volume' });
+    await locked.waitFor();
+    assert.equal(await locked.getAttribute('aria-disabled'), 'true');
+    assert.equal(await locked.getAttribute('tabindex'), null, 'a disabled thumb is not a Tab stop');
+    const dbox = await page.locator('.ds-slider__track').first().boundingBox();
+    await page.mouse.click(dbox.x + 10, dbox.y + dbox.height / 2);
+    assert.equal(await locked.getAttribute('aria-valuenow'), '50', 'clicks do nothing');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-slider--in-a-form&viewMode=story');
+    await page.getByRole('slider', { name: 'Minimum budget' }).waitFor();
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.getByText('budget=200&budget=800', { exact: true }).waitFor();
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

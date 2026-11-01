@@ -611,6 +611,28 @@ A modal panel along an edge of the screen: Sort UI 2.0 **Sheet** (Side, header, 
 
 Left and right sheets are full-height and 384 px wide; top and bottom are full-width and as tall as their content. The footer stacks full-width buttons, the main action first (put a row in a `div` for side-by-side buttons). The content scrolls; the header and footer stay. It behaves like Dialog (the two share their code): a native modal `<dialog>` that slides in from its edge (fades with reduced motion), keeps focus inside, closes on Escape, Close or a click on the backdrop and returns focus to the trigger. `SheetClose` makes a button close it.
 
+## Slider
+
+Pick a number, or a range, along a track: the WAI-ARIA slider. Sort UI 2.0 **Slider** (Orientation, Range, State) and **Slider Thumb** (State).
+
+```tsx
+<Slider label="Stagger" valueText={`${ms} ms`} value={ms} onValueChange={setMs} min={0} max={160} step={5} />
+<Slider label="Delay window" value={[40, 120]} onValueChange={setWindow} max={160} aria-label={['Shortest delay', 'Longest delay']} />
+<Slider aria-label="Volume" defaultValue={50} orientation="vertical" />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| — | `value` / `defaultValue` / `onValueChange`, `onValueCommit`; `min` (0), `max` (100), `step` (1) | `ds-slider` |
+| Range = False · True | a number · `[from, to]` | — |
+| Orientation = Horizontal · Vertical | `orientation` (vertical runs bottom to top, 160 px tall by default) | `ds-slider--vertical` |
+| State = Default · Disabled | `disabled` | `ds-slider--disabled` |
+| Slider Thumb State = Default · Hover · Focus | — · `:hover` · `:focus-visible` (and while dragged) | `ds-slider__thumb` |
+| — (the demos' label row) | `label`, `valueText` | `ds-slider-field` |
+| — | `name` (a hidden input per thumb), `getAriaValueText`, `aria-label` (one name, or two for a range) | — |
+
+The track is a 4 px fill-2 pill and the fill primary; the 16 px thumbs stay inside the track and the fill reaches their outer edges. `--slider-track`, `--slider-fill` and `--slider-thickness` repaint it (a hue gradient, a colour). Each thumb is a `role="slider"` with its own Tab stop: the arrow keys move by a step (Up and Right raise), Page Up and Page Down by ten, Home and End to the ends. A click or a drag on the track moves the nearest thumb; a range's thumbs cannot cross.
+
 ## Sonner
 
 Toasts: short notifications that close on their own. Sort UI 2.0 **Sonner** (Type, Title, Description, actions, Close). Mount `<Toaster />` once near the root and call `toast()` anywhere.
@@ -976,6 +998,7 @@ These come from the Figma files, not the code:
 - Toggle (2.0): default and lg toggles have a 10 px radius (radius-lg) while Button's are 8 px; sm toggles are 8 px. The focus ring is 3 px (Button's is 2 px) and Default turns its background to the page colour when focused; the code follows Figma. The sample icons are 17 px; the code draws 16 px icons like Button.
 - Toggle Group (2.0): Figma holds nine items and shows three; the code renders the items you give it. A joined group clips its items, so a focused item's ring is drawn inside it. Figma has no single or multiple choice; the code offers `type`.
 - Tabs (2.0): Variant=Default, Orientation=Vertical, Size=lg start-aligns its labels while every other vertical list centres them; the code centres them everywhere. Tabs Trigger State=Focus draws an unselected tab; Figma has no focused selected tab, and the code keeps the selected surface under the ring. The icons are 17 px as in Figma, while Button and Toggle draw 16 px. Figma has no tab panel and no full-width list; the code adds `TabsContent` and `fullWidth` from the demos.
+- Slider (2.0): the thumb's Hover and Focus states use a smaller shadow (4/6 px and 2/4 px blur at 10 %) that is not an effect style; the code keeps Shadow/md and adds the 4 px ring. The thumb is white (an unbound colour); the code uses `control` (white in Light, neutral-800 in Dark). Disabled vertical sliders are 180 px tall and the others 160 px; the code defaults to 160 px. The demos' label row, stepped track ("Autoscaling range", "Claude Effort Slider"), "Scrubber" and colour tracks are compositions, not properties; the code offers `label` / `valueText` and the track custom properties, and the stories rebuild the stepped range and the colour tracks.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

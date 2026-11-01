@@ -1,0 +1,1 @@
+{"$comment": "Exact Figma layer values per variant (Sort UI 2.0, Light), exported with .claude/skills/figma-to-component/scripts/export-spec.js.", "layers": [{"w": 16, "h": 16, "r": 16, "fill": "#ffffff", "stroke": "#0000001a"}, {"w": 16, "h": 16, "r": 16, "fill": "#ffffff"}], "variants": {"247:2": {"root": 0}, "247:3": {"root": 1}, "247:4": {"root": 1}}}

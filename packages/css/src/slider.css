@@ -1,0 +1,166 @@
+/*
+ * Slider — Sort UI 2.0 component sets "Slider" (node 650:32665) and "Slider Thumb" (node 247:5) on page 245:3 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: pick a value, or a range, along a track. Values are Sort UI 2.0 tokens.
+ *
+ * Markup (the React adapter sets the custom properties from the value):
+ *   <div class="ds-slider [ds-slider--vertical] [ds-slider--disabled]" style="--slider-start: 0; --slider-end: 0.5">
+ *     <div class="ds-slider__track">                                  (Figma "Slider" slot: the 4 px fill-2 track)
+ *       <div class="ds-slider__range"></div>                          (Figma "control": the primary fill)
+ *       <span class="ds-slider__thumb" role="slider" tabindex="0" style="--slider-at: 0.5"
+ *             aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="Volume"></span>
+ *       [<span class="ds-slider__thumb" role="slider" …></span>]      (Figma Range=True: a second thumb)
+ *     </div>
+ *   </div>
+ * --slider-start / --slider-end (0…1) are where the fill starts and ends, --slider-at where a thumb sits. A thumb
+ * stays inside the track: at 0 its start edge meets the track's start, at 1 its end edge meets the track's end. The
+ * fill reaches the outer edges of the thumbs, as in Figma. Figma Orientation=Vertical runs bottom to top; State=Disabled
+ * fades the slider to 50 %. --slider-track and --slider-fill paint the track and the fill (a hue gradient, a colour).
+ * Optional header (not a Figma property, the demos' "Field"):
+ *   <div class="ds-slider-field"><div class="ds-slider-field__header"><label class="ds-slider-field__label">…</label>
+ *     <output class="ds-slider-field__value">80 ms</output></div> …slider… </div>
+ */
+
+@layer ds.components {
+  .ds-slider {
+    --slider-thumb: var(--ds-spacing-4);
+    --slider-thickness: var(--ds-spacing-1);
+    --slider-start: 0;
+    --slider-end: 0;
+
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: var(--ds-spacing-24);
+    padding: calc((var(--slider-thumb) - var(--slider-thickness)) / 2) 0;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .ds-slider--vertical {
+    flex-direction: column;
+    justify-content: center;
+    width: auto;
+    min-width: 0;
+    height: var(--ds-spacing-40);
+    min-height: var(--ds-spacing-24);
+    padding: 0 calc((var(--slider-thumb) - var(--slider-thickness)) / 2);
+  }
+
+  /* Figma "Slider" slot: a 4 px pill in fill-2. */
+  .ds-slider__track {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    height: var(--slider-thickness);
+    border-radius: var(--ds-radius-full);
+    background: var(--slider-track, var(--ds-fill-2));
+    cursor: pointer;
+  }
+
+  .ds-slider--vertical > .ds-slider__track {
+    width: var(--slider-thickness);
+    height: 100%;
+  }
+
+  /* Figma "control": the primary fill from the first thumb's outer edge to the last one's. */
+  .ds-slider__range {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: calc(var(--slider-start) * (100% - var(--slider-thumb)));
+    width: calc((var(--slider-end) - var(--slider-start)) * (100% - var(--slider-thumb)) + var(--slider-thumb));
+    border-radius: inherit;
+    background: var(--slider-fill, var(--ds-primary));
+  }
+
+  .ds-slider--vertical .ds-slider__range {
+    inset-inline: 0;
+    inset-block: auto calc(var(--slider-start) * (100% - var(--slider-thumb)));
+    width: auto;
+    height: calc((var(--slider-end) - var(--slider-start)) * (100% - var(--slider-thumb)) + var(--slider-thumb));
+  }
+
+  /* Figma "Slider Thumb": a 16 px white circle with a 1 px alpha-black-10 stroke outside and Shadow/md. */
+  .ds-slider__thumb {
+    --slider-thumb-ring: 0 0 0 var(--ds-stroke-width-1) var(--ds-alpha-black-10);
+
+    position: absolute;
+    top: calc((var(--slider-thickness) - var(--slider-thumb)) / 2);
+    inset-inline-start: calc(var(--slider-at, 0) * (100% - var(--slider-thumb)));
+    box-sizing: border-box;
+    width: var(--slider-thumb);
+    height: var(--slider-thumb);
+    border-radius: var(--ds-radius-full);
+    outline: none;
+    background-color: var(--ds-control);
+    box-shadow: var(--slider-thumb-ring), var(--ds-shadow-md);
+    cursor: grab;
+    transition: box-shadow var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-slider--vertical .ds-slider__thumb {
+    top: auto;
+    bottom: calc(var(--slider-at, 0) * (100% - var(--slider-thumb)));
+    inset-inline-start: calc((var(--slider-thickness) - var(--slider-thumb)) / 2);
+  }
+
+  /* Figma State=Hover and Focus: the stroke gives way to a 4 px ring. The thumb being dragged keeps it. */
+  .ds-slider:not(.ds-slider--disabled) .ds-slider__thumb:hover,
+  .ds-slider__thumb:focus-visible,
+  .ds-slider__thumb[data-dragging] {
+    --slider-thumb-ring: 0 0 0 var(--ds-spacing-1) var(--ds-alpha-ring-30);
+  }
+
+  .ds-slider__thumb[data-dragging] {
+    cursor: grabbing;
+  }
+
+  /* Figma State=Disabled: the whole slider at 50 %. */
+  .ds-slider--disabled {
+    opacity: 0.5;
+  }
+
+  .ds-slider--disabled .ds-slider__track,
+  .ds-slider--disabled .ds-slider__thumb {
+    cursor: not-allowed;
+  }
+
+  /* The demos' "Field": label and value on a row (14/20 medium and muted), the slider 8 px below. */
+  .ds-slider-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-slider-field__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--ds-spacing-2);
+  }
+
+  .ds-slider-field__label {
+    color: var(--ds-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-slider-field__value {
+    color: var(--ds-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-slider-field--disabled .ds-slider-field__header {
+    opacity: 0.5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-slider__thumb {
+      transition: none;
+    }
+  }
+}
