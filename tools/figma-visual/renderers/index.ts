@@ -29,6 +29,7 @@ import { renderSonner } from './sonner';
 import { renderSpinner } from './spinner';
 import { renderSwitch } from './switch';
 import { renderTextarea } from './textarea';
+import { renderToggle } from './toggle';
 import { renderTooltip } from './tooltip';
 import type { Renderer } from './types';
 
@@ -78,5 +79,6 @@ export const renderers: Record<string, Renderer> = {
   'status-badge': renderStatusBadge,
   switch: renderSwitch,
   textarea: renderTextarea,
+  toggle: renderToggle,
   tooltip: renderTooltip,
 };
