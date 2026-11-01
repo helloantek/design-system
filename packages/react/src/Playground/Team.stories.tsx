@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type ReactNode } from 'react';
-import { RiDeleteBinLine, RiFileCopyLine, RiFilter3Line, RiLinkM, RiMailLine, RiMoreLine, RiRefreshLine, RiSearchLine, RiSettings3Line, RiShieldUserLine, RiUserAddLine } from '@remixicon/react';
+import { RiDeleteBinLine, RiFileCopyLine, RiContractUpDownLine, RiFilter3Line, RiLinkM, RiMailLine, RiMoreLine, RiRefreshLine, RiSearchLine, RiSettings3Line, RiShieldUserLine, RiUserAddLine } from '@remixicon/react';
 import { Alert } from '../Alert';
 import { AspectRatio } from '../AspectRatio';
 import { aspectRatioPhoto } from '../AspectRatio/AspectRatio.fixtures';
@@ -35,6 +35,7 @@ import { Sheet, SheetClose } from '../Sheet';
 import { Spinner } from '../Spinner';
 import { Switch } from '../Switch';
 import { Toaster, toast } from '../Sonner';
+import { Toggle } from '../Toggle';
 import { Tooltip } from '../Tooltip';
 
 // A team settings page built only from design-system components: the components that are not form fields, used
@@ -69,7 +70,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -84,6 +85,7 @@ export const Members: StoryObj = {
     const [query, setQuery] = useState('');
     const [searchIn, setSearchIn] = useState<'Name' | 'Email'>('Name');
     const [showRoles, setShowRoles] = useState(true);
+    const [compact, setCompact] = useState(false);
     const [teamName, setTeamName] = useState('Orbit');
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [seats, setSeats] = useState(10);
@@ -265,6 +267,7 @@ export const Members: StoryObj = {
                     Show roles
                   </DropdownMenuCheckboxItem>
                 </DropdownMenu>
+                <Toggle size="sm" icon={<RiContractUpDownLine />} aria-label="Compact list" pressed={compact} onPressedChange={setCompact} />
               </div>
               <ul aria-label="Members" style={{ display: 'grid', gap: 4, margin: 0, padding: 0, listStyle: 'none' }}>
                 {shown.map((member) => (
@@ -272,11 +275,11 @@ export const Members: StoryObj = {
                     <ContextMenu
                       aria-label={`${member.name} actions`}
                       trigger={
-                        <div tabIndex={0} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 8, borderRadius: 8, outlineOffset: 2 }}>
+                        <div tabIndex={0} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: compact ? '2px 8px' : 8, borderRadius: 8, outlineOffset: 2 }}>
                           <Avatar size="sm" initials={initials(member.name)} name={member.name} />
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ color: 'var(--ds-foreground)', fontSize: 14, fontWeight: 500 }}>{member.name}</div>
-                            <div style={{ color: 'var(--ds-muted-foreground)', fontSize: 13 }}>{member.email}</div>
+                            {!compact && <div style={{ color: 'var(--ds-muted-foreground)', fontSize: 13 }}>{member.email}</div>}
                           </div>
                           {member.pending && (
                             <Badge size="sm" color="orange" dot>

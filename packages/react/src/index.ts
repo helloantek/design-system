@@ -28,4 +28,5 @@ export * from './Sonner';
 export * from './Spinner';
 export * from './Switch';
 export * from './Textarea';
+export * from './Toggle';
 export * from './Tooltip';

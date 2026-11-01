@@ -1,0 +1,11 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside #target (the toggle) and how to read it.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": ["w"],
+      "$why": "The toggle hugs its label, whose width follows glyph rasterisation; the size check (±2 px) still covers it."
+    },
+    "Label": { "selector": ".ds-toggle__label" }
+  }
+}

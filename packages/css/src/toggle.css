@@ -1,0 +1,111 @@
+/*
+ * Toggle — Sort UI 2.0 component set "Toggle" (node 126:1117) on page 126:4 in file 4JnqgEbdlnKgiFrfmiwEZw: a button
+ * that is on or off (bold, a filter, a favourite). Values are Sort UI 2.0 tokens.
+ *
+ * Markup (parts in [] are optional):
+ *   <button type="button" class="ds-toggle [ds-toggle--outline] [ds-toggle--size-sm | --size-lg] [ds-toggle--icon-only]"
+ *           aria-pressed="true | false">
+ *     [<span class="ds-toggle__icon" aria-hidden="true"><svg>…</svg></span>]   (Figma "Leading Icon")
+ *     <span class="ds-toggle__label">Bold</span>                              (Figma "Label")
+ *     [<span class="ds-toggle__icon" aria-hidden="true"><svg>…</svg></span>]   (Figma "Trailing Icon")
+ *   </button>
+ * Figma Pressed=True is aria-pressed="true"; State=Hover is :hover, Focus is :focus-visible, Disabled is :disabled.
+ */
+
+@layer ds.components {
+  .ds-toggle {
+    --tg-height: var(--ds-spacing-8);
+    --tg-pad-x: var(--ds-spacing-3);
+    --tg-gap: var(--ds-spacing-1-5);
+    --tg-bg: transparent;
+    --tg-stroke: transparent;
+    --tg-ring: 0 0 #0000;
+
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--tg-gap);
+    min-height: var(--tg-height);
+    margin: 0;
+    padding: 0 var(--tg-pad-x);
+    border: 0;
+    border-radius: var(--ds-radius-lg);
+    outline: none;
+    background: var(--tg-bg);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--tg-stroke), var(--tg-ring);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Figma Size: height, side padding, gap and radius. Icon only is a square of the same height. */
+  .ds-toggle--size-sm {
+    --tg-height: var(--ds-spacing-7);
+    --tg-pad-x: var(--ds-spacing-2-5);
+    --tg-gap: var(--ds-spacing-1);
+
+    border-radius: var(--ds-radius-md);
+  }
+
+  .ds-toggle--size-lg {
+    --tg-height: var(--ds-spacing-9);
+    --tg-pad-x: var(--ds-spacing-3-5);
+  }
+
+  .ds-toggle--icon-only {
+    width: var(--tg-height);
+    padding: 0;
+  }
+
+  .ds-toggle__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  .ds-toggle__icon > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* Figma Variant=Outline: a 1 px border stroke inside. */
+  .ds-toggle--outline {
+    --tg-stroke: var(--ds-border);
+  }
+
+  /* Figma State=Hover (off): fill-1. */
+  .ds-toggle:hover:not([aria-pressed='true'], :disabled) {
+    --tg-bg: var(--ds-fill-1);
+  }
+
+  /* Figma Pressed=True: fill-2, also on hover. */
+  .ds-toggle[aria-pressed='true'] {
+    --tg-bg: var(--ds-fill-2);
+  }
+
+  /* Figma State=Focus: a 3 px ring; off it sits on the page background, Outline's stroke turns to the ring colour. */
+  .ds-toggle:focus-visible {
+    --tg-ring: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-toggle:focus-visible:not([aria-pressed='true']) {
+    --tg-bg: var(--ds-background);
+  }
+
+  .ds-toggle--outline:focus-visible {
+    --tg-stroke: var(--ds-ring);
+  }
+
+  /* Figma State=Disabled: the whole toggle at 50 %. */
+  .ds-toggle:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

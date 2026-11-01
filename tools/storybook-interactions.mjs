@@ -474,7 +474,7 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, the compact-list toggle, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
@@ -505,6 +505,11 @@ const tests = {
     await seats.getByRole('button', { name: 'Add 6 seats' }).click();
     assert.equal(await seats.isVisible(), false, 'the drawer closes');
     await page.getByText('5 of 16', { exact: true }).waitFor();
+    const compact = page.getByRole('button', { name: 'Compact list' });
+    await compact.click();
+    assert.equal(await compact.getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.getByText('mira@orbit.dev', { exact: true }).count(), 0, 'the compact list hides emails');
+    await compact.click();
     await page.getByRole('link', { name: 'Mira Okafor' }).hover();
     await page.getByText('Created the workspace and manages billing.', { exact: false }).waitFor();
     await page.mouse.move(0, 0);
@@ -1373,6 +1378,43 @@ Object.assign(tests, {
     await page.keyboard.press('Shift+Tab');
     await page.evaluate(() => document.body.appendChild(Object.assign(document.createElement('button'), { textContent: 'Outside' })).focus());
     assert.equal(await leo.isVisible(), false, 'focus leaving closes it');
+  },
+  'toggle: a button with aria-pressed that flips on click, Space and Enter; disabled does not flip; icon-only is named by its label': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-toggle--variants&viewMode=story');
+    const art = page.getByRole('button', { name: 'Art' });
+    await art.waitFor();
+    assert.equal(await art.getAttribute('aria-pressed'), 'true');
+    assert.equal(await art.getAttribute('type'), 'button');
+    await art.click();
+    assert.equal(await art.getAttribute('aria-pressed'), 'false', 'a click turns it off');
+    const work = page.getByRole('button', { name: 'Work', exact: true });
+    await work.focus();
+    await page.keyboard.press('Space');
+    assert.equal(await work.getAttribute('aria-pressed'), 'true', 'Space turns it on');
+    await page.keyboard.press('Enter');
+    assert.equal(await work.getAttribute('aria-pressed'), 'false', 'Enter turns it off');
+    assert.equal(await work.evaluate((el) => getComputedStyle(el).boxShadow.includes('rgba(161, 161, 161, 0.3)')), true, 'keyboard focus draws the 3 px ring');
+    const pressedBg = await page.getByRole('button', { name: 'Drawings' }).evaluate((el) => getComputedStyle(el).backgroundColor);
+    assert.equal(pressedBg, 'rgba(115, 115, 115, 0.08)', 'pressed is fill-2');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-toggle--states&viewMode=story');
+    const disabled = page.getByRole('button', { name: 'Disabled' }).first();
+    await disabled.waitFor();
+    assert.equal(await disabled.isDisabled(), true);
+    assert.equal(await disabled.evaluate((el) => getComputedStyle(el).opacity), '0.5');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-toggle--product-page&viewMode=story');
+    const desktop = page.getByRole('button', { name: 'Desktop preview' });
+    const mobile = page.getByRole('button', { name: 'Mobile preview' });
+    await desktop.waitFor();
+    assert.equal(await desktop.getAttribute('aria-pressed'), 'true');
+    await mobile.click();
+    assert.equal(await mobile.getAttribute('aria-pressed'), 'true', 'a controlled toggle follows its state');
+    assert.equal(await desktop.getAttribute('aria-pressed'), 'false');
+    const box = await mobile.boundingBox();
+    assert.deepEqual([Math.round(box.width), Math.round(box.height)], [32, 32], 'icon only is a 32 px square');
+    await page.getByRole('button', { name: 'Sold out' }).click();
+    assert.equal(await page.getByRole('button', { name: 'Sold out' }).last().isDisabled(), true, 'the preview follows the toggle');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

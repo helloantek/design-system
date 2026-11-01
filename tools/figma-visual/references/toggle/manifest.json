@@ -1,0 +1,255 @@
+{
+ "$comment": "Sort UI 2.0 Toggle (126:1117) reference renders (1x PNG, exportAsync): every Variant \u00d7 Pressed in every State at Size=default, and the other Sizes unpressed, with the Figma sample label \"Toggle\" and no icons (both off in the set). Focus renders include the 3 px ring around the box. renderers/toggle.tsx turns the properties into props; Hover and Focus come from real input in check.mjs.",
+ "component": "toggle",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "126:1117",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-default-off-default",
+   "nodeId": "126:54",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "Pressed": "False",
+    "State": "Default"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-default-off-hover",
+   "nodeId": "126:60",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "Pressed": "False",
+    "State": "Hover"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-default-off-focus",
+   "nodeId": "126:66",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "Pressed": "False",
+    "State": "Focus"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-default-off-disabled",
+   "nodeId": "126:72",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "Pressed": "False",
+    "State": "Disabled"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-default-pressed-default",
+   "nodeId": "126:78",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "Pressed": "True",
+    "State": "Default"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-default-pressed-hover",
+   "nodeId": "126:84",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "Pressed": "True",
+    "State": "Hover"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-default-pressed-focus",
+   "nodeId": "126:90",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "Pressed": "True",
+    "State": "Focus"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-default-pressed-disabled",
+   "nodeId": "126:96",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "Pressed": "True",
+    "State": "Disabled"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-default-off-default",
+   "nodeId": "126:1021",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "Pressed": "False",
+    "State": "Default"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-default-off-hover",
+   "nodeId": "126:1027",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "Pressed": "False",
+    "State": "Hover"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-default-off-focus",
+   "nodeId": "126:1033",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "Pressed": "False",
+    "State": "Focus"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-default-off-disabled",
+   "nodeId": "126:1039",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "Pressed": "False",
+    "State": "Disabled"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-default-pressed-default",
+   "nodeId": "126:1045",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "Pressed": "True",
+    "State": "Default"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-default-pressed-hover",
+   "nodeId": "126:1051",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "Pressed": "True",
+    "State": "Hover"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-default-pressed-focus",
+   "nodeId": "126:1057",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "Pressed": "True",
+    "State": "Focus"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-default-pressed-disabled",
+   "nodeId": "126:1063",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "Pressed": "True",
+    "State": "Disabled"
+   },
+   "nodeW": 70,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-sm-off-default",
+   "nodeId": "126:6",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "Pressed": "False",
+    "State": "Default"
+   },
+   "nodeW": 66,
+   "nodeH": 28
+  },
+  {
+   "slug": "default-lg-off-default",
+   "nodeId": "126:102",
+   "props": {
+    "Variant": "Default",
+    "Size": "lg",
+    "Pressed": "False",
+    "State": "Default"
+   },
+   "nodeW": 74,
+   "nodeH": 36
+  },
+  {
+   "slug": "outline-sm-off-default",
+   "nodeId": "126:973",
+   "props": {
+    "Variant": "Outline",
+    "Size": "sm",
+    "Pressed": "False",
+    "State": "Default"
+   },
+   "nodeW": 66,
+   "nodeH": 28
+  },
+  {
+   "slug": "outline-lg-off-default",
+   "nodeId": "126:1069",
+   "props": {
+    "Variant": "Outline",
+    "Size": "lg",
+    "Pressed": "False",
+    "State": "Default"
+   },
+   "nodeW": 74,
+   "nodeH": 36
+  }
+ ]
+}
