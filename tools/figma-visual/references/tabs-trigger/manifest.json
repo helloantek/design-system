@@ -1,0 +1,363 @@
+{
+ "$comment": "Sort UI 2.0 Tabs Trigger (515:1993) reference renders (1x PNG, exportAsync): every Variant in every State at Size=Default, Layout=Inline, the four Variants active at Size=lg, and the Eyebrow and Icon top layouts active, with Figma's sample content (square-dashed icon, \"Label\", count \"12\"). Active renders include the shadow (Default) or the 2 px bar outside the box (Line, Line Vertical); Focus renders include the 3 px ring. renderers/tabs.tsx draws the trigger alone; \"interaction\": \"Default\" keeps check.mjs from pressing Tab for State=Active, which here means the selected tab.",
+ "component": "tabs-trigger",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "515:1993",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-default-default",
+   "nodeId": "515:1987",
+   "props": {
+    "Variant": "Default",
+    "State": "Default",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "default-default-hover",
+   "nodeId": "515:1977",
+   "props": {
+    "Variant": "Default",
+    "State": "Hover",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "default-default-active",
+   "nodeId": "515:1992",
+   "props": {
+    "Variant": "Default",
+    "State": "Active",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "default-default-focus",
+   "nodeId": "515:1982",
+   "props": {
+    "Variant": "Default",
+    "State": "Focus",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "default-default-disabled",
+   "nodeId": "515:1981",
+   "props": {
+    "Variant": "Default",
+    "State": "Disabled",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "secondary-default-default",
+   "nodeId": "515:1983",
+   "props": {
+    "Variant": "Secondary",
+    "State": "Default",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "secondary-default-hover",
+   "nodeId": "515:1990",
+   "props": {
+    "Variant": "Secondary",
+    "State": "Hover",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "secondary-default-active",
+   "nodeId": "515:1991",
+   "props": {
+    "Variant": "Secondary",
+    "State": "Active",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "secondary-default-focus",
+   "nodeId": "515:1976",
+   "props": {
+    "Variant": "Secondary",
+    "State": "Focus",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "secondary-default-disabled",
+   "nodeId": "515:1980",
+   "props": {
+    "Variant": "Secondary",
+    "State": "Disabled",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-default-default",
+   "nodeId": "515:1986",
+   "props": {
+    "Variant": "Line",
+    "State": "Default",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-default-hover",
+   "nodeId": "515:1984",
+   "props": {
+    "Variant": "Line",
+    "State": "Hover",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-default-active",
+   "nodeId": "515:1989",
+   "props": {
+    "Variant": "Line",
+    "State": "Active",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-default-focus",
+   "nodeId": "515:1975",
+   "props": {
+    "Variant": "Line",
+    "State": "Focus",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-default-disabled",
+   "nodeId": "515:1985",
+   "props": {
+    "Variant": "Line",
+    "State": "Disabled",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-vertical-default-default",
+   "nodeId": "515:4233",
+   "props": {
+    "Variant": "Line Vertical",
+    "State": "Default",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-vertical-default-hover",
+   "nodeId": "515:4257",
+   "props": {
+    "Variant": "Line Vertical",
+    "State": "Hover",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-vertical-default-active",
+   "nodeId": "515:4224",
+   "props": {
+    "Variant": "Line Vertical",
+    "State": "Active",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-vertical-default-focus",
+   "nodeId": "515:4249",
+   "props": {
+    "Variant": "Line Vertical",
+    "State": "Focus",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "line-vertical-default-disabled",
+   "nodeId": "515:4241",
+   "props": {
+    "Variant": "Line Vertical",
+    "State": "Disabled",
+    "Size": "Default",
+    "Layout": "Inline"
+   },
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 93,
+   "nodeH": 28
+  },
+  {
+   "slug": "default-lg-active",
+   "nodeId": "515:5785",
+   "props": {
+    "Variant": "Default",
+    "State": "Active",
+    "Size": "lg",
+    "Layout": "Inline"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 101,
+   "nodeH": 32
+  },
+  {
+   "slug": "secondary-lg-active",
+   "nodeId": "515:5793",
+   "props": {
+    "Variant": "Secondary",
+    "State": "Active",
+    "Size": "lg",
+    "Layout": "Inline"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 101,
+   "nodeH": 32
+  },
+  {
+   "slug": "line-lg-active",
+   "nodeId": "515:5809",
+   "props": {
+    "Variant": "Line",
+    "State": "Active",
+    "Size": "lg",
+    "Layout": "Inline"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 101,
+   "nodeH": 32
+  },
+  {
+   "slug": "line-vertical-lg-active",
+   "nodeId": "515:5818",
+   "props": {
+    "Variant": "Line Vertical",
+    "State": "Active",
+    "Size": "lg",
+    "Layout": "Inline"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 101,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-default-eyebrow-active",
+   "nodeId": "3066:2136",
+   "props": {
+    "Variant": "Default",
+    "State": "Active",
+    "Size": "Default",
+    "Layout": "Eyebrow"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 97,
+   "nodeH": 60
+  },
+  {
+   "slug": "default-default-icon-top-active",
+   "nodeId": "3066:2338",
+   "props": {
+    "Variant": "Default",
+    "State": "Active",
+    "Size": "Default",
+    "Layout": "Icon top"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-tabs__trigger",
+   "nodeW": 84,
+   "nodeH": 77
+  }
+ ]
+}

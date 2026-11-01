@@ -680,6 +680,35 @@ A setting that takes effect at once: a native checkbox with `role="switch"`, dra
 
 Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`name`, `value`, `ref`…) go to the input.
 
+## Tabs
+
+Switch between panels of content: the WAI-ARIA tabs pattern. Sort UI 2.0 **Tabs Trigger** (Variant, State, Size, Layout) and **Tabs List** (Variant, Orientation, Size).
+
+```tsx
+<Tabs defaultValue="overview">
+  <TabsList aria-label="Order">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="tracking" count={2}>Tracking</TabsTrigger>
+    <TabsTrigger value="invoice" disabled>Invoice</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">…</TabsContent>
+  <TabsContent value="tracking">…</TabsContent>
+</Tabs>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| — | `Tabs` `value` / `defaultValue` / `onValueChange` | `ds-tabs` |
+| Variant = Default · Secondary · Line · Line Vertical | `Tabs` `variant`: `"default"` · `"secondary"` · `"line"` (with `orientation="vertical"` for Line Vertical) | `ds-tabs-list--secondary` · `--line` |
+| Orientation = Horizontal · Vertical | `Tabs` `orientation` | `ds-tabs--vertical`, `ds-tabs-list--vertical` |
+| Size = Default · lg | `Tabs` `size`: `"default"` (28 px) · `"lg"` (32 px) | `ds-tabs-list--size-lg` |
+| State = Active · Hover · Focus · Disabled | selected tab · `:hover` · `:focus-visible` · `TabsTrigger` `disabled` | `[aria-selected="true"]` |
+| Layout = Inline · Eyebrow · Icon top | `TabsTrigger` children (label), `icon`, `count`; `eyebrow`; `description` | `ds-tabs__trigger--eyebrow` · `--icon-top` |
+| — ("Full width" demo) | `TabsList` `fullWidth` | `ds-tabs-list--full-width` |
+| — | `TabsContent` `value`, `forceMount` | `ds-tabs__content` |
+
+Default draws a fill-2 track with the selected tab raised; Secondary fills the selected tab; Line underlines it with a 2 px bar (on the right when vertical). The list is a `role="tablist"` with one Tab stop (the selected tab): the arrow keys along the orientation, Home and End move between the tabs and select them as they go, skipping disabled ones; Tab then moves into the panel (`role="tabpanel"`, named by its tab). Name the list with `aria-label` when the page has more than one.
+
 ## Toggle
 
 A button that is on or off: Sort UI 2.0 **Toggle** (Variant, Size, Pressed, State, Label, icons).
@@ -946,6 +975,7 @@ These come from the Figma files, not the code:
 - Hover Card (2.0): the surface matches Popover (288 px, 14 px radius, Surface/Popover) but with 16 px padding all round and no header. Figma has no placement or timing; the code opens below the link after 700 ms and offers `side`, `align`, `openDelay` and `closeDelay`. The sample's separator is a 0 px line; the code's is 1 px, so the card is 1 px taller.
 - Toggle (2.0): default and lg toggles have a 10 px radius (radius-lg) while Button's are 8 px; sm toggles are 8 px. The focus ring is 3 px (Button's is 2 px) and Default turns its background to the page colour when focused; the code follows Figma. The sample icons are 17 px; the code draws 16 px icons like Button.
 - Toggle Group (2.0): Figma holds nine items and shows three; the code renders the items you give it. A joined group clips its items, so a focused item's ring is drawn inside it. Figma has no single or multiple choice; the code offers `type`.
+- Tabs (2.0): Variant=Default, Orientation=Vertical, Size=lg start-aligns its labels while every other vertical list centres them; the code centres them everywhere. Tabs Trigger State=Focus draws an unselected tab; Figma has no focused selected tab, and the code keeps the selected surface under the ring. The icons are 17 px as in Figma, while Button and Toggle draw 16 px. Figma has no tab panel and no full-width list; the code adds `TabsContent` and `fullWidth` from the demos.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
