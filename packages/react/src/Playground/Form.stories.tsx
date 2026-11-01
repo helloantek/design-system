@@ -10,6 +10,7 @@ import { Field, FieldGroup, FieldSeparator, FieldSet } from '../Field';
 import { Input, type InputSize, type InputVariant } from '../Input';
 import { Radio, RadioGroup } from '../Radio';
 import { Select, type SelectItem } from '../Select';
+import { Slider } from '../Slider';
 import { Toaster, toast } from '../Sonner';
 import { Switch } from '../Switch';
 import { Textarea } from '../Textarea';
@@ -58,7 +59,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A sign-up form in a Card, made of Input, Select, Combobox, Textarea, Radio, Switch, Checkbox, Field (Field, Field Group, Field Set, Field Separator), Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
+          'A sign-up form in a Card, made of Input, Select, Combobox, Textarea, Radio, Switch, Slider, Checkbox, Field (Field, Field Group, Field Set, Field Separator), Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -78,6 +79,7 @@ export const SignUp: StoryObj<Args> = {
   render: function Render({ variant, size, disabled }) {
     const [errors, setErrors] = useState<Errors>({});
     const [submitted, setSubmitted] = useState<Record<string, FormDataEntryValue | FormDataEntryValue[]> | null>(null);
+    const [reminder, setReminder] = useState(15);
     const field = { variant, size, disabled };
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -128,6 +130,7 @@ export const SignUp: StoryObj<Args> = {
             <Textarea variant={variant} disabled={disabled} name="bio" label="About you" placeholder="What do you work on?" showCount limit={160} />
             <FieldSet legend="Notifications" description="You can change these any time.">
               <Switch name="updates" label="Product updates" caption="One email a month" disabled={disabled} />
+              <Slider name="reminder" label="Remind me before events" valueText={`${reminder} min`} value={reminder} onValueChange={setReminder} min={5} max={60} step={5} disabled={disabled} />
             </FieldSet>
             <Checkbox name="terms" label="I accept the terms of service" error={errors.terms} disabled={disabled} />
             </FieldGroup>
@@ -137,6 +140,7 @@ export const SignUp: StoryObj<Args> = {
           <Button type="reset" form="sign-up" variant="ghost" size={size} disabled={disabled} onClick={() => {
               setErrors({});
               setSubmitted(null);
+              setReminder(15);
             }}>
             Reset
           </Button>

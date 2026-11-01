@@ -1,0 +1,45 @@
+{
+ "$comment": "Sort UI 2.0 Slider Thumb (247:5) reference renders (1x PNG, exportAsync), with their shadows (Default: Shadow/md; Hover and Focus: a 4 px ring). renderers/slider.tsx renders a horizontal slider and the check compares its thumb; Hover and Focus come from real input in check.mjs.",
+ "component": "slider-thumb",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "247:5",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default",
+   "nodeId": "247:2",
+   "props": {
+    "State": "Default"
+   },
+   "target": "#target .ds-slider__thumb",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "hover",
+   "nodeId": "247:3",
+   "props": {
+    "State": "Hover"
+   },
+   "target": "#target .ds-slider__thumb",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "focus",
+   "nodeId": "247:4",
+   "props": {
+    "State": "Focus"
+   },
+   "target": "#target .ds-slider__thumb",
+   "nodeW": 16,
+   "nodeH": 16
+  }
+ ]
+}

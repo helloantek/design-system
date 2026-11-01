@@ -1,0 +1,13 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-slider__thumb).",
+  "layers": {
+    "root": {
+      "selector": "",
+      "stroke": "outer-shadow",
+      "skip": [
+        "r"
+      ],
+      "$why": "The stroke outside is the first box-shadow; radius-full draws the same circle as Figma's 16."
+    }
+  }
+}

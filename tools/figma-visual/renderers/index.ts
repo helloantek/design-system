@@ -25,6 +25,7 @@ import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
 import { renderSeparator } from './separator';
 import { renderSheet } from './sheet';
+import { renderSlider, renderSliderThumb, renderSliderVariants } from './slider';
 import { renderSonner } from './sonner';
 import { renderSpinner } from './spinner';
 import { renderSwitch } from './switch';
@@ -76,6 +77,9 @@ export const renderers: Record<string, Renderer> = {
   'select-item': renderSelectItem,
   separator: renderSeparator,
   sheet: renderSheet,
+  slider: renderSlider,
+  'slider-thumb': renderSliderThumb,
+  'slider-variants': renderSliderVariants,
   sonner: renderSonner,
   spinner: renderSpinner,
   'status-badge': renderStatusBadge,

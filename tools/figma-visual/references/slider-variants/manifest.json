@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 Slider demo instances (page 245:3, \"Slider demo\" frame 1550:121803) for the looks that are not component properties: variant=\"block\" (Autoscaling range: a range with step dots; Claude Effort Slider: one thumb, the second step a bar; Color picker: the hue track with a colour dot in the thumb) and variant=\"scrubber\". 1x PNG, exportAsync. renderers/slider.tsx rebuilds each with values that put the thumbs where Figma draws them. No spec.json: the demos are instances, not variants; the pixels and the size are compared.",
+ "component": "slider-variants",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "650:32665",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "autoscaling",
+   "nodeId": "I1551:123114;1467:45555;1937:113055",
+   "props": {
+    "Demo": "Autoscaling range"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 408,
+   "nodeH": 24
+  },
+  {
+   "slug": "effort",
+   "nodeId": "I1551:122273;1467:45555;1551:122565",
+   "props": {
+    "Demo": "Claude Effort Slider"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 248,
+   "nodeH": 24
+  },
+  {
+   "slug": "hue",
+   "nodeId": "I1551:122809;1467:45555;1551:122918",
+   "props": {
+    "Demo": "Color picker"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 408,
+   "nodeH": 24
+  },
+  {
+   "slug": "scrubber",
+   "nodeId": "I1556:179;1467:45555;1556:202",
+   "props": {
+    "Demo": "Scrubber"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 288,
+   "nodeH": 32
+  }
+ ]
+}

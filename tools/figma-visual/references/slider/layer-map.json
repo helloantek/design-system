@@ -1,0 +1,36 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-slider) and how to read it.",
+  "layers": {
+    "root": {
+      "selector": "",
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma's root lays out one child (the track); its gap does not apply."
+    },
+    "Slider": {
+      "selector": ".ds-slider__track",
+      "skip": [
+        "p",
+        "g",
+        "r"
+      ],
+      "$why": "The track is a plain box in code (no auto-layout); its radius is radius-full (9999 px), which draws the same 4 px pill as Figma's 16."
+    },
+    "control": {
+      "selector": ".ds-slider__range",
+      "skip": [
+        "r"
+      ],
+      "$why": "The fill inherits the track's full radius."
+    },
+    "Thumb": {
+      "selector": ".ds-slider__thumb",
+      "stroke": "outer-shadow",
+      "skip": [
+        "r"
+      ],
+      "$why": "The stroke outside is the thumb's first box-shadow; radius-full draws the same circle as Figma's 16."
+    }
+  }
+}

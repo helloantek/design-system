@@ -1,0 +1,111 @@
+{
+ "$comment": "Sort UI 2.0 Slider (650:32665) reference renders (1x PNG, exportAsync): every Orientation \u00d7 Range \u00d7 State. renderers/slider.tsx renders the same slider at Figma's size, with values that put the thumbs where Figma draws them (min 0, max = track length \u2212 16 px, so one step is one pixel). Disabled vertical sliders are 180 px tall in Figma, the others 160 px.",
+ "component": "slider",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "650:32665",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "horizontal-single-default",
+   "nodeId": "650:32664",
+   "props": {
+    "Orientation": "Horizontal",
+    "Range": "False",
+    "State": "Default"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 448,
+   "nodeH": 16
+  },
+  {
+   "slug": "horizontal-single-disabled",
+   "nodeId": "650:32663",
+   "props": {
+    "Orientation": "Horizontal",
+    "Range": "False",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 448,
+   "nodeH": 16
+  },
+  {
+   "slug": "horizontal-range-default",
+   "nodeId": "650:32661",
+   "props": {
+    "Orientation": "Horizontal",
+    "Range": "True",
+    "State": "Default"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 448,
+   "nodeH": 16
+  },
+  {
+   "slug": "horizontal-range-disabled",
+   "nodeId": "650:32660",
+   "props": {
+    "Orientation": "Horizontal",
+    "Range": "True",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 448,
+   "nodeH": 16
+  },
+  {
+   "slug": "vertical-single-default",
+   "nodeId": "650:32659",
+   "props": {
+    "Orientation": "Vertical",
+    "Range": "False",
+    "State": "Default"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 16,
+   "nodeH": 160
+  },
+  {
+   "slug": "vertical-single-disabled",
+   "nodeId": "650:32658",
+   "props": {
+    "Orientation": "Vertical",
+    "Range": "False",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 16,
+   "nodeH": 180
+  },
+  {
+   "slug": "vertical-range-default",
+   "nodeId": "650:32662",
+   "props": {
+    "Orientation": "Vertical",
+    "Range": "True",
+    "State": "Default"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 16,
+   "nodeH": 160
+  },
+  {
+   "slug": "vertical-range-disabled",
+   "nodeId": "650:32657",
+   "props": {
+    "Orientation": "Vertical",
+    "Range": "True",
+    "State": "Disabled"
+   },
+   "target": "#target .ds-slider",
+   "nodeW": 16,
+   "nodeH": 180
+  }
+ ]
+}
