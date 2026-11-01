@@ -1,0 +1,25 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-tabs-list) and how to read it.",
+  "layers": {
+    "root": {
+      "selector": "",
+      "skip": ["w", "g"],
+      "$why": "A horizontal list is the sum of its four hugging labels, which rasterise slightly narrower than in Figma (the size check covers it). Figma's root wraps a triggers frame; in code the list lays its triggers out itself."
+    },
+    "triggers": {
+      "selector": "",
+      "skip": ["w", "h", "p", "r", "fill"],
+      "$why": "The triggers frame is the list itself in code (no gap between the triggers either way)."
+    },
+    "Tabs Trigger": {
+      "selector": ".ds-tabs__trigger:nth-child(1)",
+      "skip": ["w"],
+      "$why": "Triggers hug their label (width follows glyph rasterisation; vertical ones fill the list)."
+    },
+    "Tabs Trigger#1": {
+      "selector": ".ds-tabs__trigger:nth-child(2)",
+      "skip": ["w"],
+      "$why": "As Tabs Trigger."
+    }
+  }
+}

@@ -474,7 +474,7 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, the compact-list toggle, the sort toggle group, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, the compact-list toggle, the sort toggle group, the usage tabs, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
@@ -505,6 +505,11 @@ const tests = {
     await seats.getByRole('button', { name: 'Add 6 seats' }).click();
     assert.equal(await seats.isVisible(), false, 'the drawer closes');
     await page.getByText('5 of 16', { exact: true }).waitFor();
+    const usage = page.getByRole('tablist', { name: 'Usage' });
+    await usage.getByRole('tab', { name: 'Storage' }).click();
+    await page.getByText('38 of 100 GB', { exact: true }).waitFor();
+    assert.equal(await page.getByText('5 of 16', { exact: true }).count(), 0, 'the usage tabs switch panels');
+    await usage.getByRole('tab', { name: /Seats/ }).click();
     const sortBy = page.getByRole('group', { name: 'Sort by' });
     await sortBy.getByRole('button', { name: 'Name' }).click();
     assert.equal(await rows.first().textContent().then((t) => t.includes('Aiko Tanaka')), true, 'sorted by name');
@@ -1464,6 +1469,59 @@ Object.assign(tests, {
     await device.getByRole('button', { name: 'Tablet' }).focus();
     await page.keyboard.press('ArrowDown');
     assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Desktop', 'ArrowDown moves in a vertical group');
+  },
+  'tabs: a tablist with one Tab stop; arrows, Home and End move and select, skipping disabled tabs; panels are labelled by their tab; vertical lists use Up and Down': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-tabs--order&viewMode=story');
+    const list = page.getByRole('tablist', { name: 'Order' });
+    await list.waitFor();
+    const tabs = list.getByRole('tab');
+    assert.deepEqual(await tabs.evaluateAll((els) => els.map((el) => [el.textContent, el.getAttribute('aria-selected'), el.tabIndex])), [['Overview', 'true', 0], ['Tracking', 'false', -1], ['Invoice', 'false', -1], ['Address', 'false', -1]], 'one Tab stop, on the selected tab');
+    const panel = page.getByRole('tabpanel', { name: 'Overview' });
+    assert.equal(await panel.isVisible(), true, 'the panel is named by its tab');
+    assert.equal(await list.evaluate((el) => getComputedStyle(el).backgroundColor), 'rgba(115, 115, 115, 0.08)', 'Default draws a fill-2 track');
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Overview', 'Tab lands on the selected tab');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Tracking', 'ArrowRight moves on');
+    assert.equal(await page.getByRole('tab', { name: 'Tracking' }).getAttribute('aria-selected'), 'true', 'and selects (automatic activation)');
+    assert.equal(await page.getByRole('tabpanel', { name: 'Tracking' }).isVisible(), true, 'showing its panel');
+    assert.equal(await page.getByRole('tabpanel', { includeHidden: true, name: 'Overview' }).isHidden(), true, 'and hiding the other');
+    await page.keyboard.press('End');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Address', 'End goes to the last');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Overview', 'and wraps');
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('role')), 'tabpanel', 'Tab moves to the panel');
+    await page.getByRole('tab', { name: 'Invoice' }).click();
+    assert.equal(await page.getByRole('tabpanel', { name: 'Invoice' }).isVisible(), true, 'a click selects');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-tabs--disabled&viewMode=story');
+    const report = page.getByRole('tablist', { name: 'Report' });
+    await report.waitFor();
+    await report.getByRole('tab', { name: 'Activity' }).focus();
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Settings', 'arrows skip the disabled tab');
+    assert.equal(await report.getByRole('tab', { name: 'Analytics' }).isDisabled(), true);
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-tabs--vertical&viewMode=story');
+    const settings = page.getByRole('tablist', { name: 'Settings' });
+    await settings.waitFor();
+    assert.equal(await settings.getAttribute('aria-orientation'), 'vertical');
+    await settings.getByRole('tab', { name: 'Notifications' }).focus();
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Billing', 'ArrowDown moves in a vertical list');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Billing', 'ArrowRight does nothing there');
+    const bar = await page.getByRole('tab', { name: 'Billing' }).evaluate((el) => { const s = getComputedStyle(el, '::after'); return [s.width, s.height]; });
+    assert.deepEqual(bar, ['2px', '20px'], 'Line Vertical draws a 2 × 20 bar');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-tabs--full-width&viewMode=story');
+    const account = page.getByRole('tablist', { name: 'Account' });
+    await account.waitFor();
+    const widths = await account.getByRole('tab').evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().width)));
+    assert.equal(widths[0], widths[1], 'full width: the tabs share the width');
+    await account.getByRole('tab', { name: 'Create account' }).click();
+    assert.equal(await page.getByRole('textbox', { name: 'Work email' }).isVisible(), true, 'the controlled tabs switch the form');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

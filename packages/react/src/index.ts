@@ -27,6 +27,7 @@ export * from './Sheet';
 export * from './Sonner';
 export * from './Spinner';
 export * from './Switch';
+export * from './Tabs';
 export * from './Textarea';
 export * from './Toggle';
 export * from './ToggleGroup';

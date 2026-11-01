@@ -1,0 +1,147 @@
+{
+ "$comment": "Sort UI 2.0 Tabs List (515:4393) reference renders (1x PNG, exportAsync): every Variant \u00d7 Orientation \u00d7 Size with Figma's four sample triggers labelled \"Label\" (no icon or count), the first active. Line and Line-vertical renders include the 2 px bar outside the active trigger. renderers/tabs.tsx renders the same list (vertical lists 125 px wide, as in Figma). Figma has no Line Vertical list variant: Variant=Line with Orientation=Vertical is it. Variant=Default, Orientation=Vertical, Size=lg (515:6282) is left out: its labels are start-aligned while every other vertical list (Default at Size=Default, Secondary and Line at both sizes) centres them; code centres them everywhere (README, Known design findings).",
+ "component": "tabs-list",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "515:4393",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-horizontal-default",
+   "nodeId": "515:4392",
+   "props": {
+    "Variant": "Default",
+    "Orientation": "Horizontal",
+    "Size": "Default"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 220,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-horizontal-lg",
+   "nodeId": "515:6270",
+   "props": {
+    "Variant": "Default",
+    "Orientation": "Horizontal",
+    "Size": "lg"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 236,
+   "nodeH": 36
+  },
+  {
+   "slug": "default-vertical-default",
+   "nodeId": "515:4391",
+   "props": {
+    "Variant": "Default",
+    "Orientation": "Vertical",
+    "Size": "Default"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 125,
+   "nodeH": 116
+  },
+  {
+   "slug": "secondary-vertical-default",
+   "nodeId": "515:4390",
+   "props": {
+    "Variant": "Secondary",
+    "Orientation": "Vertical",
+    "Size": "Default"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 125,
+   "nodeH": 116
+  },
+  {
+   "slug": "secondary-vertical-lg",
+   "nodeId": "515:6294",
+   "props": {
+    "Variant": "Secondary",
+    "Orientation": "Vertical",
+    "Size": "lg"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 125,
+   "nodeH": 132
+  },
+  {
+   "slug": "line-vertical-default",
+   "nodeId": "515:4389",
+   "props": {
+    "Variant": "Line",
+    "Orientation": "Vertical",
+    "Size": "Default"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 125,
+   "nodeH": 116
+  },
+  {
+   "slug": "line-vertical-lg",
+   "nodeId": "515:6318",
+   "props": {
+    "Variant": "Line",
+    "Orientation": "Vertical",
+    "Size": "lg"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 125,
+   "nodeH": 132
+  },
+  {
+   "slug": "secondary-horizontal-default",
+   "nodeId": "515:4386",
+   "props": {
+    "Variant": "Secondary",
+    "Orientation": "Horizontal",
+    "Size": "Default"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 220,
+   "nodeH": 32
+  },
+  {
+   "slug": "secondary-horizontal-lg",
+   "nodeId": "515:6330",
+   "props": {
+    "Variant": "Secondary",
+    "Orientation": "Horizontal",
+    "Size": "lg"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 236,
+   "nodeH": 36
+  },
+  {
+   "slug": "line-horizontal-default",
+   "nodeId": "515:4388",
+   "props": {
+    "Variant": "Line",
+    "Orientation": "Horizontal",
+    "Size": "Default"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 220,
+   "nodeH": 32
+  },
+  {
+   "slug": "line-horizontal-lg",
+   "nodeId": "515:6354",
+   "props": {
+    "Variant": "Line",
+    "Orientation": "Horizontal",
+    "Size": "lg"
+   },
+   "target": "#target .ds-tabs-list",
+   "nodeW": 236,
+   "nodeH": 36
+  }
+ ]
+}

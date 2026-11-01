@@ -28,6 +28,7 @@ import { renderSheet } from './sheet';
 import { renderSonner } from './sonner';
 import { renderSpinner } from './spinner';
 import { renderSwitch } from './switch';
+import { renderTabsList, renderTabsTrigger } from './tabs';
 import { renderTextarea } from './textarea';
 import { renderToggle } from './toggle';
 import { renderToggleGroup } from './toggle-group';
@@ -79,6 +80,8 @@ export const renderers: Record<string, Renderer> = {
   spinner: renderSpinner,
   'status-badge': renderStatusBadge,
   switch: renderSwitch,
+  'tabs-list': renderTabsList,
+  'tabs-trigger': renderTabsTrigger,
   textarea: renderTextarea,
   toggle: renderToggle,
   'toggle-group': renderToggleGroup,

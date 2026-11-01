@@ -167,7 +167,8 @@ for (const component of components) {
     const target = entry.target ?? '#target';
     const el = page.locator(target).first();
     const box = await el.boundingBox();
-    const state = entry.props.State;
+    // entry.interaction overrides the input State implies (Tabs' State=Active is the selected tab, not focus).
+    const state = entry.interaction ?? entry.props.State;
     if (state === 'Hover') await el.hover();
     if (state === 'Press') {
       await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);

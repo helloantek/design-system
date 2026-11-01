@@ -35,6 +35,7 @@ import { Sheet, SheetClose } from '../Sheet';
 import { Spinner } from '../Spinner';
 import { Switch } from '../Switch';
 import { Toaster, toast } from '../Sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../Tabs';
 import { Toggle } from '../Toggle';
 import { ToggleGroup, ToggleGroupItem } from '../ToggleGroup';
 import { Tooltip } from '../Tooltip';
@@ -71,7 +72,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -406,7 +407,20 @@ export const Members: StoryObj = {
                 <ProgressCircle value={72} size="40px" thickness={12} aria-label="Profiles complete" />
                 72 % of profiles are complete
               </div>
-              <Progress label="Seats" value={members.length} max={seats} valueLabel={`${members.length} of ${seats}`} />
+              <Tabs defaultValue="seats" variant="line">
+                <TabsList aria-label="Usage">
+                  <TabsTrigger value="seats" count={members.length}>
+                    Seats
+                  </TabsTrigger>
+                  <TabsTrigger value="storage">Storage</TabsTrigger>
+                </TabsList>
+                <TabsContent value="seats">
+                  <Progress label="Seats" value={members.length} max={seats} valueLabel={`${members.length} of ${seats}`} />
+                </TabsContent>
+                <TabsContent value="storage">
+                  <Progress label="Storage" value={38} max={100} valueLabel="38 of 100 GB" />
+                </TabsContent>
+              </Tabs>
               <Drawer
                 trigger={
                   <Button variant="outline" size="sm">

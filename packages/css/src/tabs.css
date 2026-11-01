@@ -1,0 +1,276 @@
+/*
+ * Tabs — Sort UI 2.0 component sets "Tabs Trigger" (node 515:1993) and "Tabs List" (node 515:4393) on page 197:2 in
+ * file 4JnqgEbdlnKgiFrfmiwEZw: a row (or column) of tabs that switches between panels of content. Values are Sort UI
+ * 2.0 tokens.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-tabs [ds-tabs--vertical]">
+ *     <div role="tablist" class="ds-tabs-list [ds-tabs-list--secondary | --line] [ds-tabs-list--vertical]
+ *          [ds-tabs-list--size-lg] [ds-tabs-list--full-width]" aria-orientation="horizontal | vertical">
+ *       <button type="button" role="tab" class="ds-tabs__trigger" aria-selected="true" aria-controls="p1" id="t1">
+ *         [<span class="ds-tabs__icon" aria-hidden="true"><svg>…</svg></span>]  (Figma "Icon")
+ *         <span class="ds-tabs__label">Overview</span>                          (Figma "Label")
+ *         [<span class="ds-tabs__count">12</span>]                              (Figma "Count")
+ *       </button>
+ *       Figma Layout=Eyebrow:  <button class="ds-tabs__trigger ds-tabs__trigger--eyebrow" …>
+ *                                <span class="ds-tabs__eyebrow">Revenue</span>
+ *                                <span class="ds-tabs__row">[icon] label [count]</span></button>
+ *       Figma Layout=Icon top: <button class="ds-tabs__trigger ds-tabs__trigger--icon-top" …>
+ *                                [icon] <span class="ds-tabs__texts">label [<span class="ds-tabs__description">…</span>]</span></button>
+ *     </div>
+ *     <div role="tabpanel" class="ds-tabs__content" id="p1" aria-labelledby="t1" tabindex="0">…</div>
+ *   </div>
+ * Figma Variant is the list's modifier (Default: a fill-2 track with the active tab raised; Secondary: no track, the
+ * active tab fill-2; Line: no track, a 2 px bar under the active tab; Line Vertical: Line with --vertical, the bar on
+ * the right). State=Active is aria-selected="true", Hover is :hover, Focus is :focus-visible, Disabled is :disabled.
+ */
+
+@layer ds.components {
+  .ds-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  .ds-tabs--vertical {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--ds-spacing-4);
+  }
+
+  /* Figma "Tabs List": 2 px around the triggers; Default draws a fill-2 track with radius 10. */
+  .ds-tabs-list {
+    --tabs-height: var(--ds-spacing-7);
+    --tabs-pad-x: var(--ds-spacing-2);
+    --tabs-gap: var(--ds-spacing-1);
+    --tabs-active-bg: var(--ds-raised);
+    --tabs-active-shadow: var(--ds-shadow-xs);
+    --tabs-radius: var(--ds-radius-md);
+
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    padding: var(--ds-spacing-0-5);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-fill-2);
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma Size=lg: 32 px triggers with 10 px sides and a 6 px gap. */
+  .ds-tabs-list--size-lg {
+    --tabs-height: var(--ds-spacing-8);
+    --tabs-pad-x: var(--ds-spacing-2-5);
+    --tabs-gap: var(--ds-spacing-1-5);
+  }
+
+  .ds-tabs-list--secondary,
+  .ds-tabs-list--line {
+    background-color: transparent;
+  }
+
+  .ds-tabs-list--secondary {
+    --tabs-active-bg: var(--ds-fill-2);
+    --tabs-active-shadow: 0 0 #0000;
+  }
+
+  /* Figma Variant=Line: square triggers and no fill; the active one gets the bar (see ::after below). */
+  .ds-tabs-list--line {
+    --tabs-active-bg: transparent;
+    --tabs-active-shadow: 0 0 #0000;
+    --tabs-radius: 0;
+
+    border-radius: 0;
+  }
+
+  /* Figma Orientation=Vertical: the triggers fill the list's width. */
+  .ds-tabs-list--vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Not a Figma property ("Full width" demo): the list fills its container and shares it between the triggers. */
+  .ds-tabs-list--full-width {
+    display: flex;
+    width: 100%;
+  }
+
+  .ds-tabs-list--full-width:not(.ds-tabs-list--vertical) > .ds-tabs__trigger {
+    flex: 1 1 0;
+  }
+
+  /* Figma "Tabs Trigger" (Layout=Inline): 28 px high (lg 32), 8 px sides (lg 10), 13/20 medium, muted until hovered
+     or active. */
+  .ds-tabs__trigger {
+    --tabs-bg: transparent;
+    --tabs-stroke: transparent;
+    --tabs-shadow: 0 0 #0000;
+    --tabs-ring: 0 0 #0000;
+    --tabs-count: var(--ds-muted-foreground);
+
+    position: relative;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--tabs-gap);
+    min-height: var(--tabs-height);
+    margin: 0;
+    padding: 0 var(--tabs-pad-x);
+    border: 0;
+    border-radius: var(--tabs-radius);
+    outline: none;
+    background: var(--tabs-bg);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--tabs-stroke), var(--tabs-ring), var(--tabs-shadow);
+    color: var(--ds-muted-foreground);
+    font: inherit;
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    text-align: start;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      color var(--ds-duration-200) var(--ds-ease-out),
+      background-color var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  /* Figma: the 17 px icon (Lucide) in the label colour. */
+  .ds-tabs__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: calc(var(--ds-spacing-4) + var(--ds-stroke-width-1));
+    height: calc(var(--ds-spacing-4) + var(--ds-stroke-width-1));
+  }
+
+  .ds-tabs__icon > svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Figma: the label has 2 px on each side in the inline layout. */
+  .ds-tabs__label {
+    padding: 0 var(--ds-spacing-0-5);
+  }
+
+  /* Figma "Count": 13/20 regular, muted (foreground on hover). */
+  .ds-tabs__count {
+    color: var(--tabs-count);
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  /* Figma State=Hover: label and count turn foreground; no fill. */
+  .ds-tabs__trigger:hover:not([aria-selected='true'], :disabled) {
+    --tabs-count: var(--ds-foreground);
+
+    color: var(--ds-foreground);
+  }
+
+  /* Figma State=Active: the label turns foreground (the count stays muted) on the variant's surface. */
+  .ds-tabs__trigger[aria-selected='true'] {
+    --tabs-bg: var(--tabs-active-bg);
+    --tabs-shadow: var(--tabs-active-shadow);
+
+    color: var(--ds-foreground);
+  }
+
+  /* Figma Variant=Line, State=Active: a 2 px foreground bar just below the trigger, as wide as its content. */
+  .ds-tabs-list--line .ds-tabs__trigger[aria-selected='true']::after {
+    content: '';
+    position: absolute;
+    inset-inline: var(--tabs-pad-x);
+    top: 100%;
+    height: var(--ds-spacing-0-5);
+    background-color: var(--ds-foreground);
+  }
+
+  /* Figma Variant=Line Vertical: a 2 × 20 bar just right of the trigger, centred. */
+  .ds-tabs-list--line.ds-tabs-list--vertical .ds-tabs__trigger[aria-selected='true']::after {
+    inset-inline: 100% auto;
+    top: calc(50% - var(--ds-spacing-2-5));
+    width: var(--ds-spacing-0-5);
+    height: var(--ds-spacing-5);
+  }
+
+  /* Figma State=Focus: the page background, a 1 px ring stroke inside and a 3 px ring around. */
+  .ds-tabs__trigger:focus-visible {
+    --tabs-stroke: var(--ds-ring);
+    --tabs-ring: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+
+    z-index: 1;
+  }
+
+  .ds-tabs__trigger:focus-visible:not([aria-selected='true']) {
+    --tabs-bg: var(--ds-background);
+  }
+
+  /* Figma State=Disabled: the whole trigger at 50 %. */
+  .ds-tabs__trigger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Figma Layout=Eyebrow: an eyebrow (12/16 muted) above the row; 8 px around (10 on the sides), 8 px apart. */
+  .ds-tabs__trigger--eyebrow,
+  .ds-tabs__trigger--icon-top {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2-5);
+  }
+
+  .ds-tabs__eyebrow,
+  .ds-tabs__description {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  .ds-tabs__row {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  .ds-tabs__texts {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* In the stacked layouts the label has no side padding. */
+  .ds-tabs__row > .ds-tabs__label,
+  .ds-tabs__texts > .ds-tabs__label {
+    padding: 0;
+  }
+
+  /* Figma "Tabs Content": not drawn in Figma; the panel takes the focus ring when tabbed to. */
+  .ds-tabs__content {
+    min-width: 0;
+    border-radius: var(--ds-radius-md);
+    outline: none;
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-tabs__content:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-tabs--vertical > .ds-tabs__content {
+    flex: 1 1 auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-tabs__trigger {
+      transition: none;
+    }
+  }
+}

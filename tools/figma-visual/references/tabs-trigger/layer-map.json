@@ -1,0 +1,20 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-tabs__trigger) and how to read it.",
+  "layers": {
+    "root": {
+      "selector": "",
+      "stroke": "inset-shadow",
+      "skip": ["w", "g"],
+      "$why": "The trigger hugs its label, whose width follows glyph rasterisation (the size check covers it). Figma's root wraps a content frame that carries the gap; in code the trigger lays its parts out itself (the stacked layouts keep the root's 8 px gap)."
+    },
+    "Label": { "selector": ".ds-tabs__label" },
+    "Count": { "selector": ".ds-tabs__count" },
+    "Eyebrow": { "selector": ".ds-tabs__eyebrow" },
+    "Description": { "selector": ".ds-tabs__description" },
+    "Indicator": {
+      "selector": "",
+      "skip": ["w", "h", "fill"],
+      "$why": "The bar is the trigger's ::after, which the spec check cannot select; the pixel check covers its size, place and colour."
+    }
+  }
+}
