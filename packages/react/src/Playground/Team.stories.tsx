@@ -36,6 +36,7 @@ import { Spinner } from '../Spinner';
 import { Switch } from '../Switch';
 import { Toaster, toast } from '../Sonner';
 import { Toggle } from '../Toggle';
+import { ToggleGroup, ToggleGroupItem } from '../ToggleGroup';
 import { Tooltip } from '../Tooltip';
 
 // A team settings page built only from design-system components: the components that are not form fields, used
@@ -70,7 +71,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -86,6 +87,7 @@ export const Members: StoryObj = {
     const [searchIn, setSearchIn] = useState<'Name' | 'Email'>('Name');
     const [showRoles, setShowRoles] = useState(true);
     const [compact, setCompact] = useState(false);
+    const [sortBy, setSortBy] = useState<'joined' | 'name' | 'role'>('joined');
     const [teamName, setTeamName] = useState('Orbit');
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [seats, setSeats] = useState(10);
@@ -95,9 +97,10 @@ export const Members: StoryObj = {
 
     const log = (line: string) => setActivity((lines) => [...lines, line]);
     const pending = members.filter((m) => m.pending);
-    const shown = members.filter(
-      (m) => (view === 'all' || (view === 'pending') === Boolean(m.pending)) && (searchIn === 'Name' ? m.name : m.email).toLowerCase().includes(query.trim().toLowerCase()),
-    );
+    const roleOrder: Role[] = ['Owner', 'Admin', 'Member'];
+    const shown = members
+      .filter((m) => (view === 'all' || (view === 'pending') === Boolean(m.pending)) && (searchIn === 'Name' ? m.name : m.email).toLowerCase().includes(query.trim().toLowerCase()))
+      .sort((a, b) => (sortBy === 'joined' ? 0 : (sortBy === 'role' ? roleOrder.indexOf(a.role) - roleOrder.indexOf(b.role) : 0) || a.name.localeCompare(b.name)));
 
     const setRole = (member: Member, role: Role) => {
       setMembers((list) => list.map((m) => (m.id === member.id ? { ...m, role } : m)));
@@ -268,6 +271,11 @@ export const Members: StoryObj = {
                   </DropdownMenuCheckboxItem>
                 </DropdownMenu>
                 <Toggle size="sm" icon={<RiContractUpDownLine />} aria-label="Compact list" pressed={compact} onPressedChange={setCompact} />
+                <ToggleGroup type="single" size="sm" variant="outline" spacing={0} aria-label="Sort by" value={sortBy} onValueChange={(v) => v && setSortBy(v as 'joined' | 'name' | 'role')}>
+                  <ToggleGroupItem value="joined">Joined</ToggleGroupItem>
+                  <ToggleGroupItem value="name">Name</ToggleGroupItem>
+                  <ToggleGroupItem value="role">Role</ToggleGroupItem>
+                </ToggleGroup>
               </div>
               <ul aria-label="Members" style={{ display: 'grid', gap: 4, margin: 0, padding: 0, listStyle: 'none' }}>
                 {shown.map((member) => (

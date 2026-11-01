@@ -1,0 +1,48 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-toggle-group) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "selector": "",
+      "stroke": "after-inset-shadow",
+      "skip": [
+        "g",
+        "w"
+      ],
+      "$why": "Figma's root wraps an items frame that carries the gap; in code the group lays its items out itself (see items). A joined Outline group draws its border as an inset shadow on ::after, above the items. Width is skipped: a horizontal group is the sum of its hugging labels (see the manifest)."
+    },
+    "items": {
+      "selector": "",
+      "skip": [
+        "r",
+        "stroke",
+        "fill",
+        "w"
+      ],
+      "$why": "The items frame is the group itself in code: same size, padding and gap."
+    },
+    "Toggle": {
+      "selector": ".ds-toggle:nth-child(1)",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "Items hug their label (width follows glyph rasterisation; the size check covers the group)."
+    },
+    "Toggle#1": {
+      "selector": ".ds-toggle:nth-child(2)",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "As Toggle; in a joined Outline group the divider is a 1 px inset shadow on the leading side."
+    },
+    "Toggle#2": {
+      "selector": ".ds-toggle:nth-child(3)",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "As Toggle#1."
+    }
+  }
+}

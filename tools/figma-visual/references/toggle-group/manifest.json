@@ -1,0 +1,159 @@
+{
+ "$comment": "Sort UI 2.0 Toggle Group (128:1073) reference renders (1x PNG, exportAsync): every Spacing \u00d7 Orientation \u00d7 Variant with Figma's three visible sample items labelled \"Label\", the second pressed. renderers/toggle-group.tsx renders the same group (vertical groups 120 px wide, as in Figma). maxSizeDelta is 4 px, not 2: a horizontal group is as wide as its three hugging labels, and each \"Label\" rasterises about 1 px narrower than in Figma (the harness reports the same for Button's label box), which adds up to ~3 px.",
+ "component": "toggle-group",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "128:1073",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 4
+ },
+ "entries": [
+  {
+   "slug": "default-horizontal-spacing-2",
+   "nodeId": "128:2",
+   "props": {
+    "Spacing": "2",
+    "Orientation": "Horizontal",
+    "Variant": "Default"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 199,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-vertical-spacing-2",
+   "nodeId": "128:26",
+   "props": {
+    "Spacing": "2",
+    "Orientation": "Vertical",
+    "Variant": "Default"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 120,
+   "nodeH": 112
+  },
+  {
+   "slug": "default-horizontal-spacing-1",
+   "nodeId": "128:46",
+   "props": {
+    "Spacing": "1",
+    "Orientation": "Horizontal",
+    "Variant": "Default"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 191,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-vertical-spacing-1",
+   "nodeId": "128:66",
+   "props": {
+    "Spacing": "1",
+    "Orientation": "Vertical",
+    "Variant": "Default"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 120,
+   "nodeH": 104
+  },
+  {
+   "slug": "default-horizontal-spacing-0",
+   "nodeId": "128:86",
+   "props": {
+    "Spacing": "0",
+    "Orientation": "Horizontal",
+    "Variant": "Default"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 183,
+   "nodeH": 32
+  },
+  {
+   "slug": "default-vertical-spacing-0",
+   "nodeId": "128:106",
+   "props": {
+    "Spacing": "0",
+    "Orientation": "Vertical",
+    "Variant": "Default"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 120,
+   "nodeH": 96
+  },
+  {
+   "slug": "outline-horizontal-spacing-2",
+   "nodeId": "128:126",
+   "props": {
+    "Spacing": "2",
+    "Orientation": "Horizontal",
+    "Variant": "Outline"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 199,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-vertical-spacing-2",
+   "nodeId": "128:150",
+   "props": {
+    "Spacing": "2",
+    "Orientation": "Vertical",
+    "Variant": "Outline"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 120,
+   "nodeH": 112
+  },
+  {
+   "slug": "outline-horizontal-spacing-1",
+   "nodeId": "128:170",
+   "props": {
+    "Spacing": "1",
+    "Orientation": "Horizontal",
+    "Variant": "Outline"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 191,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-vertical-spacing-1",
+   "nodeId": "128:190",
+   "props": {
+    "Spacing": "1",
+    "Orientation": "Vertical",
+    "Variant": "Outline"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 120,
+   "nodeH": 104
+  },
+  {
+   "slug": "outline-horizontal-spacing-0",
+   "nodeId": "128:210",
+   "props": {
+    "Spacing": "0",
+    "Orientation": "Horizontal",
+    "Variant": "Outline"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 183,
+   "nodeH": 32
+  },
+  {
+   "slug": "outline-vertical-spacing-0",
+   "nodeId": "128:230",
+   "props": {
+    "Spacing": "0",
+    "Orientation": "Vertical",
+    "Variant": "Outline"
+   },
+   "target": "#target .ds-toggle-group",
+   "nodeW": 120,
+   "nodeH": 96
+  }
+ ]
+}

@@ -701,6 +701,33 @@ A button that is on or off: Sort UI 2.0 **Toggle** (Variant, Size, Pressed, Stat
 
 It renders a `<button type="button" aria-pressed>`: a click, Space or Enter flips it and screen readers announce "pressed" or "not pressed". Use Switch for a setting that applies at once, Toggle Group for a set of options.
 
+## Toggle Group
+
+Toggles in a group, one or several on: Sort UI 2.0 **Toggle Group** (Spacing, Orientation, Variant).
+
+```tsx
+<ToggleGroup type="single" aria-label="Platform" defaultValue="ios" variant="outline">
+  <ToggleGroupItem value="web">Web</ToggleGroupItem>
+  <ToggleGroupItem value="ios">iOS</ToggleGroupItem>
+  <ToggleGroupItem value="android">Android</ToggleGroupItem>
+</ToggleGroup>
+<ToggleGroup type="multiple" aria-label="Text formatting" spacing={0}>
+  <ToggleGroupItem value="bold" icon={<BoldIcon />} aria-label="Bold" />
+  …
+</ToggleGroup>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| — | `type`: `"single"` (at most one on) · `"multiple"`; `value` / `defaultValue` / `onValueChange` | — |
+| Variant = Default · Outline | `variant` (every item) | `ds-toggle-group--outline` |
+| Spacing = 2 · 1 · 0 | `spacing`: `2` (8 px, default) · `1` (4 px) · `0` (joined) | `ds-toggle-group--spacing-1` · `--spacing-0` |
+| Orientation = Horizontal · Vertical | `orientation` | `ds-toggle-group--vertical` |
+| — (Toggle Size) | `size` (every item) | — |
+| items | `ToggleGroupItem` (`value`, label or `icon` + `aria-label`, `disabled`) | `ds-toggle` |
+
+A joined group (Spacing 0) is a pill, or a 16 px rounded box when vertical; a joined Outline group has one border and 1 px dividers. The group is a named `role="group"` of `<button aria-pressed>`s with one Tab stop (the pressed item, or the first): the arrow keys along the orientation, Home and End move between the items, skipping disabled ones. In a single group, pressing the pressed item turns it off; ignore an empty value in `onValueChange` to keep one always on.
+
 ## Tooltip
 
 Short help for a control: the WAI-ARIA tooltip. It describes its trigger (`aria-describedby`), shows on hover after `delay` ms (500 by default) or at once on keyboard focus, stays while the pointer moves onto it, and hides on Escape, blur or when the pointer leaves. A click does not show it. Sort UI 2.0 **Tooltip** (Side, Leading slot, Trailing slot) with **Kbd** Variant=Inverted, Size=sm for shortcuts.
@@ -918,6 +945,7 @@ These come from the Figma files, not the code:
 - Drawer (2.0): the component centres the sample body text when down or up; the code centres only the heading, so fields and lists in the content stay start-aligned (centre a paragraph yourself, as the Step goal demo does). The "side" drawer has a Swipe handle property but draws no handle; the code shows none. There is no Close button in Figma, yet several side demos draw one; the code offers `closeButton`. Figma draws no backdrop; the code dims the page like Dialog.
 - Hover Card (2.0): the surface matches Popover (288 px, 14 px radius, Surface/Popover) but with 16 px padding all round and no header. Figma has no placement or timing; the code opens below the link after 700 ms and offers `side`, `align`, `openDelay` and `closeDelay`. The sample's separator is a 0 px line; the code's is 1 px, so the card is 1 px taller.
 - Toggle (2.0): default and lg toggles have a 10 px radius (radius-lg) while Button's are 8 px; sm toggles are 8 px. The focus ring is 3 px (Button's is 2 px) and Default turns its background to the page colour when focused; the code follows Figma. The sample icons are 17 px; the code draws 16 px icons like Button.
+- Toggle Group (2.0): Figma holds nine items and shows three; the code renders the items you give it. A joined group clips its items, so a focused item's ring is drawn inside it. Figma has no single or multiple choice; the code offers `type`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

@@ -30,6 +30,7 @@ import { renderSpinner } from './spinner';
 import { renderSwitch } from './switch';
 import { renderTextarea } from './textarea';
 import { renderToggle } from './toggle';
+import { renderToggleGroup } from './toggle-group';
 import { renderTooltip } from './tooltip';
 import type { Renderer } from './types';
 
@@ -80,5 +81,6 @@ export const renderers: Record<string, Renderer> = {
   switch: renderSwitch,
   textarea: renderTextarea,
   toggle: renderToggle,
+  'toggle-group': renderToggleGroup,
   tooltip: renderTooltip,
 };

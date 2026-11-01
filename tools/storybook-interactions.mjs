@@ -474,7 +474,7 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, the compact-list toggle, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, the compact-list toggle, the sort toggle group, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
@@ -505,6 +505,10 @@ const tests = {
     await seats.getByRole('button', { name: 'Add 6 seats' }).click();
     assert.equal(await seats.isVisible(), false, 'the drawer closes');
     await page.getByText('5 of 16', { exact: true }).waitFor();
+    const sortBy = page.getByRole('group', { name: 'Sort by' });
+    await sortBy.getByRole('button', { name: 'Name' }).click();
+    assert.equal(await rows.first().textContent().then((t) => t.includes('Aiko Tanaka')), true, 'sorted by name');
+    await sortBy.getByRole('button', { name: 'Joined' }).click();
     const compact = page.getByRole('button', { name: 'Compact list' });
     await compact.click();
     assert.equal(await compact.getAttribute('aria-pressed'), 'true');
@@ -1415,6 +1419,51 @@ Object.assign(tests, {
     assert.deepEqual([Math.round(box.width), Math.round(box.height)], [32, 32], 'icon only is a 32 px square');
     await page.getByRole('button', { name: 'Sold out' }).click();
     assert.equal(await page.getByRole('button', { name: 'Sold out' }).last().isDisabled(), true, 'the preview follows the toggle');
+  },
+  'toggle group: a named group with one Tab stop; arrows, Home and End move; single keeps at most one on, multiple any; disabled items are skipped': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-toggle-group--variants&viewMode=story');
+    const group = page.getByRole('group', { name: 'Platform (default)' });
+    await group.waitFor();
+    const items = group.getByRole('button');
+    assert.deepEqual(await items.evaluateAll((els) => els.map((el) => [el.textContent, el.getAttribute('aria-pressed'), el.tabIndex])), [['Web', 'false', -1], ['iOS', 'true', 0], ['Android', 'false', -1]], 'one Tab stop, on the pressed item');
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'iOS', 'Tab lands on the pressed item');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Android', 'ArrowRight moves on');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Web', 'and wraps');
+    await page.keyboard.press('End');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Android', 'End goes to the last');
+    await page.keyboard.press('Space');
+    assert.deepEqual(await items.evaluateAll((els) => els.map((el) => el.getAttribute('aria-pressed'))), ['false', 'false', 'true'], 'single: pressing one turns the other off');
+    await page.keyboard.press('Space');
+    assert.deepEqual(await items.evaluateAll((els) => els.map((el) => el.getAttribute('aria-pressed'))), ['false', 'false', 'false'], 'pressing it again turns it off');
+    await page.keyboard.press('Tab');
+    assert.notEqual(await page.evaluate(() => document.activeElement.closest('[role=group]')?.getAttribute('aria-label')), 'Platform (default)', 'Tab leaves the group');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-toggle-group--formatting&viewMode=story');
+    const fmt = page.getByRole('group', { name: 'Text formatting' });
+    await fmt.waitFor();
+    await fmt.getByRole('button', { name: 'Italic' }).click();
+    assert.deepEqual(await fmt.getByRole('button').evaluateAll((els) => els.map((el) => el.getAttribute('aria-pressed'))), ['true', 'true', 'false'], 'multiple: several can be on');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-toggle-group--disabled&viewMode=story');
+    const target = page.getByRole('group', { name: 'Target' });
+    await target.waitFor();
+    await target.getByRole('button', { name: 'iOS' }).focus();
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Web', 'arrows skip the disabled item');
+    assert.equal(await page.getByRole('group', { name: 'Format' }).getByRole('button', { name: 'CSS' }).isDisabled(), true, 'a disabled group disables its items');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-toggle-group--orientation&viewMode=story');
+    const device = page.getByRole('group', { name: 'Device' });
+    await device.waitFor();
+    assert.equal(await device.getAttribute('data-orientation'), 'vertical');
+    assert.equal(await device.evaluate((el) => getComputedStyle(el).borderRadius), '16px', 'a joined vertical group is a 16 px box');
+    await device.getByRole('button', { name: 'Tablet' }).focus();
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Desktop', 'ArrowDown moves in a vertical group');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
