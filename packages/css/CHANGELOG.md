@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.26.0
+
+### Minor Changes
+
+- 9eae6a1: Toggle (Sort UI 2.0): `Toggle` is a button that is on or off (`pressed`, `defaultPressed`, `onPressedChange`), in `variant` `default` or `outline` and `size` `sm`, `default` or `lg`, with `leadingIcon` and `trailingIcon`, or `icon` (and an `aria-label`) for a square icon-only toggle. It renders a `<button aria-pressed>`.
+
 ## 2.25.0
 
 ### Minor Changes
