@@ -1,3 +1,4 @@
+import type React from 'react';
 import { Slider } from '@helloantek/ds-react';
 import type { Renderer } from './types';
 
@@ -35,3 +36,32 @@ export const renderSliderThumb: Renderer = () => (
     <Slider aria-label="Sample" defaultValue={208} min={0} max={432} style={{ width: 448 }} />
   </div>
 );
+
+// Sort UI 2.0 Slider demos that use a look rather than a property (variant="block" and "scrubber"), rebuilt at Figma's
+// size with values that put the thumbs where Figma draws them.
+const hue = 'linear-gradient(to right, #ff0000 2.5%, #ffff00 18.3%, #00ff00 34.2%, #00ffff 50%, #0000ff 65.8%, #ff00ff 81.7%, #ff0000 97.5%)';
+
+export const renderSliderVariants: Renderer = (p) => {
+  const demo = p.Demo;
+  let slider;
+  if (demo === 'Autoscaling range') slider = <Slider variant="block" marks aria-label={['From', 'To']} defaultValue={[0, 2]} max={6} style={{ width: 408 }} />;
+  else if (demo === 'Claude Effort Slider')
+    slider = <Slider variant="block" marks={[0, { value: 1, emphasis: true }, 2, 3, 4, 5]} aria-label="Effort" defaultValue={2} max={5} style={{ width: 248 }} />;
+  else if (demo === 'Color picker')
+    slider = (
+      <Slider
+        variant="block"
+        thumbDot="#00ff26"
+        aria-label="Hue"
+        defaultValue={139}
+        max={388}
+        style={{ width: 408, '--slider-thickness': '16px', '--slider-track': hue, '--slider-fill': 'transparent' } as React.CSSProperties}
+      />
+    );
+  else slider = <Slider variant="scrubber" label="Brightness" valueText="50%" defaultValue={130} max={274} style={{ width: 288 }} />;
+  return (
+    <div id="target" style={{ width: 'fit-content', padding: 16 }}>
+      {slider}
+    </div>
+  );
+};

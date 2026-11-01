@@ -1527,7 +1527,7 @@ Object.assign(tests, {
     await account.getByRole('tab', { name: 'Create account' }).click();
     assert.equal(await page.getByRole('textbox', { name: 'Work email' }).isVisible(), true, 'the controlled tabs switch the form');
   },
-  'slider: each thumb is a named role=slider; arrows, Page Up/Down, Home and End move it; a click or drag on the track moves the nearest thumb; range thumbs cannot cross; disabled ignores input; a form gets the value': async () => {
+  'slider: each thumb is a named role=slider; arrows, Page Up/Down, Home and End move it; a click or drag on the track moves the nearest thumb; range thumbs cannot cross; disabled ignores input; block marks and the scrubber; a form gets the value': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-slider--default&viewMode=story');
     const stagger = page.getByRole('slider', { name: 'Stagger' });
     await stagger.waitFor();
@@ -1587,6 +1587,25 @@ Object.assign(tests, {
     const dbox = await page.locator('.ds-slider__track').first().boundingBox();
     await page.mouse.click(dbox.x + 10, dbox.y + dbox.height / 2);
     assert.equal(await locked.getAttribute('aria-valuenow'), '50', 'clicks do nothing');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-slider--scrubber&viewMode=story');
+    const brightness = page.getByRole('slider', { name: 'Brightness' });
+    await brightness.waitFor();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('ArrowRight');
+    await page.getByText('51%', { exact: true }).waitFor();
+    // The ring fades in over 200 ms.
+    await page.waitForFunction(() => getComputedStyle(document.querySelector('.ds-slider--scrubber .ds-slider__track')).boxShadow.includes(' 3px'), null, { timeout: 2000 });
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-slider--effort-slider&viewMode=story');
+    const effort = page.getByRole('slider', { name: 'Effort' });
+    await effort.waitFor();
+    assert.equal(await page.locator('.ds-slider__mark').count(), 6, 'block marks: a dot per step');
+    assert.equal(await page.locator('.ds-slider__mark--emphasis').count(), 1, 'the recommended step is a bar');
+    assert.deepEqual(await effort.evaluate((el) => [el.offsetWidth, el.offsetHeight]), [20, 24], 'block thumbs are 20 × 24');
+    await effort.focus();
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await effort.getAttribute('aria-valuetext'), 'Medium (recommended)');
 
     await page.goto('http://localhost:6008/iframe.html?id=components-slider--in-a-form&viewMode=story');
     await page.getByRole('slider', { name: 'Minimum budget' }).waitFor();

@@ -6,6 +6,14 @@ import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type P
 
 /** Figma Orientation. */
 export type SliderOrientation = 'horizontal' | 'vertical';
+/**
+ * Not a Figma property: the demos' looks. `default` (the component), `block` (a 24 px track with 20 × 24 thumbs:
+ * "Autoscaling range", "Claude Effort Slider", "Color picker"), `scrubber` (a 32 px bar with the label and value
+ * inside: "Scrubber"). Block and scrubber are horizontal only.
+ */
+export type SliderVariant = 'default' | 'block' | 'scrubber';
+/** A step dot under the track (block); `emphasis` draws a bar instead (e.g. the recommended value). */
+export type SliderMark = number | { value: number; emphasis?: boolean };
 
 type Value = number | [number, number];
 
@@ -28,6 +36,12 @@ export interface SliderProps<V extends Value = Value> {
   orientation?: SliderOrientation;
   /** Figma State=Disabled. */
   disabled?: boolean;
+  /** The look (default `default`); see SliderVariant. */
+  variant?: SliderVariant;
+  /** Step dots in a block slider: `true` for every step, or the values to mark. */
+  marks?: boolean | SliderMark[];
+  /** A colour dot in each thumb (the "Color picker" demo), any CSS colour. */
+  thumbDot?: string;
   /** A label above the slider (the demos' "Field"); it names the thumbs. Or name them with `aria-label`. */
   label?: ReactNode;
   /** Shown at the end of the label row, e.g. `"80 ms"`; also what screen readers say for the value. */
@@ -57,6 +71,9 @@ export function Slider<V extends Value = Value>({
   step = 1,
   orientation = 'horizontal',
   disabled = false,
+  variant = 'default',
+  marks,
+  thumbDot,
   label,
   valueText,
   getAriaValueText,
@@ -74,7 +91,10 @@ export function Slider<V extends Value = Value>({
   const [dragging, setDragging] = useState<number | null>(null);
   const autoId = useId();
   const labelId = `${id ?? autoId}-label`;
-  const vertical = orientation === 'vertical';
+  const scrubber = variant === 'scrubber';
+  const vertical = orientation === 'vertical' && variant === 'default';
+  // A scrubber shows its label and value inside the bar, not above it.
+  const header = label !== undefined && !scrubber;
 
   const snap = (v: number) => {
     const snapped = Math.round((v - min) / step) * step + min;
@@ -102,7 +122,9 @@ export function Slider<V extends Value = Value>({
     const track = trackRef.current;
     if (!track) return min;
     const rect = track.getBoundingClientRect();
-    const size = parseFloat(getComputedStyle(track.parentElement!).getPropertyValue('--slider-thumb')) || 16;
+    // The thumb's length along the track (16 px, 20 px in a block slider, 14 px in a scrubber).
+    const thumbRect = track.querySelector('.ds-slider__thumb')?.getBoundingClientRect();
+    const size = thumbRect ? (vertical ? thumbRect.height : thumbRect.width) : 16;
     const length = (vertical ? rect.height : rect.width) - size;
     const rtl = !vertical && getComputedStyle(track).direction === 'rtl';
     let pos = vertical ? rect.bottom - event.clientY : rtl ? rect.right - event.clientX : event.clientX - rect.left;
@@ -162,20 +184,38 @@ export function Slider<V extends Value = Value>({
 
   const names = Array.isArray(ariaLabel) ? ariaLabel : ariaLabel ? [ariaLabel, ariaLabel] : range ? ['Minimum', 'Maximum'] : [undefined, undefined];
 
+  const markList: { value: number; emphasis?: boolean }[] =
+    variant === 'block' && marks
+      ? (marks === true ? Array.from({ length: Math.floor((max - min) / step) + 1 }, (_, i) => min + i * step) : marks).map((m) => (typeof m === 'number' ? { value: m } : m))
+      : [];
+
   const slider = (
     <div
-      id={label === undefined ? id : undefined}
-      className={cx('ds-slider', vertical && 'ds-slider--vertical', disabled && 'ds-slider--disabled', label === undefined && className)}
+      id={header ? undefined : id}
+      className={cx('ds-slider', vertical && 'ds-slider--vertical', variant !== 'default' && `ds-slider--${variant}`, disabled && 'ds-slider--disabled', !header && className)}
       style={
         {
-          ...(label === undefined ? style : undefined),
+          ...(header ? undefined : style),
           '--slider-start': range ? fraction(values[0]) : 0,
           '--slider-end': fraction(values[values.length - 1]),
         } as CSSProperties
       }
     >
       <div className="ds-slider__track" ref={trackRef} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={endDrag} onPointerCancel={endDrag} onLostPointerCapture={endDrag}>
+        {markList.length > 0 && (
+          <div className="ds-slider__marks" aria-hidden>
+            {markList.map((m) => (
+              <span key={m.value} className={cx('ds-slider__mark', m.emphasis && 'ds-slider__mark--emphasis')} style={{ '--slider-at': fraction(m.value) } as CSSProperties} />
+            ))}
+          </div>
+        )}
         <div className="ds-slider__range" />
+        {scrubber && (label !== undefined || valueText !== undefined) && (
+          <div className="ds-slider__inside" aria-hidden={label === undefined || undefined}>
+            <span id={labelId}>{label}</span>
+            <span aria-hidden>{valueText}</span>
+          </div>
+        )}
         {values.map((v, i) => (
           <span
             key={i}
@@ -194,14 +234,16 @@ export function Slider<V extends Value = Value>({
             id={`${id ?? autoId}-thumb-${i}`}
             data-dragging={dragging === i ? '' : undefined}
             onKeyDown={onKeyDown(i)}
-          />
+          >
+            {thumbDot !== undefined && <span className="ds-slider__dot" style={{ backgroundColor: thumbDot }} aria-hidden />}
+          </span>
         ))}
       </div>
       {name !== undefined && values.map((v, i) => <input key={i} type="hidden" name={name} value={v} disabled={disabled} />)}
     </div>
   );
 
-  if (label === undefined) return slider;
+  if (!header) return slider;
   return (
     <div id={id} className={cx('ds-slider-field', disabled && 'ds-slider-field--disabled', className)} style={style}>
       <div className="ds-slider-field__header">
