@@ -474,7 +474,7 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
@@ -505,6 +505,9 @@ const tests = {
     await seats.getByRole('button', { name: 'Add 6 seats' }).click();
     assert.equal(await seats.isVisible(), false, 'the drawer closes');
     await page.getByText('5 of 16', { exact: true }).waitFor();
+    await page.getByRole('link', { name: 'Mira Okafor' }).hover();
+    await page.getByText('Created the workspace and manages billing.', { exact: false }).waitFor();
+    await page.mouse.move(0, 0);
     assert.equal(await rows.count(), 5);
     await page.getByRole('button', { name: 'Pending', exact: true }).click();
     assert.equal(await rows.count(), 2);
@@ -1331,6 +1334,45 @@ Object.assign(tests, {
     assert.ok(th.y > t.y + t.height - 20, 'the handle sits at the bottom');
     await page.keyboard.press('Escape');
     assert.equal(await top.isVisible(), false, 'Escape closes it');
+  },
+  'hover card: opens after resting on the link, not on a quick pass; stays while moving onto the card; closes after leaving; keyboard focus opens it, Tab into it keeps it, Escape closes it': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-hover-card--profile&viewMode=story');
+    const trigger = page.getByRole('link', { name: '@maya.travels' });
+    await trigger.waitFor();
+    const card = page.locator('.ds-hover-card__content');
+    assert.equal(await card.isVisible(), false, 'closed at first');
+    await trigger.hover();
+    await page.waitForTimeout(300);
+    await page.mouse.move(5, 5);
+    await page.waitForTimeout(600);
+    assert.equal(await card.isVisible(), false, 'a quick pass does not open it');
+    await trigger.hover();
+    await page.waitForTimeout(800);
+    assert.equal(await card.isVisible(), true, 'resting on the link opens it');
+    const [t, c] = await Promise.all([trigger.boundingBox(), card.boundingBox()]);
+    assert.equal(Math.round(c.y - (t.y + t.height)), 4, '4 px under the link');
+    assert.equal(Math.round(c.x), Math.round(t.x), 'align start');
+    assert.equal(Math.round(c.width), 288, '288 px wide');
+    await page.mouse.move(c.x + 40, c.y + 40, { steps: 4 });
+    await page.waitForTimeout(400);
+    assert.equal(await card.isVisible(), true, 'moving onto the card keeps it open');
+    await page.mouse.move(c.x + c.width + 120, c.y + c.height + 80);
+    await page.waitForTimeout(450);
+    assert.equal(await card.isVisible(), false, 'leaving closes it after the delay');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-hover-card--avatar-trigger&viewMode=story');
+    await page.getByRole('link', { name: 'Leo Park' }).waitFor();
+    await page.keyboard.press('Tab');
+    const leo = page.locator('.ds-hover-card__content');
+    assert.equal(await leo.isVisible(), true, 'keyboard focus opens it at once');
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Follow', 'Tab moves into the card');
+    assert.equal(await leo.isVisible(), true, 'and keeps it open');
+    await page.keyboard.press('Escape');
+    assert.equal(await leo.isVisible(), false, 'Escape closes it');
+    await page.keyboard.press('Shift+Tab');
+    await page.evaluate(() => document.body.appendChild(Object.assign(document.createElement('button'), { textContent: 'Outside' })).focus());
+    assert.equal(await leo.isVisible(), false, 'focus leaving closes it');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

@@ -24,6 +24,7 @@ import { Empty } from '../Empty';
 import { Dialog, DialogClose } from '../Dialog';
 import { Drawer, DrawerClose } from '../Drawer';
 import { Field, FieldGroup } from '../Field';
+import { HoverCard } from '../HoverCard';
 import { Input, InputAction, InputDropdown } from '../Input';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
@@ -68,7 +69,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -430,6 +431,26 @@ export const Members: StoryObj = {
                   <Button variant="outline" aria-label="More seats" onClick={() => setExtraSeats((n) => n + 1)} icon={<span aria-hidden>+</span>} />
                 </div>
               </Drawer>
+              <p style={{ margin: 0, fontSize: 14, color: 'var(--ds-muted-foreground)' }}>
+                Workspace owner:{' '}
+                <HoverCard
+                  align="start"
+                  trigger={
+                    <a href="#mira" style={{ color: 'var(--ds-foreground)', fontWeight: 500, textDecoration: 'underline', textUnderlineOffset: 3 }}>
+                      Mira Okafor
+                    </a>
+                  }
+                >
+                  <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                    <Avatar size="lg" initials="MO" />
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontWeight: 500 }}>Mira Okafor</span>
+                      <span style={{ color: 'var(--ds-muted-foreground)' }}>Owner · mira@orbit.dev</span>
+                    </div>
+                  </div>
+                  <p style={{ margin: 0, color: 'var(--ds-muted-foreground)' }}>Created the workspace and manages billing. Ask her to change the plan.</p>
+                </HoverCard>
+              </p>
               <Marker variant="separator">Today</Marker>
               {activity.map((line, i) => (
                 <Marker key={i}>{line}</Marker>

@@ -1,0 +1,110 @@
+/*
+ * Hover Card — Sort UI 2.0 component "Hover Card" (node 167:2) on page 166:3 in file 4JnqgEbdlnKgiFrfmiwEZw: a preview
+ * card that shows what is behind a link (a person, a page, an event) while the pointer rests on it or the link has
+ * keyboard focus. Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup:
+ *   <span class="ds-hover-card">
+ *     <a href="/@priya">@priya</a>
+ *     <div class="ds-hover-card__content [ds-hover-card__content--top | --left | --right] [--start | --end]">…</div>
+ *   </span>
+ * The card is 288 px wide (--hover-card-width), with 16 px padding and its parts 12 px apart (Figma "content");
+ * side: bottom (default), top, left, right, 4 px from the trigger; align: center (default), start, end.
+ */
+
+@layer ds.components {
+  .ds-hover-card {
+    position: relative;
+    display: inline-flex;
+    vertical-align: baseline;
+  }
+
+  /* Figma "Hover Card": 288 px, popover fill, 14 px radius, a 1 px border outside and the Surface/Popover effect. */
+  .ds-hover-card__content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    width: var(--hover-card-width, var(--ds-spacing-72));
+    max-width: calc(100vw - var(--ds-spacing-8));
+    padding: var(--ds-spacing-4);
+    border-radius: var(--ds-radius-14);
+    background-color: var(--ds-popover);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    text-align: start;
+    white-space: normal;
+  }
+
+  .ds-hover-card__content[hidden] {
+    display: none;
+  }
+
+  /* In .ds-hover-card the card pops up 4 px from the trigger, centred on it; on its own it stays in the flow. */
+  .ds-hover-card > .ds-hover-card__content {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + var(--ds-spacing-1));
+    left: 50%;
+    translate: -50% 0;
+    animation: ds-hover-card-in var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-hover-card > .ds-hover-card__content--start {
+    left: 0;
+    translate: none;
+  }
+
+  .ds-hover-card > .ds-hover-card__content--end {
+    right: 0;
+    left: auto;
+    translate: none;
+  }
+
+  .ds-hover-card > .ds-hover-card__content--top {
+    top: auto;
+    bottom: calc(100% + var(--ds-spacing-1));
+  }
+
+  .ds-hover-card > :is(.ds-hover-card__content--left, .ds-hover-card__content--right) {
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .ds-hover-card > .ds-hover-card__content--left {
+    right: calc(100% + var(--ds-spacing-1));
+    left: auto;
+  }
+
+  .ds-hover-card > .ds-hover-card__content--right {
+    left: calc(100% + var(--ds-spacing-1));
+  }
+
+  .ds-hover-card > :is(.ds-hover-card__content--left, .ds-hover-card__content--right).ds-hover-card__content--start {
+    top: 0;
+    translate: none;
+  }
+
+  .ds-hover-card > :is(.ds-hover-card__content--left, .ds-hover-card__content--right).ds-hover-card__content--end {
+    top: auto;
+    bottom: 0;
+    translate: none;
+  }
+
+  @keyframes ds-hover-card-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-hover-card > .ds-hover-card__content {
+      animation: none;
+    }
+  }
+}

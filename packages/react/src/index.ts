@@ -14,6 +14,7 @@ export * from './Drawer';
 export * from './DropdownMenu';
 export * from './Empty';
 export * from './Field';
+export * from './HoverCard';
 export * from './Input';
 export * from './Kbd';
 export * from './Marker';
