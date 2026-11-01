@@ -1,5 +1,12 @@
 # @helloantek/ds-react
 
+## 2.25.0
+
+### Minor Changes
+
+- 6ec7cde: Drawer (Sort UI 2.0): `Drawer` opens a rounded modal panel that floats 8 px from the bottom (`direction="down"`, the default), the top (`up`) or the end edge (`side`), with a swipe handle (`swipeHandle`) that closes it when dragged towards the edge, a `title`, a `description`, any content and a `footer` whose buttons stack full-width; `DrawerClose` makes a button close it. Down and up are 664 px wide with a centred heading, side is full-height and 384 px wide (`width`). Focus stays inside; Escape or a click on the backdrop closes it and returns focus. `closeButton` adds a Close button, which Figma's Drawer does not have.
+- 4b12b04: Hover Card (Sort UI 2.0): `HoverCard` previews what is behind a link in a 288 px card (`width`) while the pointer rests on it (`openDelay`, 700 ms) or the link has keyboard focus. It stays while the pointer or focus is on the link or the card, closes `closeDelay` (300 ms) after the pointer leaves, and Escape closes it; `side` and `align` place it 4 px from the trigger.
+
 ## 2.24.0
 
 ### Minor Changes
