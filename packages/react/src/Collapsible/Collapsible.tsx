@@ -102,16 +102,22 @@ export function CollapsibleTrigger({ asChild = false, showChevron = true, classN
 }
 
 export interface CollapsibleContentProps extends HTMLAttributes<HTMLDivElement> {
-  /** Keep the content in the DOM while closed (default true; hidden with the `hidden` attribute). */
+  /** Keep the content in the DOM while closed (default true). With false it is removed as soon as it closes, so it
+   * closes without the animation. */
   keepMounted?: boolean;
 }
 
-/** What the trigger shows and hides (16 px below it). */
+/** What the trigger shows and hides (16 px below it). It animates its height open and closed and is hidden
+ * (visibility) once collapsed, so closed content leaves the tab order and the accessibility tree. */
 export function CollapsibleContent({ keepMounted = true, className, children, ...rest }: CollapsibleContentProps) {
   const { open, contentId } = useCollapsible('CollapsibleContent');
   return (
-    <div {...rest} id={contentId} hidden={!open} className={cx('ds-collapsible__content', className)}>
-      {open || keepMounted ? children : null}
+    <div id={contentId} className="ds-collapsible__panel" data-state={open ? 'open' : 'closed'}>
+      <div className="ds-collapsible__clip">
+        <div {...rest} className={cx('ds-collapsible__content', className)}>
+          {open || keepMounted ? children : null}
+        </div>
+      </div>
     </div>
   );
 }

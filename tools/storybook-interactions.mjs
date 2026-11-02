@@ -1797,13 +1797,22 @@ Object.assign(tests, {
     await trigger.click();
     const show = page.getByRole('button', { name: 'Show replies' });
     assert.equal(await show.getAttribute('aria-expanded'), 'false');
-    assert.equal(await content.isVisible(), false, 'closed hides it');
-    assert.equal(await content.getAttribute('hidden'), '', 'with the hidden attribute');
+    await content.waitFor({ state: 'hidden' });
+    assert.deepEqual(await content.evaluate((el) => [el.getBoundingClientRect().height, getComputedStyle(el).visibility]), [0, 'hidden'], 'closed collapses the content to 0 px, then hides it');
+    assert.equal(await page.locator('.ds-collapsible').first().evaluate((el) => el.getBoundingClientRect().height), 20, 'and the gap closes with it (Figma State=Closed is 20 px)');
     await show.focus();
     await page.keyboard.press('Enter');
+    const heights = [];
+    for (let i = 0; i < 4; i++) {
+      heights.push(await content.evaluate((el) => el.getBoundingClientRect().height));
+      await page.waitForTimeout(40);
+    }
+    await page.waitForTimeout(250);
     assert.equal(await content.isVisible(), true, 'Enter opens it');
+    const full = await content.evaluate((el) => el.getBoundingClientRect().height);
+    assert.ok(heights.some((h) => h > 0 && h < full), `the content grows to ${full} px instead of jumping (${heights.join(', ')})`);
     await page.keyboard.press('Space');
-    assert.equal(await content.isVisible(), false, 'Space closes it');
+    await content.waitFor({ state: 'hidden' });
     const gap = await page.evaluate(() => {
       const root = document.querySelector('.ds-collapsible');
       return getComputedStyle(root).rowGap;
@@ -1815,7 +1824,8 @@ Object.assign(tests, {
     await details.waitFor();
     await details.click();
     await page.getByRole('button', { name: 'Show details', expanded: false }).waitFor();
-    assert.equal(await page.getByText('Layover in Frankfurt · 1h 45m').isVisible(), false, 'an asChild Button toggles the content');
+    // an asChild Button toggles the content
+    await page.getByText('Layover in Frankfurt · 1h 45m').waitFor({ state: 'hidden' });
 
     await page.goto('http://localhost:6008/iframe.html?id=components-collapsible--disabled&viewMode=story');
     const disabled = page.getByRole('button', { name: 'Show replies' });
@@ -1877,6 +1887,15 @@ Object.assign(tests, {
     await page.getByRole('button', { name: 'Next: Invite your team' }).click();
     assert.equal(await page.getByRole('button', { name: 'Invite your team', exact: true }).getAttribute('aria-expanded'), 'true', 'value / onValueChange open the next step');
     assert.equal(await page.getByRole('button', { name: 'Your trial ends in 3 days' }).getAttribute('aria-expanded'), 'false');
+  },
+  'mobile: components turn off the grey tap highlight (inherited by their parts)': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-tabs--order&viewMode=story');
+    await page.locator('.ds-tabs__trigger').first().waitFor();
+    const colours = await page.evaluate(() =>
+      ['.ds-tabs', '.ds-tabs__trigger', '.ds-tabs__trigger > *'].map((sel) => getComputedStyle(document.querySelector(sel)).webkitTapHighlightColor),
+    );
+    assert.deepEqual(colours, ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0)']);
+    assert.notEqual(await page.evaluate(() => getComputedStyle(document.body).webkitTapHighlightColor), 'rgba(0, 0, 0, 0)', 'the page outside the components keeps the browser default');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

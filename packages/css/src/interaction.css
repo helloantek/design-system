@@ -1,0 +1,14 @@
+/*
+ * Shared interaction rules for every component.
+ *
+ * Mobile browsers (Safari on iOS, Chrome on Android) flash a grey box over a tapped link or button. Sort UI 2.0
+ * components draw their own pressed, hover and focus states, so the flash only competes with them (an Accordion's
+ * panel animation started under it). The property is inherited, so setting it on every ds- element covers the
+ * parts inside; :where() keeps it at zero specificity so an app can bring it back.
+ */
+
+@layer ds.components {
+  :where([class^='ds-'], [class*=' ds-']) {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
