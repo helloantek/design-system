@@ -1939,6 +1939,40 @@ Object.assign(tests, {
       'chevron and dot are 17.33 px icons, slash a "/" in 16 px',
     );
   },
+  'pagination: a named nav; the current page has aria-current; pages follow Figma (1 2 3 … 12); Previous / Next move and are disabled at the ends; links with getHref; icons only adds First / Last': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-pagination--default&viewMode=story');
+    const nav = page.getByRole('navigation', { name: 'Pagination' });
+    await nav.waitFor();
+    const labels = () => nav.locator('li').evaluateAll((els) => els.map((el) => (el.querySelector('.ds-pagination__ellipsis') ? '…' : el.textContent.trim())));
+    assert.deepEqual(await labels(), ['Previous', '1', '2', '3', '…', '12', 'Next'], 'Figma sample: page 2 of 12');
+    assert.equal(await nav.locator('[aria-current="page"]').getAttribute('aria-label'), 'Page 2');
+    assert.equal(await nav.locator('.ds-pagination__ellipsis').getAttribute('aria-hidden'), 'true');
+    await nav.getByRole('button', { name: 'Next' }).click();
+    assert.deepEqual(await labels(), ['Previous', '1', '2', '3', '4', '…', '12', 'Next'], 'Next moves to page 3');
+    await nav.getByRole('button', { name: 'Page 12' }).click();
+    assert.equal(await nav.getByRole('button', { name: 'Next' }).isDisabled(), true, 'Next is disabled on the last page');
+    assert.deepEqual(await labels(), ['Previous', '1', '…', '11', '12', 'Next']);
+    await nav.getByRole('button', { name: 'Page 1', exact: true }).click();
+    assert.equal(await nav.getByRole('button', { name: 'Previous' }).isDisabled(), true, 'Previous is disabled on the first page');
+    const sizes = await nav.locator('.ds-pagination__page').evaluateAll((els) => els.map((el) => [Math.round(el.getBoundingClientRect().width), Math.round(el.getBoundingClientRect().height)]));
+    assert.ok(sizes.every(([w, h]) => w === 32 && h === 32), `page links are 32 px squares (${JSON.stringify(sizes)})`);
+    assert.equal(await nav.locator('ul').evaluate((el) => getComputedStyle(el).columnGap), '4px');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-pagination--links&viewMode=story');
+    const links = page.getByRole('navigation', { name: 'Search results pages' });
+    await links.waitFor();
+    assert.equal(await links.getByRole('link', { name: 'Page 6' }).getAttribute('href'), '?page=6');
+    assert.equal(await links.getByRole('link', { name: 'Previous' }).getAttribute('href'), '?page=4');
+    assert.equal(await links.getByRole('link', { name: 'Page 5' }).getAttribute('aria-current'), 'page');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-pagination--icons-only&viewMode=story');
+    const icons = page.getByRole('navigation', { name: 'Pagination' });
+    await icons.waitFor();
+    assert.deepEqual(await icons.locator('li .ds-button--icon-only').evaluateAll((els) => els.map((el) => el.getAttribute('aria-label'))), ['First', 'Previous', 'Next', 'Last']);
+    await icons.getByRole('button', { name: 'Last' }).click();
+    assert.equal(await icons.locator('[aria-current="page"]').textContent(), '5');
+    assert.equal(await icons.getByRole('button', { name: 'Last' }).isDisabled(), true);
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });

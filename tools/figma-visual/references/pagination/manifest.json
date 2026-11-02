@@ -1,0 +1,52 @@
+{
+ "$comment": "Sort UI 2.0 Pagination reference renders (1x PNG). The \"Pagination\" demo (page 2 of 12: Previous, 1, [2], 3, ellipsis, 12, Next, centred in 448 px), \"Icons only\" (page 3 of 5 with First / Last, 448 px) and \"With a list\" (page 1 of 3, 384 px), exported with exportAsync and absolute bounds; the Pagination Ellipsis (exportAsync: get_screenshot drew the canvas grey behind it), compared on the first ellipsis of a page-6-of-12 list. The Pagination component's own sample (1, 2, [3], ellipsis, 8) is not a range any rule produces, so the demos stand in for it.",
+ "component": "pagination",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "253:5",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "demo",
+   "nodeId": "I1528:108495;1467:45555;1528:108753",
+   "props": {
+    "Demo": "default"
+   },
+   "nodeW": 448,
+   "nodeH": 32
+  },
+  {
+   "slug": "icons",
+   "nodeId": "I1528:108733;1467:45555;1528:108851",
+   "props": {
+    "Demo": "icons"
+   },
+   "nodeW": 448,
+   "nodeH": 32
+  },
+  {
+   "slug": "list",
+   "nodeId": "I1528:108738;1467:45555;1528:108926",
+   "props": {
+    "Demo": "list"
+   },
+   "nodeW": 384,
+   "nodeH": 32
+  },
+  {
+   "slug": "ellipsis",
+   "nodeId": "253:2",
+   "props": {
+    "Demo": "ellipsis"
+   },
+   "target": "#target .ds-pagination__ellipsis",
+   "nodeW": 32,
+   "nodeH": 32
+  }
+ ]
+}

@@ -32,6 +32,7 @@ import { HoverCard } from '../HoverCard';
 import { Input, InputAction, InputDropdown } from '../Input';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
+import { Pagination } from '../Pagination';
 import { Popover, PopoverActions, PopoverClose } from '../Popover';
 import { Progress, ProgressCircle } from '../Progress';
 import { Separator } from '../Separator';
@@ -50,6 +51,19 @@ import { Tooltip } from '../Tooltip';
 
 type Role = 'Owner' | 'Admin' | 'Member';
 type Member = { id: string; name: string; email: string; role: Role; pending?: boolean };
+
+// Older entries for the activity log (four a page after today's).
+const olderActivity = [
+  'Mira created the team page',
+  'Seats raised from 5 to 10',
+  'Priya joined as Member',
+  'Jonas turned on two-step sign-in',
+  'Mira connected the calendar',
+  'The Orbit workspace moved to the Pro plan',
+  'Jonas invited Tomás',
+  'Seats raised from 3 to 5',
+  'Mira uploaded the team photo',
+];
 
 const initialMembers: Member[] = [
   { id: 'mira', name: 'Mira Okafor', email: 'mira@orbit.dev', role: 'Owner' },
@@ -76,7 +90,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -93,6 +107,7 @@ export const Members: StoryObj = {
     const [showRoles, setShowRoles] = useState(true);
     const [compact, setCompact] = useState(false);
     const [recentOpen, setRecentOpen] = useState(false);
+    const [logPage, setLogPage] = useState(1);
     const [sortBy, setSortBy] = useState<'joined' | 'name' | 'role'>('joined');
     const [teamName, setTeamName] = useState('Orbit');
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -400,13 +415,22 @@ export const Members: StoryObj = {
                     </SheetClose>
                   }
                 >
-                  <Marker variant="separator">Today</Marker>
-                  {activity.map((line, i) => (
-                    <Marker key={i}>{line}</Marker>
-                  ))}
-                  <Marker variant="separator">Earlier</Marker>
-                  <Marker>Mira created the team page</Marker>
-                  <Marker>Seats raised from 5 to 10</Marker>
+                  {logPage === 1 ? (
+                    <>
+                      <Marker variant="separator">Today</Marker>
+                      {activity.map((line, i) => (
+                        <Marker key={i}>{line}</Marker>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      <Marker variant="separator">Earlier</Marker>
+                      {olderActivity.slice((logPage - 2) * 4, (logPage - 1) * 4).map((line) => (
+                        <Marker key={line}>{line}</Marker>
+                      ))}
+                    </>
+                  )}
+                  <Pagination page={logPage} pageCount={1 + Math.ceil(olderActivity.length / 4)} onPageChange={setLogPage} aria-label="Activity log pages" style={{ marginTop: 'auto' }} />
                 </Sheet>
               </div>
             }
