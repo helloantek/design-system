@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.35.0
+
+### Minor Changes
+
+- 82d8321: Breadcrumb (Sort UI 2.0): `Breadcrumb` (`separator` chevron / slash / dot) with `BreadcrumbItem` (`href` or `asChild` link, `current` page, `menu` dropdown, `icon`) and `BreadcrumbEllipsis` (a menu of the steps left out). A named `nav` with an ordered list; separators are hidden from assistive technology and the current page has `aria-current="page"`.
+
 ## 2.34.0
 
 ### Minor Changes
