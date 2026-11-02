@@ -1,0 +1,24 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (the day cell) and how to read it.",
+  "layers": {
+    "root": {
+      "selector": "",
+      "skip": [
+        "p",
+        "g"
+      ]
+    },
+    "DayButton": {
+      "selector": ".ds-calendar__day",
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ]
+    },
+    "DayButton/TEXT": {
+      "selector": ".ds-calendar__day",
+      "fill": "color"
+    }
+  }
+}

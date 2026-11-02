@@ -8,6 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel } from '../AlertDialo
 import { Avatar, AvatarGroup } from '../Avatar';
 import { Badge, type BadgeColor } from '../Badge';
 import { Button } from '../Button';
+import { Calendar } from '../Calendar';
 import { ButtonGroup } from '../ButtonGroup';
 import { Card, CardContent, CardFooter, CardHeader } from '../Card';
 import { ContextMenu } from '../ContextMenu';
@@ -72,7 +73,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -92,6 +93,7 @@ export const Members: StoryObj = {
     const [teamName, setTeamName] = useState('Orbit');
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [seats, setSeats] = useState(10);
+    const [offsite, setOffsite] = useState(new Date(2026, 4, 14));
     const [extraSeats, setExtraSeats] = useState(5);
     const [removing, setRemoving] = useState<Member | null>(null);
     const [activity, setActivity] = useState<ReactNode[]>(['Mira created the workspace', 'Jonas joined as Admin']);
@@ -403,6 +405,29 @@ export const Members: StoryObj = {
               <AspectRatio ratio="21:9" rounded>
                 <img src={aspectRatioPhoto} alt="The team at the last offsite" />
               </AspectRatio>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, fontSize: 14, color: 'var(--ds-muted-foreground)' }}>
+                Next offsite
+                <Popover
+                  align="end"
+                  aria-label="Pick the offsite date"
+                  trigger={
+                    <Button variant="outline" size="sm" aria-label={`Next offsite: ${offsite.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`}>
+                      {offsite.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </Button>
+                  }
+                >
+                  <Calendar
+                    variant="flat"
+                    aria-label="Offsite date"
+                    selected={offsite}
+                    onSelect={(d) => {
+                      setOffsite(d);
+                      toast.success(`Offsite moved to ${d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`);
+                    }}
+                    disabled={(d) => d.getDay() === 0 || d.getDay() === 6}
+                  />
+                </Popover>
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, color: 'var(--ds-muted-foreground)' }}>
                 <ProgressCircle value={72} size="40px" thickness={12} aria-label="Profiles complete" />
                 72 % of profiles are complete

@@ -362,6 +362,28 @@ A modal that asks to confirm an action: Sort UI 2.0 **Alert Dialog** (Size, Medi
 
 Open it with `trigger`, or control it with `open` / `onOpenChange`. Focus starts on Cancel and stays in the dialog; the page behind is inert and does not scroll; Escape and Cancel close it and focus goes back to the trigger. A click on the backdrop does not close it, as it asks for an answer. The action closes it after `onClick` unless that calls `event.preventDefault()` (to keep it open while saving).
 
+## Calendar
+
+A month grid to pick a day or a range: the WAI-ARIA date grid. Sort UI 2.0 **Calendar** (Mode, Type), **Calendar Navigation** (Variant) and **Calendar Day** (Selection, Day, State).
+
+```tsx
+<Calendar selected={date} onSelect={setDate} />
+<Calendar mode="range" selected={range} onSelect={setRange} numberOfMonths={2} />
+<Calendar captionLayout="dropdown" min={new Date()} disabled={(d) => d.getDay() === 0} />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Mode = single · range | `mode`; `selected` / `defaultSelected` / `onSelect` (a `Date`, or `{ from, to }`) | — |
+| Type = panel · flat | `variant` | `ds-calendar--flat` |
+| Calendar Navigation Variant = label · dropdown · dropdown-months · dropdown-years | `captionLayout`; `startMonth` / `endMonth` set the years | `ds-calendar__nav`, `ds-calendar__dropdown` |
+| Calendar Day Selection = selected · range-start · range-middle · range-end | from `selected` | `[aria-pressed="true"]`, `ds-calendar__cell--range-*` |
+| Calendar Day Day = today · outside · disabled | `today` (default the current date), `showOutsideDays`, `min` / `max` / `disabled` | `ds-calendar__day--today` · `--outside` · `:disabled` |
+| Calendar Day State = hover · focus | `:hover` · `:focus-visible` | — |
+| — (the demos) | `month` / `defaultMonth` / `onMonthChange`, `numberOfMonths`, `orientation`, `footer`, `aside`, `weekStartsOn`, `locale` | `ds-calendar--vertical`, `__footer`, `__aside` |
+
+The panel is a 256 px popover surface (14 px radius, Surface/Popover); flat drops the surface, e.g. inside a Popover or Card. Days are 28 px tall and share the month's width; the selected day is primary, today fill-2, and a range draws a fill-2 band rounded at its ends and where a week starts or ends. Several months sit side by side (the navigation on the last) or stacked (on the first). Each grid is one Tab stop: the arrow keys move by a day or a week (crossing months), Home and End go to the week's ends, Page Up and Page Down by a month (Shift: a year), Enter or Space picks. Days are named in full ("Friday, March 27, 2026") and today is `aria-current="date"`; month and weekday names come from Intl in `locale`.
+
 ## Card
 
 A surface for related content and actions: Sort UI 2.0 **Card** (Size, Media) with its slots as parts. Every part is optional; content gets the space above or below when it starts or ends the card.
@@ -1026,6 +1048,7 @@ These come from the Figma files, not the code:
 - Tabs (2.0): Variant=Default, Orientation=Vertical, Size=lg start-aligns its labels while every other vertical list centres them; the code centres them everywhere. Tabs Trigger State=Focus draws an unselected tab; Figma has no focused selected tab, and the code keeps the selected surface under the ring. The icons are 17 px as in Figma, while Button and Toggle draw 16 px. Figma has no tab panel and no full-width list; the code adds `TabsContent` and `fullWidth` from the demos.
 - Slider (2.0): the thumb's Hover and Focus states use a smaller shadow (4/6 px and 2/4 px blur at 10 %) that is not an effect style; the code keeps Shadow/md and adds the 4 px ring. The thumb is white (an unbound colour); the code uses `control` (white in Light, neutral-800 in Dark). Disabled vertical sliders are 180 px tall and the others 160 px; the code defaults to 160 px. The demos' label row and their block ("Autoscaling range", "Claude Effort Slider", "Color picker") and scrubber looks are compositions of the slot and the thumb, not properties; the code offers them as `label` / `valueText`, `variant` (`block`, `scrubber`), `marks` and `thumbDot`, compared with the demo instances. The colour-picker thumbs carry the dot as an extra layer; the code draws it from `thumbDot`. The scrubber's label is muted in Figma; on the Dark fill that is 3.9:1, so the code draws it in foreground (the value stays muted).
 - Input OTP (2.0): an invalid group has a 2 px invalid ring in its effects, but Figma does not draw a shadow under a frame without a fill, so it never shows; the code draws the invalid stroke only. Slots round their outer corners 10 px inside an 8 px group; the code rounds them 8 px to follow the group's edge. The "Input OTP" demo stretches 48 px tall cells across the card, which no property gives; the code offers `fullWidth` and `--otp-slot-height`.
+- Calendar (2.0): Figma clips each week to a 6 px radius so a range band rounds at the week's ends; the code rounds the end days instead, so a focused day's ring is not clipped. The "Range" demos highlight the outside days that fall inside the range, as the code does. Figma has no limits, locales or week start; the code adds `min`, `max`, `disabled`, `locale` and `weekStartsOn`, and `footer` / `aside` for the "Presets" and "Range with presets" demos (whose preset column is left-aligned in Figma; the stories use a vertical Toggle Group).
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

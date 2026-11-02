@@ -5,6 +5,7 @@ export * from './Avatar';
 export * from './Badge';
 export * from './Button';
 export * from './ButtonGroup';
+export * from './Calendar';
 export * from './Card';
 export * from './Checkbox';
 export * from './Combobox';

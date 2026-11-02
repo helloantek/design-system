@@ -1,0 +1,47 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-calendar) and how to read it.",
+  "layers": {
+    "root": {
+      "selector": "",
+      "stroke": "outer-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma's Calendar is one month with 12 px padding; in code the surface (.ds-calendar) holds one or more .ds-calendar__month, which carry the padding and the 16 px gap."
+    },
+    "Calendar Navigation": {
+      "selector": ".ds-calendar__nav",
+      "skip": [
+        "p"
+      ]
+    },
+    "Days": {
+      "selector": ".ds-calendar__grid",
+      "skip": [
+        "p"
+      ]
+    },
+    "Row": {
+      "selector": ".ds-calendar__week",
+      "skip": [
+        "r",
+        "p",
+        "g"
+      ],
+      "$why": "Figma clips each week to a 6 px radius so a range band rounds at the row's ends; in code the end days round themselves (no clipping, so the focus ring stays visible). The week is a 7-column grid, not an auto-layout."
+    },
+    "weekday": {
+      "selector": ".ds-calendar__weekday",
+      "skip": [
+        "r",
+        "g"
+      ],
+      "$why": "The header has no fill, so its radius draws nothing; one line of text needs no gap."
+    },
+    "weekday/TEXT": {
+      "selector": ".ds-calendar__weekday",
+      "fill": "color"
+    }
+  }
+}
