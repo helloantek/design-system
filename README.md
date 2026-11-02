@@ -42,6 +42,8 @@ import { Button } from '@helloantek/ds-react';
 
 Colour scheme: `data-ds-scheme="dark"` on `<html>` (or any section), `"system"` to follow the OS. Light is the default.
 
+On phones, components turn off the browser's grey tap highlight (they draw their own states); `-webkit-tap-highlight-color` on your own element brings it back.
+
 ### Other web frameworks (Vue, Svelte, Angular, plain HTML)
 
 Load the same two CSS files and use the classes; each component's markup is documented at the top of its CSS file:
@@ -899,10 +901,10 @@ Shows or hides content under a trigger: the Sort UI 2.0 **Collapsible** (State=C
 |---|---|---|
 | State=Closed / Open | `open` / `defaultOpen` / `onOpenChange` | `ds-collapsible[data-state]` |
 | trigger (slot; the sample: 14/20 Medium label and a chevron, 4 px apart) | `CollapsibleTrigger` (`showChevron`), or any button with `asChild` | `ds-collapsible__trigger`, `ds-collapsible__chevron` |
-| content (slot) | `CollapsibleContent` (`keepMounted`) | `ds-collapsible__content` |
+| content (slot) | `CollapsibleContent` (`keepMounted`) | `ds-collapsible__panel`, `ds-collapsible__content` |
 | — | `disabled` | — |
 
-The trigger is a button with `aria-expanded` and `aria-controls` pointing at the content; click, Enter or Space toggles it. Closed content keeps its place in the DOM with the `hidden` attribute (`keepMounted={false}` drops it). The trigger can sit anywhere inside the Collapsible: the "Order summary" and "Flight details" demos put a Ghost icon button or an Outline sm button in a header.
+The trigger is a button with `aria-expanded` and `aria-controls` pointing at the content; click, Enter or Space toggles it. The content animates its height open and closed (no motion with `prefers-reduced-motion`) and, once collapsed, stays in the DOM hidden, so it leaves the tab order; `keepMounted={false}` removes it as soon as it closes, without the animation. `--collapsible-gap` changes the 16 px between the trigger and the content, and closes with it. The trigger can sit anywhere inside the Collapsible: the "Order summary" and "Flight details" demos put a Ghost icon button or an Outline sm button in a header.
 
 ## Combobox
 

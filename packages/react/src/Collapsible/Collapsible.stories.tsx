@@ -164,7 +164,7 @@ export const OrderSummary: StoryObj = {
     const [open, setOpen] = useState(true);
     const list: CSSProperties = { listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 12 };
     return (
-      <Collapsible open={open} onOpenChange={setOpen} style={{ width: 448, maxWidth: '100%', gap: 12 }}>
+      <Collapsible open={open} onOpenChange={setOpen} style={{ width: 448, maxWidth: '100%', '--collapsible-gap': '12px' } as CSSProperties}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4 }}>
             <h3 style={{ ...strong, fontWeight: 500 }}>Order #4821</h3>

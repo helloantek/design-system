@@ -8,16 +8,18 @@
  *     <button class="ds-collapsible__trigger" aria-expanded="true" aria-controls="…">
  *       <span class="ds-collapsible__label">Hide replies</span> <svg class="ds-collapsible__chevron"/>
  *     </button>                                   — or any button (Outline sm, Ghost icon…) with aria-expanded
- *     <div class="ds-collapsible__content" id="…" [hidden]>…</div>
+ *     <div class="ds-collapsible__panel" id="…" data-state="open">                   (closed: data-state="closed")
+ *       <div class="ds-collapsible__clip"><div class="ds-collapsible__content">…</div></div>
+ *     </div>
  *   </div>
  */
 
 @layer ds.components {
-  /* Figma "Collapsible": the trigger and the content 16 px apart. */
+  /* Figma "Collapsible": the trigger and the content 16 px apart (--collapsible-gap changes it). */
   .ds-collapsible {
     display: flex;
     flex-direction: column;
-    gap: var(--ds-spacing-4);
+    gap: var(--collapsible-gap, var(--ds-spacing-4));
     min-width: 0;
   }
 
@@ -58,32 +60,58 @@
     cursor: not-allowed;
   }
 
+  /* Not in Figma: the panel opens and closes by animating its height (a grid row from 0fr to 1fr, which every current
+     browser, mobile Safari included, can transition) and fading its content; the gap above it closes with it. A
+     closed panel stays in the DOM but is visibility: hidden once collapsed, so it leaves the tab order and the
+     accessibility tree. */
+  .ds-collapsible__panel {
+    display: grid;
+    grid-template-rows: 1fr;
+    min-width: 0;
+    transition:
+      grid-template-rows var(--ds-duration-200) var(--ds-ease-out),
+      margin var(--ds-duration-200) var(--ds-ease-out),
+      visibility 0s;
+  }
+
+  .ds-collapsible__panel[data-state='closed'] {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--ds-duration-200) var(--ds-ease-out),
+      margin var(--ds-duration-200) var(--ds-ease-out),
+      visibility 0s var(--ds-duration-200);
+  }
+
+  .ds-collapsible > .ds-collapsible__panel[data-state='closed'] {
+    margin-top: calc(-1 * var(--collapsible-gap, var(--ds-spacing-4)));
+  }
+
+  /* The clip reaches 4 px past the content on each side so the focus ring of a control inside is not cut off. */
+  .ds-collapsible__clip {
+    min-height: 0;
+    margin-inline: calc(-1 * var(--ds-spacing-1));
+    padding-inline: var(--ds-spacing-1);
+    overflow: hidden;
+  }
+
   .ds-collapsible__content {
     display: flex;
     flex-direction: column;
     gap: var(--ds-spacing-4);
     min-width: 0;
+    transition: opacity var(--ds-duration-200) var(--ds-ease-out);
   }
 
-  .ds-collapsible__content[hidden] {
-    display: none;
-  }
-
-  /* Not in Figma: the content fades in when it opens. */
-  .ds-collapsible__content:not([hidden]) {
-    animation: ds-collapsible-in var(--ds-duration-200) var(--ds-ease-out);
-  }
-
-  @keyframes ds-collapsible-in {
-    from {
-      opacity: 0;
-      translate: 0 calc(-1 * var(--ds-spacing-1));
-    }
+  .ds-collapsible__panel[data-state='closed'] .ds-collapsible__content {
+    opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ds-collapsible__content:not([hidden]) {
-      animation: none;
+    .ds-collapsible__panel,
+    .ds-collapsible__panel[data-state='closed'],
+    .ds-collapsible__content {
+      transition: none;
     }
   }
 }
