@@ -1824,6 +1824,49 @@ Object.assign(tests, {
     await disabled.click({ force: true });
     assert.equal(await disabled.getAttribute('aria-expanded'), 'false', 'disabled does not open');
   },
+  'accordion: headings hold buttons with aria-expanded; panels are labelled regions; single closes the others, multiple keeps them; Up/Down/Home/End move between triggers; disabled items are skipped': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-accordion--card&viewMode=story');
+    const first = page.getByRole('button', { name: 'When will my order arrive?' });
+    await first.waitFor();
+    assert.equal(await first.evaluate((el) => el.parentElement.tagName), 'H3', 'the trigger sits in a heading');
+    assert.equal(await first.getAttribute('aria-expanded'), 'true');
+    const region = page.getByRole('region', { name: 'When will my order arrive?' });
+    assert.equal(await region.isVisible(), true, 'the open panel is a region named by its trigger');
+    const second = page.getByRole('button', { name: 'Can I change my delivery address?' });
+    await second.click();
+    assert.equal(await second.getAttribute('aria-expanded'), 'true');
+    assert.equal(await first.getAttribute('aria-expanded'), 'false', 'single: opening one closes the other');
+    assert.equal(await region.count(), 0, 'and hides its panel');
+    await second.click();
+    assert.equal(await second.getAttribute('aria-expanded'), 'false', 'collapsible: the open item closes');
+    await first.focus();
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Can I change my delivery address?', 'Down moves to the next trigger');
+    await page.keyboard.press('End');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'How do returns work?', 'End moves to the last');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'When will my order arrive?', 'Down wraps to the first');
+    await page.keyboard.press('Enter');
+    assert.equal(await first.getAttribute('aria-expanded'), 'true', 'Enter opens it');
+    const dividers = await page.locator('.ds-accordion__item').evaluateAll((els) => els.map((el) => getComputedStyle(el).boxShadow !== 'none'));
+    assert.deepEqual(dividers, [true, true, false], 'a divider under every item but the last');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-accordion--states&viewMode=story');
+    const closed = page.getByRole('button', { name: 'Closed' });
+    await closed.waitFor();
+    assert.equal(await page.getByRole('button', { name: 'Disabled' }).isDisabled(), true);
+    await closed.focus();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Closed', 'Down skips the disabled item and wraps');
+    await closed.click();
+    assert.equal(await page.getByRole('button', { name: 'Open', exact: true }).getAttribute('aria-expanded'), 'true', 'multiple: other items stay open');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-accordion--controlled&viewMode=story');
+    await page.getByRole('button', { name: 'Next: Invite your team' }).click();
+    assert.equal(await page.getByRole('button', { name: 'Invite your team', exact: true }).getAttribute('aria-expanded'), 'true', 'value / onValueChange open the next step');
+    assert.equal(await page.getByRole('button', { name: 'Your trial ends in 3 days' }).getAttribute('aria-expanded'), 'false');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });

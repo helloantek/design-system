@@ -317,6 +317,34 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 
 Forms: `name` submits the value through a hidden input (one per value with `multiple`, read them with `formData.getAll(name)`), and resetting the form restores `defaultValue`. The menu opens below the field and scrolls past 296 px; it does not flip near the bottom of the viewport yet.
 
+## Accordion
+
+A list of items whose headers show or hide their panels: the Sort UI 2.0 **Accordion** (a card holding **Accordion Item**s, each with a trigger slot, a content slot and a divider).
+
+```tsx
+<Accordion defaultValue="arrive">
+  <AccordionItem value="arrive">
+    <AccordionTrigger>When will my order arrive?</AccordionTrigger>
+    <AccordionContent>
+      <p>Most orders ship within 24 hours…</p>
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+<Accordion type="multiple" variant="separated" value={open} onValueChange={setOpen}>…</Accordion>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Accordion (card surface) / "Accordion" demo / "Separated items" demo | `variant`: `card` (default), `flush`, `separated` | `ds-accordion`, `--flush`, `--separated` |
+| Accordion Item State=Open | `value` / `defaultValue` / `onValueChange` on the Accordion; `type` (`single`, `multiple`), `collapsible` | `ds-accordion__item[data-state]` |
+| Accordion Item State=Disabled | `disabled` on `AccordionItem` | `ds-accordion__trigger:disabled` |
+| Divider | `divider` (default true; never under the last item) | `ds-accordion__item--no-divider` |
+| trigger (slot) | `AccordionTrigger` (`icon` for the "With icons" demo) | `ds-accordion__trigger`, `__title`, `__chevron` |
+| content (slot) | `AccordionContent` | `ds-accordion__content` |
+| — | `headingLevel` (default 3) | `ds-accordion__heading` |
+
+Each trigger is a button with `aria-expanded` and `aria-controls` inside a heading; each panel is a `role="region"` labelled by its trigger and hidden while closed. Up / Down (wrapping), Home and End move between the enabled triggers; Enter or Space toggles. With `type="single"` (default) opening an item closes the others, and pressing the open one closes it unless `collapsible={false}`.
+
 ## Alert
 
 A callout for a short message: Sort UI 2.0 **Alert** (Variant) with an icon, a title, a description and an action.
@@ -1101,6 +1129,7 @@ These come from the Figma files, not the code:
 - Calendar (2.0): Figma clips each week to a 6 px radius so a range band rounds at the week's ends; the code rounds the end days instead, so a focused day's ring is not clipped. The "Range" demos highlight the outside days that fall inside the range, as the code does. Figma has no limits, locales or week start; the code adds `min`, `max`, `disabled`, `locale` and `weekStartsOn`, and `footer` / `aside` for the "Presets" and "Range with presets" demos (whose preset column is left-aligned in Figma; the stories use a vertical Toggle Group).
 - Date Picker (2.0): Figma has no Date Picker component, only demos that place an Outline Button (or an Input Group with a calendar button) over a Calendar panel 4 px below; the code packages them as `DatePicker` and compares the "Date Picker" and "Input" demo frames. The demos shrink the Calendar to the 240 px field; the code keeps 256 px unless `calendarWidth` is set. The "Range picker" demo labels the trigger "Mar 27, 2026 - Apr 14, 2026"; the code uses the same hyphen.
 - Collapsible (2.0): the trigger slot's sample is a detached "Button" frame with no padding, background or hover state, and Figma draws no focus state for it; the code adds the 3 px ring the other controls use. The "Settings panel" demo has no Collapsible instance (four inputs and an icon button) and the "Order summary" demo uses Item, which is not built yet; the stories rebuild both from Card, Input and Button. The fallback avatar in the sample puts `primary-foreground` initials on `palette/orange-solid`, which turns dark on orange in Dark.
+- Accordion (2.0): the Accordion component is drawn as a card, while its first demo ("Accordion") overrides it to a flush list and "Separated items" to muted boxes 8 px apart; the code offers the three as `variant`. The chevron is the 16 px icon scaled to 17.33 px, drawn 2 px down. Figma has no hover or focus state for the trigger; the code adds the 3 px ring the other controls use. The Divider is a 0 px line on the item's bottom edge; the code draws it as a 1 px inset shadow, which renders the same.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

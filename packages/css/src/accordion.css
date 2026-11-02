@@ -1,0 +1,194 @@
+/*
+ * Accordion — Sort UI 2.0 component "Accordion" (node 200:27) and component set "Accordion Item" (node 200:26) on
+ * page 197:3 in file 4JnqgEbdlnKgiFrfmiwEZw: a list of items whose headers show or hide their panels. Figma
+ * Accordion Item State=Closed / Open / Disabled, Divider (boolean); the trigger and the content are slots. Values are
+ * Sort UI 2.0 tokens.
+ *
+ * Markup:
+ *   <div class="ds-accordion [ds-accordion--flush | ds-accordion--separated]">     (default: the Figma "Accordion" card)
+ *     <div class="ds-accordion__item [ds-accordion__item--no-divider]" data-state="open">
+ *       <h3 class="ds-accordion__heading">
+ *         <button class="ds-accordion__trigger" aria-expanded="true" aria-controls="…">
+ *           <span class="ds-accordion__title">Is it accessible?</span>
+ *           <span class="ds-accordion__chevron"><svg/></span>
+ *         </button>
+ *       </h3>
+ *       <div class="ds-accordion__content" role="region" [hidden]>…</div>
+ *     </div>
+ *   </div>
+ */
+
+@layer ds.components {
+  /* Figma "Accordion": the Card surface (radius 20, card fill, a 1 px border outside, Surface/Card effect). */
+  .ds-accordion {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-3xl);
+    background-color: var(--ds-card);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* "Accordion" demo: no surface, the items edge to edge. */
+  .ds-accordion--flush {
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--ds-foreground);
+  }
+
+  /* "Separated items" demo: no surface; each item is a muted 16 px box, 8 px apart, without dividers. */
+  .ds-accordion--separated {
+    gap: var(--ds-spacing-2);
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--ds-foreground);
+  }
+
+  /* Figma Divider=true: a 1 px border line along the item's bottom edge (the last item has none). */
+  .ds-accordion__item {
+    min-width: 0;
+    box-shadow: inset 0 calc(-1 * var(--ds-stroke-width-1)) 0 var(--ds-border);
+  }
+
+  .ds-accordion__item:last-child,
+  .ds-accordion__item--no-divider,
+  .ds-accordion--separated > .ds-accordion__item {
+    box-shadow: none;
+  }
+
+  .ds-accordion--separated > .ds-accordion__item {
+    border-radius: var(--ds-radius-2xl);
+    background-color: var(--ds-muted);
+  }
+
+  .ds-accordion__heading {
+    display: flex;
+    margin: 0;
+    font: inherit;
+  }
+
+  /* Figma "Trigger": 16 px around, the title and the chevron 24 px apart; title 14/20 Medium. */
+  .ds-accordion__trigger {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: flex-start;
+    gap: var(--ds-spacing-6);
+    min-width: 0;
+    margin: 0;
+    padding: var(--ds-spacing-4);
+    border: 0;
+    border-radius: var(--ds-radius-md);
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    font-weight: var(--ds-font-weight-medium);
+    letter-spacing: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .ds-accordion--flush .ds-accordion__trigger {
+    padding-inline: 0;
+  }
+
+  .ds-accordion__title {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  /* An icon before the title ("With icons" demo), the size of the chevron. */
+  .ds-accordion__title > svg {
+    flex-shrink: 0;
+    width: calc(var(--ds-spacing-4) * 13 / 12);
+    height: calc(var(--ds-spacing-4) * 13 / 12);
+  }
+
+  /* Figma "Chevron": a 17.33 px muted chevron, 2 px down; Open points it up. */
+  .ds-accordion__chevron {
+    display: flex;
+    flex-shrink: 0;
+    padding-top: var(--ds-spacing-0-5);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-accordion__chevron > svg {
+    width: calc(var(--ds-spacing-4) * 13 / 12);
+    height: calc(var(--ds-spacing-4) * 13 / 12);
+    transition: rotate var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-accordion__trigger[aria-expanded='true'] .ds-accordion__chevron > svg {
+    rotate: 180deg;
+  }
+
+  /* Not in Figma: the ring every Sort UI 2.0 control draws on keyboard focus. */
+  .ds-accordion__trigger:focus-visible {
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma State=Disabled: the trigger at 50 %. */
+  .ds-accordion__trigger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Figma "content": 16 px in from the sides and below, 12 px between blocks; body 14/20 Regular. */
+  .ds-accordion__content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    min-width: 0;
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-4);
+    color: var(--ds-foreground);
+  }
+
+  .ds-accordion--flush .ds-accordion__content {
+    padding-inline: 0;
+  }
+
+  .ds-accordion__content[hidden] {
+    display: none;
+  }
+
+  .ds-accordion__content > p {
+    margin: 0;
+  }
+
+  /* Not in Figma: the panel fades in when it opens. */
+  .ds-accordion__content:not([hidden]) {
+    animation: ds-accordion-in var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  @keyframes ds-accordion-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-accordion__chevron > svg {
+      transition: none;
+    }
+
+    .ds-accordion__content:not([hidden]) {
+      animation: none;
+    }
+  }
+}

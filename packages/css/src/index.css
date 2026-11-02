@@ -1,4 +1,5 @@
 /* All @helloantek/ds components. Load a brand from @helloantek/ds-tokens first. */
+@import './accordion.css';
 @import './alert.css';
 @import './alert-dialog.css';
 @import './aspect-ratio.css';
