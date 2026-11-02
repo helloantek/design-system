@@ -249,6 +249,29 @@ Label, input and description in one field: Sort UI 2.0 **Input**, **Input Group*
 | — (the "Loading" demo) | `loading` (`true` / `'start'` for the leading icon, `'end'` for the trailing one): a turning spinner and `aria-busy` | `ds-input__icon--spin` |
 | — | `addonBefore` · `addonAfter`: segments split off by a line | `ds-input__addon` |
 
+## Input OTP
+
+A one-time code typed into a row of character slots. Sort UI 2.0 **Input OTP** (Layout, State, Separator) and **OTP Slot** (Position, State, Value).
+
+```tsx
+<Field label="Verification code" error={wrong ? 'That code is not right.' : undefined}>
+  <InputOTP groups={2} value={code} onValueChange={setCode} onComplete={verify} />
+</Field>
+<InputOTP aria-label="Verification code" layout="cells" />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| — | `length` (6), `value` / `defaultValue` / `onValueChange`, `onComplete` | `ds-input-otp` |
+| Layout = Single group · Two groups · Three groups · Cells | `layout`: `"groups"` with `groups` 1 · 2 · 3, or `"cells"` | `ds-input-otp__group`, `ds-input-otp--cells` |
+| Separator | `separator` (default true) | `ds-input-otp__separator` |
+| State = Default · Invalid · Disabled | `invalid` (or a Field's error) · `disabled` | `ds-input-otp--invalid` · `--disabled` |
+| OTP Slot State = Active | the slot the next character goes into while focused | `ds-input-otp__slot--active` |
+| — | `pattern`: `"digits"` (default) · `"alphanumeric"` · a RegExp; `name`; `aria-label` | — |
+| — ("Input OTP" demo) | `fullWidth`; `--otp-slot-width` / `--otp-slot-height` | `ds-input-otp--full-width` |
+
+Slots are 32 × 32 on `field`, joined in 8 px rounded groups with 1 px dividers; Cells puts each slot in its own box, 8 px apart. One real `<input autocomplete="one-time-code">` lies invisible over the slots: typing, Backspace, paste (only accepted characters are kept) and the phone's code autofill all work, and screen readers meet one text field named by the Field's label or `aria-label`. Focus makes the next empty slot active with a blinking caret.
+
 ## Select
 
 A field that opens a list of options: the WAI-ARIA select-only combobox (arrows, Home/End, PageUp/PageDown, Enter/Space, Escape, Tab, type-ahead). Sort UI 2.0 **Select**, **Select Item**, **Select Label**, **Select Separator** and **Select Content**, with the **Checkbox** and **Radio** components for `indicator`. Multi-select, tags, avatars and flags, captions, badges, notes and descriptions are ours; they wear the 2.0 look. The menu search and the menu button are in the [backlog](docs/backlog.md).
@@ -1002,6 +1025,7 @@ These come from the Figma files, not the code:
 - Toggle Group (2.0): Figma holds nine items and shows three; the code renders the items you give it. A joined group clips its items, so a focused item's ring is drawn inside it. Figma has no single or multiple choice; the code offers `type`.
 - Tabs (2.0): Variant=Default, Orientation=Vertical, Size=lg start-aligns its labels while every other vertical list centres them; the code centres them everywhere. Tabs Trigger State=Focus draws an unselected tab; Figma has no focused selected tab, and the code keeps the selected surface under the ring. The icons are 17 px as in Figma, while Button and Toggle draw 16 px. Figma has no tab panel and no full-width list; the code adds `TabsContent` and `fullWidth` from the demos.
 - Slider (2.0): the thumb's Hover and Focus states use a smaller shadow (4/6 px and 2/4 px blur at 10 %) that is not an effect style; the code keeps Shadow/md and adds the 4 px ring. The thumb is white (an unbound colour); the code uses `control` (white in Light, neutral-800 in Dark). Disabled vertical sliders are 180 px tall and the others 160 px; the code defaults to 160 px. The demos' label row and their block ("Autoscaling range", "Claude Effort Slider", "Color picker") and scrubber looks are compositions of the slot and the thumb, not properties; the code offers them as `label` / `valueText`, `variant` (`block`, `scrubber`), `marks` and `thumbDot`, compared with the demo instances. The colour-picker thumbs carry the dot as an extra layer; the code draws it from `thumbDot`. The scrubber's label is muted in Figma; on the Dark fill that is 3.9:1, so the code draws it in foreground (the value stays muted).
+- Input OTP (2.0): an invalid group has a 2 px invalid ring in its effects, but Figma does not draw a shadow under a frame without a fill, so it never shows; the code draws the invalid stroke only. Slots round their outer corners 10 px inside an 8 px group; the code rounds them 8 px to follow the group's edge. The "Input OTP" demo stretches 48 px tall cells across the card, which no property gives; the code offers `fullWidth` and `--otp-slot-height`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

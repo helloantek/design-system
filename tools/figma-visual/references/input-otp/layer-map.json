@@ -1,0 +1,45 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-input-otp) and how to read it.",
+  "layers": {
+    "root": {
+      "selector": ""
+    },
+    "Group": {
+      "selector": ".ds-input-otp__group",
+      "stroke": "after-inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The group's 1 px stroke is an inset shadow on ::after, above the slots. It lays its slots out itself (no auto-layout gap or padding in code)."
+    },
+    "Slot 1": {
+      "selector": ".ds-input-otp__slot[data-index='0']",
+      "stroke": "inset-shadow",
+      "skip": [
+        "r",
+        "p",
+        "g"
+      ],
+      "$why": "Figma rounds the end slots 10 px inside the 8 px group; the code rounds them 8 px to follow the group's edge. The divider on the right is an inset shadow."
+    },
+    "Slot 2": {
+      "selector": ".ds-input-otp__slot[data-index='1']",
+      "stroke": "inset-shadow",
+      "skip": [
+        "r",
+        "p",
+        "g"
+      ],
+      "$why": "As Slot 1."
+    },
+    "Separator": {
+      "selector": ".ds-input-otp__separator",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The separator is an icon box (no auto-layout in code)."
+    }
+  }
+}

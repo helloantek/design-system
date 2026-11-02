@@ -16,6 +16,7 @@ export * from './Empty';
 export * from './Field';
 export * from './HoverCard';
 export * from './Input';
+export * from './InputOTP';
 export * from './Kbd';
 export * from './Marker';
 export * from './Popover';

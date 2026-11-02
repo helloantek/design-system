@@ -1,0 +1,158 @@
+{
+ "$comment": "Sort UI 2.0 OTP Slot (114:32) reference renders (1x PNG, exportAsync): every Position at State=Default, Active and Invalid with the sample character \"4\" where Value=Filled (Active renders include the 2 px ring). renderers/input-otp.tsx draws the slot with the ds-css markup, alone (Single) or with hidden neighbours so it is the first, a middle or the last slot of a group, and without the group's stroke, as Figma draws the slot. State=Active is the slot class, not focus (\"interaction\": \"Default\"); Figma's Invalid slot is drawn like Default (the group carries the error).",
+ "component": "otp-slot",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "114:32",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "single-default-empty",
+   "nodeId": "116:13",
+   "props": {
+    "Position": "Single",
+    "State": "Default",
+    "Value": "Empty"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "single-default-filled",
+   "nodeId": "116:14",
+   "props": {
+    "Position": "Single",
+    "State": "Default",
+    "Value": "Filled"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "single-active-empty",
+   "nodeId": "116:16",
+   "props": {
+    "Position": "Single",
+    "State": "Active",
+    "Value": "Empty"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "single-active-filled",
+   "nodeId": "116:18",
+   "props": {
+    "Position": "Single",
+    "State": "Active",
+    "Value": "Filled"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "single-invalid-filled",
+   "nodeId": "116:21",
+   "props": {
+    "Position": "Single",
+    "State": "Invalid",
+    "Value": "Filled"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "first-default-filled",
+   "nodeId": "114:3",
+   "props": {
+    "Position": "First",
+    "State": "Default",
+    "Value": "Filled"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "first-active-empty",
+   "nodeId": "114:5",
+   "props": {
+    "Position": "First",
+    "State": "Active",
+    "Value": "Empty"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "middle-default-empty",
+   "nodeId": "114:12",
+   "props": {
+    "Position": "Middle",
+    "State": "Default",
+    "Value": "Empty"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "middle-active-empty",
+   "nodeId": "114:15",
+   "props": {
+    "Position": "Middle",
+    "State": "Active",
+    "Value": "Empty"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "last-default-filled",
+   "nodeId": "114:23",
+   "props": {
+    "Position": "Last",
+    "State": "Default",
+    "Value": "Filled"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  },
+  {
+   "slug": "last-active-filled",
+   "nodeId": "114:27",
+   "props": {
+    "Position": "Last",
+    "State": "Active",
+    "Value": "Filled"
+   },
+   "interaction": "Default",
+   "target": "#target .ds-input-otp__slot--target",
+   "nodeW": 32,
+   "nodeH": 32
+  }
+ ]
+}

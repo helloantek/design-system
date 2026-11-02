@@ -17,6 +17,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderInputGroupDropdown } from './input-group-dropdown';
+import { renderInputOTP, renderOTPSlot } from './input-otp';
 import { renderKbd, renderKbdGroup } from './kbd';
 import { renderMarker } from './marker';
 import { renderPopover } from './popover';
@@ -65,6 +66,8 @@ export const renderers: Record<string, Renderer> = {
   'hover-card': renderHoverCard,
   input: renderInput,
   'input-group-dropdown': renderInputGroupDropdown,
+  'input-otp': renderInputOTP,
+  'otp-slot': renderOTPSlot,
   kbd: renderKbd,
   'kbd-group': renderKbdGroup,
   marker: renderMarker,

@@ -1,0 +1,159 @@
+{
+ "$comment": "Sort UI 2.0 Input OTP (117:196) reference renders (1x PNG, exportAsync): every Layout \u00d7 State with the Separator on. Figma's samples fill the first two slots with \"4\" at State=Default, none when Disabled and \"429173\" when Invalid; renderers/input-otp.tsx renders the same values (no focus, so no slot is active).",
+ "component": "input-otp",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "117:196",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "single-group-default",
+   "nodeId": "117:13",
+   "props": {
+    "Layout": "Single group",
+    "State": "Default",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 192,
+   "nodeH": 32
+  },
+  {
+   "slug": "single-group-disabled",
+   "nodeId": "117:24",
+   "props": {
+    "Layout": "Single group",
+    "State": "Disabled",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 192,
+   "nodeH": 32
+  },
+  {
+   "slug": "single-group-invalid",
+   "nodeId": "117:32",
+   "props": {
+    "Layout": "Single group",
+    "State": "Invalid",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 192,
+   "nodeH": 32
+  },
+  {
+   "slug": "two-groups-default",
+   "nodeId": "117:46",
+   "props": {
+    "Layout": "Two groups",
+    "State": "Default",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 208,
+   "nodeH": 32
+  },
+  {
+   "slug": "two-groups-disabled",
+   "nodeId": "117:61",
+   "props": {
+    "Layout": "Two groups",
+    "State": "Disabled",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 208,
+   "nodeH": 32
+  },
+  {
+   "slug": "two-groups-invalid",
+   "nodeId": "117:73",
+   "props": {
+    "Layout": "Two groups",
+    "State": "Invalid",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 208,
+   "nodeH": 32
+  },
+  {
+   "slug": "three-groups-default",
+   "nodeId": "117:91",
+   "props": {
+    "Layout": "Three groups",
+    "State": "Default",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 224,
+   "nodeH": 32
+  },
+  {
+   "slug": "three-groups-disabled",
+   "nodeId": "117:110",
+   "props": {
+    "Layout": "Three groups",
+    "State": "Disabled",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 224,
+   "nodeH": 32
+  },
+  {
+   "slug": "three-groups-invalid",
+   "nodeId": "117:126",
+   "props": {
+    "Layout": "Three groups",
+    "State": "Invalid",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 224,
+   "nodeH": 32
+  },
+  {
+   "slug": "cells-default",
+   "nodeId": "117:148",
+   "props": {
+    "Layout": "Cells",
+    "State": "Default",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 232,
+   "nodeH": 32
+  },
+  {
+   "slug": "cells-disabled",
+   "nodeId": "117:164",
+   "props": {
+    "Layout": "Cells",
+    "State": "Disabled",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 232,
+   "nodeH": 32
+  },
+  {
+   "slug": "cells-invalid",
+   "nodeId": "117:177",
+   "props": {
+    "Layout": "Cells",
+    "State": "Invalid",
+    "Separator": "True"
+   },
+   "target": "#target .ds-input-otp",
+   "nodeW": 232,
+   "nodeH": 32
+  }
+ ]
+}

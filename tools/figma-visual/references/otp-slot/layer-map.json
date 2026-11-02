@@ -1,0 +1,23 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (the slot) and how to read it.",
+  "layers": {
+    "root": {
+      "selector": "",
+      "stroke": "inset-shadow",
+      "skip": [
+        "r",
+        "p",
+        "g"
+      ],
+      "$why": "Figma rounds a single or end slot 10 px; the code uses the group's 8 px radius so the slot follows the group's edge. The divider (Default) and the ring stroke (Active) are the first inset shadow."
+    },
+    "Value": {
+      "selector": "",
+      "fill": "color",
+      "$why": "The character is the slot's own text."
+    },
+    "Caret": {
+      "selector": ".ds-input-otp__caret"
+    }
+  }
+}
