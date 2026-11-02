@@ -894,6 +894,30 @@ The menu of actions for whatever is under the pointer: a right-click on the trig
 
 The menu is `position: fixed` in place, not portalled, so it inherits the brand and scheme of its section; an ancestor with a `transform` or `filter` would move it.
 
+## Date Picker
+
+A date (or range) field that opens a Calendar: the Sort UI 2.0 **Date Picker** demos (an Outline Button or an Input over a Calendar panel; Figma has no component set for it).
+
+```tsx
+<Field label="Review due">
+  <DatePicker value={due} onValueChange={setDue} />
+</Field>
+<DatePicker mode="range" aria-label="Trip dates" showIcon value={range} onValueChange={setRange} />
+<Field label="Subscription date">
+  <DatePicker input name="start" />
+</Field>
+```
+
+| Figma demo | React prop | CSS class |
+|---|---|---|
+| "Date Picker" (Outline Button with a chevron) | default; `value` / `defaultValue` / `onValueChange`, `placeholder`, `format` | `ds-date-picker__trigger` |
+| "Range picker" | `mode="range"` (two months by default), `showIcon` | — |
+| "Date of birth" | `captionLayout="dropdown"`, `startMonth` / `endMonth`, `max`, `format` | — |
+| "Input" (Input Group with a calendar button) | `input`, `parse` | `ds-input`, `ds-input__action--ghost` |
+| — | `align`, `fullWidth` (default inside a Field), `disabled`, `invalid`, `name` (YYYY-MM-DD), `min`, `isDateDisabled`, `weekStartsOn`, `locale`, `numberOfMonths`, `calendarWidth`, `open` / `defaultOpen` / `onOpenChange` | `ds-date-picker__panel` |
+
+The trigger is a button with `aria-haspopup="dialog"`, named by the Field's label and the date ("Review due Mar 27, 2026"). Opening it shows the Calendar panel 4 px below in a non-modal dialog and moves focus to the selected (or today's) day; picking a date, or a range's second date, closes it and returns focus to the trigger, as does Escape; a click or focus outside closes it too. With `input`, typed text is read on Enter or blur (`Date.parse`, with YYYY-MM-DD as a local day; `parse` replaces it), written back in `format`, and dropped when it is not a date or not allowed; Alt+Down opens the calendar.
+
 ## Dialog
 
 A modal window with a header, any content and a footer of actions: Sort UI 2.0 **Dialog** (header, content, footer, Close button).
@@ -1049,6 +1073,7 @@ These come from the Figma files, not the code:
 - Slider (2.0): the thumb's Hover and Focus states use a smaller shadow (4/6 px and 2/4 px blur at 10 %) that is not an effect style; the code keeps Shadow/md and adds the 4 px ring. The thumb is white (an unbound colour); the code uses `control` (white in Light, neutral-800 in Dark). Disabled vertical sliders are 180 px tall and the others 160 px; the code defaults to 160 px. The demos' label row and their block ("Autoscaling range", "Claude Effort Slider", "Color picker") and scrubber looks are compositions of the slot and the thumb, not properties; the code offers them as `label` / `valueText`, `variant` (`block`, `scrubber`), `marks` and `thumbDot`, compared with the demo instances. The colour-picker thumbs carry the dot as an extra layer; the code draws it from `thumbDot`. The scrubber's label is muted in Figma; on the Dark fill that is 3.9:1, so the code draws it in foreground (the value stays muted).
 - Input OTP (2.0): an invalid group has a 2 px invalid ring in its effects, but Figma does not draw a shadow under a frame without a fill, so it never shows; the code draws the invalid stroke only. Slots round their outer corners 10 px inside an 8 px group; the code rounds them 8 px to follow the group's edge. The "Input OTP" demo stretches 48 px tall cells across the card, which no property gives; the code offers `fullWidth` and `--otp-slot-height`.
 - Calendar (2.0): Figma clips each week to a 6 px radius so a range band rounds at the week's ends; the code rounds the end days instead, so a focused day's ring is not clipped. The "Range" demos highlight the outside days that fall inside the range, as the code does. Figma has no limits, locales or week start; the code adds `min`, `max`, `disabled`, `locale` and `weekStartsOn`, and `footer` / `aside` for the "Presets" and "Range with presets" demos (whose preset column is left-aligned in Figma; the stories use a vertical Toggle Group).
+- Date Picker (2.0): Figma has no Date Picker component, only demos that place an Outline Button (or an Input Group with a calendar button) over a Calendar panel 4 px below; the code packages them as `DatePicker` and compares the "Date Picker" and "Input" demo frames. The demos shrink the Calendar to the 240 px field; the code keeps 256 px unless `calendarWidth` is set. The "Range picker" demo labels the trigger "Mar 27, 2026 - Apr 14, 2026"; the code uses the same hyphen.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

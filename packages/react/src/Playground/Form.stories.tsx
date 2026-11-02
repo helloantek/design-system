@@ -6,6 +6,7 @@ import { Button } from '../Button';
 import { Card, CardContent, CardFooter, CardHeader } from '../Card';
 import { Checkbox } from '../Checkbox';
 import { Combobox } from '../Combobox';
+import { DatePicker } from '../DatePicker';
 import { Field, FieldGroup, FieldSeparator, FieldSet } from '../Field';
 import { Input, type InputSize, type InputVariant } from '../Input';
 import { InputOTP } from '../InputOTP';
@@ -60,7 +61,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A sign-up form in a Card, made of Input, Input OTP, Select, Combobox, Textarea, Radio, Switch, Slider, Checkbox, Field (Field, Field Group, Field Set, Field Separator), Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
+          'A sign-up form in a Card, made of Input, Input OTP, Date Picker, Select, Combobox, Textarea, Radio, Switch, Slider, Checkbox, Field (Field, Field Group, Field Set, Field Separator), Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -82,6 +83,8 @@ export const SignUp: StoryObj<Args> = {
     const [submitted, setSubmitted] = useState<Record<string, FormDataEntryValue | FormDataEntryValue[]> | null>(null);
     const [reminder, setReminder] = useState(15);
     const [invite, setInvite] = useState('');
+    // Remounts the uncontrolled Date Picker on Reset.
+    const [formKey, setFormKey] = useState(0);
     const field = { variant, size, disabled };
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -123,6 +126,9 @@ export const SignUp: StoryObj<Args> = {
             <Field label="Timezone" description="Reminders follow it" disabled={disabled}>
               <Combobox variant={variant} size={size} name="timezone" placeholder="Search timezones" options={timezones} leadIcon={<RiSearchLine />} />
             </Field>
+            <Field label="Start date" description="When your account opens" disabled={disabled}>
+              <DatePicker key={formKey} name="start" placeholder="Pick a start date" />
+            </Field>
             <FieldSeparator>Subscription</FieldSeparator>
             <Field label="Invite code" description="Optional: 6 digits from a teammate's invite" disabled={disabled}>
               <InputOTP name="invite" groups={2} value={invite} onValueChange={setInvite} />
@@ -147,6 +153,7 @@ export const SignUp: StoryObj<Args> = {
               setSubmitted(null);
               setReminder(15);
               setInvite('');
+              setFormKey((k) => k + 1);
             }}>
             Reset
           </Button>

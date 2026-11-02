@@ -1,0 +1,35 @@
+{
+ "$comment": "Sort UI 2.0 Date Picker demos (page 340:2): Figma has no Date Picker component set, so the references are two demo frames, exported at 1x with their absolute bounds (240 \u00d7 368, the calendar's shadow left out): \"Date Picker\" (a Field labelled \"Review due\", an Outline Button trigger and the Calendar panel open on March 2026, the 27th picked, today the 17th) and \"Input\" (\"Subscription date\": an Input with a ghost calendar button, the Calendar open on September 2026, the 20th picked). renderers/date-picker.tsx renders the same open pickers in a 240 \u00d7 368 box. No spec.json: the trigger, input and calendar are checked by their own components.",
+ "component": "date-picker",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "340:2",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "date-picker",
+   "nodeId": "I1490:68876;1467:45555;1490:69334",
+   "props": {
+    "Demo": "Date Picker"
+   },
+   "target": "#target",
+   "nodeW": 240,
+   "nodeH": 368
+  },
+  {
+   "slug": "input",
+   "nodeId": "I1490:69323;1467:45555;1490:70039",
+   "props": {
+    "Demo": "Input"
+   },
+   "target": "#target",
+   "nodeW": 240,
+   "nodeH": 368
+  }
+ ]
+}

@@ -282,7 +282,7 @@ const tests = {
     assert.equal(Math.round(boxes[1] - boxes[0]), 24, 'default: 32 px avatars overlap by 8 px');
     assert.equal(await group.getByRole('img', { name: 'and 3 more' }).textContent(), '+3');
   },
-  'playground form: validation, submitted data (with the invite code and the reminder slider) and reset': async () => {
+  'playground form: validation, submitted data (with the start date, the invite code and the reminder slider) and reset': async () => {
     await open('playground-form--sign-up');
     const submitted = page.getByTestId('submitted');
     await page.getByRole('button', { name: 'Create account' }).click();
@@ -299,26 +299,31 @@ const tests = {
     await page.getByRole('option', { name: 'Design' }).click();
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: '', invite: '', plan: 'free', billing: 'monthly', bio: '', reminder: '15', terms: 'on', teams: ['web', 'design'] });
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: '', start: '', invite: '', plan: 'free', billing: 'monthly', bio: '', reminder: '15', terms: 'on', teams: ['web', 'design'] });
     await page.getByRole('region', { name: 'Notifications' }).getByText('Account created').first().waitFor();
     await page.getByRole('combobox', { name: 'Timezone' }).fill('war');
     await page.getByRole('option', { name: '(GMT+1) Warsaw' }).click();
+    await page.getByRole('button', { name: /^Start date/ }).click();
+    await page.getByRole('dialog', { name: 'Choose a date' }).getByRole('button').filter({ hasText: /^15$/ }).first().click();
     await page.getByRole('textbox', { name: 'Invite code' }).focus();
     await page.keyboard.type('314159');
     await page.getByRole('radio', { name: /Yearly/ }).check();
     await page.getByLabel('About you').fill('Design systems');
     await page.getByLabel('Product updates').check();
+    const start15 = await page.locator('input[type=hidden][name=start]').inputValue();
+    assert.match(start15, /^\d{4}-\d{2}-15$/, 'the start date is submitted as YYYY-MM-DD');
     await page.getByRole('slider', { name: 'Remind me before events' }).focus();
     await page.keyboard.press('ArrowRight');
     await page.getByText('20 min', { exact: true }).waitFor();
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: 'warsaw', invite: '314159', plan: 'free', billing: 'yearly', bio: 'Design systems', updates: 'on', reminder: '20', terms: 'on', teams: ['web', 'design'] });
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: 'warsaw', start: start15, invite: '314159', plan: 'free', billing: 'yearly', bio: 'Design systems', updates: 'on', reminder: '20', terms: 'on', teams: ['web', 'design'] });
     await page.getByRole('button', { name: 'Reset' }).click();
     assert.equal(await page.getByRole('combobox', { name: 'Role' }).textContent(), 'Select a role', 'form reset clears the Select');
     assert.equal(await page.getByRole('combobox', { name: 'Plan' }).textContent(), 'Free', 'and restores its defaultValue');
     assert.equal(await page.getByRole('combobox', { name: 'Teams' }).textContent(), 'Select teams');
     assert.equal(await page.getByRole('slider', { name: 'Remind me before events' }).getAttribute('aria-valuenow'), '15', 'reset restores the slider');
     assert.equal(await page.getByRole('textbox', { name: 'Invite code' }).inputValue(), '', 'and clears the invite code');
+    assert.equal(await page.locator('input[type=hidden][name=start]').inputValue(), '', 'and the start date');
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).inputValue(), '', 'form reset clears the Combobox');
     await page.getByRole('combobox', { name: 'Timezone' }).fill('tok');
     await page.getByRole('button', { name: 'Reset' }).click();
@@ -1715,6 +1720,71 @@ Object.assign(tests, {
     await page.getByRole('combobox', { name: 'Month' }).selectOption('6');
     await page.getByRole('combobox', { name: 'Year' }).selectOption('2028');
     await page.getByRole('grid', { name: 'July 2028' }).waitFor();
+  },
+  'date picker: the trigger opens a calendar dialog with focus on the day; picking closes it and returns focus; Escape and outside clicks close it; a range closes after the second date; the input parses typed dates; forms get YYYY-MM-DD': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-date-picker--default&viewMode=story');
+    await page.getByRole('button', { name: 'Review due Mar 27, 2026' }).waitFor();
+    const trigger = page.getByRole('button', { name: /^Review due/ });
+    assert.deepEqual(await trigger.evaluate((el) => [el.getAttribute('aria-haspopup'), el.getAttribute('aria-expanded')]), ['dialog', 'false'], 'the Field label and the date name the trigger');
+    await trigger.click();
+    const dialog = page.getByRole('dialog', { name: 'Choose a date' });
+    await dialog.waitFor();
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Friday, March 27, 2026', 'focus moves to the picked day');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('Enter');
+    assert.equal(await dialog.isVisible(), false, 'picking closes it');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Mar 28, 2026', 'focus returns to the trigger, which shows the new date');
+    await page.keyboard.press('Enter');
+    await dialog.waitFor();
+    await page.keyboard.press('Escape');
+    assert.equal(await dialog.isVisible(), false, 'Escape closes it');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-haspopup')), 'dialog', 'and returns focus');
+    await trigger.click();
+    await dialog.waitFor();
+    await page.mouse.click(600, 30);
+    assert.equal(await dialog.isVisible(), false, 'a click outside closes it');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-date-picker--range-picker&viewMode=story');
+    const range = page.getByRole('button', { name: /Trip dates/ });
+    await range.waitFor();
+    await range.click();
+    const rdialog = page.getByRole('dialog', { name: 'Choose dates' });
+    await rdialog.waitFor();
+    assert.equal(await rdialog.getByRole('grid').count(), 2, 'two months side by side');
+    const [a, b] = await rdialog.getByRole('grid').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().top));
+    assert.equal(a, b, 'on one row');
+    await rdialog.getByRole('button', { name: 'Monday, March 2, 2026' }).click();
+    assert.equal(await rdialog.isVisible(), true, 'the first date keeps it open');
+    await rdialog.getByRole('button', { name: 'Thursday, March 5, 2026' }).click();
+    assert.equal(await rdialog.isVisible(), false, 'the second closes it');
+    await page.getByRole('button', { name: 'Trip dates, Mar 2, 2026 - Mar 5, 2026' }).waitFor();
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-date-picker--input&viewMode=story');
+    const input = page.getByRole('textbox', { name: 'Subscription date' });
+    await input.waitFor();
+    assert.equal(await input.inputValue(), 'September 20, 2026');
+    await input.fill('2026-10-05');
+    await page.keyboard.press('Enter');
+    await page.getByText('Value: Mon Oct 05 2026').waitFor();
+    assert.equal(await input.inputValue(), 'October 5, 2026', 'a typed date is read and written back in the format');
+    await input.fill('not a date');
+    await page.keyboard.press('Tab');
+    assert.equal(await input.inputValue(), 'October 5, 2026', 'text that is not a date is dropped');
+    await page.getByRole('button', { name: 'Choose a date, October 5, 2026' }).click();
+    await page.getByRole('dialog', { name: 'Choose a date' }).waitFor();
+    await page.getByRole('button', { name: 'Tuesday, October 13, 2026' }).click();
+    assert.equal(await input.inputValue(), 'October 13, 2026');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-date-picker--states&viewMode=story');
+    const deadline = page.getByRole('button', { name: /Deadline/ });
+    await deadline.waitFor();
+    assert.equal(await deadline.getAttribute('aria-invalid'), 'true', 'a Field error makes it invalid');
+    assert.equal(await page.getByRole('button', { name: /Locked/ }).isDisabled(), true, 'a disabled Field disables it');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-date-picker--in-a-form&viewMode=story');
+    await page.getByRole('button', { name: 'Book' }).click();
+    await page.getByText('stay=2026-03-20&stay=2026-03-23', { exact: true }).waitFor();
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
