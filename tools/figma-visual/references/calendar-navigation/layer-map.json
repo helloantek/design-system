@@ -1,0 +1,29 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-calendar__nav) and how to read it.",
+  "layers": {
+    "root": {
+      "selector": "",
+      "skip": [
+        "p"
+      ]
+    },
+    "div": {
+      "selector": ".ds-calendar__caption",
+      "skip": [
+        "p"
+      ]
+    },
+    "Button": {
+      "selector": ".ds-button",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "The Ghost xs icon button: its own spec is checked with Button."
+    },
+    "div/TEXT": {
+      "selector": ".ds-calendar__caption",
+      "fill": "color"
+    }
+  }
+}

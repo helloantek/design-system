@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 Calendar Navigation (263:9990) reference renders (1x PNG, exportAsync): every Variant with Figma's \"March 2026\", previous and next on. renderers/calendar.tsx renders a flat Calendar for March 2026 whose month is 220 px wide, as the component is, and the check compares its navigation row.",
+ "component": "calendar-navigation",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "263:9990",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "label",
+   "nodeId": "263:9991",
+   "props": {
+    "Variant": "label"
+   },
+   "target": "#target .ds-calendar__nav",
+   "nodeW": 220,
+   "nodeH": 24
+  },
+  {
+   "slug": "dropdown",
+   "nodeId": "263:9998",
+   "props": {
+    "Variant": "dropdown"
+   },
+   "target": "#target .ds-calendar__nav",
+   "nodeW": 220,
+   "nodeH": 24
+  },
+  {
+   "slug": "dropdown-months",
+   "nodeId": "263:10010",
+   "props": {
+    "Variant": "dropdown-months"
+   },
+   "target": "#target .ds-calendar__nav",
+   "nodeW": 220,
+   "nodeH": 24
+  },
+  {
+   "slug": "dropdown-years",
+   "nodeId": "263:10021",
+   "props": {
+    "Variant": "dropdown-years"
+   },
+   "target": "#target .ds-calendar__nav",
+   "nodeW": 220,
+   "nodeH": 24
+  }
+ ]
+}

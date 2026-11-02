@@ -481,7 +481,7 @@ const tests = {
     await page.getByRole('separator').waitFor();
     assert.equal(await page.getByRole('separator').getAttribute('aria-orientation'), 'vertical');
   },
-  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, the compact-list toggle, the sort toggle group, the usage tabs, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
+  'playground team: the invite link popover, the team settings dialog, the activity sheet, the add-seats drawer, the owner hover card, the compact-list toggle, the sort toggle group, the usage tabs, the offsite calendar, filters, search, role from the row menu, remove from the context menu with a confirmation': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=playground-team--members&viewMode=story');
     const rows = page.getByRole('list', { name: 'Members' }).getByRole('listitem');
     await rows.first().waitFor();
@@ -526,6 +526,14 @@ const tests = {
     assert.equal(await compact.getAttribute('aria-pressed'), 'true');
     assert.equal(await page.getByText('mira@orbit.dev', { exact: true }).count(), 0, 'the compact list hides emails');
     await compact.click();
+    await page.getByRole('button', { name: 'Next offsite: May 14, 2026' }).click();
+    const offsite = page.getByRole('group', { name: 'Offsite date' });
+    await offsite.waitFor();
+    assert.equal(await offsite.getByRole('button', { name: 'Saturday, May 16, 2026' }).isDisabled(), true, 'weekends are off');
+    await offsite.getByRole('button', { name: 'Thursday, May 21, 2026' }).click();
+    await page.getByRole('region', { name: 'Notifications' }).getByText('Offsite moved to May 21').first().waitFor();
+    await page.getByRole('button', { name: 'Next offsite: May 21, 2026' }).waitFor();
+    await page.keyboard.press('Escape');
     await page.getByRole('link', { name: 'Mira Okafor' }).hover();
     await page.getByText('Created the workspace and manages billing.', { exact: false }).waitFor();
     await page.mouse.move(0, 0);
@@ -1657,6 +1665,56 @@ Object.assign(tests, {
     assert.equal(await recovery.getAttribute('aria-invalid'), 'true', 'a Field error makes it invalid');
     assert.equal(await page.locator('.ds-input-otp--invalid').count(), 1);
     assert.equal(await recovery.evaluate((el) => document.getElementById(el.getAttribute('aria-describedby').split(' ').pop()).textContent), 'That code is not right. Check the email and try again.');
+  },
+  'calendar: a named grid with one Tab stop; arrows, Home/End and Page Up/Down move focus across months; Enter picks; a range takes two clicks; disabled days cannot be picked; dropdowns change the month': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-calendar--single&viewMode=story');
+    const grid = page.getByRole('grid', { name: 'March 2026' });
+    await grid.waitFor();
+    assert.equal(await grid.locator('button[tabindex="0"]').count(), 1, 'one Tab stop');
+    assert.equal(await grid.locator('button[tabindex="0"]').textContent(), '27', 'on the selected day');
+    const selected = page.getByRole('button', { name: 'Friday, March 27, 2026' });
+    assert.equal(await selected.getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.getByRole('button', { name: 'Tuesday, March 17, 2026' }).getAttribute('aria-current'), 'date', 'today is marked');
+    await page.getByRole('button', { name: 'Next month' }).focus();
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Friday, March 27, 2026', 'Tab enters the grid on the selected day');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Saturday, April 4, 2026', 'arrows cross into the next month');
+    await page.getByRole('grid', { name: 'April 2026' }).waitFor();
+    await page.keyboard.press('Home');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Sunday, March 29, 2026', 'Home goes to the start of the week');
+    await page.keyboard.press('PageDown');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Wednesday, April 29, 2026', 'Page Down moves a month');
+    await page.keyboard.press('Shift+PageUp');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Tuesday, April 29, 2025', 'Shift+Page Up moves a year');
+    await page.keyboard.press('Enter');
+    await page.getByText('Selected: Apr 29, 2025').waitFor();
+    assert.equal(await page.getByRole('button', { name: 'Tuesday, April 29, 2025' }).getAttribute('aria-pressed'), 'true', 'Enter picks the day');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-calendar--range&viewMode=story');
+    await page.getByRole('grid', { name: 'March 2026' }).waitFor();
+    assert.equal(await page.getByRole('grid').count(), 2, 'two months');
+    await page.getByRole('button', { name: 'Monday, March 2, 2026' }).click();
+    await page.getByText('Mar 2, 2026 – …').waitFor();
+    await page.getByRole('button', { name: 'Friday, March 6, 2026' }).click();
+    await page.getByText('Mar 2, 2026 – Mar 6, 2026').waitFor();
+    const band = await page.getByRole('grid', { name: 'March 2026' }).locator('.ds-calendar__cell--range-middle:not(:has([data-outside]))').count();
+    assert.equal(band, 3, 'the days between are the range');
+    await page.getByRole('button', { name: 'Previous month' }).click();
+    await page.getByRole('grid', { name: 'February 2026' }).waitFor();
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-calendar--disabled-days&viewMode=story');
+    await page.getByRole('grid', { name: 'March 2026' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: 'Monday, March 16, 2026' }).isDisabled(), true, 'days before min are disabled');
+    assert.equal(await page.getByRole('button', { name: 'Saturday, March 21, 2026' }).isDisabled(), true, 'and weekends');
+    assert.equal(await page.getByRole('button', { name: 'Previous month' }).isDisabled(), true, 'no going back before min');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-calendar--month-and-year-selector&viewMode=story');
+    await page.getByRole('combobox', { name: 'Month' }).waitFor();
+    await page.getByRole('combobox', { name: 'Month' }).selectOption('6');
+    await page.getByRole('combobox', { name: 'Year' }).selectOption('2028');
+    await page.getByRole('grid', { name: 'July 2028' }).waitFor();
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');

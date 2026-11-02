@@ -1,0 +1,277 @@
+/*
+ * Calendar — Sort UI 2.0 component sets "Calendar" (node 263:10213), "Calendar Navigation" (node 263:9990) and
+ * "Calendar Day" (node 263:10032) on page 263:9095 in file 4JnqgEbdlnKgiFrfmiwEZw: a month grid to pick a date or a
+ * range. Values are Sort UI 2.0 tokens.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-calendar [ds-calendar--flat] [ds-calendar--vertical]">       (Figma Type=panel / flat)
+ *     [<div class="ds-calendar__aside">…presets…</div>]                         ("Range with presets" demo)
+ *     <div class="ds-calendar__months">
+ *       <div class="ds-calendar__month">                                        (one Figma "Calendar")
+ *         <div class="ds-calendar__nav">                                        (Figma "Calendar Navigation")
+ *           <div class="ds-calendar__caption">March 2026</div>                 (Variant=label; dropdowns: below)
+ *           [<button class="ds-button …">‹</button><button class="ds-button …">›</button>]
+ *         </div>
+ *         <div class="ds-calendar__grid" role="grid">
+ *           <div class="ds-calendar__weekdays" role="row"><span class="ds-calendar__weekday" role="columnheader">Su</span>…</div>
+ *           <div class="ds-calendar__week" role="row">
+ *             <div class="ds-calendar__cell [--range-start | --range-middle | --range-end]" role="gridcell" aria-selected="…">
+ *               <button class="ds-calendar__day [--today] [--outside]" aria-pressed="…">17</button>  (Figma "Calendar Day")
+ *             </div>…
+ *           </div>…
+ *         </div>
+ *       </div>
+ *     </div>
+ *     [<div class="ds-calendar__footer">…</div>]                                ("Presets" demo)
+ *   </div>
+ * Caption dropdowns (Variant=dropdown, dropdown-months, dropdown-years): <label class="ds-calendar__dropdown">March
+ *   <svg/> <select class="ds-calendar__select">…</select></label> — a native select lies invisible over the text.
+ * Calendar Day Selection=selected (and range ends) is aria-pressed="true" on the day; Day=today --today, outside
+ * --outside, disabled :disabled; State=hover :hover, focus :focus-visible.
+ */
+
+@layer ds.components {
+  /* Figma Type=panel: popover fill, 14 px radius, a 1 px border outside and the Surface/Popover effect. */
+  .ds-calendar {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-direction: column;
+    max-width: 100%;
+    border-radius: var(--ds-radius-14);
+    background-color: var(--ds-popover);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma Type=flat: no surface. */
+  .ds-calendar--flat {
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+    color: var(--ds-foreground);
+  }
+
+  .ds-calendar:has(> .ds-calendar__aside) {
+    flex-direction: row;
+  }
+
+  .ds-calendar__body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* Several months sit side by side (or stacked with --vertical), each with its own 12 px padding. */
+  .ds-calendar__months {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ds-calendar--vertical .ds-calendar__months {
+    flex-direction: column;
+  }
+
+  /* Figma "Calendar": 12 px around, the navigation and the days 16 px apart; the grid is 232 px wide
+     (--calendar-month-width changes the month's width, e.g. 100% to fill a card). */
+  .ds-calendar__month {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-4);
+    width: var(--calendar-month-width, calc(var(--ds-spacing-56) + var(--ds-spacing-2) + 2 * var(--ds-spacing-3)));
+    padding: var(--ds-spacing-3);
+  }
+
+  /* Figma "Calendar Navigation": the caption on the left, previous and next (Ghost xs icon buttons) on the right. */
+  .ds-calendar__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    height: var(--ds-spacing-6);
+  }
+
+  .ds-calendar__caption {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    align-self: stretch;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    color: var(--ds-foreground);
+    white-space: nowrap;
+  }
+
+  /* Variant=dropdown: the month or year with a 16 px chevron, 2 px apart; a native select covers it. */
+  .ds-calendar__dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-0-5);
+    border-radius: var(--ds-radius-sm);
+    cursor: pointer;
+  }
+
+  .ds-calendar__dropdown > svg {
+    flex-shrink: 0;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-calendar__select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    margin: 0;
+    opacity: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .ds-calendar__dropdown:has(.ds-calendar__select:focus-visible) {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma "Days": the weekday row (24 px) and six 28 px weeks, 8 px apart. */
+  .ds-calendar__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+  }
+
+  .ds-calendar__weekdays,
+  .ds-calendar__week {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  /* Figma "weekday": 14/20 muted, centred, 2 px above and below. */
+  .ds-calendar__weekday {
+    padding: var(--ds-spacing-0-5) 0;
+    color: var(--ds-muted-foreground);
+    text-align: center;
+  }
+
+  .ds-calendar__cell {
+    display: flex;
+    min-width: 0;
+    height: var(--ds-spacing-7);
+  }
+
+  /* Figma Selection=range-start / range-end: the cell carries the fill-2 band (rounded on the outer side) under the
+     selected day. */
+  .ds-calendar__cell--range-start,
+  .ds-calendar__cell--range-end {
+    background-color: var(--ds-fill-2);
+  }
+
+  .ds-calendar__cell--range-start {
+    border-start-start-radius: var(--ds-radius-sm);
+    border-end-start-radius: var(--ds-radius-sm);
+  }
+
+  .ds-calendar__cell--range-end {
+    border-start-end-radius: var(--ds-radius-sm);
+    border-end-end-radius: var(--ds-radius-sm);
+  }
+
+  /* Figma Day=disabled: the whole day at 50 %. */
+  .ds-calendar__cell:has(> .ds-calendar__day:disabled) {
+    opacity: 0.5;
+  }
+
+  /* Figma "DayButton": the whole cell, radius 6, the number 14/20 centred. */
+  .ds-calendar__day {
+    --cal-day-bg: transparent;
+    --cal-day-ring: 0 0 #0000;
+
+    flex: 1 1 auto;
+    box-sizing: border-box;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    background: var(--cal-day-bg);
+    box-shadow: var(--cal-day-ring);
+    color: var(--ds-foreground);
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  /* Figma Day=outside: muted (days of the next or previous month). */
+  .ds-calendar__day--outside {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Figma Day=today and State=hover: fill-2. */
+  .ds-calendar__day--today,
+  .ds-calendar__day:hover:not(:disabled) {
+    --cal-day-bg: var(--ds-fill-2);
+  }
+
+  /* Figma Selection=range-middle: the day itself is the band (fill-2, square), also on hover; rounded where a row
+     starts or ends. */
+  .ds-calendar__cell--range-middle > .ds-calendar__day,
+  .ds-calendar__cell--range-middle > .ds-calendar__day:hover:not(:disabled) {
+    --cal-day-bg: var(--ds-fill-2);
+
+    border-radius: 0;
+  }
+
+  .ds-calendar__cell--range-middle:first-child > .ds-calendar__day {
+    border-start-start-radius: var(--ds-radius-sm);
+    border-end-start-radius: var(--ds-radius-sm);
+  }
+
+  .ds-calendar__cell--range-middle:last-child > .ds-calendar__day {
+    border-start-end-radius: var(--ds-radius-sm);
+    border-end-end-radius: var(--ds-radius-sm);
+  }
+
+  /* Figma Selection=selected (and the ends of a range): primary with primary-foreground, also on hover. */
+  .ds-calendar__day[aria-pressed='true'],
+  .ds-calendar__day[aria-pressed='true']:hover:not(:disabled) {
+    --cal-day-bg: var(--ds-primary);
+
+    color: var(--ds-primary-foreground);
+  }
+
+  /* Figma State=focus: background (unless selected), a 1 px ring stroke inside and a 3 px ring around. */
+  .ds-calendar__day:focus-visible {
+    --cal-day-ring: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+
+    position: relative;
+    z-index: 1;
+  }
+
+  .ds-calendar__day:focus-visible:not([aria-pressed='true'], .ds-calendar__day--today) {
+    --cal-day-bg: var(--ds-background);
+  }
+
+  /* Figma Day=disabled: muted (the cell fades to 50 %, above). */
+  .ds-calendar__day:disabled {
+    color: var(--ds-muted-foreground);
+    cursor: not-allowed;
+  }
+
+  /* "Presets" demo: actions under the month, 12 px in from the sides and below. */
+  .ds-calendar__footer {
+    padding: 0 var(--ds-spacing-3) var(--ds-spacing-3);
+  }
+
+  /* "Range with presets" demo: a 160 px column of presets on the left. */
+  .ds-calendar__aside {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: var(--ds-spacing-40);
+    padding: var(--ds-spacing-3) 0 var(--ds-spacing-3) var(--ds-spacing-3);
+  }
+}

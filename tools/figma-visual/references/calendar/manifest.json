@@ -1,0 +1,59 @@
+{
+ "$comment": "Sort UI 2.0 Calendar (263:10213) reference renders: every Mode \u00d7 Type with Figma's March 2026, today the 17th, and the 27th selected (single) or the 20th to the 27th (range). Panel renders are cropped to the 256 \u00d7 304 box: Figma's export adds the Surface/Popover shadow's margin unevenly (more below), which would throw off the centred comparison. single-panel is a 1x exportAsync PNG; the others are get_screenshot renders on the canvas colour (#fcfcfc), which renderers/calendar.tsx matches with the page background.",
+ "component": "calendar",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "263:10213",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "single-panel",
+   "nodeId": "263:10214",
+   "props": {
+    "Mode": "single",
+    "Type": "panel"
+   },
+   "target": "#target .ds-calendar",
+   "nodeW": 256,
+   "nodeH": 304
+  },
+  {
+   "slug": "single-flat",
+   "nodeId": "263:10280",
+   "props": {
+    "Mode": "single",
+    "Type": "flat"
+   },
+   "target": "#target .ds-calendar",
+   "nodeW": 256,
+   "nodeH": 304
+  },
+  {
+   "slug": "range-panel",
+   "nodeId": "263:10346",
+   "props": {
+    "Mode": "range",
+    "Type": "panel"
+   },
+   "target": "#target .ds-calendar",
+   "nodeW": 256,
+   "nodeH": 304
+  },
+  {
+   "slug": "range-flat",
+   "nodeId": "263:10412",
+   "props": {
+    "Mode": "range",
+    "Type": "flat"
+   },
+   "target": "#target .ds-calendar",
+   "nodeW": 256,
+   "nodeH": 304
+  }
+ ]
+}

@@ -1,0 +1,195 @@
+{
+ "$comment": "Sort UI 2.0 Calendar Day (263:10032) reference renders (1x PNG, exportAsync): each Selection at Day=default, Hover and Focus where they differ, and Day=outside, disabled and today, with the sample day \"17\" (Focus renders include the 3 px ring). renderers/calendar.tsx draws one day cell with the ds-css markup, 28 px wide as in the component, between hidden neighbours so a range's middle is not at a row's end. Hover and Focus come from real input in check.mjs.",
+ "component": "calendar-day",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "263:10032",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "none-default-default",
+   "nodeId": "263:10033",
+   "props": {
+    "Selection": "none",
+    "Day": "default",
+    "State": "Default"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "none-default-hover",
+   "nodeId": "263:10201",
+   "props": {
+    "Selection": "none",
+    "Day": "default",
+    "State": "Hover"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "none-default-focus",
+   "nodeId": "263:10189",
+   "props": {
+    "Selection": "none",
+    "Day": "default",
+    "State": "Focus"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "selected-default-default",
+   "nodeId": "263:10039",
+   "props": {
+    "Selection": "selected",
+    "Day": "default",
+    "State": "Default"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "selected-default-hover",
+   "nodeId": "263:10138",
+   "props": {
+    "Selection": "selected",
+    "Day": "default",
+    "State": "Hover"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "selected-default-focus",
+   "nodeId": "263:10129",
+   "props": {
+    "Selection": "selected",
+    "Day": "default",
+    "State": "Focus"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "range-start-default-default",
+   "nodeId": "263:10042",
+   "props": {
+    "Selection": "range-start",
+    "Day": "default",
+    "State": "Default"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "range-middle-default-default",
+   "nodeId": "263:10036",
+   "props": {
+    "Selection": "range-middle",
+    "Day": "default",
+    "State": "Default"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "range-end-default-default",
+   "nodeId": "263:10045",
+   "props": {
+    "Selection": "range-end",
+    "Day": "default",
+    "State": "Default"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "range-middle-default-hover",
+   "nodeId": "263:10204",
+   "props": {
+    "Selection": "range-middle",
+    "Day": "default",
+    "State": "Hover"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "none-outside-default",
+   "nodeId": "263:10051",
+   "props": {
+    "Selection": "none",
+    "Day": "outside",
+    "State": "Default"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "none-outside-hover",
+   "nodeId": "263:10087",
+   "props": {
+    "Selection": "none",
+    "Day": "outside",
+    "State": "Hover"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "none-disabled-default",
+   "nodeId": "263:10105",
+   "props": {
+    "Selection": "none",
+    "Day": "disabled",
+    "State": "Default"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "none-today-default",
+   "nodeId": "263:10153",
+   "props": {
+    "Selection": "none",
+    "Day": "today",
+    "State": "Default"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  },
+  {
+   "slug": "none-today-focus",
+   "nodeId": "263:10165",
+   "props": {
+    "Selection": "none",
+    "Day": "today",
+    "State": "Focus"
+   },
+   "target": "#target .ds-calendar__cell--target",
+   "nodeW": 28,
+   "nodeH": 28
+  }
+ ]
+}

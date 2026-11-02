@@ -5,6 +5,7 @@ import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
 import { renderButton } from './button';
 import { renderButtonGroup, renderButtonGroupItem } from './button-group';
+import { renderCalendar, renderCalendarDay, renderCalendarNavigation } from './calendar';
 import { renderCard } from './card';
 import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './checkbox';
 import { renderCombobox } from './combobox';
@@ -48,6 +49,9 @@ export const renderers: Record<string, Renderer> = {
   button: renderButton,
   'button-group': renderButtonGroup,
   'button-group-item': renderButtonGroupItem,
+  calendar: renderCalendar,
+  'calendar-day': renderCalendarDay,
+  'calendar-navigation': renderCalendarNavigation,
   card: renderCard,
   checkbox: renderCheckbox,
   'checkbox-card': renderCheckboxCard,
