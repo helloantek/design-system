@@ -13,7 +13,9 @@
  *           <span class="ds-accordion__chevron"><svg/></span>
  *         </button>
  *       </h3>
- *       <div class="ds-accordion__content" role="region" [hidden]>…</div>
+ *       <div class="ds-accordion__panel" role="region" data-state="open">            (closed: data-state="closed")
+ *         <div class="ds-accordion__clip"><div class="ds-accordion__content">…</div></div>
+ *       </div>
  *     </div>
  *   </div>
  */
@@ -148,6 +150,34 @@
     cursor: not-allowed;
   }
 
+  /* Not in Figma: the panel opens and closes by animating its height (a grid row from 0fr to 1fr, which every current
+     browser, mobile Safari included, can transition) and fading its content. A closed panel stays in the DOM but is
+     visibility: hidden once it has collapsed, so it leaves the tab order and the accessibility tree. */
+  .ds-accordion__panel {
+    display: grid;
+    grid-template-rows: 1fr;
+    min-width: 0;
+    transition:
+      grid-template-rows var(--ds-duration-200) var(--ds-ease-out),
+      visibility 0s;
+  }
+
+  .ds-accordion__panel[data-state='closed'] {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--ds-duration-200) var(--ds-ease-out),
+      visibility 0s var(--ds-duration-200);
+  }
+
+  /* The clip reaches 4 px past the content on each side so the focus ring of a control inside is not cut off. */
+  .ds-accordion__clip {
+    min-height: 0;
+    margin-inline: calc(-1 * var(--ds-spacing-1));
+    padding-inline: var(--ds-spacing-1);
+    overflow: hidden;
+  }
+
   /* Figma "content": 16 px in from the sides and below, 12 px between blocks; body 14/20 Regular. */
   .ds-accordion__content {
     box-sizing: border-box;
@@ -157,38 +187,27 @@
     min-width: 0;
     padding: 0 var(--ds-spacing-4) var(--ds-spacing-4);
     color: var(--ds-foreground);
+    transition: opacity var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-accordion__panel[data-state='closed'] .ds-accordion__content {
+    opacity: 0;
   }
 
   .ds-accordion--flush .ds-accordion__content {
     padding-inline: 0;
   }
 
-  .ds-accordion__content[hidden] {
-    display: none;
-  }
-
   .ds-accordion__content > p {
     margin: 0;
   }
 
-  /* Not in Figma: the panel fades in when it opens. */
-  .ds-accordion__content:not([hidden]) {
-    animation: ds-accordion-in var(--ds-duration-200) var(--ds-ease-out);
-  }
-
-  @keyframes ds-accordion-in {
-    from {
-      opacity: 0;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .ds-accordion__chevron > svg {
+    .ds-accordion__chevron > svg,
+    .ds-accordion__panel,
+    .ds-accordion__panel[data-state='closed'],
+    .ds-accordion__content {
       transition: none;
-    }
-
-    .ds-accordion__content:not([hidden]) {
-      animation: none;
     }
   }
 }

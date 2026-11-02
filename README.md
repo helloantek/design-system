@@ -343,7 +343,7 @@ A list of items whose headers show or hide their panels: the Sort UI 2.0 **Accor
 | content (slot) | `AccordionContent` | `ds-accordion__content` |
 | — | `headingLevel` (default 3) | `ds-accordion__heading` |
 
-Each trigger is a button with `aria-expanded` and `aria-controls` inside a heading; each panel is a `role="region"` labelled by its trigger and hidden while closed. Up / Down (wrapping), Home and End move between the enabled triggers; Enter or Space toggles. With `type="single"` (default) opening an item closes the others, and pressing the open one closes it unless `collapsible={false}`.
+Each trigger is a button with `aria-expanded` and `aria-controls` inside a heading; each panel is a `role="region"` labelled by its trigger; it animates its height open and closed (no motion with `prefers-reduced-motion`) and is hidden once collapsed, so closed content leaves the tab order. Up / Down (wrapping), Home and End move between the enabled triggers; Enter or Space toggles. With `type="single"` (default) opening an item closes the others, and pressing the open one closes it unless `collapsible={false}`.
 
 ## Alert
 

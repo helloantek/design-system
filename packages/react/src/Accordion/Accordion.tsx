@@ -180,12 +180,17 @@ export function AccordionTrigger({ icon, className, onClick, children, ...rest }
   );
 }
 
-/** The item's panel: a region labelled by its trigger, hidden while closed. */
+/** The item's panel: a region labelled by its trigger. It animates its height open and closed, and is hidden
+ * (visibility) once collapsed, so closed content leaves the tab order and the accessibility tree. */
 export function AccordionContent({ className, children, ...rest }: HTMLAttributes<HTMLDivElement>) {
   const { open, triggerId, contentId } = useItem('AccordionContent');
   return (
-    <div {...rest} id={contentId} role="region" aria-labelledby={triggerId} hidden={!open} className={cx('ds-accordion__content', className)}>
-      {children}
+    <div id={contentId} role="region" aria-labelledby={triggerId} className="ds-accordion__panel" data-state={open ? 'open' : 'closed'}>
+      <div className="ds-accordion__clip">
+        <div {...rest} className={cx('ds-accordion__content', className)}>
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

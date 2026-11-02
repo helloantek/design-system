@@ -1836,7 +1836,9 @@ Object.assign(tests, {
     await second.click();
     assert.equal(await second.getAttribute('aria-expanded'), 'true');
     assert.equal(await first.getAttribute('aria-expanded'), 'false', 'single: opening one closes the other');
-    assert.equal(await region.count(), 0, 'and hides its panel');
+    await region.waitFor({ state: 'hidden' });
+    const collapsed = await page.locator('.ds-accordion__panel').first().evaluate((el) => [el.getBoundingClientRect().height, getComputedStyle(el).visibility]);
+    assert.deepEqual(collapsed, [0, 'hidden'], 'and collapses its panel to 0 px, then hides it');
     await second.click();
     assert.equal(await second.getAttribute('aria-expanded'), 'false', 'collapsible: the open item closes');
     await first.focus();
@@ -1848,6 +1850,14 @@ Object.assign(tests, {
     assert.equal(await page.evaluate(() => document.activeElement.textContent), 'When will my order arrive?', 'Down wraps to the first');
     await page.keyboard.press('Enter');
     assert.equal(await first.getAttribute('aria-expanded'), 'true', 'Enter opens it');
+    const heights = [];
+    for (let i = 0; i < 4; i++) {
+      heights.push(await page.locator('.ds-accordion__panel').first().evaluate((el) => el.getBoundingClientRect().height));
+      await page.waitForTimeout(40);
+    }
+    await page.waitForTimeout(250);
+    const full = await page.locator('.ds-accordion__panel').first().evaluate((el) => el.getBoundingClientRect().height);
+    assert.ok(heights[0] < full && heights.some((h) => h > 0 && h < full), `the panel grows to ${full} px instead of jumping (${heights.join(', ')})`);
     const dividers = await page.locator('.ds-accordion__item').evaluateAll((els) => els.map((el) => getComputedStyle(el).boxShadow !== 'none'));
     assert.deepEqual(dividers, [true, true, false], 'a divider under every item but the last');
 
