@@ -25,6 +25,7 @@ import { renderInputGroupDropdown } from './input-group-dropdown';
 import { renderInputOTP, renderOTPSlot } from './input-otp';
 import { renderKbd, renderKbdGroup } from './kbd';
 import { renderMarker } from './marker';
+import { renderPagination } from './pagination';
 import { renderPopover } from './popover';
 import { renderProgress, renderProgressCircle } from './progress';
 import { renderRadio, renderRadioCard } from './radio';
@@ -83,6 +84,7 @@ export const renderers: Record<string, Renderer> = {
   kbd: renderKbd,
   'kbd-group': renderKbdGroup,
   marker: renderMarker,
+  pagination: renderPagination,
   popover: renderPopover,
   progress: renderProgress,
   'progress-circle': renderProgressCircle,

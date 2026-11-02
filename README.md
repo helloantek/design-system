@@ -538,6 +538,26 @@ A quiet line in a feed or a chat — an event, a date between messages, a step: 
 
 It is plain text: give a list of steps `role="list"` / `listitem` (and `aria-current="step"`) or put markers in your own list, as the "Loading" story does.
 
+## Pagination
+
+Page links with Previous and Next: the Sort UI 2.0 **Pagination** and **Pagination Ellipsis** (built from Ghost and Outline Buttons).
+
+```tsx
+<Pagination page={page} pageCount={12} onPageChange={setPage} />
+<Pagination page={5} pageCount={12} getHref={(p) => `?page=${p}`} />
+<Pagination iconsOnly page={page} pageCount={5} onPageChange={setPage} />
+```
+
+| Figma | React prop | CSS class |
+|---|---|---|
+| Previous / Next (Ghost Buttons with a chevron) | `labels.previous` / `labels.next` | `ds-pagination__edge` |
+| Link (32 px Ghost Button) / Link (active) (Outline) | `page`, `pageCount`, `onPageChange`, `getHref` | `ds-pagination__page`, `aria-current="page"` |
+| Pagination Ellipsis | `siblingCount`, `boundaryCount` (which pages show around a gap) | `ds-pagination__ellipsis` |
+| "Icons only" demo | `iconsOnly`, `showFirstLast` | `ds-button--icon-only` |
+| — | `align` (`center`, `start`), `labels` (other languages), `aria-label` | `ds-pagination--start` |
+
+It is a `nav` landmark (named "Pagination" unless you pass `aria-label`) holding a list of buttons, or links with `getHref`. Each page link is named "Page 3" (`labels.page`); the current one has `aria-current="page"`. Previous / Next (and First / Last) are disabled on the first / last page; disabled links lose their `href`. Ellipses are `aria-hidden`. The pages shown are the first and last (`boundaryCount`), the current one with `siblingCount` on each side, and an ellipsis for each gap; a gap of one page shows that page instead (page 2 of 12 → 1 2 3 … 12). `paginationRange(page, pageCount, siblingCount, boundaryCount)` is exported for custom layouts. The "Previous and next" and "Rows per page" demos are layouts made of Button and Select (see the stories).
+
 ## Popover
 
 A small non-modal panel that opens from a button, with a title, a description and any content: Sort UI 2.0 **Popover** (header, content, Actions).
@@ -1161,6 +1181,7 @@ These come from the Figma files, not the code:
 - Collapsible (2.0): the trigger slot's sample is a detached "Button" frame with no padding, background or hover state, and Figma draws no focus state for it; the code adds the 3 px ring the other controls use. The "Settings panel" demo has no Collapsible instance (four inputs and an icon button) and the "Order summary" demo uses Item, which is not built yet; the stories rebuild both from Card, Input and Button. The fallback avatar in the sample puts `primary-foreground` initials on `palette/orange-solid`, which turns dark on orange in Dark.
 - Accordion (2.0): the Accordion component is drawn as a card, while its first demo ("Accordion") overrides it to a flush list and "Separated items" to muted boxes 8 px apart; the code offers the three as `variant`. The chevron is the 16 px icon scaled to 17.33 px, drawn 2 px down. Figma has no hover or focus state for the trigger; the code adds the 3 px ring the other controls use. The Divider is a 0 px line on the item's bottom edge; the code draws it as a 1 px inset shadow, which renders the same.
 - Breadcrumb (2.0): the Breadcrumb's slot is fixed at 20 px while its Ellipsis is a 24 px Ghost xs button, so the ellipsis overflows the row by 2 px above and below; the code lets the list grow to 24 px with the items centred on the same line. Chevron and Dot separators are the 16 px icons scaled to 17.33 px. Figma has no focus state for links; the code adds the 3 px ring the other controls use.
+- Pagination (2.0): the current page is an Outline Button that keeps the default 8 px side padding inside its fixed 32 px width, while the other page links have none; the code gives every page link the same box. The Pagination component's sample (1, 2, [3], …, 8) is not a range a rule produces; the code follows the "Pagination" demo (page 2 of 12: 1, [2], 3, …, 12). Figma does not draw Previous or Next disabled at the ends; the code disables them there.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

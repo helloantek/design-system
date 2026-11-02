@@ -1,0 +1,83 @@
+/*
+ * Pagination — Sort UI 2.0 component "Pagination" (node 253:5) and "Pagination Ellipsis" (253:2) on page 251:3 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: Previous and Next (Ghost Buttons with a chevron), page links (32 px Ghost Buttons, the
+ * current page an Outline Button) and an ellipsis, 4 px apart. Values are Sort UI 2.0 tokens; the buttons keep
+ * Button's styles.
+ *
+ * Markup:
+ *   <nav class="ds-pagination" aria-label="Pagination">
+ *     <ul class="ds-pagination__list">
+ *       <li><a class="ds-button ds-button--ghost ds-button--size-default ds-pagination__edge" href="…">‹ Previous</a></li>
+ *       <li><a class="ds-button ds-button--ghost ds-button--size-default ds-pagination__page" href="…">1</a></li>
+ *       <li><a class="ds-button ds-button--outline … ds-pagination__page" aria-current="page">2</a></li>
+ *       <li><span class="ds-pagination__ellipsis" aria-hidden="true"><svg/></span></li>
+ *       …
+ *     </ul>
+ *   </nav>
+ * Without hrefs the items are <button>s.
+ */
+
+@layer ds.components {
+  .ds-pagination {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .ds-pagination--start {
+    justify-content: flex-start;
+  }
+
+  /* Figma "items": 4 px apart, centred; a long list wraps. */
+  .ds-pagination__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-pagination__list > li {
+    display: flex;
+  }
+
+  .ds-pagination a.ds-button {
+    text-decoration: none;
+  }
+
+  /* Figma "Link": a 32 px square with no side padding (wider for long numbers); tabular digits keep the width. */
+  .ds-pagination__page {
+    --btn-pad-x: 0;
+
+    min-width: var(--btn-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-pagination__page > .ds-button__label {
+    padding-inline: var(--ds-spacing-1);
+  }
+
+  /* An edge link that cannot go further (first page / last page). */
+  .ds-pagination a.ds-button[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Figma "Pagination Ellipsis": a 17.33 px foreground ellipsis in a 32 px box. */
+  .ds-pagination__ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-8);
+    height: var(--ds-spacing-8);
+    color: var(--ds-foreground);
+  }
+
+  .ds-pagination__ellipsis > svg {
+    width: calc(var(--ds-spacing-4) * 13 / 12);
+    height: calc(var(--ds-spacing-4) * 13 / 12);
+  }
+}

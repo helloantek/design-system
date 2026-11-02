@@ -24,6 +24,7 @@ export * from './Input';
 export * from './InputOTP';
 export * from './Kbd';
 export * from './Marker';
+export * from './Pagination';
 export * from './Popover';
 export * from './Progress';
 export * from './Radio';

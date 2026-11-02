@@ -1,0 +1,51 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (#target, or the ellipsis for the Pagination Ellipsis entry) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "items": {
+      "selector": ".ds-pagination__list",
+      "skip": [
+        "w"
+      ],
+      "$why": "The list is as wide as its labels (\"Previous\", \"Next\", page numbers), whose widths follow glyph rasterisation; the pixel check covers the layout."
+    },
+    "Previous": {
+      "selector": "li:first-child .ds-pagination__edge",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the label's glyph rasterisation; padding, gap and radius are compared."
+    },
+    "Next": {
+      "selector": "li:last-child .ds-pagination__edge",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the label's glyph rasterisation; padding, gap and radius are compared."
+    },
+    "Link": {
+      "selector": ".ds-pagination__page:not([aria-current])"
+    },
+    "Button": {
+      "selector": ".ds-pagination__page[aria-current]",
+      "skip": [
+        "p"
+      ],
+      "$why": "Figma's current page is an Outline Button that keeps the default 8 px side padding inside its fixed 32 px width, while the other page links have none; the code gives every page link the same box (no padding, a 32 px minimum width), so the size, radius, fill and stroke are compared.",
+      "stroke": "inset-shadow"
+    },
+    "Pagination Ellipsis": {
+      "selector": ".ds-pagination__ellipsis"
+    },
+    "First page": {
+      "selector": "li:first-child .ds-button"
+    },
+    "Icon": {
+      "selector": "svg"
+    },
+    "Icon/VECTOR": {
+      "selector": "svg",
+      "stroke": "svg"
+    }
+  }
+}
