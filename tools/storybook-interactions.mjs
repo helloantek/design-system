@@ -1829,6 +1829,7 @@ Object.assign(tests, {
     const first = page.getByRole('button', { name: 'When will my order arrive?' });
     await first.waitFor();
     assert.equal(await first.evaluate((el) => el.parentElement.tagName), 'H3', 'the trigger sits in a heading');
+    assert.equal(await first.evaluate((el) => getComputedStyle(el).webkitTapHighlightColor), 'rgba(0, 0, 0, 0)', 'no grey tap flash on phones');
     assert.equal(await first.getAttribute('aria-expanded'), 'true');
     const region = page.getByRole('region', { name: 'When will my order arrive?' });
     assert.equal(await region.isVisible(), true, 'the open panel is a region named by its trigger');

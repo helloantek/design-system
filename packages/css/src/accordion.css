@@ -98,6 +98,8 @@
     letter-spacing: inherit;
     text-align: start;
     cursor: pointer;
+    /* Mobile browsers flash a grey box over a tapped button, which draws the eye away from the panel's animation. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   .ds-accordion--flush .ds-accordion__trigger {
