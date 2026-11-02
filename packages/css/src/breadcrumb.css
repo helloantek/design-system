@@ -1,0 +1,134 @@
+/*
+ * Breadcrumb — Sort UI 2.0 page "Breadcrumb" (259:2) in file 4JnqgEbdlnKgiFrfmiwEZw: component "Breadcrumb"
+ * (597:15867), sets "Breadcrumb Item" (597:15840: type=link / active / dropdown, state=default / hover, Icon) and
+ * "Breadcrumb Separator" (259:23: Type=Chevron / Slash / Dot), and "Breadcrumb Ellipsis" (597:15858). Values are
+ * Sort UI 2.0 tokens.
+ *
+ * Markup:
+ *   <nav class="ds-breadcrumb" aria-label="Breadcrumb">
+ *     <ol class="ds-breadcrumb__list">
+ *       <li class="ds-breadcrumb__item"><a class="ds-breadcrumb__link" href="/">[icon] Home</a></li>      (type=link)
+ *       <li class="ds-breadcrumb__separator" aria-hidden="true"><svg/></li>     (--slash: "/", --dot: a dot)
+ *       <li class="ds-breadcrumb__item"><button class="ds-button ds-button--ghost …">…</button></li>  (Ellipsis)
+ *       <li class="ds-breadcrumb__item">
+ *         <button class="ds-breadcrumb__link ds-breadcrumb__link--menu">Projects <svg/></button>   (type=dropdown)
+ *       </li>
+ *       <li class="ds-breadcrumb__item"><span class="ds-breadcrumb__page" aria-current="page">…</span></li> (active)
+ *     </ol>
+ *   </nav>
+ */
+
+@layer ds.components {
+  .ds-breadcrumb {
+    min-width: 0;
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma "Breadcrumb": items and separators 8 px apart, centred on a 20 px row; long trails wrap. */
+  .ds-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-height: var(--ds-spacing-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-breadcrumb__item {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  /* Figma type=link (and dropdown): muted 14/20 Regular, an optional 17.33 px icon 6 px before the label;
+     state=hover turns label and icons foreground. */
+  .ds-breadcrumb__link,
+  .ds-breadcrumb__page {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    color: var(--ds-muted-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    text-decoration: none;
+  }
+
+  .ds-breadcrumb__link {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    transition: color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-breadcrumb__link:hover,
+  .ds-breadcrumb__link[aria-expanded='true'] {
+    color: var(--ds-foreground);
+  }
+
+  /* Not in Figma: the ring every Sort UI 2.0 control draws on keyboard focus. */
+  .ds-breadcrumb__link:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-breadcrumb__link > svg,
+  .ds-breadcrumb__page > svg {
+    flex-shrink: 0;
+    width: calc(var(--ds-spacing-4) * 13 / 12);
+    height: calc(var(--ds-spacing-4) * 13 / 12);
+  }
+
+  /* Figma type=dropdown: a 16 px chevron-down 4 px after the label. */
+  .ds-breadcrumb__link--menu {
+    gap: var(--ds-spacing-1);
+  }
+
+  .ds-breadcrumb__link--menu > .ds-breadcrumb__chevron {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-breadcrumb__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+  }
+
+  /* Figma type=active: the current page in foreground, not a link. */
+  .ds-breadcrumb__page {
+    color: var(--ds-foreground);
+  }
+
+  /* Figma "Breadcrumb Separator" Type=Chevron and Dot: 17.33 px muted icons; Slash: a 12/16 Medium "/" in a 16 px box. */
+  .ds-breadcrumb__separator {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-breadcrumb__separator > svg {
+    width: calc(var(--ds-spacing-4) * 13 / 12);
+    height: calc(var(--ds-spacing-4) * 13 / 12);
+  }
+
+  .ds-breadcrumb__separator--slash {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+}

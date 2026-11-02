@@ -58,6 +58,34 @@ Load the same two CSS files and use the classes; each component's markup is docu
 
 `@helloantek/ds-tokens` ships `ios/DSColor.swift` + `ios/<Brand>Tokens.swift` and `android/<Brand>Tokens.kt` (plain values, no UI framework dependency). Native components are not part of the system yet.
 
+## Breadcrumb
+
+The path to the current page: the Sort UI 2.0 **Breadcrumb** with **Breadcrumb Item**, **Breadcrumb Separator** and **Breadcrumb Ellipsis**.
+
+```tsx
+<Breadcrumb>
+  <BreadcrumbItem href="/">Home</BreadcrumbItem>
+  <BreadcrumbEllipsis>
+    <DropdownMenuItem>Documents</DropdownMenuItem>
+  </BreadcrumbEllipsis>
+  <BreadcrumbItem menu={<DropdownMenuItem>Archive</DropdownMenuItem>}>Projects</BreadcrumbItem>
+  <BreadcrumbItem current>Onboarding flow</BreadcrumbItem>
+</Breadcrumb>
+<BreadcrumbItem asChild><Link to="/projects">Projects</Link></BreadcrumbItem>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Breadcrumb Item type=link | `href` (or `asChild` for a router link) | `ds-breadcrumb__link` |
+| type=active | `current` | `ds-breadcrumb__page` |
+| type=dropdown | `menu` (DropdownMenuItems), `menuLabel` | `ds-breadcrumb__link--menu` |
+| state=hover | `:hover` | — |
+| Icon / Icon swap | `icon` | — |
+| Breadcrumb Separator Type | `separator` on the Breadcrumb: `chevron` (default), `slash`, `dot` | `ds-breadcrumb__separator`, `--slash`, `--dot` |
+| Breadcrumb Ellipsis | `BreadcrumbEllipsis` with DropdownMenuItems (`aria-label`, default "Show more pages") | Ghost xs icon Button |
+
+It is a `nav` landmark (named "Breadcrumb" unless you pass `aria-label`) holding an ordered list. Breadcrumb draws the separators between the items; they are `aria-hidden`, so a screen reader lists only the steps. The current page is text with `aria-current="page"`. The Ellipsis and a dropdown item open a Dropdown Menu (Enter, Space or Down; Escape returns focus). Long trails wrap.
+
 ## Button
 
 Sort UI 2.0 ([Figma `40:2125`](https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=40-2125)), built on the 2.0 tokens.
@@ -1132,6 +1160,7 @@ These come from the Figma files, not the code:
 - Date Picker (2.0): Figma has no Date Picker component, only demos that place an Outline Button (or an Input Group with a calendar button) over a Calendar panel 4 px below; the code packages them as `DatePicker` and compares the "Date Picker" and "Input" demo frames. The demos shrink the Calendar to the 240 px field; the code keeps 256 px unless `calendarWidth` is set. The "Range picker" demo labels the trigger "Mar 27, 2026 - Apr 14, 2026"; the code uses the same hyphen.
 - Collapsible (2.0): the trigger slot's sample is a detached "Button" frame with no padding, background or hover state, and Figma draws no focus state for it; the code adds the 3 px ring the other controls use. The "Settings panel" demo has no Collapsible instance (four inputs and an icon button) and the "Order summary" demo uses Item, which is not built yet; the stories rebuild both from Card, Input and Button. The fallback avatar in the sample puts `primary-foreground` initials on `palette/orange-solid`, which turns dark on orange in Dark.
 - Accordion (2.0): the Accordion component is drawn as a card, while its first demo ("Accordion") overrides it to a flush list and "Separated items" to muted boxes 8 px apart; the code offers the three as `variant`. The chevron is the 16 px icon scaled to 17.33 px, drawn 2 px down. Figma has no hover or focus state for the trigger; the code adds the 3 px ring the other controls use. The Divider is a 0 px line on the item's bottom edge; the code draws it as a 1 px inset shadow, which renders the same.
+- Breadcrumb (2.0): the Breadcrumb's slot is fixed at 20 px while its Ellipsis is a 24 px Ghost xs button, so the ellipsis overflows the row by 2 px above and below; the code lets the list grow to 24 px with the items centred on the same line. Chevron and Dot separators are the 16 px icons scaled to 17.33 px. Figma has no focus state for links; the code adds the 3 px ring the other controls use.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

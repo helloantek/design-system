@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..
 import { AlertDialog, AlertDialogAction, AlertDialogCancel } from '../AlertDialog';
 import { Avatar, AvatarGroup } from '../Avatar';
 import { Badge, type BadgeColor } from '../Badge';
+import { Breadcrumb, BreadcrumbItem } from '../Breadcrumb';
 import { Button } from '../Button';
 import { Calendar } from '../Calendar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../Collapsible';
@@ -75,7 +76,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -142,6 +143,13 @@ export const Members: StoryObj = {
 
     return (
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 560px) 280px', gap: 16, alignItems: 'start', fontFamily: 'var(--ds-font-sans)' }}>
+        <Breadcrumb style={{ gridColumn: '1 / -1' }}>
+          <BreadcrumbItem href="#workspace">Workspace</BreadcrumbItem>
+          <BreadcrumbItem menuLabel="Switch team" menu={['Orbit', 'Design guild', 'Platform'].map((t) => <DropdownMenuItem key={t} onClick={() => toast(`Switched to ${t}`, { description: 'A real product would open that team.' })}>{t}</DropdownMenuItem>)}>
+            {teamName}
+          </BreadcrumbItem>
+          <BreadcrumbItem current>Members</BreadcrumbItem>
+        </Breadcrumb>
         <Card as="section" aria-label="Team members">
           <CardHeader
             title={`${teamName} members`}

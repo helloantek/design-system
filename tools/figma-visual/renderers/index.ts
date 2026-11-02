@@ -4,6 +4,7 @@ import { renderAlertDialog } from './alert-dialog';
 import { renderAspectRatio } from './aspect-ratio';
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
+import { renderBreadcrumb } from './breadcrumb';
 import { renderButton } from './button';
 import { renderButtonGroup, renderButtonGroupItem } from './button-group';
 import { renderCalendar, renderCalendarDay, renderCalendarNavigation } from './calendar';
@@ -50,6 +51,7 @@ export const renderers: Record<string, Renderer> = {
   avatar: renderAvatar,
   'avatar-group': renderAvatarGroup,
   badge: renderBadge,
+  breadcrumb: renderBreadcrumb,
   button: renderButton,
   'button-group': renderButtonGroup,
   'button-group-item': renderButtonGroupItem,

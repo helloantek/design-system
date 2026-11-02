@@ -1,0 +1,138 @@
+{
+ "$comment": "Sort UI 2.0 Breadcrumb reference renders (1x PNG). Breadcrumb Item (type=link / active / dropdown, state=default / hover, Figma's \"Breadcrumb\" label) and Breadcrumb Separator (Type=Chevron / Slash / Dot) exported with get_screenshot and compared on their own element; the Breadcrumb component (link, ellipsis, link, active; its 24 px Ellipsis makes the row 24 px tall); the \"Dropdown\" and \"Separators\" demos exported with exportAsync and absolute bounds.",
+ "component": "breadcrumb",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "597:15840",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 4
+ },
+ "entries": [
+  {
+   "slug": "link-default",
+   "nodeId": "597:15849",
+   "props": {
+    "Part": "item",
+    "type": "link",
+    "state": "default"
+   },
+   "target": "#target .ds-breadcrumb__link, #target .ds-breadcrumb__page",
+   "nodeW": 81,
+   "nodeH": 20
+  },
+  {
+   "slug": "link-hover",
+   "nodeId": "597:15852",
+   "props": {
+    "Part": "item",
+    "type": "link",
+    "state": "hover"
+   },
+   "interaction": "Hover",
+   "target": "#target .ds-breadcrumb__link, #target .ds-breadcrumb__page",
+   "nodeW": 81,
+   "nodeH": 20
+  },
+  {
+   "slug": "active",
+   "nodeId": "597:15855",
+   "props": {
+    "Part": "item",
+    "type": "active",
+    "state": "default"
+   },
+   "target": "#target .ds-breadcrumb__link, #target .ds-breadcrumb__page",
+   "nodeW": 81,
+   "nodeH": 20
+  },
+  {
+   "slug": "dropdown-default",
+   "nodeId": "597:15841",
+   "props": {
+    "Part": "item",
+    "type": "dropdown",
+    "state": "default"
+   },
+   "target": "#target .ds-breadcrumb__link, #target .ds-breadcrumb__page",
+   "nodeW": 101,
+   "nodeH": 20
+  },
+  {
+   "slug": "dropdown-hover",
+   "nodeId": "597:15845",
+   "props": {
+    "Part": "item",
+    "type": "dropdown",
+    "state": "hover"
+   },
+   "interaction": "Hover",
+   "target": "#target .ds-breadcrumb__link, #target .ds-breadcrumb__page",
+   "nodeW": 101,
+   "nodeH": 20
+  },
+  {
+   "slug": "separator-chevron",
+   "nodeId": "259:17",
+   "props": {
+    "Part": "separator",
+    "Type": "Chevron"
+   },
+   "target": "#target .ds-breadcrumb__separator",
+   "nodeW": 17.3,
+   "nodeH": 17.3
+  },
+  {
+   "slug": "separator-slash",
+   "nodeId": "259:20",
+   "props": {
+    "Part": "separator",
+    "Type": "Slash"
+   },
+   "target": "#target .ds-breadcrumb__separator",
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "separator-dot",
+   "nodeId": "597:16034",
+   "props": {
+    "Part": "separator",
+    "Type": "Dot"
+   },
+   "target": "#target .ds-breadcrumb__separator",
+   "nodeW": 17.3,
+   "nodeH": 17.3
+  },
+  {
+   "slug": "breadcrumb",
+   "nodeId": "597:15867",
+   "props": {
+    "Part": "breadcrumb"
+   },
+   "nodeW": 366.91,
+   "nodeH": 24
+  },
+  {
+   "slug": "demo-dropdown",
+   "nodeId": "I1468:47435;1467:45555;1468:49593",
+   "props": {
+    "Part": "dropdown"
+   },
+   "nodeW": 290.6,
+   "nodeH": 20
+  },
+  {
+   "slug": "demo-separators",
+   "nodeId": "I1468:47437;1467:45555;1468:49655",
+   "props": {
+    "Part": "separators"
+   },
+   "nodeW": 270.6,
+   "nodeH": 108
+  }
+ ],
+ "$thresholdsWhy": "maxSizeDelta 4, not 2: Figma snaps each hugging text box to a whole pixel (\"Home\" 40, \"Projects\" 54, \"Onboarding flow\" 110), so a trail of three labels is ~3 px wider than the fractional glyph advances the browser lays out. A single item is within 0.4 px (link-default, active, dropdown-default), and the spec check compares every gap and size exactly."
+}
