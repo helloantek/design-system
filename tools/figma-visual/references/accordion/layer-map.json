@@ -1,0 +1,46 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-accordion) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma puts the items in an \"items\" slot inside the Accordion; the code has one box, so the gap between items is compared on \"items\"."
+    },
+    "Trigger": {
+      "selector": ".ds-accordion__trigger"
+    },
+    "Title": {
+      "selector": ".ds-accordion__title"
+    },
+    "Chevron": {
+      "selector": ".ds-accordion__chevron"
+    },
+    "Chevron/VECTOR": {
+      "selector": ".ds-accordion__chevron svg",
+      "stroke": "svg"
+    },
+    "content": {
+      "selector": ".ds-accordion__content"
+    },
+    "Body": {
+      "selector": ".ds-accordion__content > p"
+    },
+    "Divider": {
+      "selector": ".ds-accordion__item",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "Figma's Divider is a 0 px line at the item's bottom edge; the code draws it as a 1 px inset shadow on the item, so only its colour is compared (the pixels cover its place)."
+    },
+    "items": {
+      "$why": "Figma's items slot is the Accordion's own box in code: its gap is the gap between items."
+    },
+    "Accordion Item": {
+      "selector": ".ds-accordion__item"
+    }
+  }
+}

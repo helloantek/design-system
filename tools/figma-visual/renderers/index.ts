@@ -1,4 +1,5 @@
 import { renderAlert } from './alert';
+import { renderAccordion } from './accordion';
 import { renderAlertDialog } from './alert-dialog';
 import { renderAspectRatio } from './aspect-ratio';
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
@@ -42,6 +43,7 @@ import type { Renderer } from './types';
 
 // One renderer per component folder in ../references.
 export const renderers: Record<string, Renderer> = {
+  accordion: renderAccordion,
   alert: renderAlert,
   'alert-dialog': renderAlertDialog,
   'aspect-ratio': renderAspectRatio,

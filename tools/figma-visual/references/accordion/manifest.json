@@ -1,0 +1,21 @@
+{
+ "$comment": "Sort UI 2.0 Accordion reference renders (1x PNG). Accordion Item State=Closed / Open / Disabled (exported with get_screenshot, Divider=true, Figma's sample text); the Accordion component as a card (get_screenshot, cropped to the 448 × 232 box: the border and Surface/Card shadow fall outside it); the \"Accordion\" demo (flush, no surface) and the \"Separated items\" demo (exported with exportAsync and absolute bounds). renderers/accordion.tsx renders the same items.",
+ "component": "accordion",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "200:26",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  { "slug": "item-closed", "nodeId": "200:2", "props": { "Demo": "item", "State": "Closed" }, "nodeW": 448, "nodeH": 52 },
+  { "slug": "item-open", "nodeId": "200:10", "props": { "Demo": "item", "State": "Open" }, "nodeW": 448, "nodeH": 128 },
+  { "slug": "item-disabled", "nodeId": "200:18", "props": { "Demo": "item", "State": "Disabled" }, "nodeW": 448, "nodeH": 52 },
+  { "slug": "card", "nodeId": "200:27", "props": { "Demo": "card" }, "nodeW": 448, "nodeH": 232 },
+  { "slug": "flush", "nodeId": "I1468:45953;1467:45555;1468:45960", "props": { "Demo": "flush" }, "nodeW": 448, "nodeH": 232 },
+  { "slug": "separated", "nodeId": "I1468:45956;1467:45555;1468:46008", "props": { "Demo": "separated" }, "nodeW": 448, "nodeH": 248 }
+ ]
+}

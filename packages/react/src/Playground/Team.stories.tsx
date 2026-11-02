@@ -4,6 +4,7 @@ import { RiDeleteBinLine, RiFileCopyLine, RiContractUpDownLine, RiFilter3Line, R
 import { Alert } from '../Alert';
 import { AspectRatio } from '../AspectRatio';
 import { aspectRatioPhoto } from '../AspectRatio/AspectRatio.fixtures';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../Accordion';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel } from '../AlertDialog';
 import { Avatar, AvatarGroup } from '../Avatar';
 import { Badge, type BadgeColor } from '../Badge';
@@ -74,7 +75,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -519,6 +520,27 @@ export const Members: StoryObj = {
             </div>
           </CardContent>
         </Card>
+
+        <Accordion aria-label="Workspace questions" defaultValue="seats">
+          <AccordionItem value="seats">
+            <AccordionTrigger>How are seats billed?</AccordionTrigger>
+            <AccordionContent>
+              <p>Each seat is €12 a month, billed with your plan. You have {seats} seats; removing a member frees theirs at once.</p>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="roles">
+            <AccordionTrigger>What can each role do?</AccordionTrigger>
+            <AccordionContent>
+              <p>Owners manage billing, Admins invite and remove people, Members work in shared notes, and Guests see only what is shared with them.</p>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="leave">
+            <AccordionTrigger>What happens when someone leaves?</AccordionTrigger>
+            <AccordionContent>
+              <p>Their notes stay in {teamName}. Ownership moves to the person who removed them.</p>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <AlertDialog
           open={removing !== null}
