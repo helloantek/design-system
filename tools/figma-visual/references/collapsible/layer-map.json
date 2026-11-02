@@ -1,0 +1,15 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-collapsible) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "Button": {
+      "selector": ".ds-collapsible__trigger",
+      "skip": ["w"],
+      "$why": "The trigger hugs its label, whose width follows glyph rasterisation; the pixel check still covers it."
+    },
+    "Label": { "selector": ".ds-collapsible__label" },
+    "Trailing icon": { "selector": ".ds-collapsible__chevron" },
+    "Trailing icon/VECTOR": { "selector": ".ds-collapsible__chevron", "stroke": "svg" },
+    "content": { "selector": ".ds-collapsible__content" }
+  }
+}
