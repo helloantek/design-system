@@ -8,6 +8,7 @@ import { Checkbox } from '../Checkbox';
 import { Combobox } from '../Combobox';
 import { Field, FieldGroup, FieldSeparator, FieldSet } from '../Field';
 import { Input, type InputSize, type InputVariant } from '../Input';
+import { InputOTP } from '../InputOTP';
 import { Radio, RadioGroup } from '../Radio';
 import { Select, type SelectItem } from '../Select';
 import { Slider } from '../Slider';
@@ -59,7 +60,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A sign-up form in a Card, made of Input, Select, Combobox, Textarea, Radio, Switch, Slider, Checkbox, Field (Field, Field Group, Field Set, Field Separator), Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
+          'A sign-up form in a Card, made of Input, Input OTP, Select, Combobox, Textarea, Radio, Switch, Slider, Checkbox, Field (Field, Field Group, Field Set, Field Separator), Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -80,6 +81,7 @@ export const SignUp: StoryObj<Args> = {
     const [errors, setErrors] = useState<Errors>({});
     const [submitted, setSubmitted] = useState<Record<string, FormDataEntryValue | FormDataEntryValue[]> | null>(null);
     const [reminder, setReminder] = useState(15);
+    const [invite, setInvite] = useState('');
     const field = { variant, size, disabled };
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -122,6 +124,9 @@ export const SignUp: StoryObj<Args> = {
               <Combobox variant={variant} size={size} name="timezone" placeholder="Search timezones" options={timezones} leadIcon={<RiSearchLine />} />
             </Field>
             <FieldSeparator>Subscription</FieldSeparator>
+            <Field label="Invite code" description="Optional: 6 digits from a teammate's invite" disabled={disabled}>
+              <InputOTP name="invite" groups={2} value={invite} onValueChange={setInvite} />
+            </Field>
             <Select {...field} name="plan" label="Plan" placeholder="Select a plan" options={plans} defaultValue="free" caption="You can change it later" />
             <RadioGroup name="billing" label="Billing" defaultValue="monthly" columns={2} disabled={disabled}>
               <Radio value="monthly" label="Monthly" />
@@ -141,6 +146,7 @@ export const SignUp: StoryObj<Args> = {
               setErrors({});
               setSubmitted(null);
               setReminder(15);
+              setInvite('');
             }}>
             Reset
           </Button>

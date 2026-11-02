@@ -1,0 +1,181 @@
+/*
+ * Input OTP — Sort UI 2.0 component sets "Input OTP" (node 117:196) and "OTP Slot" (node 114:32) on page 113:2 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: a one-time code typed into a row of character slots. Values are Sort UI 2.0 tokens.
+ *
+ * Markup: one real <input> lies, invisible, over the slots and takes the typing, pasting and autofill; the slots only
+ * draw its value.
+ *   <div class="ds-input-otp [ds-input-otp--cells] [ds-input-otp--invalid] [ds-input-otp--disabled] [ds-input-otp--full-width]">
+ *     <div class="ds-input-otp__group">                                      (Figma "Group")
+ *       <div class="ds-input-otp__slot [ds-input-otp__slot--active]">4</div> (Figma "OTP Slot"; the active one shows
+ *       …                                                                      <span class="ds-input-otp__caret">)
+ *     </div>
+ *     [<div class="ds-input-otp__separator" aria-hidden="true"><svg>…</svg></div>]  (Figma "Separator")
+ *     <div class="ds-input-otp__group">…</div>
+ *     <input class="ds-input-otp__input" autocomplete="one-time-code" inputmode="numeric" aria-label="…">
+ *   </div>
+ * Figma Layout: Single / Two / Three groups join the slots in 1–3 bordered groups; Cells (--cells) gives every slot its
+ * own group, 8 px apart. OTP Slot State=Active is the slot the next character goes into while the input has focus;
+ * Input OTP State=Invalid is --invalid, Disabled is --disabled.
+ */
+
+@layer ds.components {
+  .ds-input-otp {
+    --otp-slot-width: var(--ds-spacing-8);
+    --otp-slot-height: var(--ds-spacing-8);
+    --otp-border: var(--ds-field-border);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-xs--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma Layout=Cells: every slot is its own group, 8 px apart. */
+  .ds-input-otp--cells {
+    gap: var(--ds-spacing-2);
+  }
+
+  /* Not a Figma property (the "Input OTP" demo): the slots share the container's width. */
+  .ds-input-otp--full-width {
+    display: flex;
+    width: 100%;
+  }
+
+  .ds-input-otp--full-width > .ds-input-otp__group {
+    flex: 1 1 0;
+  }
+
+  .ds-input-otp--full-width .ds-input-otp__slot {
+    flex: 1 1 0;
+    width: auto;
+  }
+
+  /* Figma "Group": the slots side by side in an 8 px rounded box with a 1 px field-border stroke inside. */
+  .ds-input-otp__group {
+    position: relative;
+    display: flex;
+    border-radius: var(--ds-radius-md);
+  }
+
+  .ds-input-otp__group::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--otp-border);
+    pointer-events: none;
+  }
+
+  /* Figma "OTP Slot": 32 × 32 on field, the character centred (13/20), a 1 px field-border divider on the right of all
+     but the last slot of a group. */
+  .ds-input-otp__slot {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--otp-slot-width);
+    height: var(--otp-slot-height);
+    background-color: var(--ds-field);
+    box-shadow: inset calc(-1 * var(--ds-stroke-width-1)) 0 0 var(--ds-field-border);
+    transition: box-shadow var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-input-otp__slot:first-child {
+    border-start-start-radius: var(--ds-radius-md);
+    border-end-start-radius: var(--ds-radius-md);
+  }
+
+  .ds-input-otp__slot:last-child {
+    box-shadow: none;
+    border-start-end-radius: var(--ds-radius-md);
+    border-end-end-radius: var(--ds-radius-md);
+  }
+
+  /* Figma State=Active: a 1 px ring stroke inside and a 2 px ring around, above its neighbours and the group's stroke. */
+  .ds-input-otp__slot.ds-input-otp__slot--active {
+    z-index: 2;
+    box-shadow:
+      inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring),
+      0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma "Caret": a 1 × 16 foreground bar in an empty active slot; it blinks. */
+  .ds-input-otp__caret {
+    width: var(--ds-stroke-width-1);
+    height: var(--ds-spacing-4);
+    background-color: var(--ds-foreground);
+    animation: ds-input-otp-blink 1s step-end infinite;
+  }
+
+  @keyframes ds-input-otp-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* Figma "Separator": a 16 px minus icon in muted-foreground between groups. */
+  .ds-input-otp__separator {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-input-otp__separator > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* The real input covers the slots, invisible: it takes clicks, typing, paste and one-time-code autofill. */
+  .ds-input-otp__input {
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: transparent;
+    caret-color: transparent;
+    font: inherit;
+    letter-spacing: 0;
+    opacity: 0;
+    cursor: text;
+  }
+
+  /* Figma Input OTP State=Invalid: every group's stroke turns invalid-border. (The groups also carry a 2 px invalid
+     ring, but Figma does not draw a shadow under a frame without a fill, so it never shows; the code leaves it out.) */
+  .ds-input-otp--invalid {
+    --otp-border: var(--ds-invalid-border);
+  }
+
+  /* Figma State=Disabled: the whole input at 50 %. */
+  .ds-input-otp--disabled {
+    opacity: 0.5;
+  }
+
+  .ds-input-otp--disabled .ds-input-otp__input {
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-input-otp__caret {
+      animation: none;
+    }
+
+    .ds-input-otp__slot {
+      transition: none;
+    }
+  }
+}

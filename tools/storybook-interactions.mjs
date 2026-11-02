@@ -282,7 +282,7 @@ const tests = {
     assert.equal(Math.round(boxes[1] - boxes[0]), 24, 'default: 32 px avatars overlap by 8 px');
     assert.equal(await group.getByRole('img', { name: 'and 3 more' }).textContent(), '+3');
   },
-  'playground form: validation, submitted data (with the reminder slider) and reset': async () => {
+  'playground form: validation, submitted data (with the invite code and the reminder slider) and reset': async () => {
     await open('playground-form--sign-up');
     const submitted = page.getByTestId('submitted');
     await page.getByRole('button', { name: 'Create account' }).click();
@@ -299,10 +299,12 @@ const tests = {
     await page.getByRole('option', { name: 'Design' }).click();
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: '', plan: 'free', billing: 'monthly', bio: '', reminder: '15', terms: 'on', teams: ['web', 'design'] });
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: '', invite: '', plan: 'free', billing: 'monthly', bio: '', reminder: '15', terms: 'on', teams: ['web', 'design'] });
     await page.getByRole('region', { name: 'Notifications' }).getByText('Account created').first().waitFor();
     await page.getByRole('combobox', { name: 'Timezone' }).fill('war');
     await page.getByRole('option', { name: '(GMT+1) Warsaw' }).click();
+    await page.getByRole('textbox', { name: 'Invite code' }).focus();
+    await page.keyboard.type('314159');
     await page.getByRole('radio', { name: /Yearly/ }).check();
     await page.getByLabel('About you').fill('Design systems');
     await page.getByLabel('Product updates').check();
@@ -310,12 +312,13 @@ const tests = {
     await page.keyboard.press('ArrowRight');
     await page.getByText('20 min', { exact: true }).waitFor();
     await page.getByRole('button', { name: 'Create account' }).click();
-    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: 'warsaw', plan: 'free', billing: 'yearly', bio: 'Design systems', updates: 'on', reminder: '20', terms: 'on', teams: ['web', 'design'] });
+    assert.deepEqual(JSON.parse(await submitted.textContent()), { name: 'Jane Doe', email: 'jane@example.com', role: 'engineer', timezone: 'warsaw', invite: '314159', plan: 'free', billing: 'yearly', bio: 'Design systems', updates: 'on', reminder: '20', terms: 'on', teams: ['web', 'design'] });
     await page.getByRole('button', { name: 'Reset' }).click();
     assert.equal(await page.getByRole('combobox', { name: 'Role' }).textContent(), 'Select a role', 'form reset clears the Select');
     assert.equal(await page.getByRole('combobox', { name: 'Plan' }).textContent(), 'Free', 'and restores its defaultValue');
     assert.equal(await page.getByRole('combobox', { name: 'Teams' }).textContent(), 'Select teams');
     assert.equal(await page.getByRole('slider', { name: 'Remind me before events' }).getAttribute('aria-valuenow'), '15', 'reset restores the slider');
+    assert.equal(await page.getByRole('textbox', { name: 'Invite code' }).inputValue(), '', 'and clears the invite code');
     assert.equal(await page.getByRole('combobox', { name: 'Timezone' }).inputValue(), '', 'form reset clears the Combobox');
     await page.getByRole('combobox', { name: 'Timezone' }).fill('tok');
     await page.getByRole('button', { name: 'Reset' }).click();
@@ -1611,6 +1614,49 @@ Object.assign(tests, {
     await page.getByRole('slider', { name: 'Minimum budget' }).waitFor();
     await page.getByRole('button', { name: 'Submit' }).click();
     await page.getByText('budget=200&budget=800', { exact: true }).waitFor();
+  },
+  'input otp: one named one-time-code input; typing fills the slots and moves the active slot; letters are dropped; Backspace clears; paste fills; a Field error makes it invalid': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-input-otp--digits-only&viewMode=story');
+    const input = page.getByRole('textbox', { name: 'Verification code' });
+    await input.waitFor();
+    assert.deepEqual(await input.evaluate((el) => [el.autocomplete, el.inputMode]), ['one-time-code', 'numeric']);
+    const slots = page.locator('.ds-input-otp__slot');
+    const continueButton = page.getByRole('button', { name: 'Continue' });
+    assert.equal(await continueButton.isDisabled(), true);
+    await page.keyboard.press('Tab');
+    assert.equal(await page.locator('.ds-input-otp__slot--active').getAttribute('data-index'), '0', 'focus makes the first slot active');
+    assert.equal(await page.locator('.ds-input-otp__caret').count(), 1, 'with a caret');
+    await page.keyboard.type('12a3');
+    assert.deepEqual(await slots.allTextContents(), ['1', '2', '3', '', '', ''], 'letters are dropped');
+    assert.equal(await page.locator('.ds-input-otp__slot--active').getAttribute('data-index'), '3', 'the next slot is active');
+    await page.keyboard.press('Backspace');
+    assert.deepEqual(await slots.allTextContents(), ['1', '2', '', '', '', ''], 'Backspace clears the last character');
+    await page.keyboard.type('3456');
+    assert.equal(await input.inputValue(), '123456');
+    assert.equal(await continueButton.isDisabled(), false, 'a full code enables Continue');
+    await page.keyboard.type('7');
+    assert.equal(await input.inputValue(), '123456', 'no seventh character');
+    await page.keyboard.press('Tab');
+    assert.equal(await page.locator('.ds-input-otp__slot--active').count(), 0, 'no active slot without focus');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-input-otp--separator&viewMode=story');
+    const code = page.getByRole('textbox', { name: 'Verification code' });
+    await code.waitFor();
+    assert.equal(await page.locator('.ds-input-otp__group').count(), 2, 'two groups');
+    assert.equal(await page.locator('.ds-input-otp__separator').count(), 1, 'with one separator');
+    await code.focus();
+    // insertText delivers the whole string at once, as a paste does.
+    await page.keyboard.insertText('98 76-54');
+    assert.equal(await code.inputValue(), '987654', 'a pasted code keeps its digits');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-input-otp--with-field&viewMode=story');
+    const recovery = page.getByRole('textbox', { name: 'Recovery code' });
+    await recovery.waitFor();
+    await recovery.focus();
+    await page.keyboard.type('111111');
+    assert.equal(await recovery.getAttribute('aria-invalid'), 'true', 'a Field error makes it invalid');
+    assert.equal(await page.locator('.ds-input-otp--invalid').count(), 1);
+    assert.equal(await recovery.evaluate((el) => document.getElementById(el.getAttribute('aria-describedby').split(' ').pop()).textContent), 'That code is not right. Check the email and try again.');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
