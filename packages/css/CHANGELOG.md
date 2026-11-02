@@ -1,5 +1,15 @@
 # @helloantek/ds-css
 
+## 2.34.0
+
+### Minor Changes
+
+- d8dc9e1: Accordion (Sort UI 2.0): `Accordion` (`type` single or multiple, `value` / `defaultValue` / `onValueChange`, `collapsible`, `variant` card / flush / separated, `headingLevel`), `AccordionItem` (`disabled`, `divider`), `AccordionTrigger` (`icon`) and `AccordionContent`. Triggers are buttons in headings with `aria-expanded`; panels are labelled regions; Up / Down, Home and End move between triggers.
+
+### Patch Changes
+
+- 15aa12a: Mobile: components no longer show the browser's grey tap highlight (it flashed over buttons, tabs and triggers as their own states changed). Collapsible content now animates its height open and closed, like Accordion, instead of appearing at once; closed content is hidden once collapsed and `--collapsible-gap` sets the space above it.
+
 ## 2.33.0
 
 ### Minor Changes
