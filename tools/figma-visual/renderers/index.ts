@@ -11,6 +11,7 @@ import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './check
 import { renderCombobox } from './combobox';
 import { renderContextMenu } from './context-menu';
 import { renderDatePicker } from './date-picker';
+import { renderCollapsible } from './collapsible';
 import { renderDialog } from './dialog';
 import { renderDrawer } from './drawer';
 import { renderDropdownMenu } from './dropdown-menu';
@@ -60,6 +61,7 @@ export const renderers: Record<string, Renderer> = {
   combobox: renderCombobox,
   'context-menu': renderContextMenu,
   'date-picker': renderDatePicker,
+  collapsible: renderCollapsible,
   dialog: renderDialog,
   drawer: renderDrawer,
   'dropdown-menu': renderDropdownMenu,

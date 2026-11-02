@@ -1,0 +1,89 @@
+/*
+ * Collapsible — Sort UI 2.0 component set "Collapsible" (node 297:90) on page 296:3 in file 4JnqgEbdlnKgiFrfmiwEZw:
+ * a trigger that shows or hides the content below it. Figma State=Closed / Open; the trigger and the content are
+ * slots. Values are Sort UI 2.0 tokens.
+ *
+ * Markup:
+ *   <div class="ds-collapsible" data-state="open">
+ *     <button class="ds-collapsible__trigger" aria-expanded="true" aria-controls="…">
+ *       <span class="ds-collapsible__label">Hide replies</span> <svg class="ds-collapsible__chevron"/>
+ *     </button>                                   — or any button (Outline sm, Ghost icon…) with aria-expanded
+ *     <div class="ds-collapsible__content" id="…" [hidden]>…</div>
+ *   </div>
+ */
+
+@layer ds.components {
+  /* Figma "Collapsible": the trigger and the content 16 px apart. */
+  .ds-collapsible {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-4);
+    min-width: 0;
+  }
+
+  /* The trigger slot's sample ("Button"): a 14/20 Medium label and a 16 px chevron, 4 px apart, no padding. */
+  .ds-collapsible__trigger {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: var(--ds-spacing-1);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    cursor: pointer;
+  }
+
+  .ds-collapsible__chevron {
+    flex-shrink: 0;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* Not in Figma: the ring every Sort UI 2.0 control draws on keyboard focus. */
+  .ds-collapsible__trigger:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-collapsible__trigger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ds-collapsible__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-4);
+    min-width: 0;
+  }
+
+  .ds-collapsible__content[hidden] {
+    display: none;
+  }
+
+  /* Not in Figma: the content fades in when it opens. */
+  .ds-collapsible__content:not([hidden]) {
+    animation: ds-collapsible-in var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  @keyframes ds-collapsible-in {
+    from {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--ds-spacing-1));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-collapsible__content:not([hidden]) {
+      animation: none;
+    }
+  }
+}

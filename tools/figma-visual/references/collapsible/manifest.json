@@ -1,0 +1,17 @@
+{
+ "$comment": "Sort UI 2.0 Collapsible reference renders (1x PNG, exported with get_screenshot): State=Closed and State=Open, with Figma's sample trigger (\"Show replies\" / \"Hide replies\" and a chevron) and two comments in the content slot. renderers/collapsible.tsx renders the same content. The first comment's avatar is Figma's sample photo, which differs from the fixture picture (24 × 24 px of the 448 × 180 render).",
+ "component": "collapsible",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "297:90",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  { "slug": "closed", "nodeId": "297:2", "props": { "State": "Closed" }, "nodeW": 448, "nodeH": 20 },
+  { "slug": "open", "nodeId": "297:48", "props": { "State": "Open" }, "nodeW": 448, "nodeH": 180 }
+ ]
+}

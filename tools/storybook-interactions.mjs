@@ -1786,6 +1786,44 @@ Object.assign(tests, {
     await page.getByRole('button', { name: 'Book' }).click();
     await page.getByText('stay=2026-03-20&stay=2026-03-23', { exact: true }).waitFor();
   },
+  'collapsible: the trigger is a button with aria-expanded and aria-controls; click, Enter and Space toggle the hidden content; asChild buttons work the same; disabled does nothing': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-collapsible--default&viewMode=story');
+    const trigger = page.getByRole('button', { name: 'Hide replies' });
+    await trigger.waitFor();
+    const contentId = await trigger.getAttribute('aria-controls');
+    const content = page.locator(`[id="${contentId}"]`);
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.equal(await content.isVisible(), true, 'open shows the content');
+    await trigger.click();
+    const show = page.getByRole('button', { name: 'Show replies' });
+    assert.equal(await show.getAttribute('aria-expanded'), 'false');
+    assert.equal(await content.isVisible(), false, 'closed hides it');
+    assert.equal(await content.getAttribute('hidden'), '', 'with the hidden attribute');
+    await show.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await content.isVisible(), true, 'Enter opens it');
+    await page.keyboard.press('Space');
+    assert.equal(await content.isVisible(), false, 'Space closes it');
+    const gap = await page.evaluate(() => {
+      const root = document.querySelector('.ds-collapsible');
+      return getComputedStyle(root).rowGap;
+    });
+    assert.equal(gap, '16px', 'the content sits 16 px below the trigger');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-collapsible--flight-details&viewMode=story');
+    const details = page.getByRole('button', { name: 'Hide details' });
+    await details.waitFor();
+    await details.click();
+    await page.getByRole('button', { name: 'Show details', expanded: false }).waitFor();
+    assert.equal(await page.getByText('Layover in Frankfurt · 1h 45m').isVisible(), false, 'an asChild Button toggles the content');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-collapsible--disabled&viewMode=story');
+    const disabled = page.getByRole('button', { name: 'Show replies' });
+    await disabled.waitFor();
+    assert.equal(await disabled.isDisabled(), true);
+    await disabled.click({ force: true });
+    assert.equal(await disabled.getAttribute('aria-expanded'), 'false', 'disabled does not open');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });

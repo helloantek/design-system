@@ -850,6 +850,32 @@ Short help for a control: the WAI-ARIA tooltip. It describes its trigger (`aria-
 
 The trigger must take focus and keep its own name; the tooltip is help, not a label. Like the menus, the tooltip does not flip near the edge of the viewport yet.
 
+## Collapsible
+
+Shows or hides content under a trigger: the Sort UI 2.0 **Collapsible** (State=Closed / Open, a trigger slot and a content slot 16 px apart).
+
+```tsx
+<Collapsible open={open} onOpenChange={setOpen}>
+  <CollapsibleTrigger>{open ? 'Hide replies' : 'Show replies'}</CollapsibleTrigger>
+  <CollapsibleContent>…</CollapsibleContent>
+</Collapsible>
+<Collapsible>
+  <CollapsibleTrigger asChild>
+    <Button variant="outline" size="sm">Show details</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>…</CollapsibleContent>
+</Collapsible>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| State=Closed / Open | `open` / `defaultOpen` / `onOpenChange` | `ds-collapsible[data-state]` |
+| trigger (slot; the sample: 14/20 Medium label and a chevron, 4 px apart) | `CollapsibleTrigger` (`showChevron`), or any button with `asChild` | `ds-collapsible__trigger`, `ds-collapsible__chevron` |
+| content (slot) | `CollapsibleContent` (`keepMounted`) | `ds-collapsible__content` |
+| — | `disabled` | — |
+
+The trigger is a button with `aria-expanded` and `aria-controls` pointing at the content; click, Enter or Space toggles it. Closed content keeps its place in the DOM with the `hidden` attribute (`keepMounted={false}` drops it). The trigger can sit anywhere inside the Collapsible: the "Order summary" and "Flight details" demos put a Ghost icon button or an Outline sm button in a header.
+
 ## Combobox
 
 A text field that filters a list: Sort UI 2.0 **Combobox** (Size, Value, State, Leading icon / slot, Chips) with Combobox Content (the Select's options, groups and separators) and Combobox Empty. The WAI-ARIA combobox with list autocomplete.
@@ -1074,6 +1100,7 @@ These come from the Figma files, not the code:
 - Input OTP (2.0): an invalid group has a 2 px invalid ring in its effects, but Figma does not draw a shadow under a frame without a fill, so it never shows; the code draws the invalid stroke only. Slots round their outer corners 10 px inside an 8 px group; the code rounds them 8 px to follow the group's edge. The "Input OTP" demo stretches 48 px tall cells across the card, which no property gives; the code offers `fullWidth` and `--otp-slot-height`.
 - Calendar (2.0): Figma clips each week to a 6 px radius so a range band rounds at the week's ends; the code rounds the end days instead, so a focused day's ring is not clipped. The "Range" demos highlight the outside days that fall inside the range, as the code does. Figma has no limits, locales or week start; the code adds `min`, `max`, `disabled`, `locale` and `weekStartsOn`, and `footer` / `aside` for the "Presets" and "Range with presets" demos (whose preset column is left-aligned in Figma; the stories use a vertical Toggle Group).
 - Date Picker (2.0): Figma has no Date Picker component, only demos that place an Outline Button (or an Input Group with a calendar button) over a Calendar panel 4 px below; the code packages them as `DatePicker` and compares the "Date Picker" and "Input" demo frames. The demos shrink the Calendar to the 240 px field; the code keeps 256 px unless `calendarWidth` is set. The "Range picker" demo labels the trigger "Mar 27, 2026 - Apr 14, 2026"; the code uses the same hyphen.
+- Collapsible (2.0): the trigger slot's sample is a detached "Button" frame with no padding, background or hover state, and Figma draws no focus state for it; the code adds the 3 px ring the other controls use. The "Settings panel" demo has no Collapsible instance (four inputs and an icon button) and the "Order summary" demo uses Item, which is not built yet; the stories rebuild both from Card, Input and Button. The fallback avatar in the sample puts `primary-foreground` initials on `palette/orange-solid`, which turns dark on orange in Dark.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

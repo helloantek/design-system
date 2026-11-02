@@ -9,6 +9,7 @@ import { Avatar, AvatarGroup } from '../Avatar';
 import { Badge, type BadgeColor } from '../Badge';
 import { Button } from '../Button';
 import { Calendar } from '../Calendar';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../Collapsible';
 import { ButtonGroup } from '../ButtonGroup';
 import { Card, CardContent, CardFooter, CardHeader } from '../Card';
 import { ContextMenu } from '../ContextMenu';
@@ -73,7 +74,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -89,6 +90,7 @@ export const Members: StoryObj = {
     const [searchIn, setSearchIn] = useState<'Name' | 'Email'>('Name');
     const [showRoles, setShowRoles] = useState(true);
     const [compact, setCompact] = useState(false);
+    const [recentOpen, setRecentOpen] = useState(false);
     const [sortBy, setSortBy] = useState<'joined' | 'name' | 'role'>('joined');
     const [teamName, setTeamName] = useState('Orbit');
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -432,6 +434,14 @@ export const Members: StoryObj = {
                 <ProgressCircle value={72} size="40px" thickness={12} aria-label="Profiles complete" />
                 72 % of profiles are complete
               </div>
+              <Collapsible open={recentOpen} onOpenChange={setRecentOpen}>
+                <CollapsibleTrigger>{recentOpen ? 'Hide recent activity' : 'Show recent activity'}</CollapsibleTrigger>
+                <CollapsibleContent>
+                  {activity.slice(-3).map((line, i) => (
+                    <Marker key={i}>{line}</Marker>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
               <Tabs defaultValue="seats" variant="line">
                 <TabsList aria-label="Usage">
                   <TabsTrigger value="seats" count={members.length}>
