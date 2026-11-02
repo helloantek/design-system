@@ -1,0 +1,32 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (the item's link or page, the separator, or #target for whole trails) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "$why": "Items are compared on their own link or page element (the manifest's target)."
+    },
+    "Label": {},
+    "chevron-down": {
+      "selector": ".ds-breadcrumb__chevron"
+    },
+    "chevron-down/VECTOR": {
+      "selector": ".ds-breadcrumb__chevron",
+      "stroke": "svg"
+    },
+    "Icon": {
+      "selector": "svg"
+    },
+    "Icon/VECTOR": {
+      "selector": "svg",
+      "stroke": "svg"
+    },
+    "Slash": {},
+    "Slot": {
+      "selector": ".ds-breadcrumb__list",
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "The trail's width is the sum of its labels, which Figma snaps to whole pixels (see the manifest); its height is 20 px in Figma with the 24 px Ellipsis overflowing it, while the list grows to 24 px. Items are centred on the same line either way; the gap is compared."
+    }
+  }
+}

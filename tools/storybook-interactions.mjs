@@ -1897,6 +1897,48 @@ Object.assign(tests, {
     assert.deepEqual(colours, ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0)']);
     assert.notEqual(await page.evaluate(() => getComputedStyle(document.body).webkitTapHighlightColor), 'rgba(0, 0, 0, 0)', 'the page outside the components keeps the browser default');
   },
+  'breadcrumb: a named nav with an ordered list; separators are hidden from assistive technology; the current page has aria-current; the ellipsis and a dropdown item open menus': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-breadcrumb--default&viewMode=story');
+    const nav = page.getByRole('navigation', { name: 'Breadcrumb' });
+    await nav.waitFor();
+    assert.deepEqual(await nav.getByRole('listitem').allTextContents(), ['Home', 'Projects', 'Onboarding flow'], 'separators are not list items for assistive technology');
+    assert.equal(await nav.locator('ol > li').count(), 5, 'items and separators share the ordered list');
+    assert.equal(await nav.locator('[aria-current="page"]').textContent(), 'Onboarding flow');
+    assert.equal(await nav.getByRole('link').count(), 2, 'the current page is not a link');
+    const link = nav.getByRole('link', { name: 'Home' });
+    const muted = await link.evaluate((el) => getComputedStyle(el).color);
+    await link.hover();
+    await page.waitForTimeout(200);
+    assert.notEqual(await link.evaluate((el) => getComputedStyle(el).color), muted, 'hover turns a link foreground');
+    const gap = await nav.locator('ol').evaluate((el) => getComputedStyle(el).columnGap);
+    assert.equal(gap, '8px');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-breadcrumb--collapsed&viewMode=story');
+    const more = page.getByRole('button', { name: 'Show more pages' });
+    await more.waitFor();
+    await more.click();
+    await page.getByRole('menuitem', { name: 'Themes' }).waitFor();
+    await page.keyboard.press('Escape');
+    assert.equal(await page.getByRole('menu').isVisible(), false, 'Escape closes the menu');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Show more pages', 'and returns focus to the ellipsis');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-breadcrumb--dropdown&viewMode=story');
+    const projects = page.getByRole('button', { name: 'Projects' });
+    await projects.waitFor();
+    assert.equal(await projects.getAttribute('aria-haspopup'), 'menu');
+    await projects.focus();
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Projects', 'ArrowDown opens the menu on its first item');
+    assert.equal(await page.getByRole('menu', { name: 'Switch section' }).isVisible(), true);
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-breadcrumb--separators&viewMode=story');
+    await page.locator('.ds-breadcrumb').first().waitFor();
+    assert.deepEqual(
+      await page.locator('.ds-breadcrumb__separator').evaluateAll((els) => [els[0], els[2], els[4]].map((el) => [el.getAttribute('aria-hidden'), el.textContent, Math.round(el.getBoundingClientRect().width * 100) / 100])),
+      [['true', '', 17.33], ['true', '/', 16], ['true', '', 17.33]],
+      'chevron and dot are 17.33 px icons, slash a "/" in 16 px',
+    );
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });
