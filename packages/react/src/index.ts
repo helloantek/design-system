@@ -22,6 +22,7 @@ export * from './Field';
 export * from './HoverCard';
 export * from './Input';
 export * from './InputOTP';
+export * from './Item';
 export * from './Kbd';
 export * from './Marker';
 export * from './Pagination';

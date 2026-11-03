@@ -1,0 +1,259 @@
+/*
+ * Item — Sort UI 2.0 component sets "Item" (228:2830), "Item Media" (227:65), "Item Group" (230:2679) and component
+ * "Item Separator" (230:2416) on page 227:45 in file 4JnqgEbdlnKgiFrfmiwEZw: a row with optional header, media,
+ * content (title and description), actions and footer. Figma Variant=Default / Outline / Muted, Size=default / sm /
+ * xs, State=Default / Hover / Focus. Values are Sort UI 2.0 tokens.
+ *
+ * Markup:
+ *   <div class="ds-item [ds-item--outline | ds-item--muted] [ds-item--sm | ds-item--xs] [ds-item--interactive]">
+ *     [<div class="ds-item__header">…</div>]                                  (12/16 muted, spread)
+ *     <div class="ds-item__row">
+ *       [<div class="ds-item__media"><span class="ds-item-media [ds-item-media--image]"><svg/></span></div>]
+ *       <div class="ds-item__content"><div class="ds-item__title">…</div><div class="ds-item__description">…</div></div>
+ *       [<div class="ds-item__actions">…</div>]
+ *     </div>
+ *     [<div class="ds-item__footer">…</div>]
+ *   </div>
+ *   The root is an <a>, <button> or <label> for a whole-row action (State=Hover / Focus apply to those).
+ * Group: <ul class="ds-item-group [ds-item-group--joined]"><li class="ds-item-group__entry"><div class="ds-item">…
+ *   and <li class="ds-item-group__separator" aria-hidden="true"></li> for an Item Separator line.
+ */
+
+@layer ds.components {
+  /* Figma "Item" Size=default: 14 / 16 px padding, 14 px between the header, row and footer and inside the row; 16 px
+     radius. */
+  .ds-item {
+    --item-pad-y: var(--ds-spacing-3-5);
+    --item-pad-x: var(--ds-spacing-4);
+    --item-gap: var(--ds-spacing-3-5);
+    --item-bg: transparent;
+    --item-ring: 0 0 #0000;
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--item-gap);
+    min-width: 0;
+    margin: 0;
+    padding: var(--item-pad-y) var(--item-pad-x);
+    border: 0;
+    border-radius: var(--ds-radius-2xl);
+    outline: none;
+    background: var(--item-bg);
+    box-shadow: var(--item-stroke, 0 0 #0000), var(--item-ring);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    text-align: start;
+    text-decoration: none;
+    transition: background-color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  /* Figma Size=sm: 12 / 14 px padding. */
+  .ds-item--sm {
+    --item-pad-y: var(--ds-spacing-3);
+    --item-pad-x: var(--ds-spacing-3-5);
+  }
+
+  /* Figma Size=xs: 8 / 12 px padding, 8 px gaps. */
+  .ds-item--xs {
+    --item-pad-y: var(--ds-spacing-2);
+    --item-pad-x: var(--ds-spacing-3);
+    --item-gap: var(--ds-spacing-2);
+  }
+
+  /* "Separated list" demo: no padding, the rows separated by lines. */
+  .ds-item--flush {
+    --item-pad-y: 0;
+    --item-pad-x: 0;
+  }
+
+  /* Figma Variant=Outline: a 1 px border outside the box. */
+  .ds-item--outline {
+    --item-stroke: 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+  }
+
+  /* Figma Variant=Muted: the fill-1 tint. */
+  .ds-item--muted {
+    --item-bg: var(--ds-fill-1);
+  }
+
+  /* Figma State=Hover: fill-1 (Muted: fill-2), on rows that are a link, button or label. */
+  .ds-item--interactive {
+    cursor: pointer;
+  }
+
+  .ds-item--interactive:hover {
+    --item-bg: var(--ds-fill-1);
+  }
+
+  .ds-item--muted.ds-item--interactive:hover {
+    --item-bg: var(--ds-fill-2);
+  }
+
+  /* Figma State=Focus: the background (Muted keeps fill-1), a 1 px ring stroke inside and a 3 px ring around. */
+  .ds-item--interactive:focus-visible,
+  label.ds-item:has(:focus-visible) {
+    --item-stroke: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring);
+    --item-ring: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+
+    position: relative;
+    z-index: 1;
+  }
+
+  .ds-item--interactive:focus-visible:not(.ds-item--muted),
+  label.ds-item:not(.ds-item--muted):has(:focus-visible) {
+    --item-bg: var(--ds-background);
+  }
+
+  .ds-item--muted.ds-item--interactive:focus-visible,
+  label.ds-item--muted:has(:focus-visible) {
+    --item-bg: var(--ds-fill-1);
+  }
+
+  /* Figma "header" and "footer": 12/16 muted captions, spread along the row. */
+  .ds-item__header,
+  .ds-item__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* Figma "Row": media, content and actions, centred; the media keeps to the top, 2 px down (level with the title). */
+  .ds-item__row {
+    display: flex;
+    align-items: center;
+    gap: var(--item-gap);
+    min-width: 0;
+  }
+
+  .ds-item__media {
+    display: flex;
+    flex-shrink: 0;
+    align-self: stretch;
+    padding-top: var(--ds-spacing-0-5);
+  }
+
+  .ds-item__content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+  }
+
+  .ds-item__title {
+    color: var(--ds-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-item__description {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-item__actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+  }
+
+  .ds-item__actions > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    color: var(--ds-foreground);
+  }
+
+  /* Figma "Item Media" Variant=Icon: a 16 px box for a 16 px foreground icon. */
+  .ds-item-media {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    color: var(--ds-foreground);
+  }
+
+  .ds-item-media > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* Variant=Image: a 40 px fill-2 square with a 10 px radius (an icon, or a picture that fills it). */
+  .ds-item-media--image {
+    overflow: hidden;
+    width: var(--ds-spacing-10);
+    height: var(--ds-spacing-10);
+    border-radius: var(--ds-radius-lg);
+    background-color: var(--ds-fill-2);
+  }
+
+  .ds-item-media--image > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Figma "Item Group": items 16 px apart. */
+  .ds-item-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-4);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-item-group__entry {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* Figma "Item Separator" (and the "Separated list" demo): a 1 px border line between rows. */
+  .ds-item-group__separator,
+  .ds-item-separator {
+    flex-shrink: 0;
+    height: var(--ds-stroke-width-1);
+    margin: 0;
+    border: 0;
+    background-color: var(--ds-border);
+  }
+
+  /* "Navigation" demo: one block with a 16 px radius; the rows are square and separated by a bottom line. */
+  .ds-item-group--joined {
+    overflow: hidden;
+    gap: 0;
+    border-radius: var(--ds-radius-2xl);
+  }
+
+  .ds-item-group--joined > .ds-item-group__entry > .ds-item {
+    border-radius: 0;
+  }
+
+  .ds-item-group--joined > .ds-item-group__entry:not(:last-child) > .ds-item {
+    --item-stroke: inset 0 calc(-1 * var(--ds-stroke-width-1)) 0 var(--ds-border);
+  }
+
+  /* Joined rows draw the focus ring inside the block, which clips anything outside. */
+  .ds-item-group--joined > .ds-item-group__entry > .ds-item--interactive:focus-visible {
+    --item-stroke: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring);
+    --item-ring: inset 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1) * 2) var(--ds-alpha-ring-30);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-item {
+      transition: none;
+    }
+  }
+}

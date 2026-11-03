@@ -1,0 +1,200 @@
+{
+ "$comment": "Sort UI 2.0 Item reference renders (1x PNG, exportAsync with absolute bounds, so Outline's outside stroke and the Focus ring fall outside the box): Variant \u00d7 State at Size=default and every Variant at sm / xs, with Figma's sample content; Item Media Icon and Image. renderers/item.tsx renders link rows (State=Hover and Focus come from real input).",
+ "component": "item",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "228:2830",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default-default",
+   "nodeId": "228:8",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "default-hover",
+   "nodeId": "228:51",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "State": "Hover"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "default-focus",
+   "nodeId": "228:88",
+   "props": {
+    "Variant": "Default",
+    "Size": "default",
+    "State": "Focus"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "outline-default",
+   "nodeId": "228:336",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "outline-hover",
+   "nodeId": "228:373",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "State": "Hover"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "outline-focus",
+   "nodeId": "228:410",
+   "props": {
+    "Variant": "Outline",
+    "Size": "default",
+    "State": "Focus"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "muted-default",
+   "nodeId": "228:657",
+   "props": {
+    "Variant": "Muted",
+    "Size": "default",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "muted-hover",
+   "nodeId": "228:694",
+   "props": {
+    "Variant": "Muted",
+    "Size": "default",
+    "State": "Hover"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "muted-focus",
+   "nodeId": "228:731",
+   "props": {
+    "Variant": "Muted",
+    "Size": "default",
+    "State": "Focus"
+   },
+   "nodeW": 448,
+   "nodeH": 72
+  },
+  {
+   "slug": "default-sm",
+   "nodeId": "228:125",
+   "props": {
+    "Variant": "Default",
+    "Size": "sm",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 68
+  },
+  {
+   "slug": "default-xs",
+   "nodeId": "228:236",
+   "props": {
+    "Variant": "Default",
+    "Size": "xs",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 60
+  },
+  {
+   "slug": "outline-sm",
+   "nodeId": "228:447",
+   "props": {
+    "Variant": "Outline",
+    "Size": "sm",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 68
+  },
+  {
+   "slug": "outline-xs",
+   "nodeId": "228:558",
+   "props": {
+    "Variant": "Outline",
+    "Size": "xs",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 60
+  },
+  {
+   "slug": "muted-sm",
+   "nodeId": "228:768",
+   "props": {
+    "Variant": "Muted",
+    "Size": "sm",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 68
+  },
+  {
+   "slug": "muted-xs",
+   "nodeId": "228:879",
+   "props": {
+    "Variant": "Muted",
+    "Size": "xs",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 60
+  },
+  {
+   "slug": "media-icon",
+   "nodeId": "227:47",
+   "props": {
+    "Part": "media",
+    "Variant": "Icon"
+   },
+   "nodeW": 16,
+   "nodeH": 16
+  },
+  {
+   "slug": "media-image",
+   "nodeId": "227:56",
+   "props": {
+    "Part": "media",
+    "Variant": "Image"
+   },
+   "nodeW": 40,
+   "nodeH": 40
+  }
+ ]
+}

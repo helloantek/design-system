@@ -1,0 +1,35 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (the Item, or the Item Media) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "$why": "The Item's first box-shadow is its stroke: Outline's 1 px border outside, or State=Focus's 1 px ring inside."
+    },
+    "Row": {
+      "selector": ".ds-item__row"
+    },
+    "media": {
+      "selector": ".ds-item__media"
+    },
+    "content": {
+      "selector": ".ds-item__content",
+      "skip": [
+        "w"
+      ],
+      "$why": "The content takes the room the actions leave, and the actions are as wide as their label, which follows glyph rasterisation."
+    },
+    "Title": {
+      "selector": ".ds-item__title"
+    },
+    "Description": {
+      "selector": ".ds-item__description"
+    },
+    "actions": {
+      "selector": ".ds-item__actions",
+      "skip": [
+        "w"
+      ],
+      "$why": "As wide as the Outline sm Button's label, which follows glyph rasterisation; Button is checked on its own."
+    }
+  }
+}

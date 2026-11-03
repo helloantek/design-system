@@ -30,6 +30,7 @@ import { Drawer, DrawerClose } from '../Drawer';
 import { Field, FieldGroup } from '../Field';
 import { HoverCard } from '../HoverCard';
 import { Input, InputAction, InputDropdown } from '../Input';
+import { Item, ItemGroup, ItemMedia } from '../Item';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
 import { Pagination } from '../Pagination';
@@ -90,7 +91,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -552,6 +553,28 @@ export const Members: StoryObj = {
             </div>
           </CardContent>
         </Card>
+
+        <nav aria-label="Workspace settings">
+          <ItemGroup variant="joined">
+            {(
+              [
+                [<RiShieldUserLine key="i" />, 'Roles and permissions', `${members.length} people`],
+                [<RiSettings3Line key="i" />, 'Team settings', teamName],
+                [<RiLinkM key="i" />, 'Invite links', '1 active'],
+              ] as const
+            ).map(([glyph, title, meta]) => (
+              <Item
+                key={title}
+                variant="muted"
+                size="sm"
+                href={`#${title.toLowerCase().replace(/ /g, '-')}`}
+                media={<ItemMedia>{glyph}</ItemMedia>}
+                title={title}
+                actions={<span style={{ color: 'var(--ds-muted-foreground)', fontSize: 13 }}>{meta}</span>}
+              />
+            ))}
+          </ItemGroup>
+        </nav>
 
         <Accordion aria-label="Workspace questions" defaultValue="seats">
           <AccordionItem value="seats">
