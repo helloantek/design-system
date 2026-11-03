@@ -33,6 +33,7 @@ import { Input, InputAction, InputDropdown } from '../Input';
 import { Item, ItemGroup, ItemMedia } from '../Item';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '../NavigationMenu';
 import { Pagination } from '../Pagination';
 import { Popover, PopoverActions, PopoverClose } from '../Popover';
 import { Progress, ProgressCircle } from '../Progress';
@@ -92,7 +93,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage, with a storage Table), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Navigation Menu (the workspace bar, with a Projects panel), Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage, with a storage Table), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -160,6 +161,25 @@ export const Members: StoryObj = {
 
     return (
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 560px) 280px', gap: 16, alignItems: 'start', fontFamily: 'var(--ds-font-sans)' }}>
+        <NavigationMenu aria-label="Workspace" style={{ gridColumn: '1 / -1' }}>
+          <NavigationMenuItem href="#overview" label="Overview" />
+          <NavigationMenuItem label="Projects" width="368px">
+            <NavigationMenuList columns={2}>
+              {(
+                [
+                  ['Orbit app', 'Web and mobile client'],
+                  ['Marketing site', 'Landing pages and blog'],
+                  ['Design files', 'Libraries and specs'],
+                  ['API', 'Public REST and webhooks'],
+                ] as const
+              ).map(([title, description]) => (
+                <NavigationMenuLink key={title} href={`#${title.toLowerCase().replace(/ /g, '-')}`} title={title} description={description} />
+              ))}
+            </NavigationMenuList>
+          </NavigationMenuItem>
+          <NavigationMenuItem href="#team" label="Team" active />
+          <NavigationMenuItem href="#billing" label="Billing" />
+        </NavigationMenu>
         <Breadcrumb style={{ gridColumn: '1 / -1' }}>
           <BreadcrumbItem href="#workspace">Workspace</BreadcrumbItem>
           <BreadcrumbItem menuLabel="Switch team" menu={['Orbit', 'Design guild', 'Platform'].map((t) => <DropdownMenuItem key={t} onClick={() => toast(`Switched to ${t}`, { description: 'A real product would open that team.' })}>{t}</DropdownMenuItem>)}>

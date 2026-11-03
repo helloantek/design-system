@@ -1,0 +1,17 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (a trigger, a top-level link or a panel link) and how to read it.",
+  "layers": {
+    "root": {},
+    "Label": {
+      "selector": "[data-label]",
+      "$why": "The renderer marks the label text."
+    },
+    "Chevron": {
+      "selector": ".ds-navigation-menu__chevron"
+    },
+    "Chevron/VECTOR": {
+      "selector": ".ds-navigation-menu__chevron path",
+      "stroke": "svg"
+    }
+  }
+}

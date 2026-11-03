@@ -1,0 +1,168 @@
+{
+ "$comment": "Sort UI 2.0 Navigation Menu reference renders (1x PNG, exportAsync with absolute bounds, so the Focus ring falls outside the box): Navigation Menu Trigger Type x State and Navigation Menu Link State, with Figma's sample labels. renderers/navigation-menu.tsx renders them in a NavigationMenu; Hover and Focus come from real input, Active is an open trigger, the current page link or the current page in a panel.",
+ "component": "navigation-menu",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "211:32",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "trigger-default",
+   "nodeId": "211:2",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Trigger",
+    "State": "Default"
+   },
+   "nodeW": 91,
+   "nodeH": 32,
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "trigger-hover",
+   "nodeId": "211:6",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Trigger",
+    "State": "Hover"
+   },
+   "nodeW": 91,
+   "nodeH": 32,
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "trigger-active",
+   "nodeId": "211:10",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Trigger",
+    "State": "Active"
+   },
+   "nodeW": 91,
+   "nodeH": 32,
+   "interaction": "Default",
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "trigger-focus",
+   "nodeId": "211:14",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Trigger",
+    "State": "Focus"
+   },
+   "nodeW": 91,
+   "nodeH": 32,
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "trigger-disabled",
+   "nodeId": "211:18",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Trigger",
+    "State": "Disabled"
+   },
+   "nodeW": 91,
+   "nodeH": 32,
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "link-default",
+   "nodeId": "211:22",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Link",
+    "State": "Default"
+   },
+   "nodeW": 71,
+   "nodeH": 32,
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "link-hover",
+   "nodeId": "211:24",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Link",
+    "State": "Hover"
+   },
+   "nodeW": 71,
+   "nodeH": 32,
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "link-active",
+   "nodeId": "211:26",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Link",
+    "State": "Active"
+   },
+   "nodeW": 71,
+   "nodeH": 32,
+   "interaction": "Default",
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "link-focus",
+   "nodeId": "211:28",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Link",
+    "State": "Focus"
+   },
+   "nodeW": 71,
+   "nodeH": 32,
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "link-disabled",
+   "nodeId": "211:30",
+   "props": {
+    "Part": "Trigger",
+    "Type": "Link",
+    "State": "Disabled"
+   },
+   "nodeW": 71,
+   "nodeH": 32,
+   "target": "#item > .ds-navigation-menu__trigger"
+  },
+  {
+   "slug": "menu-link-default",
+   "nodeId": "211:33",
+   "props": {
+    "Part": "Link",
+    "State": "Default"
+   },
+   "nodeW": 276,
+   "nodeH": 32
+  },
+  {
+   "slug": "menu-link-hover",
+   "nodeId": "211:36",
+   "props": {
+    "Part": "Link",
+    "State": "Hover"
+   },
+   "nodeW": 276,
+   "nodeH": 32
+  },
+  {
+   "slug": "menu-link-active",
+   "nodeId": "211:39",
+   "props": {
+    "Part": "Link",
+    "State": "Active"
+   },
+   "nodeW": 276,
+   "nodeH": 32,
+   "interaction": "Default"
+  }
+ ]
+}
