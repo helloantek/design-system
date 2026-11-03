@@ -1061,6 +1061,7 @@ Object.assign(tests, {
     assert.equal(await page.getByRole('option').count(), 6, 'every option shows before typing');
     await input.fill('nu');
     assert.deepEqual(await page.getByRole('option').allTextContents(), ['Nuxt.js'], 'typing filters');
+    await page.locator('.ds-combobox__status', { hasText: '1 result' }).waitFor({ timeout: 2000 }).catch(() => {}); // set in an effect after the render
     assert.equal(await page.locator('.ds-combobox__status').textContent(), '1 result', 'the count is read out');
     await page.keyboard.press('ArrowDown');
     assert.equal(await input.getAttribute('aria-activedescendant'), await page.getByRole('option', { name: 'Nuxt.js' }).getAttribute('id'));
@@ -1098,12 +1099,14 @@ Object.assign(tests, {
     await page.getByRole('option', { name: 'Remix' }).click();
     assert.deepEqual(await chips.allTextContents(), ['SvelteKit', 'Next.js', 'Remix'], 'a click adds a chip');
     assert.equal(await input.getAttribute('aria-expanded'), 'true', 'the list stays open');
+    await page.locator('.ds-combobox__status', { hasText: 'Remix added' }).waitFor({ timeout: 2000 }).catch(() => {}); // set in an effect after the render
     assert.equal(await page.locator('.ds-combobox__status').textContent(), 'Remix added');
     await page.getByRole('button', { name: 'Remove SvelteKit' }).click();
     assert.deepEqual(await chips.allTextContents(), ['Next.js', 'Remix'], '× removes a chip');
     assert.equal(await page.evaluate(() => document.activeElement.getAttribute('role')), 'combobox', 'focus stays in the field');
     await page.keyboard.press('Backspace');
     assert.deepEqual(await chips.allTextContents(), ['Next.js'], 'Backspace removes the last chip');
+    await page.locator('.ds-combobox__status', { hasText: 'Remix removed' }).waitFor({ timeout: 2000 }).catch(() => {}); // set in an effect after the render
     assert.equal(await page.locator('.ds-combobox__status').textContent(), 'Remix removed');
   },
   'alert dialog: opens modal and named, focus on Cancel; the backdrop does not close it; Escape and Cancel close it and focus returns; the action runs': async () => {
