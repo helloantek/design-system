@@ -493,6 +493,38 @@ A native `<input type="checkbox">` drawn as the Sort UI 2.0 **Checkbox**, alone 
 
 Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`name`, `value`, `required`, `ref`…) go to the input.
 
+## Item
+
+A row with media, a title and description, and actions: the Sort UI 2.0 **Item**, **Item Media**, **Item Group** and **Item Separator**.
+
+```tsx
+<ItemGroup aria-label="Backups">
+  <Item
+    variant="outline"
+    media={<ItemMedia variant="image"><DatabaseIcon /></ItemMedia>}
+    title="Production database"
+    description="Snapshot of 14 tables."
+    actions={<Button variant="outline" size="sm">Restore</Button>}
+  />
+  <Item variant="muted" href="/audit" title="Open the audit log" actions={<ChevronRight />} />
+</ItemGroup>
+<Item as="label" title="Error alerts" actions={<Switch aria-labelledby="…" />} />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Variant | `variant`: `default`, `outline`, `muted` | `ds-item--outline`, `--muted` |
+| Size | `size`: `default`, `sm`, `xs` | `ds-item--sm`, `--xs` |
+| State=Hover / Focus | rows that are one action: `href` (link), `as="button"`, `as="label"` | `ds-item--interactive` |
+| header / footer slots | `header`, `footer` | `ds-item__header`, `__footer` |
+| media slot (Item Media Icon / Image) | `media` (`ItemMedia variant="icon" \| "image"`, an Avatar, a Radio…) | `ds-item__media`, `ds-item-media--image` |
+| content slot | `title`, `description`, `children` | `ds-item__title`, `__description` |
+| actions slot | `actions` | `ds-item__actions` |
+| Item Group / Item Separator | `ItemGroup` (`variant="joined"` for the "Navigation" demo), `ItemSeparator` | `ds-item-group`, `--joined` |
+| — | `flush` (no padding, "Separated list" demo) | `ds-item--flush` |
+
+`ItemGroup` is a list (`<ul>`); each Item is a list item and an `ItemSeparator` is a hidden line between them. A row with its own buttons stays a `<div>` so the buttons keep their own focus; a row that is one action becomes a link, button or label (around a Switch, Radio or Checkbox, so a click anywhere toggles it) and takes Figma's Hover and Focus states. Item Media icons are decorative (`aria-hidden`).
+
 ## Kbd
 
 Keyboard keys and shortcuts: Sort UI 2.0 **Kbd** (Variant, Size, Key, Icon) and **Kbd Group**.
@@ -1182,6 +1214,7 @@ These come from the Figma files, not the code:
 - Accordion (2.0): the Accordion component is drawn as a card, while its first demo ("Accordion") overrides it to a flush list and "Separated items" to muted boxes 8 px apart; the code offers the three as `variant`. The chevron is the 16 px icon scaled to 17.33 px, drawn 2 px down. Figma has no hover or focus state for the trigger; the code adds the 3 px ring the other controls use. The Divider is a 0 px line on the item's bottom edge; the code draws it as a 1 px inset shadow, which renders the same.
 - Breadcrumb (2.0): the Breadcrumb's slot is fixed at 20 px while its Ellipsis is a 24 px Ghost xs button, so the ellipsis overflows the row by 2 px above and below; the code lets the list grow to 24 px with the items centred on the same line. Chevron and Dot separators are the 16 px icons scaled to 17.33 px. Figma has no focus state for links; the code adds the 3 px ring the other controls use.
 - Pagination (2.0): the current page is an Outline Button that keeps the default 8 px side padding inside its fixed 32 px width, while the other page links have none; the code gives every page link the same box. The Pagination component's sample (1, 2, [3], …, 8) is not a range a rule produces; the code follows the "Pagination" demo (page 2 of 12: 1, [2], 3, …, 12). Figma does not draw Previous or Next disabled at the ends; the code disables them there.
+- Item (2.0): Item Media Variant=Icon holds a 17.33 px square-dashed icon in a 16 px box; the code centres any icon in the 16 px box. The Default and Outline variants show State=Hover and Focus, but rows with their own buttons cannot be one action, so the code gives the states only to link, button and label rows. The "Navigation" demo joins Muted rows into one clipped block with bottom lines; the code offers it as `ItemGroup variant="joined"`. The xs Row is 424 px while its header and footer are 428 px; the code gives all three the box's width.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

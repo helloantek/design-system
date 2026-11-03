@@ -1061,6 +1061,7 @@ Object.assign(tests, {
     assert.equal(await page.getByRole('option').count(), 6, 'every option shows before typing');
     await input.fill('nu');
     assert.deepEqual(await page.getByRole('option').allTextContents(), ['Nuxt.js'], 'typing filters');
+    await page.locator('.ds-combobox__status', { hasText: '1 result' }).waitFor({ timeout: 2000 }).catch(() => {}); // set in an effect after the render
     assert.equal(await page.locator('.ds-combobox__status').textContent(), '1 result', 'the count is read out');
     await page.keyboard.press('ArrowDown');
     assert.equal(await input.getAttribute('aria-activedescendant'), await page.getByRole('option', { name: 'Nuxt.js' }).getAttribute('id'));
@@ -1098,12 +1099,14 @@ Object.assign(tests, {
     await page.getByRole('option', { name: 'Remix' }).click();
     assert.deepEqual(await chips.allTextContents(), ['SvelteKit', 'Next.js', 'Remix'], 'a click adds a chip');
     assert.equal(await input.getAttribute('aria-expanded'), 'true', 'the list stays open');
+    await page.locator('.ds-combobox__status', { hasText: 'Remix added' }).waitFor({ timeout: 2000 }).catch(() => {}); // set in an effect after the render
     assert.equal(await page.locator('.ds-combobox__status').textContent(), 'Remix added');
     await page.getByRole('button', { name: 'Remove SvelteKit' }).click();
     assert.deepEqual(await chips.allTextContents(), ['Next.js', 'Remix'], '× removes a chip');
     assert.equal(await page.evaluate(() => document.activeElement.getAttribute('role')), 'combobox', 'focus stays in the field');
     await page.keyboard.press('Backspace');
     assert.deepEqual(await chips.allTextContents(), ['Next.js'], 'Backspace removes the last chip');
+    await page.locator('.ds-combobox__status', { hasText: 'Remix removed' }).waitFor({ timeout: 2000 }).catch(() => {}); // set in an effect after the render
     assert.equal(await page.locator('.ds-combobox__status').textContent(), 'Remix removed');
   },
   'alert dialog: opens modal and named, focus on Cancel; the backdrop does not close it; Escape and Cancel close it and focus returns; the action runs': async () => {
@@ -1972,6 +1975,46 @@ Object.assign(tests, {
     await icons.getByRole('button', { name: 'Last' }).click();
     assert.equal(await icons.locator('[aria-current="page"]').textContent(), '5');
     assert.equal(await icons.getByRole('button', { name: 'Last' }).isDisabled(), true);
+  },
+  'item: groups are lists of rows; link rows take hover and the focus ring, rows with their own buttons do not; label rows toggle their switch; joined groups clip into one block; sizes follow Figma': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-item--default&viewMode=story');
+    const group = page.getByRole('list', { name: 'Backups' });
+    await group.waitFor();
+    assert.equal(await group.getByRole('listitem').count(), 3, 'a list of three rows');
+    assert.equal(await group.locator('.ds-item').first().evaluate((el) => el.tagName), 'DIV', 'a row with its own button stays a div');
+    const link = group.getByRole('link', { name: /Open the audit log/ });
+    const muted = await link.evaluate((el) => getComputedStyle(el).backgroundColor);
+    await link.hover();
+    await page.waitForTimeout(250);
+    assert.notEqual(await link.evaluate((el) => getComputedStyle(el).backgroundColor), muted, 'Muted hover turns fill-2');
+    await page.mouse.move(0, 0);
+    await link.focus();
+    await page.keyboard.press('Shift+Tab');
+    await page.keyboard.press('Tab');
+    assert.match(await link.evaluate((el) => getComputedStyle(el).boxShadow), /inset/, 'focus draws the ring stroke inside');
+    assert.equal(await group.locator('.ds-item__header').first().textContent(), 'Backup2 hours ago');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-item--sizes&viewMode=story');
+    await page.locator('.ds-item').first().waitFor();
+    assert.deepEqual(
+      await page.locator('.ds-item').evaluateAll((els) => els.map((el) => { const cs = getComputedStyle(el); return [cs.paddingTop, cs.paddingLeft, cs.rowGap, Math.round(el.getBoundingClientRect().height)]; })),
+      [['14px', '16px', '14px', 72], ['12px', '14px', '14px', 68], ['8px', '12px', '8px', 60]],
+      'Size=default, sm and xs padding, gap and height',
+    );
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-item--with-switch&viewMode=story');
+    const sw = page.getByRole('switch', { name: 'Error alerts' });
+    await sw.waitFor();
+    assert.equal(await sw.isChecked(), false);
+    await page.getByText('Page me when the error rate passes 1%.').click();
+    assert.equal(await sw.isChecked(), true, 'a click anywhere on the label row toggles the switch');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-item--navigation&viewMode=story');
+    const nav = page.getByRole('navigation', { name: 'Settings' });
+    await nav.waitFor();
+    assert.equal(await nav.getByRole('link').count(), 4);
+    assert.deepEqual(await nav.locator('ul').evaluate((el) => [getComputedStyle(el).overflow, getComputedStyle(el).borderTopLeftRadius, getComputedStyle(el).rowGap]), ['hidden', '16px', '0px'], 'one clipped block');
+    assert.equal(await nav.locator('.ds-item').first().evaluate((el) => getComputedStyle(el).borderTopLeftRadius), '0px', 'square rows inside');
   },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
