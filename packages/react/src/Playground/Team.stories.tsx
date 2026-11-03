@@ -41,6 +41,7 @@ import { Sheet, SheetClose } from '../Sheet';
 import { Spinner } from '../Spinner';
 import { Switch } from '../Switch';
 import { Toaster, toast } from '../Sonner';
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '../Table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../Tabs';
 import { Toggle } from '../Toggle';
 import { ToggleGroup, ToggleGroupItem } from '../ToggleGroup';
@@ -91,7 +92,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage, with a storage Table), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -488,6 +489,34 @@ export const Members: StoryObj = {
                 </TabsContent>
                 <TabsContent value="storage">
                   <Progress label="Storage" value={38} max={100} valueLabel="38 of 100 GB" />
+                  <Table aria-label="Storage by project" style={{ marginTop: 12 }}>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Project</TableHead>
+                        <TableHead align="right">Used</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {(
+                        [
+                          ['Orbit app', '21 GB'],
+                          ['Marketing site', '11 GB'],
+                          ['Design files', '6 GB'],
+                        ] as const
+                      ).map(([project, used]) => (
+                        <TableRow key={project}>
+                          <TableCell>{project}</TableCell>
+                          <TableCell align="right">{used}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                    <TableFooter>
+                      <TableRow>
+                        <TableCell>Total</TableCell>
+                        <TableCell align="right">38 GB</TableCell>
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
                 </TabsContent>
               </Tabs>
               <Drawer

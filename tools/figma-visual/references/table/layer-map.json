@@ -1,0 +1,21 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (a cell, a row or the table) and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma lays a cell's content out with an 8 px gap; a table cell holds inline content, so there is no gap to compare (the demos put several items in their own flex wrapper)."
+    },
+    "Label": {
+      "selector": "[data-label]",
+      "$why": "The first cell's text (the renderer marks it); on a cell entry the cell's own text."
+    },
+    "caption": {
+      "selector": "caption"
+    },
+    "Caption": {
+      "selector": "caption"
+    }
+  }
+}

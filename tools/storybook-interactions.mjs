@@ -2016,6 +2016,62 @@ Object.assign(tests, {
     assert.deepEqual(await nav.locator('ul').evaluate((el) => [getComputedStyle(el).overflow, getComputedStyle(el).borderTopLeftRadius, getComputedStyle(el).rowGap]), ['hidden', '16px', '0px'], 'one clipped block');
     assert.equal(await nav.locator('.ds-item').first().evaluate((el) => getComputedStyle(el).borderTopLeftRadius), '0px', 'square rows inside');
   },
+  'table: a named table with column headers; rows are 36 px (header 40) with lines between; a checkbox selects a row; sort buttons set aria-sort; expand buttons open a details row; the card draws its body box': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-table--default&viewMode=story');
+    const table = page.getByRole('table', { name: /Web adoption/ });
+    await table.waitFor();
+    assert.equal(await table.getByRole('columnheader').count(), 3, 'three column headers');
+    assert.deepEqual(
+      await table.locator('tr').evaluateAll((rows) => rows.map((r) => Math.round(r.getBoundingClientRect().height))),
+      [40, 36, 36, 36, 36],
+      'header 40 px, body and footer rows 36 px',
+    );
+    const body = table.locator('tbody tr');
+    assert.match(await body.first().locator('td').first().evaluate((el) => getComputedStyle(el).boxShadow), /inset/, 'a line under a body row');
+    assert.equal(await body.last().locator('td').first().evaluate((el) => getComputedStyle(el).boxShadow), 'none', 'none under the last one');
+    const before = await body.first().evaluate((el) => getComputedStyle(el).backgroundColor);
+    await body.first().hover();
+    assert.notEqual(await body.first().evaluate((el) => getComputedStyle(el).backgroundColor), before, 'hover tints the row');
+    await page.mouse.move(0, 0);
+    assert.equal(await table.locator('tfoot td').first().evaluate((el) => getComputedStyle(el).fontWeight), '500', 'footer text is Medium');
+    assert.equal(await table.locator('td.ds-table__cell--right').first().evaluate((el) => getComputedStyle(el).textAlign), 'end', 'numbers align right');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-table--selection&viewMode=story');
+    const members = page.getByRole('table', { name: 'Members' });
+    await members.waitFor();
+    const all = members.getByRole('checkbox', { name: 'Select all' });
+    assert.equal(await all.evaluate((el) => el.indeterminate), true, 'one picked row makes Select all indeterminate');
+    const ada = members.getByRole('row', { name: /Ada Lovelace/ });
+    assert.equal(await ada.getAttribute('data-state'), null);
+    await members.getByRole('checkbox', { name: 'Select Ada Lovelace' }).check();
+    assert.equal(await ada.getAttribute('data-state'), 'selected', 'a checked row is selected');
+    await all.check();
+    assert.equal(await members.locator('tbody tr[data-state="selected"]').count(), 6, 'Select all selects every row');
+    const radius = await members.locator('tbody tr').first().locator('td').first().evaluate((el) => getComputedStyle(el).borderTopLeftRadius);
+    assert.equal(radius, '16px', 'the card rounds the body corners');
+    assert.match(await members.locator('tbody').evaluate((el) => getComputedStyle(el, '::before').boxShadow), /rgba?\(/, 'the card body has its border and shadow');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-table--sorting&viewMode=story');
+    const files = page.getByRole('table', { name: 'Files' });
+    await files.waitFor();
+    const modified = files.getByRole('columnheader', { name: /Modified/ });
+    assert.equal(await modified.getAttribute('aria-sort'), 'descending');
+    assert.equal(await files.getByRole('columnheader', { name: 'Owner' }).getAttribute('aria-sort'), null, 'a column that cannot sort has no aria-sort');
+    await files.getByRole('button', { name: /Name/ }).click();
+    assert.equal(await files.getByRole('columnheader', { name: /Name/ }).getAttribute('aria-sort'), 'ascending', 'pressing a header sorts by it');
+    assert.equal(await modified.getAttribute('aria-sort'), 'none');
+    assert.equal(await files.locator('tbody tr td').first().textContent(), 'Brand guidelines.fig', 'rows follow the sort');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-table--expandable-rows&viewMode=story');
+    const deploys = page.getByRole('table', { name: 'Deployments' });
+    await deploys.waitFor();
+    const toggle = deploys.getByRole('button', { name: 'Details of docs' });
+    assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+    await toggle.click();
+    assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
+    assert.equal(await page.locator('#details-docs').isVisible(), true, 'the details row opens under its row');
+    assert.equal(await page.locator('#details-api-gateway').count(), 0, 'and the other closes');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });
