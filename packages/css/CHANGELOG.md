@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.40.0
+
+### Minor Changes
+
+- a929e16: Menubar (Sort UI 2.0): `Menubar` (a `role="menubar"` bar, `defaultValue`) and `MenubarMenu` (`label`, `value`, `align`, `disabled`), each opening a Dropdown Menu 8 px below its 26 px trigger. One Tab stop; Arrow Left / Right move between triggers and, with a menu open, switch menus, as does the pointer; Enter, Space and Arrow Down open a menu on its first item; Escape and a click outside close it.
+
 ## 2.39.0
 
 ### Minor Changes
