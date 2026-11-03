@@ -1,0 +1,252 @@
+/*
+ * Navigation Menu — Sort UI 2.0 component sets "Navigation Menu Trigger" (211:32), "Navigation Menu Link" (211:42) and
+ * components "Navigation Menu Content" (212:7) and "Navigation Menu" (212:48) on page 208:3 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: a row of 32 px triggers (with a chevron, opening a panel of links 8 px below) and links.
+ * Trigger Type=Trigger / Link, State=Default / Hover / Active / Focus / Disabled; Link State=Default / Hover / Active.
+ * Values are Sort UI 2.0 tokens.
+ *
+ * Markup:
+ *   <nav class="ds-navigation-menu" aria-label="Main">
+ *     <ul class="ds-navigation-menu__list">
+ *       <li class="ds-navigation-menu__item">
+ *         <button class="ds-navigation-menu__trigger" aria-expanded="true" aria-controls="…">Product <svg class="ds-navigation-menu__chevron"/></button>
+ *         <div class="ds-navigation-menu__content [ds-navigation-menu__content--end] [ds-navigation-menu__content--flush]" id="…">
+ *           <ul class="ds-navigation-menu__links [ds-navigation-menu__links--grid]">
+ *             <li><a class="ds-navigation-menu__link [ds-navigation-menu__link--top]" [aria-current="page"]>
+ *               [<span class="ds-navigation-menu__link-icon"><svg/></span>]
+ *               <span class="ds-navigation-menu__link-text"><span class="ds-navigation-menu__link-title">…</span>
+ *                 [<span class="ds-navigation-menu__link-description">…</span>]</span></a></li>
+ *           </ul>
+ *         </div>
+ *       </li>
+ *       <li class="ds-navigation-menu__item"><a class="ds-navigation-menu__trigger" href="…" [aria-current="page"]>Pricing</a></li>
+ *     </ul>
+ *   </nav>
+ */
+
+@layer ds.components {
+  .ds-navigation-menu {
+    position: relative;
+    min-width: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  .ds-navigation-menu__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-navigation-menu__item {
+    position: relative;
+  }
+
+  /* Figma "Navigation Menu Trigger": 32 px, 12 px side padding, 8 px radius, 14/20 Medium; a 14 px muted chevron 6 px
+     after the label (Type=Trigger). */
+  .ds-navigation-menu__trigger {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    height: var(--ds-spacing-8);
+    margin: 0;
+    padding: 0 var(--ds-spacing-3);
+    border: 0;
+    border-radius: var(--ds-radius-md);
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  /* State=Hover: fill-2. */
+  .ds-navigation-menu__trigger:hover {
+    background-color: var(--ds-fill-2);
+  }
+
+  /* State=Active: fill-1 (an open trigger, or the link to the current page); the chevron turns up. */
+  .ds-navigation-menu__trigger[aria-expanded='true'],
+  .ds-navigation-menu__trigger[aria-current='page'] {
+    background-color: var(--ds-fill-1);
+  }
+
+  /* State=Focus: fill-2 and a 3 px ring. */
+  .ds-navigation-menu__trigger:focus-visible {
+    background-color: var(--ds-fill-2);
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* State=Disabled: 50 % opacity. */
+  .ds-navigation-menu__trigger:disabled,
+  .ds-navigation-menu__trigger[aria-disabled='true'] {
+    background: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ds-navigation-menu__chevron {
+    flex-shrink: 0;
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+    color: var(--ds-muted-foreground);
+    transition: rotate var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-navigation-menu__trigger[aria-expanded='true'] > .ds-navigation-menu__chevron {
+    rotate: 180deg;
+  }
+
+  /* Figma "Navigation Menu Content": 288 px (or as set), 4 px padding, the popover fill, 14 px radius, a 1 px border
+     outside and the Surface/Popover effect, 8 px under its trigger. */
+  .ds-navigation-menu__content {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + var(--ds-spacing-2));
+    left: 0;
+    box-sizing: border-box;
+    width: var(--navigation-menu-width, var(--ds-spacing-72));
+    max-width: calc(100vw - var(--ds-spacing-8));
+    padding: var(--ds-spacing-1);
+    border-radius: var(--ds-radius-14);
+    outline: none;
+    background-color: var(--ds-popover);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    color: var(--ds-popover-foreground);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    animation: ds-navigation-menu-in var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-navigation-menu__content[hidden] {
+    display: none;
+  }
+
+  /* Lines the panel up with its trigger's end edge (items near the end of the bar). */
+  .ds-navigation-menu__content--end {
+    right: 0;
+    left: auto;
+  }
+
+  /* No padding: panels with their own columns ("Groups" demo). */
+  .ds-navigation-menu__content--flush {
+    overflow: hidden;
+    padding: 0;
+  }
+
+  @keyframes ds-navigation-menu-in {
+    from {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--ds-spacing-1));
+    }
+  }
+
+  /* The links in a panel: a column 4 px apart, or a grid of equal columns ("Grid" demo). */
+  .ds-navigation-menu__links {
+    display: grid;
+    grid-template-columns: repeat(var(--navigation-menu-columns, 1), minmax(0, 1fr));
+    gap: var(--ds-spacing-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Figma "Navigation Menu Link": 6 / 8 px padding, 10 px radius, 14/20 popover-foreground; an optional 16 px icon
+     8 px before the text (2 px down, level with the title) or above it, a 14/20 Medium title and a 12/16 muted
+     description 2 px under it. */
+  .ds-navigation-menu__link {
+    box-sizing: border-box;
+    display: flex;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-lg);
+    outline: none;
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-navigation-menu__link--top {
+    flex-direction: column;
+  }
+
+  /* State=Hover (and keyboard focus): fill-2; State=Active (the current page): fill-1. */
+  .ds-navigation-menu__link:hover,
+  .ds-navigation-menu__link:focus-visible {
+    background-color: var(--ds-fill-2);
+  }
+
+  .ds-navigation-menu__link:focus-visible {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring);
+  }
+
+  .ds-navigation-menu__link[aria-current='page'] {
+    background-color: var(--ds-fill-1);
+  }
+
+  .ds-navigation-menu__link-icon {
+    display: flex;
+    flex-shrink: 0;
+    padding-top: var(--ds-spacing-0-5);
+    color: var(--ds-foreground);
+  }
+
+  .ds-navigation-menu__link--top > .ds-navigation-menu__link-icon {
+    padding-top: 0;
+  }
+
+  .ds-navigation-menu__link-icon > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-navigation-menu__link-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  .ds-navigation-menu__link-title:only-child {
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  .ds-navigation-menu__link-title:not(:only-child) {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-navigation-menu__link-description {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-navigation-menu__trigger,
+    .ds-navigation-menu__chevron,
+    .ds-navigation-menu__link {
+      transition: none;
+    }
+
+    .ds-navigation-menu__content {
+      animation: none;
+    }
+  }
+}

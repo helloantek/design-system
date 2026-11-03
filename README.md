@@ -570,6 +570,35 @@ A quiet line in a feed or a chat — an event, a date between messages, a step: 
 
 It is plain text: give a list of steps `role="list"` / `listitem` (and `aria-current="step"`) or put markers in your own list, as the "Loading" story does.
 
+## Navigation Menu
+
+A site's main navigation: the Sort UI 2.0 **Navigation Menu**, **Navigation Menu Trigger**, **Navigation Menu Content** and **Navigation Menu Link**.
+
+```tsx
+<NavigationMenu aria-label="Main">
+  <NavigationMenuItem label="Product" width="368px">
+    <NavigationMenuList columns={2}>
+      <NavigationMenuLink href="/hosting" title="Hosting" description="Deploy from Git" icon={<ServerIcon />} />
+      <NavigationMenuLink href="/databases" title="Databases" description="Postgres and Redis" />
+    </NavigationMenuList>
+  </NavigationMenuItem>
+  <NavigationMenuItem href="/pricing" label="Pricing" active />
+</NavigationMenu>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Navigation Menu Trigger Type=Trigger | `NavigationMenuItem label` with panel content | `ds-navigation-menu__trigger` (a button) |
+| Navigation Menu Trigger Type=Link | `NavigationMenuItem href` | `ds-navigation-menu__trigger` (a link) |
+| Trigger State=Hover / Focus | pointer and keyboard | — |
+| Trigger State=Active | an open trigger; `active` on a link (`aria-current="page"`) | `[aria-expanded="true"]`, `[aria-current="page"]` |
+| Trigger State=Disabled | `disabled` | — |
+| Navigation Menu Content | the item's children; `width`, `align="end"`, `flush` | `ds-navigation-menu__content`, `--end`, `--flush` |
+| Navigation Menu Link (State=Hover / Active) | `NavigationMenuLink` (`title`, `description`, `icon`, `iconPlacement`, `active`) | `ds-navigation-menu__link`, `--top` |
+| — | `NavigationMenuList columns` ("Grid" demo) | `ds-navigation-menu__links` |
+
+The menu is a `nav` landmark with a list of items; a trigger is a button with `aria-expanded` and `aria-controls` whose panel follows it in the reading order, so Tab moves from the trigger into its links (it is not an ARIA menu: the links are ordinary links). Enter, Space or a click toggles a panel, Arrow Down opens it and focuses the first link, and resting the mouse on a trigger opens it (touch uses the click). One panel is open at a time; Escape returns focus to its trigger, and Tab out of the item or a click outside closes it. Arrow Left / Right, Home and End move between the top-level items.
+
 ## Pagination
 
 Page links with Previous and Next: the Sort UI 2.0 **Pagination** and **Pagination Ellipsis** (built from Ghost and Outline Buttons).
@@ -1253,6 +1282,7 @@ These come from the Figma files, not the code:
 - Pagination (2.0): the current page is an Outline Button that keeps the default 8 px side padding inside its fixed 32 px width, while the other page links have none; the code gives every page link the same box. The Pagination component's sample (1, 2, [3], …, 8) is not a range a rule produces; the code follows the "Pagination" demo (page 2 of 12: 1, [2], 3, …, 12). Figma does not draw Previous or Next disabled at the ends; the code disables them there.
 - Item (2.0): Item Media Variant=Icon holds a 17.33 px square-dashed icon in a 16 px box; the code centres any icon in the 16 px box. The Default and Outline variants show State=Hover and Focus, but rows with their own buttons cannot be one action, so the code gives the states only to link, button and label rows. The "Navigation" demo joins Muted rows into one clipped block with bottom lines; the code offers it as `ItemGroup variant="joined"`. The xs Row is 424 px while its header and footer are 428 px; the code gives all three the box's width.
 - Table (2.0): the row dividers are 1 px centre strokes on the row's edge, so half the line falls outside the row; the code draws the whole line inside the row's bottom edge. The Footer row's line is positioned over its top edge the same way. Most demos ("Table", "Sorting", "Editable cells", "Empty state", "Toolbar and pagination") lay the header on the muted fill and the body in a white bordered box with the xs shadow, which no component property draws; the code offers it as `variant="card"`. Table Cell lays its content out with an 8 px gap; table cells hold inline content, so several items go in their own flex wrapper. The checkbox and chevron columns drop the cell's end padding; the code offers that as `fit`.
+- Navigation Menu (2.0): Navigation Menu Link is 10 px rounded in its component set but 8 px in the Navigation Menu Content component; the code uses 10 px, as the demos do. Trigger State=Active is drawn both for an open trigger (with the chevron turned up and the panel 8 px below) and for Type=Link; the code uses it for open triggers and for the link to the current page. The "Featured" and "Groups" demos are layouts inside the panel (a promoted card, labelled columns), built in the stories from Badge, Button and NavigationMenuList; `flush` drops the panel padding for "Groups".
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

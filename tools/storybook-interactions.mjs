@@ -2072,6 +2072,56 @@ Object.assign(tests, {
     assert.equal(await page.locator('#details-docs').isVisible(), true, 'the details row opens under its row');
     assert.equal(await page.locator('#details-api-gateway').count(), 0, 'and the other closes');
   },
+  'navigation menu: a named nav with triggers (aria-expanded) and links; click, Arrow Down and resting the mouse open a panel, one at a time; Escape, Tab out and a click outside close it; Arrow Left / Right move between items': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-navigation-menu--default&viewMode=story');
+    const nav = page.getByRole('navigation', { name: 'Main' });
+    await nav.waitFor();
+    const product = nav.getByRole('button', { name: 'Product' });
+    const solutions = nav.getByRole('button', { name: 'Solutions' });
+    assert.equal(await product.getAttribute('aria-expanded'), 'true', 'Product starts open');
+    const productPanel = nav.locator('.ds-navigation-menu__content').first();
+    assert.equal(await productPanel.isVisible(), true);
+    assert.equal(await productPanel.getByRole('link').count(), 4, 'the panel holds four links');
+    await page.waitForTimeout(300); // the panel slides 4 px in when it opens
+    const [tb, pb] = [await product.boundingBox(), await productPanel.boundingBox()];
+    assert.equal(Math.round(pb.y - (tb.y + tb.height)), 8, 'the panel opens 8 px under its trigger');
+    assert.equal(Math.round(pb.width), 288, '288 px wide');
+    assert.equal(Math.round(tb.height), 32, 'triggers are 32 px');
+
+    await solutions.click();
+    assert.equal(await solutions.getAttribute('aria-expanded'), 'true', 'a click opens another panel');
+    assert.equal(await product.getAttribute('aria-expanded'), 'false', 'and closes the first');
+    await page.keyboard.press('Escape');
+    assert.equal(await solutions.getAttribute('aria-expanded'), 'false', 'Escape closes it');
+    assert.equal(await solutions.evaluate((el) => el === document.activeElement), true, 'and focus is on the trigger');
+
+    await page.keyboard.press('ArrowRight');
+    const resources = nav.getByRole('button', { name: 'Resources' });
+    assert.equal(await resources.evaluate((el) => el === document.activeElement), true, 'Arrow Right moves to the next item');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await resources.getAttribute('aria-expanded'), 'true', 'Arrow Down opens the panel');
+    await page.waitForFunction(() => document.activeElement?.classList.contains('ds-navigation-menu__link'));
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Documentation', 'and focuses the first link');
+    for (let i = 0; i < 6; i++) await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Pricing', 'Tab past the last link reaches the next item');
+    assert.equal(await resources.getAttribute('aria-expanded'), 'false', 'and closes the panel');
+    assert.equal(await nav.getByRole('link', { name: 'Pricing' }).getAttribute('aria-expanded'), null, 'a top-level link has no panel');
+
+    await product.hover();
+    await page.waitForTimeout(400);
+    assert.equal(await product.getAttribute('aria-expanded'), 'true', 'resting the mouse opens a panel');
+    await product.click();
+    assert.equal(await product.getAttribute('aria-expanded'), 'true', 'the click right after hovering keeps it open');
+    await page.mouse.click(700, 400);
+    assert.equal(await product.getAttribute('aria-expanded'), 'false', 'a click outside closes it');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-navigation-menu--states&viewMode=story');
+    const states = page.getByRole('navigation', { name: 'States' });
+    await states.waitFor();
+    assert.equal(await states.getByRole('button', { name: 'Disabled' }).isDisabled(), true);
+    assert.equal(await states.getByRole('link', { name: 'Current', exact: true }).getAttribute('aria-current'), 'page', 'the current page link');
+    assert.equal(await states.getByRole('link', { name: 'Disabled link' }).getAttribute('aria-disabled'), 'true');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });
