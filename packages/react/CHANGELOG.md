@@ -1,5 +1,15 @@
 # @helloantek/ds-react
 
+## 2.41.0
+
+### Minor Changes
+
+- 1ccd5f7: Command (Sort UI 2.0): `Command` (`label`, `search` / `defaultSearch` / `onSearchChange`, `shouldFilter`, `loop`, `width`, `plain`), `CommandInput`, `CommandList`, `CommandGroup` (`heading`), `CommandItem` (`icon`, `description`, `shortcut`, `checked`, `disabled`, `value`, `keywords`, `onSelect`), `CommandSeparator`, `CommandEmpty` and `CommandDialog`. The search field is a combobox: arrows move the selection, Enter runs it, typing filters items and hides empty groups, and the empty state shows when nothing matches.
+
+### Patch Changes
+
+- 1ccd5f7: Menubar and Navigation Menu: a cursor that merely rests where the menu renders no longer switches or opens a menu by itself; moving the pointer onto a trigger still does. A Navigation Menu panel opened with the keyboard or a click stays open when the pointer leaves it (only a panel the mouse opened closes on leave).
+
 ## 2.40.0
 
 ### Minor Changes
