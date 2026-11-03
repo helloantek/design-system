@@ -1,0 +1,84 @@
+/*
+ * Menubar — Sort UI 2.0 component set "Menubar Trigger" (162:8) and component "Menubar" (162:9) on page 161:1175 in
+ * file 4JnqgEbdlnKgiFrfmiwEZw: a 32 px bar with a 1 px border, 3 px padding and a 16 px radius holding 26 px pill
+ * triggers; each opens a Dropdown Menu 8 px below it. Trigger State=Default / Hover / Open. Values are Sort UI 2.0
+ * tokens; the menus are ds-dropdown (dropdown-menu.css).
+ *
+ * Markup:
+ *   <div class="ds-menubar" role="menubar" aria-label="…">
+ *     <div class="ds-dropdown">
+ *       <button class="ds-menubar__trigger" role="menuitem" aria-haspopup="menu" aria-expanded="false">File</button>
+ *       <div class="ds-dropdown__content" role="menu">…</div>
+ *     </div>
+ *   </div>
+ */
+
+@layer ds.components {
+  /* Figma "Menubar": hugs its triggers. */
+  .ds-menubar {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    padding: calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1));
+    border-radius: var(--ds-radius-2xl);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    font-family: var(--ds-font-sans);
+  }
+
+  /* Figma "Menubar Trigger": 26 px, 10 px side padding, a pill, 14/20 Medium. */
+  .ds-menubar__trigger {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    height: calc(var(--ds-spacing-6) + var(--ds-spacing-0-5));
+    margin: 0;
+    padding: 0 var(--ds-spacing-2-5);
+    border: 0;
+    border-radius: var(--ds-radius-2xl);
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  /* State=Hover: fill-1. */
+  .ds-menubar__trigger:hover {
+    background-color: var(--ds-fill-1);
+  }
+
+  /* Keyboard focus (not drawn in Figma): fill-1 and the 3 px ring the other controls use. */
+  .ds-menubar__trigger:focus-visible {
+    background-color: var(--ds-fill-1);
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* State=Open: fill-2. */
+  .ds-menubar__trigger[aria-expanded='true'] {
+    background-color: var(--ds-fill-2);
+  }
+
+  .ds-menubar__trigger:disabled {
+    background: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* The menu opens 8 px under its trigger (Figma "slot"). */
+  .ds-menubar > .ds-dropdown > .ds-dropdown__content {
+    top: calc(100% + var(--ds-spacing-2));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-menubar__trigger {
+      transition: none;
+    }
+  }
+}

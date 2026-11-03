@@ -2122,6 +2122,58 @@ Object.assign(tests, {
     assert.equal(await states.getByRole('link', { name: 'Current', exact: true }).getAttribute('aria-current'), 'page', 'the current page link');
     assert.equal(await states.getByRole('link', { name: 'Disabled link' }).getAttribute('aria-disabled'), 'true');
   },
+  'menubar: a named menubar with one Tab stop; Arrow Left / Right move between triggers; Enter and Arrow Down open a menu on its first item; with a menu open, Arrow Left / Right and the pointer switch menus; Escape and a click outside close it': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-menubar--default&viewMode=story');
+    const bar = page.getByRole('menubar', { name: 'Browser' });
+    await bar.waitFor();
+    const triggers = bar.locator('.ds-menubar__trigger');
+    assert.equal(await triggers.count(), 4, 'four triggers');
+    assert.deepEqual(await triggers.evaluateAll((els) => els.map((el) => [el.getAttribute('role'), el.tabIndex])), [['menuitem', 0], ['menuitem', -1], ['menuitem', -1], ['menuitem', -1]], 'menu items with one Tab stop');
+    const file = bar.getByRole('menuitem', { name: 'File', exact: true });
+    assert.equal(await file.getAttribute('aria-expanded'), 'true', 'File starts open');
+    const fileMenu = page.getByRole('menu', { name: 'File' });
+    const [tb, mb] = [await file.boundingBox(), await fileMenu.boundingBox()];
+    assert.equal(Math.round(mb.y - (tb.y + tb.height)), 8, 'the menu opens 8 px under its trigger');
+    assert.equal(Math.round(tb.height), 26, 'triggers are 26 px');
+    assert.equal(Math.round((await bar.boundingBox()).height), 32, 'the bar is 32 px');
+
+    await page.getByRole('menuitem', { name: /New Tab/ }).focus();
+    await page.keyboard.press('Escape');
+    assert.equal(await file.getAttribute('aria-expanded'), 'false', 'Escape closes the menu');
+    assert.equal(await file.evaluate((el) => el === document.activeElement), true, 'and focus is on its trigger');
+    await page.keyboard.press('ArrowRight');
+    const edit = bar.getByRole('menuitem', { name: 'Edit', exact: true });
+    assert.equal(await edit.evaluate((el) => el === document.activeElement), true, 'Arrow Right moves to the next trigger');
+    assert.equal(await edit.evaluate((el) => el.tabIndex), 0, 'which takes the Tab stop');
+    assert.equal(await edit.getAttribute('aria-expanded'), 'false', 'without opening it while no menu is open');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(() => document.activeElement?.textContent?.startsWith('Undo'));
+    assert.equal(await edit.getAttribute('aria-expanded'), 'true', 'Enter opens the menu on its first item');
+    await page.keyboard.press('ArrowRight');
+    const view = bar.getByRole('menuitem', { name: 'View', exact: true });
+    await page.waitForFunction(() => document.activeElement?.textContent?.startsWith('Always Show Bookmarks'));
+    assert.equal(await view.getAttribute('aria-expanded'), 'true', 'Arrow Right in an open menu opens the next one');
+    assert.equal(await edit.getAttribute('aria-expanded'), 'false', 'and closes this one');
+    await page.keyboard.press('ArrowLeft');
+    await page.waitForFunction(() => document.activeElement?.textContent?.startsWith('Undo'));
+    assert.equal(await edit.getAttribute('aria-expanded'), 'true', 'Arrow Left goes back');
+    await page.keyboard.press('Escape');
+    await page.keyboard.press('End');
+    assert.equal(await bar.getByRole('menuitem', { name: 'Profiles', exact: true }).evaluate((el) => el === document.activeElement), true, 'End moves to the last trigger');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await file.evaluate((el) => el === document.activeElement), true, 'and Arrow Right wraps to the first');
+
+    await view.click();
+    assert.equal(await view.getAttribute('aria-expanded'), 'true');
+    await bar.getByRole('menuitem', { name: 'Profiles', exact: true }).hover();
+    assert.equal(await bar.getByRole('menuitem', { name: 'Profiles', exact: true }).getAttribute('aria-expanded'), 'true', 'pointing at another trigger switches menus');
+    assert.equal(await view.getAttribute('aria-expanded'), 'false');
+    const luis = page.getByRole('menuitemradio', { name: 'Luis' });
+    await luis.click();
+    assert.equal(await luis.getAttribute('aria-checked'), 'true', 'a radio item picks the profile (the menu stays open)');
+    await page.mouse.click(700, 380);
+    assert.equal(await bar.getByRole('menuitem', { name: 'Profiles', exact: true }).getAttribute('aria-expanded'), 'false', 'a click outside closes the menu');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });

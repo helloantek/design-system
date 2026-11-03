@@ -570,6 +570,31 @@ A quiet line in a feed or a chat — an event, a date between messages, a step: 
 
 It is plain text: give a list of steps `role="list"` / `listitem` (and `aria-current="step"`) or put markers in your own list, as the "Loading" story does.
 
+## Menubar
+
+An application menu bar: the Sort UI 2.0 **Menubar** and **Menubar Trigger**, each opening a Dropdown Menu.
+
+```tsx
+<Menubar aria-label="Editor">
+  <MenubarMenu label="File">
+    <DropdownMenuItem shortcut="⌘N">New Tab</DropdownMenuItem>
+    <DropdownMenuSub label="Share">…</DropdownMenuSub>
+  </MenubarMenu>
+  <MenubarMenu label="View">
+    <DropdownMenuCheckboxItem type="menubar" checked={urls} onCheckedChange={setUrls}>Always Show Full URLs</DropdownMenuCheckboxItem>
+  </MenubarMenu>
+</Menubar>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Menubar ("triggers" slot) | `Menubar` (`aria-label`, `defaultValue`) | `ds-menubar` |
+| Menubar Trigger "Label" | `MenubarMenu label` | `ds-menubar__trigger` |
+| Menubar Trigger State=Hover / Open | the pointer; an open menu | `[aria-expanded="true"]` |
+| Menubar Trigger "slot" (the menu) | `MenubarMenu` children: Dropdown Menu items (`type="menubar"` puts checkbox and radio checks on the left) | `ds-dropdown__content` |
+
+It follows the WAI-ARIA menubar pattern: `role="menubar"` with `menuitem` triggers and one Tab stop; Arrow Left / Right (Home / End) move between the triggers; Enter, Space or Arrow Down opens a menu on its first item (Arrow Up on its last). While a menu is open, Arrow Left / Right in it, or pointing at another trigger, switches to that menu; submenus keep their own Left / Right. Escape closes the menu and returns focus to its trigger; a click outside closes it.
+
 ## Navigation Menu
 
 A site's main navigation: the Sort UI 2.0 **Navigation Menu**, **Navigation Menu Trigger**, **Navigation Menu Content** and **Navigation Menu Link**.
@@ -1283,6 +1308,7 @@ These come from the Figma files, not the code:
 - Item (2.0): Item Media Variant=Icon holds a 17.33 px square-dashed icon in a 16 px box; the code centres any icon in the 16 px box. The Default and Outline variants show State=Hover and Focus, but rows with their own buttons cannot be one action, so the code gives the states only to link, button and label rows. The "Navigation" demo joins Muted rows into one clipped block with bottom lines; the code offers it as `ItemGroup variant="joined"`. The xs Row is 424 px while its header and footer are 428 px; the code gives all three the box's width.
 - Table (2.0): the row dividers are 1 px centre strokes on the row's edge, so half the line falls outside the row; the code draws the whole line inside the row's bottom edge. The Footer row's line is positioned over its top edge the same way. Most demos ("Table", "Sorting", "Editable cells", "Empty state", "Toolbar and pagination") lay the header on the muted fill and the body in a white bordered box with the xs shadow, which no component property draws; the code offers it as `variant="card"`. Table Cell lays its content out with an 8 px gap; table cells hold inline content, so several items go in their own flex wrapper. The checkbox and chevron columns drop the cell's end padding; the code offers that as `fit`.
 - Navigation Menu (2.0): Navigation Menu Link is 10 px rounded in its component set but 8 px in the Navigation Menu Content component; the code uses 10 px, as the demos do. Trigger State=Active is drawn both for an open trigger (with the chevron turned up and the panel 8 px below) and for Type=Link; the code uses it for open triggers and for the link to the current page. The "Featured" and "Groups" demos are layouts inside the panel (a promoted card, labelled columns), built in the stories from Badge, Button and NavigationMenuList; `flush` drops the panel padding for "Groups".
+- Menubar (2.0): the menus are the Dropdown Menu component placed in the trigger's slot 8 px below it; the code reuses DropdownMenu (and its Menubar checkbox type for the demos' left-hand checks). Figma draws no keyboard focus for Menubar Trigger; the code gives it the fill-1 tint and the 3 px ring the other controls use. The demos set the bar 320 px wide with the triggers at the start; the component hugs its triggers and the stories set the width.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
