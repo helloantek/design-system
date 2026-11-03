@@ -11,6 +11,7 @@ export * from './Calendar';
 export * from './Card';
 export * from './Checkbox';
 export * from './Combobox';
+export * from './Command';
 export * from './ContextMenu';
 export * from './DatePicker';
 export * from './Collapsible';

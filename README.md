@@ -1099,6 +1099,44 @@ A text field that filters a list: Sort UI 2.0 **Combobox** (Size, Value, State, 
 
 Typing filters the options (the label contains the text, ignoring case and accents; pass `filter` to change it) and reads out the number of results; ↓ / ↑ move, Enter picks, Escape closes the list and, when it is closed, clears the text. A click on the chevron opens and closes the list. A single field shows the selected label; emptying it and leaving clears the value. `name` submits the value through a hidden input (one per value with `multiple`), and resetting the form restores `defaultValue` and clears typed text.
 
+## Command
+
+A command palette: the Sort UI 2.0 **Command**, **Command Item**, **Command Group Heading** and **Command Separator**.
+
+```tsx
+<Command label="Commands">
+  <CommandInput placeholder="Type a command or search…" />
+  <CommandList>
+    <CommandGroup heading="Suggestions">
+      <CommandItem icon={<CalendarIcon />} onSelect={openCalendar}>Calendar</CommandItem>
+      <CommandItem icon={<CalculatorIcon />} disabled>Calculator</CommandItem>
+    </CommandGroup>
+    <CommandSeparator />
+    <CommandGroup heading="Settings">
+      <CommandItem icon={<UserIcon />} shortcut="P" keywords={['account']}>Profile</CommandItem>
+    </CommandGroup>
+    <CommandEmpty><Empty title="No results found." /></CommandEmpty>
+  </CommandList>
+</Command>
+<CommandDialog open={open} onOpenChange={setOpen} label="Search">…</CommandDialog>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Command Variant=Default | `Command` (`label`, `search` / `defaultSearch` / `onSearchChange`, `shouldFilter`, `loop`, `width`, `plain`) | `ds-command`, `--plain` |
+| Search (an Input Group) | `CommandInput` (`placeholder`) | `ds-command__search` + `ds-input` |
+| list | `CommandList` (`maxHeight`) | `ds-command__list` |
+| Command Group Heading | `CommandGroup heading` | `ds-command__heading` |
+| Command Separator | `CommandSeparator` | `ds-command__separator` |
+| Command Item "L slot" / "Label" | `CommandItem icon`, children (`value`, `keywords` for the search), `description` | `ds-command__icon`, `__label`, `__description` |
+| Command Item Shortcut "Keys" | `shortcut` (or any trailing note) | `ds-command__meta` |
+| Command Item Checked | `checked` | `ds-command__check` |
+| Command Item State=Selected / Disabled | the keyboard and pointer selection; `disabled` | `[aria-selected="true"]`, `[aria-disabled="true"]` |
+| Command Variant=Empty | `CommandEmpty` | `ds-command__empty` |
+| — | `CommandDialog` (a modal palette) | `ds-command-dialog` |
+
+The search field is a combobox (`aria-controls`, `aria-activedescendant`) that keeps focus while Arrow Up / Down, Home and End move the selected option (skipping disabled items and wrapping unless `loop={false}`) and Enter runs it; the pointer selects what it is over and a click runs it. Typing filters the items by their text, `value` and `keywords`; groups with no match and the separators hide, and `CommandEmpty` shows when nothing matches (it sits outside the listbox). `CommandDialog` is a native modal `<dialog>`: the field takes focus, Escape or a click on the backdrop closes it and focus returns.
+
 ## Context Menu
 
 The menu of actions for whatever is under the pointer: a right-click on the trigger opens it there, and Shift+F10 or the Menu key opens it at the trigger's corner with the first item focused. From then on it behaves like Dropdown Menu (arrows, Home/End, letters, → and ← for submenus, Enter or Space to pick, Escape to close and give focus back). A click outside, Tab, scrolling or resizing closes it. Sort UI 2.0 has no component set for it: its demos are **Dropdown Menu Content**, **Item**, **Label** and **Separator**, so the items are the Dropdown Menu parts.
@@ -1309,6 +1347,7 @@ These come from the Figma files, not the code:
 - Table (2.0): the row dividers are 1 px centre strokes on the row's edge, so half the line falls outside the row; the code draws the whole line inside the row's bottom edge. The Footer row's line is positioned over its top edge the same way. Most demos ("Table", "Sorting", "Editable cells", "Empty state", "Toolbar and pagination") lay the header on the muted fill and the body in a white bordered box with the xs shadow, which no component property draws; the code offers it as `variant="card"`. Table Cell lays its content out with an 8 px gap; table cells hold inline content, so several items go in their own flex wrapper. The checkbox and chevron columns drop the cell's end padding; the code offers that as `fit`.
 - Navigation Menu (2.0): Navigation Menu Link is 10 px rounded in its component set but 8 px in the Navigation Menu Content component; the code uses 10 px, as the demos do. Trigger State=Active is drawn both for an open trigger (with the chevron turned up and the panel 8 px below) and for Type=Link; the code uses it for open triggers and for the link to the current page. The "Featured" and "Groups" demos are layouts inside the panel (a promoted card, labelled columns), built in the stories from Badge, Button and NavigationMenuList; `flush` drops the panel padding for "Groups".
 - Menubar (2.0): the menus are the Dropdown Menu component placed in the trigger's slot 8 px below it; the code reuses DropdownMenu (and its Menubar checkbox type for the demos' left-hand checks). Figma draws no keyboard focus for Menubar Trigger; the code gives it the fill-1 tint and the 3 px ring the other controls use. The demos set the bar 320 px wide with the triggers at the start; the component hugs its triggers and the stories set the width.
+- Command (2.0): the Command Separator's line is 384 px wide in a 372 px list (it runs to the edges past the list's 6 px padding); the code does the same. The separator and the empty state are not options, so they sit outside what assistive technology reads as the listbox (the separator is decoration and the empty state follows the listbox). Shortcuts are drawn as 12/16 muted text, not Kbd keys; the code follows Figma. The "Dialog" demo shows the palette under its trigger; the code's CommandDialog is a modal window 15 % from the top, as palettes usually are, and the "In a popover" demo puts a `plain` Command in a Popover.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

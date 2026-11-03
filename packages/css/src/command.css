@@ -1,0 +1,231 @@
+/*
+ * Command — Sort UI 2.0 component sets "Command" (575:8007, Variant=Default / Empty) and "Command Item" (209:26),
+ * with "Command Group Heading" and "Command Separator" (575:8221), on page 208:2 in file 4JnqgEbdlnKgiFrfmiwEZw: a
+ * search field over a filtered list of commands. Command Item State=Default / Selected / Disabled, with a leading
+ * slot, a shortcut and a check. Values are Sort UI 2.0 tokens; the search field is ds-input (input.css).
+ *
+ * Markup:
+ *   <div class="ds-command [ds-command--plain]" [data-filtering]>
+ *     <div class="ds-command__search"><div class="ds-input ds-input--default">…<input role="combobox" aria-controls="l" aria-activedescendant="i1"/></div></div>
+ *     <div class="ds-command__list"><div class="ds-command__options" id="l" role="listbox" aria-label="…">
+ *       <div class="ds-command__group" role="group" aria-labelledby="h">
+ *         <div class="ds-command__heading" id="h">Suggestions</div>
+ *         <div class="ds-command__item" id="i1" role="option" aria-selected="true" [aria-disabled="true"] [hidden]>
+ *           [<span class="ds-command__icon"><svg/></span>]
+ *           <span class="ds-command__text"><span class="ds-command__label">Calendar</span>[<span class="ds-command__description">…</span>]</span>
+ *           [<span class="ds-command__meta">⌘K</span>] [<span class="ds-command__check"><svg/></span>]
+ *         </div>
+ *       </div>
+ *       <div class="ds-command__separator" aria-hidden="true"></div>
+ *     </div><div class="ds-command__empty">…</div></div>
+ *   </div>
+ *   CommandDialog: <dialog class="ds-command-dialog"><div class="ds-command">…</div></dialog>
+ */
+
+@layer ds.components {
+  /* Figma "Command": the popover fill, a 16 px radius, a 1 px border outside and the Surface/Dialog effect; 384 px by default. */
+  .ds-command {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: var(--command-width, var(--ds-spacing-96));
+    max-width: 100%;
+    border-radius: var(--ds-radius-2xl);
+    background-color: var(--ds-popover);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-dialog);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Without its own surface, inside a popover or a dialog that draws one. */
+  .ds-command--plain {
+    width: auto;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  /* "In a popover" demo: a plain Command fills the Popover, which drops its body padding. */
+  .ds-popover__body:has(> .ds-command--plain:only-child) {
+    padding: 0;
+  }
+
+  /* Figma "Search": the 32 px search field, 6 px from the edges and 4 px above the list. */
+  .ds-command__search {
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-1-5) var(--ds-spacing-1);
+  }
+
+  /* Figma "list": 6 px padding; it scrolls past its maximum height. */
+  .ds-command__list {
+    overflow-y: auto;
+    max-height: var(--command-list-height, calc(var(--ds-spacing-96) - var(--ds-spacing-6)));
+    padding: var(--ds-spacing-1-5);
+    outline: none;
+    overscroll-behavior: contain;
+    scroll-padding: var(--ds-spacing-1-5);
+  }
+
+  /* A group with no visible items while filtering is hidden with its heading. */
+  .ds-command__group:not(:has(> .ds-command__item:not([hidden]))) {
+    display: none;
+  }
+
+  /* Figma "Command Group Heading": 6 / 8 px padding, 12/16 Medium muted. */
+  .ds-command__heading {
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* Figma "Command Separator": 12 px with a 1 px border line centred in it, across the whole list (6 px past its padding). */
+  .ds-command__separator {
+    height: var(--ds-stroke-width-1);
+    margin: calc(var(--ds-spacing-1-5) - var(--ds-stroke-width-1) / 2) calc(-1 * var(--ds-spacing-1-5));
+    background-color: var(--ds-border);
+  }
+
+  /* While a search filters the list, separators would only split what is left. */
+  .ds-command[data-filtering] .ds-command__separator {
+    display: none;
+  }
+
+  /* Figma "Command Item": 6 / 8 px padding, 8 px gaps, 10 px radius, 14/20 popover-foreground. */
+  .ds-command__item {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-height: var(--ds-spacing-8);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-lg);
+    color: var(--ds-popover-foreground);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ds-command__item[hidden] {
+    display: none;
+  }
+
+  /* State=Selected: the item the keyboard or the pointer is on: fill-2 and foreground text. */
+  .ds-command__item[aria-selected='true'] {
+    background-color: var(--ds-fill-2);
+    color: var(--ds-foreground);
+  }
+
+  /* State=Disabled: 50 % opacity. */
+  .ds-command__item[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  /* Figma "L slot": a 20 px box for a 17.33 px icon (or a picture of any size). */
+  .ds-command__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    min-width: calc(var(--ds-spacing-5));
+    min-height: calc(var(--ds-spacing-5));
+    color: var(--ds-foreground);
+  }
+
+  .ds-command__icon > svg {
+    width: calc(var(--ds-spacing-4) * 13 / 12);
+    height: calc(var(--ds-spacing-4) * 13 / 12);
+  }
+
+  .ds-command__text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  .ds-command__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-command__description {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* Figma "Shortcut" (Keys), or any trailing note ("Owner", "Blocked"): 12/16 muted. */
+  .ds-command__meta {
+    flex-shrink: 0;
+    color: var(--ds-muted-foreground);
+    font-family: inherit;
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* Figma Checked: a 16 px check at the end. */
+  .ds-command__check {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--ds-foreground);
+  }
+
+  .ds-command__check > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* Figma Variant=Empty: shown only when no item is visible. */
+  .ds-command__empty {
+    display: none;
+  }
+
+  .ds-command__list:not(:has(.ds-command__item:not([hidden]))) > .ds-command__empty {
+    display: block;
+  }
+
+  /* The command palette as a modal window: 15 % from the top, the page dimmed behind it. */
+  .ds-command-dialog {
+    width: min(var(--command-width, calc(var(--ds-spacing-96) + var(--ds-spacing-32))), calc(100vw - var(--ds-spacing-8)));
+    max-width: none;
+    max-height: none;
+    margin: 15vh auto auto;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: none;
+    overflow: visible;
+  }
+
+  .ds-command-dialog > .ds-command {
+    width: 100%;
+  }
+
+  .ds-command-dialog[open] {
+    animation: ds-command-dialog-in var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-command-dialog::backdrop {
+    background-color: var(--ds-alpha-black-50);
+  }
+
+  @keyframes ds-command-dialog-in {
+    from {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-command-dialog[open] {
+      animation: none;
+    }
+  }
+}

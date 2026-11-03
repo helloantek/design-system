@@ -131,8 +131,9 @@ export function MenubarMenu({ label, value, children, align = 'start', disabled 
           className="ds-menubar__trigger"
           data-value={id}
           disabled={disabled}
-          onPointerEnter={(event) => {
-            // While another menu is open, pointing at this trigger switches to its menu.
+          onPointerMove={(event) => {
+            // While another menu is open, moving the pointer onto this trigger switches to its menu (a move, not
+            // pointerenter, so a cursor resting where the bar renders does not switch menus by itself).
             if (event.pointerType === 'mouse' && bar.open !== null && !open && !disabled) {
               event.currentTarget.focus();
               bar.setOpen(id);

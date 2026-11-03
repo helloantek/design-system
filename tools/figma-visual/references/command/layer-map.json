@@ -1,0 +1,31 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (an item, a heading or the whole Command) and how to read it.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "$why": "The Command's 1 px border outside is its first box-shadow."
+    },
+    "Label": {
+      "selector": ".ds-command__label"
+    },
+    "L slot": {
+      "selector": ".ds-command__icon"
+    },
+    "Heading": {
+      "selector": "[data-heading]",
+      "$why": "The renderer marks the heading text."
+    },
+    "Search": {
+      "selector": ".ds-command__search"
+    },
+    "list": {
+      "selector": ".ds-command__list"
+    },
+    "Command Item": {
+      "selector": ".ds-command__item"
+    },
+    "Command Group Heading": {
+      "selector": ".ds-command__heading"
+    }
+  }
+}

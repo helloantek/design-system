@@ -22,6 +22,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderItem } from './item';
+import { renderCommand } from './command';
 import { renderMenubar } from './menubar';
 import { renderNavigationMenu } from './navigation-menu';
 import { renderTable } from './table';
@@ -68,6 +69,7 @@ export const renderers: Record<string, Renderer> = {
   'checkbox-card': renderCheckboxCard,
   'checkbox-field': renderCheckboxField,
   combobox: renderCombobox,
+  command: renderCommand,
   'context-menu': renderContextMenu,
   'date-picker': renderDatePicker,
   collapsible: renderCollapsible,
