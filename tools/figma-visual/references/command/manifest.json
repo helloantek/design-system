@@ -1,0 +1,81 @@
+{
+ "$comment": "Sort UI 2.0 Command reference renders (1x PNG, exportAsync with absolute bounds, so the Command's outside border and shadow fall outside the box): Command Item State=Default / Selected / Disabled (square-dashed leading icon, \"Item\"), Command Group Heading, and Command Variant=Default (Figma's sample list) and Empty. renderers/command.tsx renders them inside a Command; Selected is the item the list selects first.",
+ "component": "command",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "575:8007",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "item-default",
+   "nodeId": "209:2",
+   "props": {
+    "Part": "Item",
+    "State": "Default"
+   },
+   "nodeW": 368,
+   "nodeH": 32,
+   "target": "#target"
+  },
+  {
+   "slug": "item-selected",
+   "nodeId": "209:10",
+   "props": {
+    "Part": "Item",
+    "State": "Selected"
+   },
+   "nodeW": 368,
+   "nodeH": 32,
+   "target": "#target",
+   "interaction": "Default"
+  },
+  {
+   "slug": "item-disabled",
+   "nodeId": "209:18",
+   "props": {
+    "Part": "Item",
+    "State": "Disabled"
+   },
+   "nodeW": 368,
+   "nodeH": 32,
+   "target": "#target"
+  },
+  {
+   "slug": "group-heading",
+   "nodeId": "209:27",
+   "props": {
+    "Part": "Heading"
+   },
+   "nodeW": 368,
+   "nodeH": 28,
+   "target": ".ds-command__heading"
+  },
+  {
+   "slug": "command-default",
+   "nodeId": "210:2",
+   "props": {
+    "Part": "Command",
+    "Variant": "Default"
+   },
+   "nodeW": 384,
+   "nodeH": 314,
+   "target": ".ds-command"
+  },
+  {
+   "slug": "command-empty",
+   "nodeId": "575:8008",
+   "props": {
+    "Part": "Command",
+    "Variant": "Empty"
+   },
+   "nodeW": 384,
+   "nodeH": 218,
+   "target": ".ds-command"
+  }
+ ]
+}

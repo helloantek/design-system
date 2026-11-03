@@ -2174,6 +2174,81 @@ Object.assign(tests, {
     await page.mouse.click(700, 380);
     assert.equal(await bar.getByRole('menuitem', { name: 'Profiles', exact: true }).getAttribute('aria-expanded'), 'false', 'a click outside closes the menu');
   },
+  'command: the search field is a combobox over a listbox; arrows move the selection (skipping disabled items, wrapping); typing filters by text and keywords, hiding empty groups and separators; Enter and clicks run items; the dialog opens on a key and closes on Escape': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-command--default&viewMode=story');
+    const input = page.getByRole('combobox', { name: 'Commands' });
+    await input.waitFor();
+    const list = page.getByRole('listbox', { name: 'Commands' });
+    assert.equal(await input.getAttribute('aria-controls'), await list.getAttribute('id'), 'the field controls the list');
+    const selected = async () => page.evaluate(() => document.getElementById(document.querySelector('[role="combobox"]').getAttribute('aria-activedescendant'))?.textContent ?? null);
+    assert.equal(await selected(), 'Calendar', 'the first item starts selected');
+    assert.equal(await list.getByRole('option', { name: 'Calendar' }).getAttribute('aria-selected'), 'true');
+    await input.focus();
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await selected(), 'Search Emoji');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await selected(), 'ProfileP', 'Arrow Down skips the disabled Calculator');
+    await page.keyboard.press('End');
+    assert.equal(await selected(), 'Settings/', 'End goes to the last item');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await selected(), 'Calendar', 'and Arrow Down wraps to the first');
+    assert.equal(await list.getByRole('option', { name: 'Calculator' }).getAttribute('aria-disabled'), 'true');
+    assert.equal(Math.round((await list.getByRole('option', { name: 'Calendar' }).boundingBox()).height), 32, 'items are 32 px');
+
+    await input.fill('bil');
+    assert.deepEqual(await list.getByRole('option').evaluateAll((els) => els.filter((e) => !e.hidden).map((e) => e.textContent)), ['BillingB'], 'typing filters the items');
+    assert.equal(await list.getByRole('group', { name: 'Suggestions' }).isVisible(), false, 'a group with no match is hidden');
+    assert.equal(await page.locator('.ds-command__separator').isVisible(), false, 'separators hide while filtering');
+    assert.equal(await selected(), 'BillingB', 'the first match is selected');
+    await input.fill('prefer');
+    assert.equal(await selected(), 'Settings/', 'keywords match too');
+    await input.fill('zzz');
+    assert.equal(await page.getByText('No results found.').isVisible(), true, 'the empty state shows when nothing matches');
+    await input.fill('');
+    assert.equal(await page.getByText('No results found.').isVisible(), false);
+    await list.getByRole('option', { name: 'Billing' }).hover();
+    assert.equal(await selected(), 'BillingB', 'the pointer selects what it is over');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-command--nested-pages&viewMode=story');
+    const nested = page.getByRole('combobox', { name: 'Commands' });
+    await nested.waitFor();
+    await nested.fill('theme');
+    await page.keyboard.press('Enter');
+    const themes = page.getByRole('combobox', { name: 'Themes' });
+    await themes.waitFor();
+    assert.equal(await themes.getAttribute('placeholder'), 'Pick a theme…', 'Enter runs the selected item (a page of themes)');
+    assert.equal(await themes.inputValue(), '', 'with a fresh search');
+    await page.getByRole('option', { name: 'Dark' }).click();
+    assert.equal(await page.getByRole('option', { name: 'Dark' }).getAttribute('aria-checked'), 'true', 'a click runs an item');
+    await themes.focus();
+    await page.keyboard.press('Backspace');
+    await page.getByRole('combobox', { name: 'Commands' }).waitFor();
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-command--dialog&viewMode=story');
+    const open = page.getByRole('button', { name: /Search workspace/ });
+    await open.waitFor();
+    await open.click();
+    const dialog = page.getByRole('dialog', { name: 'Search workspace' });
+    await dialog.waitFor();
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('role')), 'combobox', 'the search field takes focus');
+    await page.keyboard.press('Escape');
+    await dialog.waitFor({ state: 'hidden' });
+    assert.equal(await open.evaluate((el) => el === document.activeElement), true, 'Escape closes it and focus returns');
+    await page.keyboard.press('/');
+    await dialog.waitFor();
+    await page.keyboard.type('team');
+    await page.keyboard.press('Enter');
+    await dialog.waitFor({ state: 'hidden' });
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-command--in-a-popover&viewMode=story');
+    const trigger = page.getByRole('button', { name: /Adam Miller/ });
+    await trigger.waitFor();
+    await trigger.click();
+    await page.getByRole('combobox', { name: 'People' }).fill('mira');
+    await page.keyboard.press('Enter');
+    await page.getByRole('button', { name: /Mira Bloom/ }).waitFor();
+    assert.equal(await page.getByRole('combobox', { name: 'People' }).isVisible(), false, 'picking a person closes the popover');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });

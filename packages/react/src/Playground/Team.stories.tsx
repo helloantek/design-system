@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { RiDeleteBinLine, RiFileCopyLine, RiContractUpDownLine, RiFilter3Line, RiLinkM, RiMailLine, RiMoreLine, RiRefreshLine, RiSearchLine, RiSettings3Line, RiShieldUserLine, RiUserAddLine } from '@remixicon/react';
 import { Alert } from '../Alert';
 import { AspectRatio } from '../AspectRatio';
@@ -33,6 +33,7 @@ import { Input, InputAction, InputDropdown } from '../Input';
 import { Item, ItemGroup, ItemMedia } from '../Item';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '../Command';
 import { Menubar, MenubarMenu } from '../Menubar';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '../NavigationMenu';
 import { Pagination } from '../Pagination';
@@ -94,7 +95,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Navigation Menu (the workspace bar, with a Projects panel), Breadcrumb (switch team), Menubar (members, view options and export), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage, with a storage Table), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Navigation Menu (the workspace bar, with a Projects panel), Breadcrumb (switch team), Menubar (members, view options and export), Command (a ⌘K palette of members and actions), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage, with a storage Table), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -115,6 +116,17 @@ export const Members: StoryObj = {
     const [sortBy, setSortBy] = useState<'joined' | 'name' | 'role'>('joined');
     const [teamName, setTeamName] = useState('Orbit');
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [paletteOpen, setPaletteOpen] = useState(false);
+    useEffect(() => {
+      const key = (event: KeyboardEvent) => {
+        if (event.key === 'k' && (event.metaKey || event.ctrlKey)) {
+          event.preventDefault();
+          setPaletteOpen(true);
+        }
+      };
+      document.addEventListener('keydown', key);
+      return () => document.removeEventListener('keydown', key);
+    }, []);
     const [seats, setSeats] = useState(10);
     const [offsite, setOffsite] = useState(new Date(2026, 4, 14));
     const [extraSeats, setExtraSeats] = useState(5);
@@ -188,7 +200,8 @@ export const Members: StoryObj = {
           </BreadcrumbItem>
           <BreadcrumbItem current>Members</BreadcrumbItem>
         </Breadcrumb>
-        <Menubar aria-label="Team" style={{ gridColumn: '1 / -1', justifySelf: 'start' }}>
+        <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+        <Menubar aria-label="Team">
           <MenubarMenu label="Members">
             <DropdownMenuItem icon={<RiUserAddLine />} shortcut="⌘I" onClick={() => toast('Invite people from the Invite button', { description: 'A real product would open the invite form.' })}>
               Invite…
@@ -219,6 +232,43 @@ export const Members: StoryObj = {
             <DropdownMenuItem onClick={() => toast.success('members.json is ready')}>JSON</DropdownMenuItem>
           </MenubarMenu>
         </Menubar>
+        <Button variant="outline" size="sm" leadingIcon={<RiSearchLine />} onClick={() => setPaletteOpen(true)} aria-keyshortcuts="Control+K Meta+K">
+          Search team <Kbd>⌘K</Kbd>
+        </Button>
+        <CommandDialog open={paletteOpen} onOpenChange={setPaletteOpen} label="Search team">
+          <CommandInput placeholder="Find a member or an action…" />
+          <CommandList>
+            <CommandGroup heading="Members">
+              {members.map((m) => (
+                <CommandItem
+                  key={m.id}
+                  icon={<Avatar size="xs" initials={m.name[0]} />}
+                  shortcut={m.role}
+                  keywords={[m.email]}
+                  onSelect={() => {
+                    setPaletteOpen(false);
+                    toast(m.name, { description: m.email });
+                  }}
+                >
+                  {m.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Actions">
+              <CommandItem icon={<RiSettings3Line />} onSelect={() => { setPaletteOpen(false); setSettingsOpen(true); }}>
+                Team settings
+              </CommandItem>
+              <CommandItem icon={<RiUserAddLine />} onSelect={() => { setPaletteOpen(false); toast('Invite people from the Invite button'); }}>
+                Invite people
+              </CommandItem>
+            </CommandGroup>
+            <CommandEmpty>
+              <Empty titleAs="p" icon={<RiSearchLine />} title="No one or nothing by that name." />
+            </CommandEmpty>
+          </CommandList>
+        </CommandDialog>
+        </div>
         <Card as="section" aria-label="Team members">
           <CardHeader
             title={`${teamName} members`}
