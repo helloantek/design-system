@@ -124,7 +124,7 @@ export function NavigationMenuItem({
   contentClassName,
   onOpenChange,
   className,
-  onPointerEnter,
+  onPointerMove,
   onPointerLeave,
   ...rest
 }: NavigationMenuItemProps) {
@@ -138,6 +138,8 @@ export function NavigationMenuItem({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const hoverOpenedAt = useRef(0);
+  const opening = useRef(false);
+  const openedByHover = useRef(false);
 
   const wasOpen = useRef(open);
   useEffect(() => {
@@ -168,14 +170,22 @@ export function NavigationMenuItem({
   const focusFirstLink = () =>
     requestAnimationFrame(() => itemRef.current?.querySelector<HTMLElement>('.ds-navigation-menu__content a, .ds-navigation-menu__content button')?.focus());
 
-  // Resting the mouse opens the panel; leaving the item closes it after a moment (touch and pen use click).
-  const enter = (event: PointerEvent<HTMLLIElement>) => {
-    onPointerEnter?.(event);
+  // Resting a moving mouse on the trigger opens the panel; leaving the item closes a panel the mouse opened, after a
+  // moment (touch and pen use click). It starts on pointermove, not pointerenter, so a cursor that merely rests where
+  // the menu renders opens nothing, and a panel opened by the keyboard or a click stays open when the pointer leaves.
+  const move = (event: PointerEvent<HTMLLIElement>) => {
+    onPointerMove?.(event);
     if (event.pointerType !== 'mouse' || disabled) return;
-    clearTimeout(timer.current);
-    if (open) return;
+    if (open) {
+      clearTimeout(timer.current);
+      return;
+    }
+    if (opening.current) return;
+    opening.current = true;
     timer.current = setTimeout(() => {
+      opening.current = false;
       hoverOpenedAt.current = Date.now();
+      openedByHover.current = true;
       setOpen(true);
     }, menu.open === null ? HOVER_OPEN_MS : 0);
   };
@@ -183,17 +193,23 @@ export function NavigationMenuItem({
     onPointerLeave?.(event);
     if (event.pointerType !== 'mouse') return;
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => setOpen(false), HOVER_CLOSE_MS);
+    opening.current = false;
+    if (open && openedByHover.current) timer.current = setTimeout(() => setOpen(false), HOVER_CLOSE_MS);
   };
   // A click toggles, except right after the mouse opened it (the click that follows resting on the trigger).
   const click = () => {
-    if (open && Date.now() - hoverOpenedAt.current < 500) return;
+    if (open && Date.now() - hoverOpenedAt.current < 500) {
+      openedByHover.current = false;
+      return;
+    }
     hoverOpenedAt.current = 0;
+    openedByHover.current = false;
     setOpen(!open);
   };
   const triggerKeys = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
+      openedByHover.current = false;
       setOpen(true);
       focusFirstLink();
     }
@@ -211,7 +227,7 @@ export function NavigationMenuItem({
   };
 
   return (
-    <li ref={itemRef} {...rest} className={cx('ds-navigation-menu__item', className)} onPointerEnter={enter} onPointerLeave={leave} onKeyDown={itemKeys} onBlur={blur}>
+    <li ref={itemRef} {...rest} className={cx('ds-navigation-menu__item', className)} onPointerMove={move} onPointerLeave={leave} onKeyDown={itemKeys} onBlur={blur}>
       <button
         ref={triggerRef}
         type="button"

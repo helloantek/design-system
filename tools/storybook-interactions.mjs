@@ -2123,7 +2123,6 @@ Object.assign(tests, {
     assert.equal(await states.getByRole('link', { name: 'Disabled link' }).getAttribute('aria-disabled'), 'true');
   },
   'menubar: a named menubar with one Tab stop; Arrow Left / Right move between triggers; Enter and Arrow Down open a menu on its first item; with a menu open, Arrow Left / Right and the pointer switch menus; Escape and a click outside close it': async () => {
-    await page.mouse.move(0, 0);
     await page.goto('http://localhost:6008/iframe.html?id=components-menubar--default&viewMode=story');
     const bar = page.getByRole('menubar', { name: 'Browser' });
     await bar.waitFor();
@@ -2332,6 +2331,8 @@ Object.assign(tests, {
 let failed = 0;
 for (const [name, run] of Object.entries(tests)) {
   try {
+    // Each test starts with the pointer in the corner, so where the previous one left it cannot hover anything.
+    await page.mouse.move(0, 0);
     await run();
     console.log(`ok   ${name}`);
   } catch (error) {
