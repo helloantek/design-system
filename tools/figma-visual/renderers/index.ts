@@ -22,6 +22,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderItem } from './item';
+import { renderMenubar } from './menubar';
 import { renderNavigationMenu } from './navigation-menu';
 import { renderTable } from './table';
 import { renderInputGroupDropdown } from './input-group-dropdown';
@@ -84,6 +85,7 @@ export const renderers: Record<string, Renderer> = {
   'input-group-dropdown': renderInputGroupDropdown,
   'input-otp': renderInputOTP,
   item: renderItem,
+  menubar: renderMenubar,
   'navigation-menu': renderNavigationMenu,
   'otp-slot': renderOTPSlot,
   kbd: renderKbd,

@@ -1,0 +1,59 @@
+{
+ "$comment": "Sort UI 2.0 Menubar reference renders (1x PNG, exportAsync with absolute bounds): Menubar Trigger State=Default / Hover / Open (exported with its menu slot hidden, so only the trigger is compared) and the Menubar component (Tokens open, View, Publish; its menu falls outside the box). renderers/menubar.tsx renders Menubar and MenubarMenu; Hover comes from real input, Open from defaultValue.",
+ "component": "menubar",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "162:8",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "trigger-default",
+   "nodeId": "162:2",
+   "props": {
+    "Part": "Trigger",
+    "State": "Default"
+   },
+   "nodeW": 58,
+   "nodeH": 26,
+   "target": ".ds-menubar__trigger"
+  },
+  {
+   "slug": "trigger-hover",
+   "nodeId": "162:4",
+   "props": {
+    "Part": "Trigger",
+    "State": "Hover"
+   },
+   "nodeW": 58,
+   "nodeH": 26,
+   "target": ".ds-menubar__trigger"
+  },
+  {
+   "slug": "trigger-open",
+   "nodeId": "162:6",
+   "props": {
+    "Part": "Trigger",
+    "State": "Open"
+   },
+   "nodeW": 58,
+   "nodeH": 26,
+   "target": ".ds-menubar__trigger",
+   "interaction": "Default"
+  },
+  {
+   "slug": "menubar",
+   "nodeId": "162:9",
+   "props": {
+    "Part": "Menubar"
+   },
+   "nodeW": 196,
+   "nodeH": 32,
+   "target": ".ds-menubar"
+  }
+ ]
+}

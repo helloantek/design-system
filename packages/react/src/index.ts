@@ -25,6 +25,7 @@ export * from './InputOTP';
 export * from './Item';
 export * from './Kbd';
 export * from './Marker';
+export * from './Menubar';
 export * from './NavigationMenu';
 export * from './Pagination';
 export * from './Popover';

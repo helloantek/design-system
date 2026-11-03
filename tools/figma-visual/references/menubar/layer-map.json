@@ -1,0 +1,17 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (a trigger, or the bar) and how to read it.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skipWidthIfHas": ".ds-menubar__trigger",
+      "$why": "The bar's 1 px border is an inset shadow (Figma draws it inside). The bar's width is the sum of its triggers', which follow their labels' glyph widths; Figma rounds each trigger to whole pixels (68 + 53 + 69), so the bar is checked by its height, padding, radius and stroke."
+    },
+    "Label": {
+      "selector": "[data-label]",
+      "$why": "The renderer marks the (first) trigger's label."
+    },
+    "Menubar Trigger": {
+      "selector": ".ds-menubar__trigger"
+    }
+  }
+}

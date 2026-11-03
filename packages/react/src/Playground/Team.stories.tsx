@@ -33,6 +33,7 @@ import { Input, InputAction, InputDropdown } from '../Input';
 import { Item, ItemGroup, ItemMedia } from '../Item';
 import { Kbd, KbdGroup } from '../Kbd';
 import { Marker } from '../Marker';
+import { Menubar, MenubarMenu } from '../Menubar';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '../NavigationMenu';
 import { Pagination } from '../Pagination';
 import { Popover, PopoverActions, PopoverClose } from '../Popover';
@@ -93,7 +94,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A team settings page made of Navigation Menu (the workspace bar, with a Projects panel), Breadcrumb (switch team), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage, with a storage Table), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
+          'A team settings page made of Navigation Menu (the workspace bar, with a Projects panel), Breadcrumb (switch team), Menubar (members, view options and export), Card, Avatar, Avatar Group, Badge, Button Group, Separator, Spinner, Kbd, Progress, Progress circle, Aspect Ratio, Empty (search for someone who is not there), Input with Input Group Dropdown, Dropdown Menu, Context Menu (right-click a member), Tooltip, Alert, Alert Dialog, Dialog (team settings), Sheet (the activity log, with Pagination), Drawer (add seats), Hover Card (the workspace owner), Toggle (compact list), Toggle Group (sort by), Tabs (seats and storage usage, with a storage Table), Popover (the invite link), Calendar (the offsite date, in a Popover), Collapsible (recent activity), Accordion (workspace questions), Item (workspace settings links), Marker and toasts, for trying components together before they are merged. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -187,6 +188,37 @@ export const Members: StoryObj = {
           </BreadcrumbItem>
           <BreadcrumbItem current>Members</BreadcrumbItem>
         </Breadcrumb>
+        <Menubar aria-label="Team" style={{ gridColumn: '1 / -1', justifySelf: 'start' }}>
+          <MenubarMenu label="Members">
+            <DropdownMenuItem icon={<RiUserAddLine />} shortcut="⌘I" onClick={() => toast('Invite people from the Invite button', { description: 'A real product would open the invite form.' })}>
+              Invite…
+            </DropdownMenuItem>
+            <DropdownMenuItem icon={<RiMailLine />} onClick={() => toast(`Email to ${members.length} members`, { description: 'Your mail app opens in a real product.' })}>
+              Email everyone
+            </DropdownMenuItem>
+          </MenubarMenu>
+          <MenubarMenu label="View">
+            <DropdownMenuCheckboxItem type="menubar" checked={compact} onCheckedChange={setCompact}>
+              Compact list
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuRadioGroup label="Show" value={view} onValueChange={(v) => setView(v as View)}>
+              <DropdownMenuRadioItem type="menubar" value="all">
+                Everyone
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem type="menubar" value="active">
+                Active
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem type="menubar" value="pending">
+                Pending
+              </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </MenubarMenu>
+          <MenubarMenu label="Export">
+            <DropdownMenuItem onClick={() => toast.success('members.csv is ready')}>CSV</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.success('members.json is ready')}>JSON</DropdownMenuItem>
+          </MenubarMenu>
+        </Menubar>
         <Card as="section" aria-label="Team members">
           <CardHeader
             title={`${teamName} members`}
