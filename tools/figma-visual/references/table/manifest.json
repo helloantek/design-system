@@ -1,0 +1,145 @@
+{
+ "$comment": "Sort UI 2.0 Table reference renders (1x PNG, exportAsync with absolute bounds, Figma's sample content): Table Cell Type x Align, Table Row Type x State, and the Table component (header, three rows, footer, caption). renderers/table.tsx renders each inside a native table; State=Hover comes from real input, Selected from TableRow selected.",
+ "component": "table",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "222:1724",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "cell-cell-left",
+   "nodeId": "221:3",
+   "props": {
+    "Part": "Cell",
+    "Type": "Cell",
+    "Align": "Left"
+   },
+   "nodeW": 120,
+   "nodeH": 36
+  },
+  {
+   "slug": "cell-cell-right",
+   "nodeId": "221:6",
+   "props": {
+    "Part": "Cell",
+    "Type": "Cell",
+    "Align": "Right"
+   },
+   "nodeW": 120,
+   "nodeH": 36
+  },
+  {
+   "slug": "cell-head-left",
+   "nodeId": "221:9",
+   "props": {
+    "Part": "Cell",
+    "Type": "Head",
+    "Align": "Left"
+   },
+   "nodeW": 120,
+   "nodeH": 40
+  },
+  {
+   "slug": "cell-head-right",
+   "nodeId": "221:12",
+   "props": {
+    "Part": "Cell",
+    "Type": "Head",
+    "Align": "Right"
+   },
+   "nodeW": 120,
+   "nodeH": 40
+  },
+  {
+   "slug": "cell-footer-left",
+   "nodeId": "221:15",
+   "props": {
+    "Part": "Cell",
+    "Type": "Footer",
+    "Align": "Left"
+   },
+   "nodeW": 120,
+   "nodeH": 36
+  },
+  {
+   "slug": "cell-footer-right",
+   "nodeId": "221:18",
+   "props": {
+    "Part": "Cell",
+    "Type": "Footer",
+    "Align": "Right"
+   },
+   "nodeW": 120,
+   "nodeH": 36
+  },
+  {
+   "slug": "row-head",
+   "nodeId": "222:56",
+   "props": {
+    "Part": "Row",
+    "Type": "Head",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 40
+  },
+  {
+   "slug": "row-body",
+   "nodeId": "222:2",
+   "props": {
+    "Part": "Row",
+    "Type": "Body",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 36
+  },
+  {
+   "slug": "row-body-hover",
+   "nodeId": "222:20",
+   "props": {
+    "Part": "Row",
+    "Type": "Body",
+    "State": "Hover"
+   },
+   "nodeW": 448,
+   "nodeH": 36
+  },
+  {
+   "slug": "row-body-selected",
+   "nodeId": "222:38",
+   "props": {
+    "Part": "Row",
+    "Type": "Body",
+    "State": "Selected"
+   },
+   "nodeW": 448,
+   "nodeH": 36
+  },
+  {
+   "slug": "row-footer",
+   "nodeId": "222:74",
+   "props": {
+    "Part": "Row",
+    "Type": "Footer",
+    "State": "Default"
+   },
+   "nodeW": 448,
+   "nodeH": 36
+  },
+  {
+   "slug": "table",
+   "nodeId": "223:46",
+   "props": {
+    "Part": "Table"
+   },
+   "nodeW": 496,
+   "nodeH": 220
+  }
+ ]
+}

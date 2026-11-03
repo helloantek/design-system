@@ -22,6 +22,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderItem } from './item';
+import { renderTable } from './table';
 import { renderInputGroupDropdown } from './input-group-dropdown';
 import { renderInputOTP, renderOTPSlot } from './input-otp';
 import { renderKbd, renderKbdGroup } from './kbd';
@@ -103,6 +104,7 @@ export const renderers: Record<string, Renderer> = {
   spinner: renderSpinner,
   'status-badge': renderStatusBadge,
   switch: renderSwitch,
+  table: renderTable,
   'tabs-list': renderTabsList,
   'tabs-trigger': renderTabsTrigger,
   textarea: renderTextarea,

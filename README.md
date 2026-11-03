@@ -860,6 +860,43 @@ A setting that takes effect at once: a native checkbox with `role="switch"`, dra
 
 Without `label`, the types require `aria-label` or `aria-labelledby`. Other props (`name`, `value`, `ref`…) go to the input.
 
+## Table
+
+Rows of data in a native `<table>`: the Sort UI 2.0 **Table**, **Table Row** and **Table Cell**.
+
+```tsx
+<Table caption="Invoices for the Team plan.">
+  <TableHeader>
+    <TableRow>
+      <TableHead sort={sort} onSort={toggleSort}>Invoice</TableHead>
+      <TableHead align="right">Amount</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow selected>
+      <TableCell>INV-2041</TableCell>
+      <TableCell align="right">$48.00</TableCell>
+    </TableRow>
+  </TableBody>
+  <TableFooter>…</TableFooter>
+</Table>
+<Table variant="card" aria-label="Members">…</Table>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Table header / body / footer / caption slots | `TableHeader`, `TableBody`, `TableFooter`, `caption` | `thead`, `tbody`, `tfoot`, `ds-table__caption` |
+| Table Row Type=Head / Body / Footer | `TableRow` in the header, body or footer | — |
+| Table Row State=Hover / Selected | the pointer; `selected` | `tr[data-state="selected"]` |
+| Table Row Divider | lines under the header and between body rows, above the footer | — |
+| Table Cell Type=Head / Cell / Footer | `TableHead` (a column header), `TableCell` | `ds-table__head`, `ds-table__cell` |
+| Table Cell Align | `align`: `left`, `right` | `ds-table__head--right`, `ds-table__cell--right` |
+| — | `fit` (a checkbox or chevron column), `wrap` (text that wraps) | `ds-table__cell--fit`, `--wrap` |
+| — | `TableHead sort` + `onSort` ("Sorting" demo) | `ds-table__sort` |
+| — | `variant="card"` (the demos' layout: the header on the muted fill, the body in a bordered box) | `ds-table--card` |
+
+The table is a native `<table>` with column headers (`scope="col"`), so screen readers announce rows and columns; name it with `caption` or `aria-label`. A sortable header is a button inside the header cell, which carries `aria-sort`. Selection, expandable rows, editable cells, an empty state, a toolbar and paging are built from Checkbox, Button, Input, Empty and Select (see the stories). The table scrolls sideways when it is wider than its container.
+
 ## Tabs
 
 Switch between panels of content: the WAI-ARIA tabs pattern. Sort UI 2.0 **Tabs Trigger** (Variant, State, Size, Layout) and **Tabs List** (Variant, Orientation, Size).
@@ -1215,6 +1252,7 @@ These come from the Figma files, not the code:
 - Breadcrumb (2.0): the Breadcrumb's slot is fixed at 20 px while its Ellipsis is a 24 px Ghost xs button, so the ellipsis overflows the row by 2 px above and below; the code lets the list grow to 24 px with the items centred on the same line. Chevron and Dot separators are the 16 px icons scaled to 17.33 px. Figma has no focus state for links; the code adds the 3 px ring the other controls use.
 - Pagination (2.0): the current page is an Outline Button that keeps the default 8 px side padding inside its fixed 32 px width, while the other page links have none; the code gives every page link the same box. The Pagination component's sample (1, 2, [3], …, 8) is not a range a rule produces; the code follows the "Pagination" demo (page 2 of 12: 1, [2], 3, …, 12). Figma does not draw Previous or Next disabled at the ends; the code disables them there.
 - Item (2.0): Item Media Variant=Icon holds a 17.33 px square-dashed icon in a 16 px box; the code centres any icon in the 16 px box. The Default and Outline variants show State=Hover and Focus, but rows with their own buttons cannot be one action, so the code gives the states only to link, button and label rows. The "Navigation" demo joins Muted rows into one clipped block with bottom lines; the code offers it as `ItemGroup variant="joined"`. The xs Row is 424 px while its header and footer are 428 px; the code gives all three the box's width.
+- Table (2.0): the row dividers are 1 px centre strokes on the row's edge, so half the line falls outside the row; the code draws the whole line inside the row's bottom edge. The Footer row's line is positioned over its top edge the same way. Most demos ("Table", "Sorting", "Editable cells", "Empty state", "Toolbar and pagination") lay the header on the muted fill and the body in a white bordered box with the xs shadow, which no component property draws; the code offers it as `variant="card"`. Table Cell lays its content out with an 8 px gap; table cells hold inline content, so several items go in their own flex wrapper. The checkbox and chevron columns drop the cell's end padding; the code offers that as `fit`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
