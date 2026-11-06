@@ -1,5 +1,11 @@
 # @helloantek/ds-react
 
+## 2.43.0
+
+### Minor Changes
+
+- 6316bd4: Add Usage Bar (Sort UI 2.0): `UsageBar` with `UsageBarSegment` (Default, Muted, Primary, Dashed and Striped, an Active state, chart colours, labels and tooltips), an evenly spread axis of `UsageBarTick`s, and `UsageBarLegend` with `UsageBarLegendItem`s in a row or in columns.
+
 ## 2.42.0
 
 ### Minor Changes
