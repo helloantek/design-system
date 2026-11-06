@@ -173,11 +173,17 @@ export function NavigationMenuItem({
   // Resting a moving mouse on the trigger opens the panel; leaving the item closes a panel the mouse opened, after a
   // moment (touch and pen use click). It starts on pointermove, not pointerenter, so a cursor that merely rests where
   // the menu renders opens nothing, and a panel opened by the keyboard or a click stays open when the pointer leaves.
+  // A click, a key or focus leaving decides over a pending hover: the timer must not reopen (or close) the panel after
+  // it (a busy main thread runs input before timers, so Escape could land before a hover timer started just earlier).
+  const cancelHover = () => {
+    clearTimeout(timer.current);
+    opening.current = false;
+  };
   const move = (event: PointerEvent<HTMLLIElement>) => {
     onPointerMove?.(event);
     if (event.pointerType !== 'mouse' || disabled) return;
     if (open) {
-      clearTimeout(timer.current);
+      cancelHover();
       return;
     }
     if (opening.current) return;
@@ -198,6 +204,7 @@ export function NavigationMenuItem({
   };
   // A click toggles, except right after the mouse opened it (the click that follows resting on the trigger).
   const click = () => {
+    cancelHover();
     if (open && Date.now() - hoverOpenedAt.current < 500) {
       openedByHover.current = false;
       return;
@@ -209,6 +216,7 @@ export function NavigationMenuItem({
   const triggerKeys = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
+      cancelHover();
       openedByHover.current = false;
       setOpen(true);
       focusFirstLink();
@@ -217,13 +225,17 @@ export function NavigationMenuItem({
   const itemKeys = (event: KeyboardEvent<HTMLLIElement>) => {
     if (event.key === 'Escape' && open) {
       event.stopPropagation();
+      cancelHover();
       setOpen(false);
       triggerRef.current?.focus();
     }
   };
   // Focus leaving the item (Tab past the last link, or to another item) closes the panel.
   const blur = (event: FocusEvent<HTMLLIElement>) => {
-    if (open && !itemRef.current?.contains(event.relatedTarget as Node | null) && event.relatedTarget !== null) setOpen(false);
+    if (open && !itemRef.current?.contains(event.relatedTarget as Node | null) && event.relatedTarget !== null) {
+      cancelHover();
+      setOpen(false);
+    }
   };
 
   return (
