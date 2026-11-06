@@ -2333,6 +2333,31 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'message: a group shows its avatar beside the last message only, 8 px from the bubbles and level with their bottom; end messages mirror it; header and footer sit 8 px from the bubbles; bubbles hug up to 320 px; the typing line is a status': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-message--demo&viewMode=story');
+    const messages = page.locator('.ds-message');
+    await messages.first().waitFor();
+    const box = (loc) => loc.boundingBox();
+    const group = page.locator('.ds-message-group').first();
+    assert.equal(await group.locator('.ds-avatar').count(), 1, 'one avatar per group');
+    assert.equal(await messages.nth(0).locator('.ds-message__avatar .ds-avatar').count(), 0, 'not on the first message');
+    const last = messages.nth(1);
+    const [avatar, bubbles] = [await box(last.locator('.ds-avatar')), await box(last.locator('.ds-message__bubbles'))];
+    assert.ok(Math.abs(avatar.x + avatar.width + 8 - bubbles.x) < 1, 'the avatar sits 8 px before the bubbles');
+    assert.ok(Math.abs(avatar.y + avatar.height - (bubbles.y + bubbles.height)) < 1, 'level with their bottom');
+    const first = messages.nth(0);
+    const [header, firstBubbles] = [await box(first.locator('.ds-message__header')), await box(first.locator('.ds-message__bubbles'))];
+    assert.ok(Math.abs(header.y + header.height + 8 - firstBubbles.y) < 1, 'the header keeps 8 px from the bubbles');
+    assert.ok(Math.abs(avatar.x - firstBubbles.x + 40) < 1, 'an earlier message keeps the avatar column');
+    const footer = await box(last.locator('.ds-message__footer'));
+    assert.ok(Math.abs(bubbles.y + bubbles.height + 8 - footer.y) < 1, 'the footer keeps 8 px from the bubbles');
+    assert.ok(bubbles.width <= 320.5, 'bubbles hug up to 320 px');
+    const mine = messages.nth(2);
+    const [mineAvatar, mineBubbles, row] = [await box(mine.locator('.ds-avatar')), await box(mine.locator('.ds-message__bubbles')), await box(mine)];
+    assert.ok(Math.abs(mineAvatar.x + mineAvatar.width - (row.x + row.width)) < 1, 'an end message puts the avatar at the end');
+    assert.ok(Math.abs(mineBubbles.x + mineBubbles.width + 8 - mineAvatar.x) < 1, '8 px after its bubbles');
+    assert.equal(await page.getByRole('status').textContent(), 'Olivia is typing…');
+  },
   'bubble: groups align theirs to the start and yours to the end; reactions sit on the bottom corner (end for start bubbles, start for end bubbles) or the top; a long message shows 8 lines and a Show more toggle that expands and collapses it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-bubble--reactions&viewMode=story');
     const bubbles = page.locator('.ds-bubble');

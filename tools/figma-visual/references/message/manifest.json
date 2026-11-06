@@ -1,0 +1,59 @@
+{
+ "$comment": "Sort UI 2.0 Message (348:64) reference renders (1x PNG, exportAsync with absolute bounds): Align Start (Jonas Lindqvist, 'JL' on palette orange, a Muted bubble) and End (Mira Okafor, 'M' on palette lime, a Default bubble), each with and without its footer, 448 px wide. renderers/message.tsx renders them with Message, Avatar and Bubble.",
+ "component": "message",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "348:64",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "start-footer",
+   "nodeId": "348:3",
+   "props": {
+    "Align": "Start",
+    "Footer": "True"
+   },
+   "target": ".ds-message",
+   "nodeW": 448,
+   "nodeH": 124
+  },
+  {
+   "slug": "start",
+   "nodeId": "348:22",
+   "props": {
+    "Align": "Start",
+    "Footer": "False"
+   },
+   "target": ".ds-message",
+   "nodeW": 448,
+   "nodeH": 100
+  },
+  {
+   "slug": "end-footer",
+   "nodeId": "348:32",
+   "props": {
+    "Align": "End",
+    "Footer": "True"
+   },
+   "target": ".ds-message",
+   "nodeW": 448,
+   "nodeH": 106
+  },
+  {
+   "slug": "end",
+   "nodeId": "348:54",
+   "props": {
+    "Align": "End",
+    "Footer": "False"
+   },
+   "target": ".ds-message",
+   "nodeW": 448,
+   "nodeH": 82
+  }
+ ]
+}
