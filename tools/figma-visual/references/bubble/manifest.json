@@ -1,0 +1,71 @@
+{
+ "$comment": "Sort UI 2.0 Bubble (344:5505) reference renders (1x PNG, exportAsync with absolute bounds): every Variant with the sample text 'This bubble is aligned to the start. This is the default alignment.' at 320 px, and Bubble Reactions (343:3) with '\ud83d\ude0d\ud83d\ude4f'. renderers/bubble.tsx renders them with Bubble and the reactions pill.",
+ "component": "bubble",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "344:5505",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default",
+   "nodeId": "344:2",
+   "props": {
+    "Part": "Bubble",
+    "Variant": "Default"
+   },
+   "target": ".ds-bubble",
+   "nodeW": 320,
+   "nodeH": 58
+  },
+  {
+   "slug": "muted",
+   "nodeId": "344:5485",
+   "props": {
+    "Part": "Bubble",
+    "Variant": "Muted"
+   },
+   "target": ".ds-bubble",
+   "nodeW": 320,
+   "nodeH": 56
+  },
+  {
+   "slug": "ghost",
+   "nodeId": "344:5497",
+   "props": {
+    "Part": "Bubble",
+    "Variant": "Ghost"
+   },
+   "target": ".ds-bubble",
+   "nodeW": 320,
+   "nodeH": 40
+  },
+  {
+   "slug": "destructive",
+   "nodeId": "344:5501",
+   "props": {
+    "Part": "Bubble",
+    "Variant": "Destructive"
+   },
+   "target": ".ds-bubble",
+   "nodeW": 320,
+   "nodeH": 58
+  },
+  {
+   "slug": "reactions",
+   "nodeId": "343:3",
+   "props": {
+    "Part": "Reactions"
+   },
+   "target": ".ds-bubble__reactions",
+   "nodeW": 39,
+   "nodeH": 21,
+   "pixels": false,
+   "$why": "Emoji are drawn by the system's colour emoji font, which differs between Figma and the CI browser; the pill's size, padding, fill and border are compared by spec."
+  }
+ ]
+}
