@@ -2315,6 +2315,53 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'chart: a named plot shows the hovered category in a tooltip (band highlight on bars, cursor and dot on lines) and hides it when the pointer leaves; arrows, Home, End and Escape do the same from the keyboard; every chart carries its data as a table; pies and rings are named images': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-chart--revenue&viewMode=story');
+    const plot = page.getByRole('group', { name: 'Revenue from subscriptions' });
+    await plot.waitFor();
+    const tooltip = plot.getByRole('status');
+    assert.match(await tooltip.innerText(), /July[\s\S]*\$4,170/, 'July starts highlighted, as in Figma');
+    assert.equal(await plot.locator('.ds-chart__band--active').count(), 1);
+    const box = await plot.boundingBox();
+    await page.mouse.move(box.x + box.width * (1.5 / 12), box.y + box.height - 4);
+    assert.match(await tooltip.innerText(), /February[\s\S]*\$5,840/, 'hovering a band shows its month');
+    assert.equal(await plot.getAttribute('aria-describedby'), await tooltip.getAttribute('id'), 'the tooltip describes the plot');
+    await page.mouse.move(0, 0);
+    await tooltip.waitFor({ state: 'detached' });
+    await plot.focus();
+    await page.keyboard.press('ArrowRight');
+    assert.match(await tooltip.innerText(), /January/, 'Arrow Right from nothing starts at the first month');
+    await page.keyboard.press('End');
+    assert.match(await tooltip.innerText(), /December/);
+    await page.keyboard.press('ArrowLeft');
+    assert.match(await tooltip.innerText(), /November/);
+    await page.keyboard.press('Escape');
+    await tooltip.waitFor({ state: 'detached' });
+    const table = page.locator('figure.ds-chart table').first();
+    assert.equal(await table.locator('tbody tr').count(), 12, 'the data is in a table for screen readers');
+    assert.equal(await table.locator('caption').innerText(), 'Revenue from subscriptions');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-chart--active-users&viewMode=story');
+    const users = page.getByRole('group', { name: 'Active users' });
+    await users.waitFor();
+    assert.match(await users.getByRole('status').innerText(), /Mar 16[\s\S]*4,260/);
+    const ub = await users.boundingBox();
+    await page.mouse.move(ub.x + 1, ub.y + ub.height / 2);
+    assert.match(await users.getByRole('status').innerText(), /Jan 5/, 'the nearest point follows the pointer');
+    assert.equal(await users.locator('.ds-chart__cursor').count(), 1, 'a line chart draws a cursor');
+    await page.mouse.move(0, 0);
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-chart--top-destinations&viewMode=story');
+    const trips = page.getByRole('group', { name: 'Top destinations' });
+    await trips.waitFor();
+    await trips.focus();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    assert.match(await trips.getByRole('status').innerText(), /Lisbon[\s\S]*1,210/, 'horizontal bars move with Arrow Down');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-chart--daily-goal&viewMode=story');
+    await page.getByRole('img', { name: '7,240 of 10,000 steps' }).waitFor();
+  },
   'usage-bar: a named group whose segments share the bar by value and are read by their labels; hovering or focusing a focusable segment highlights it (and the readout names it); a segment tooltip shows on hover and keyboard focus; the axis spreads its ticks evenly': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-usage-bar--variants-and-an-axis&viewMode=story');
     const bar = page.getByRole('group', { name: 'Database storage' });

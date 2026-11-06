@@ -1,0 +1,597 @@
+/*
+ * Chart — Sort UI 2.0 page "Chart" (3143:14350) in file 4JnqgEbdlnKgiFrfmiwEZw: bar, line, area, pie and radial charts
+ * built from the components "Chart Grid" (3143:18349), "Chart Axis" (3143:14440), "Chart Bar" (3143:17607), "Chart
+ * Reference Line" (3143:14487), "Chart Tooltip" (3143:14352) and "Swatch" (3143:17629). Values are Sort UI 2.0
+ * tokens. Framework-agnostic: the React adapter computes the geometry and writes it into custom properties and SVG.
+ *
+ * Markup of a cartesian chart (parts in [] are optional):
+ *   <figure class="ds-chart [ds-chart--horizontal]" style="--chart-height: 256px">
+ *     <div class="ds-chart__body">
+ *       [<div class="ds-chart__axis ds-chart__axis--y">…ticks…</div>]       (Figma "Chart Axis" Axis=Y)
+ *       <div class="ds-chart__plot" role="group" aria-label="Revenue" tabindex="0">
+ *         <div class="ds-chart__grid">
+ *           <span class="ds-chart__grid-line"></span> …                        (Figma "Chart Grid")
+ *         </div>
+ *         <div class="ds-chart__bands">                                      (bars, one band per category)
+ *           <div class="ds-chart__band [ds-chart__band--active]">
+ *             <span class="ds-chart__bar [ds-chart__bar--capped]" style="--chart-value: 42; --chart-color: …"></span>
+ *           </div> …
+ *         </div>
+ *         | <svg class="ds-chart__lines" viewBox="0 0 100 100" preserveAspectRatio="none">…paths…</svg>
+ *         [<div class="ds-chart__reference" style="--chart-value: 80"><span class="ds-chart__reference-label">avg.</span></div>]
+ *         [<span class="ds-chart__cursor" style="--chart-x: 40"></span> <span class="ds-chart__dot" style="--chart-x; --chart-y"></span>]
+ *         [<div class="ds-chart-tooltip ds-chart__tooltip" style="--chart-x: 40; --chart-y: 30">…</div>]
+ *       </div>
+ *     </div>
+ *     [<div class="ds-chart__axis ds-chart__axis--x"><span class="ds-chart__tick">Jan</span> …</div>]
+ *     <table class="ds-chart__table">…the data, for screen readers…</table>
+ *   </figure>
+ *
+ * Pie and radial charts: <figure class="ds-chart-pie"> holding an <svg class="ds-chart-pie__svg"> of circles drawn with
+ * stroke dashes (pathLength 100) and an optional <div class="ds-chart-pie__center"> value and caption.
+ * Legends: <ul class="ds-chart-legend [ds-chart-legend--totals]">; tooltip: .ds-chart-tooltip; swatch: .ds-chart-swatch.
+ */
+
+@layer ds.components {
+  .ds-chart {
+    --chart-height: var(--ds-spacing-64);
+
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-chart__body {
+    display: flex;
+    min-width: 0;
+  }
+
+  /* The plot: grid, bars or lines, the reference line, the cursor and the tooltip, stacked in one box. */
+  .ds-chart__plot {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: var(--chart-height);
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+  }
+
+  .ds-chart__plot:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma "Chart Grid": 1 px lines of foreground at 5 %, spread evenly from edge to edge. */
+  .ds-chart__grid {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  .ds-chart__grid-line {
+    height: var(--ds-stroke-width-1);
+    background: var(--ds-alpha-foreground-5);
+  }
+
+  .ds-chart__grid--vertical {
+    flex-direction: row;
+  }
+
+  .ds-chart__grid--vertical .ds-chart__grid-line {
+    width: var(--ds-stroke-width-1);
+    height: auto;
+  }
+
+  /* Bars: one band per category, the bars 8 px in from its sides and 4 px apart. */
+  .ds-chart__bands {
+    position: absolute;
+    inset: 0;
+    display: flex;
+  }
+
+  .ds-chart__band {
+    position: relative;
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+    padding-inline: var(--ds-spacing-2);
+  }
+
+  /* The hovered or selected category (the Revenue demo's July). */
+  .ds-chart__band--active {
+    background: var(--ds-fill-2);
+  }
+
+  /* Figma "Chart Bar" Vaiant=Default: a square block in its series colour, as tall as its value. */
+  .ds-chart__bar {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    min-width: 0;
+    height: calc(var(--chart-value, 0) * 1%);
+    background: var(--chart-color, var(--ds-chart-7));
+  }
+
+  /* A stacked bar: its segments from the bottom up, each its share of the bar. */
+  .ds-chart__bar--stacked {
+    background: none;
+  }
+
+  .ds-chart__segment {
+    flex: none;
+    height: calc(var(--chart-share, 0) * 1%);
+    background: var(--chart-color, var(--ds-chart-7));
+  }
+
+  /* Vaiant=Capped: the muted fill with a 2 px cap in the series colour on its end. */
+  .ds-chart__bar--capped {
+    background: var(--ds-muted);
+    box-shadow: inset 0 var(--ds-stroke-width-4) 0 var(--chart-color, var(--ds-chart-7));
+  }
+
+  /* The value over a bar (the "Label" sample), 4 px above it. */
+  .ds-chart__bar-label {
+    position: absolute;
+    bottom: calc(100% + var(--ds-spacing-1));
+    left: 50%;
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-2xs);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-2xs--line-height);
+    white-space: nowrap;
+    translate: -50% 0;
+  }
+
+  /* Orientation=Horizontal: the bands stack down the plot and the bars grow from the start. */
+  .ds-chart--horizontal .ds-chart__bands {
+    flex-direction: column;
+  }
+
+  .ds-chart--horizontal .ds-chart__band {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--ds-spacing-2) 0;
+  }
+
+  .ds-chart--horizontal .ds-chart__bar {
+    flex-direction: row;
+    width: calc(var(--chart-value, 0) * 1%);
+    height: auto;
+  }
+
+  .ds-chart--horizontal .ds-chart__segment {
+    width: calc(var(--chart-share, 0) * 1%);
+    height: auto;
+  }
+
+  .ds-chart--horizontal .ds-chart__bar--capped {
+    box-shadow: inset calc(var(--ds-stroke-width-4) * -1) 0 0 var(--chart-color, var(--ds-chart-7));
+  }
+
+  .ds-chart--horizontal .ds-chart__bar-label {
+    top: 50%;
+    bottom: auto;
+    left: calc(100% + var(--ds-spacing-1));
+    translate: 0 -50%;
+  }
+
+  /* Lines and areas: one SVG stretched over the plot; the strokes keep their 1.5 px width. */
+  .ds-chart__lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .ds-chart__line {
+    fill: none;
+    stroke: var(--chart-color, var(--ds-chart-7));
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: var(--ds-stroke-width-3);
+  }
+
+  /* An area: the series colour from 15 % at its top to nothing at the bottom. */
+  .ds-chart__area-stop {
+    stop-color: var(--chart-color, var(--ds-chart-7));
+  }
+
+  .ds-chart__area-stop--top {
+    stop-opacity: 0.15;
+  }
+
+  .ds-chart__area-stop--bottom {
+    stop-opacity: 0;
+  }
+
+  /* Points (the "Dots" sample) and the hovered point: 6 px dots in the series colour. */
+  .ds-chart__dot {
+    position: absolute;
+    top: calc(var(--chart-y) * 1%);
+    left: calc(var(--chart-x) * 1%);
+    width: var(--ds-spacing-1-5);
+    height: var(--ds-spacing-1-5);
+    border-radius: var(--ds-radius-full);
+    background: var(--chart-color, var(--ds-chart-7));
+    pointer-events: none;
+    translate: -50% -50%;
+  }
+
+  /* The hovered position on a line chart: a 1 px line in the border colour across the plot. */
+  .ds-chart__cursor {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--chart-x) * 1%);
+    width: var(--ds-stroke-width-1);
+    background: var(--ds-border);
+    pointer-events: none;
+    translate: -50% 0;
+  }
+
+  /* Figma "Chart Reference Line": a 1 px line in the border colour, dashed 4/4, with its label above the end. */
+  .ds-chart__reference {
+    position: absolute;
+    top: calc((100 - var(--chart-value, 0)) * 1%);
+    right: 0;
+    left: 0;
+    height: var(--ds-stroke-width-1);
+    background: repeating-linear-gradient(90deg, var(--ds-border) 0 var(--ds-spacing-1), transparent var(--ds-spacing-1) var(--ds-spacing-2));
+    pointer-events: none;
+  }
+
+  .ds-chart__reference-label {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + var(--ds-spacing-1));
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+    white-space: nowrap;
+  }
+
+  /* Figma "Chart Axis": 12/16 muted ticks. Axis=X sits 8 px under the plot, one tick centred per band. */
+  .ds-chart__axis {
+    display: flex;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  .ds-chart__axis--x {
+    padding-top: var(--ds-spacing-2);
+  }
+
+  .ds-chart__tick {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-chart__axis--x .ds-chart__tick {
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Axis=Y: values beside the plot (8 px away), each on its grid line; the first and last stay inside the plot. */
+  .ds-chart__axis--y {
+    position: relative;
+    flex: none;
+    height: var(--chart-height);
+  }
+
+  .ds-chart__axis--values {
+    min-width: var(--ds-spacing-6);
+  }
+
+  .ds-chart__axis--values .ds-chart__tick {
+    position: absolute;
+    top: calc((100 - var(--chart-value, 0)) * 1%);
+    translate: 0 -50%;
+  }
+
+  .ds-chart__axis--values .ds-chart__tick--top {
+    translate: 0 0;
+  }
+
+  .ds-chart__axis--values .ds-chart__tick--bottom {
+    translate: 0 -100%;
+  }
+
+  .ds-chart__axis--start {
+    padding-right: var(--ds-spacing-2);
+    text-align: right;
+  }
+
+  .ds-chart__axis--start .ds-chart__tick {
+    right: var(--ds-spacing-2);
+  }
+
+  .ds-chart__axis--end {
+    padding-left: var(--ds-spacing-2);
+  }
+
+  .ds-chart__axis--end .ds-chart__tick {
+    left: var(--ds-spacing-2);
+  }
+
+  /* Category axis of a horizontal bar chart: one label per band, centred on it, right-aligned. */
+  .ds-chart__axis--categories {
+    flex-direction: column;
+    padding-right: var(--ds-spacing-2);
+  }
+
+  .ds-chart__axis--categories .ds-chart__tick {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  /* The tooltip in a chart: 12 px right of the hovered position and 28 px above its point, kept inside the plot;
+     --flip moves it to the left of the position near the end. */
+  .ds-chart__tooltip {
+    position: absolute;
+    z-index: 1;
+    top: clamp(var(--ds-spacing-0), calc(var(--chart-y, 0) * 1% - var(--ds-spacing-7)), 100%);
+    left: calc(var(--chart-x, 0) * 1% + var(--ds-spacing-3));
+    pointer-events: none;
+  }
+
+  .ds-chart__tooltip--flip {
+    right: calc((100 - var(--chart-x, 0)) * 1% + var(--ds-spacing-3));
+    left: auto;
+  }
+
+  /* The data as a table for screen readers. */
+  .ds-chart__table {
+    position: absolute;
+    overflow: hidden;
+    width: var(--ds-stroke-width-1);
+    height: var(--ds-stroke-width-1);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /*
+   * Figma "Chart Tooltip": popover fill, a 1 px inside border, radius 12, Surface/Popover; 10 × 8 px padding, rows
+   * 8 px apart: the 12/16 Medium label, then a swatch, the name and the value per series, then an optional
+   * description under a line.
+   */
+  .ds-chart-tooltip {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    min-width: var(--ds-spacing-40);
+    max-width: var(--ds-spacing-72);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2-5);
+    border-radius: var(--ds-radius-xl);
+    background: var(--ds-popover);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    color: var(--ds-popover-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-2xs);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  .ds-chart-tooltip__label {
+    margin: 0;
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-chart-tooltip__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-chart-tooltip__row {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+  }
+
+  .ds-chart-tooltip__name {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ds-chart-tooltip__value {
+    color: var(--ds-foreground);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .ds-chart-tooltip__description {
+    margin: 0;
+    padding-top: var(--ds-spacing-2);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+    color: var(--ds-muted-foreground);
+  }
+
+  /*
+   * Figma "Swatch": Variant=Default a 10 px square (radius 2); Line 3 × 12 and Line Horizontal 12 × 3 (radius 2);
+   * Dashed and Dashed Horizontal a 1.5 px line 12 px long, dashed 2/2.
+   */
+  .ds-chart-swatch {
+    flex: none;
+    width: var(--ds-spacing-2-5);
+    height: var(--ds-spacing-2-5);
+    border-radius: calc(var(--ds-radius-xs) / 2);
+    background: var(--chart-color, var(--ds-chart-2));
+  }
+
+  .ds-chart-swatch--line {
+    width: calc(var(--ds-spacing-1) - var(--ds-stroke-width-1));
+    height: var(--ds-spacing-3);
+  }
+
+  .ds-chart-swatch--line-horizontal {
+    width: var(--ds-spacing-3);
+    height: calc(var(--ds-spacing-1) - var(--ds-stroke-width-1));
+  }
+
+  .ds-chart-swatch--dashed,
+  .ds-chart-swatch--dashed-horizontal {
+    border-radius: 0;
+    background: repeating-linear-gradient(180deg, var(--chart-color, var(--ds-chart-2)) 0 var(--ds-spacing-0-5), transparent var(--ds-spacing-0-5) var(--ds-spacing-1));
+  }
+
+  .ds-chart-swatch--dashed {
+    width: var(--ds-stroke-width-3);
+    height: var(--ds-spacing-3);
+  }
+
+  .ds-chart-swatch--dashed-horizontal {
+    width: var(--ds-spacing-3);
+    height: var(--ds-stroke-width-3);
+    background: repeating-linear-gradient(90deg, var(--chart-color, var(--ds-chart-2)) 0 var(--ds-spacing-0-5), transparent var(--ds-spacing-0-5) var(--ds-spacing-1));
+  }
+
+  /* A legend in a header: 12/16 items 16 px apart, a swatch 6 px before each label. */
+  .ds-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-1) var(--ds-spacing-4);
+    margin: 0;
+    padding: 0;
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-2xs);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-2xs--line-height);
+    list-style: none;
+  }
+
+  .ds-chart-legend__item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+  }
+
+  .ds-chart-legend__label {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+  }
+
+  /* --totals (the demos' "Totals"): a card of columns, each a 14/20 muted name over its 14/20 Medium total. */
+  .ds-chart-legend--totals {
+    display: grid;
+    grid-template-columns: repeat(var(--chart-legend-columns, 4), minmax(0, 1fr));
+    gap: var(--ds-spacing-4);
+    padding: var(--ds-spacing-4) var(--ds-spacing-6);
+    border-radius: var(--ds-radius-xl);
+    background: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-chart-legend--totals .ds-chart-legend__item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-spacing-0-5);
+  }
+
+  .ds-chart-legend--totals .ds-chart-legend__label {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-chart-legend__value {
+    color: var(--ds-card-foreground);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--ds-font-weight-medium);
+    white-space: nowrap;
+  }
+
+  /*
+   * Pie and radial charts: an SVG of circles whose strokes are the slices, rings and arcs (each circle has
+   * pathLength 100, so a dash of 25 is a quarter); the empty part of a ring is fill-2.
+   */
+  .ds-chart-pie {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    width: var(--chart-size, calc(var(--ds-spacing-48) - var(--ds-spacing-3)));
+    margin: 0;
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-chart-pie__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .ds-chart-pie__slice {
+    fill: none;
+    stroke: var(--chart-color, var(--ds-chart-7));
+  }
+
+  .ds-chart-pie__track {
+    fill: none;
+    stroke: var(--ds-fill-2);
+  }
+
+  /* The value in the middle (bottom of a half ring): 16/24 Semi Bold over a 12/16 muted caption, 4 px apart. */
+  .ds-chart-pie__center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-spacing-1);
+    pointer-events: none;
+    text-align: center;
+  }
+
+  .ds-chart-pie--half .ds-chart-pie__center {
+    justify-content: flex-end;
+  }
+
+  .ds-chart-pie__value {
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-base);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--ds-font-weight-semibold);
+    line-height: var(--ds-text-base--line-height);
+  }
+
+  /* The progress ring ("Text" sample, "Daily goal" demo) has an 18/28 value. */
+  .ds-chart-pie--progress .ds-chart-pie__value {
+    font-size: var(--ds-text-lg);
+    line-height: var(--ds-text-lg--line-height);
+  }
+
+  .ds-chart-pie__caption {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+}

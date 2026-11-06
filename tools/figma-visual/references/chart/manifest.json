@@ -1,0 +1,178 @@
+{
+ "$comment": "Sort UI 2.0 Chart part reference renders (1x PNG, exportAsync with absolute bounds): Chart Tooltip with its sample rows and description, Chart Axis X and Y, Chart Reference Line ('Target'), Chart Grid (480 \u00d7 240, 4 \u00d7 4 intervals), Chart Bar in both Vaiants and Orientations, and every Swatch Variant. renderers/chart.tsx renders them with ChartTooltip, ChartAxis, ChartGrid, ChartSwatch and the bar and reference-line markup the charts use.",
+ "component": "chart",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "3143:17607",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "tooltip",
+   "nodeId": "3143:14352",
+   "props": {
+    "Part": "Tooltip"
+   },
+   "target": ".ds-chart-tooltip",
+   "nodeW": 180,
+   "nodeH": 201
+  },
+  {
+   "slug": "axis-x",
+   "nodeId": "3143:14449",
+   "props": {
+    "Part": "Axis",
+    "Axis": "X"
+   },
+   "target": ".ds-chart__axis",
+   "nodeW": 416,
+   "nodeH": 24,
+   "pixels": false,
+   "$why": "Figma's Axis component spreads 32 px ticks from edge to edge; the charts centre one tick per band (as the demos do), so only its size and tick style are compared."
+  },
+  {
+   "slug": "axis-y",
+   "nodeId": "3143:14471",
+   "props": {
+    "Part": "Axis",
+    "Axis": "Y"
+   },
+   "target": ".ds-chart__axis",
+   "nodeW": 31,
+   "nodeH": 176,
+   "pixels": false,
+   "$why": "As Axis=X: Figma spreads the ticks from edge to edge; the category axis centres one per band. Figma's tick boxes are 23 px for '320', so the renderer gives the axis that 31 px width."
+  },
+  {
+   "slug": "reference-line",
+   "nodeId": "3143:14487",
+   "props": {
+    "Part": "Reference"
+   },
+   "target": "#target",
+   "nodeW": 480,
+   "nodeH": 20
+  },
+  {
+   "slug": "grid",
+   "nodeId": "3143:18349",
+   "props": {
+    "Part": "Grid"
+   },
+   "target": "#target",
+   "nodeW": 480,
+   "nodeH": 240
+  },
+  {
+   "slug": "bar-vertical",
+   "nodeId": "3143:17606",
+   "props": {
+    "Part": "Bar",
+    "Vaiant": "Default",
+    "Orientation": "Vertical"
+   },
+   "target": ".ds-chart__bar",
+   "nodeW": 40,
+   "nodeH": 120
+  },
+  {
+   "slug": "bar-horizontal",
+   "nodeId": "3143:17605",
+   "props": {
+    "Part": "Bar",
+    "Vaiant": "Default",
+    "Orientation": "Horizontal"
+   },
+   "target": ".ds-chart__bar",
+   "nodeW": 120,
+   "nodeH": 40
+  },
+  {
+   "slug": "bar-capped-horizontal",
+   "nodeId": "3143:17604",
+   "props": {
+    "Part": "Bar",
+    "Vaiant": "Capped",
+    "Orientation": "Horizontal"
+   },
+   "target": ".ds-chart__bar",
+   "nodeW": 120,
+   "nodeH": 40
+  },
+  {
+   "slug": "bar-capped-vertical",
+   "nodeId": "3143:17603",
+   "props": {
+    "Part": "Bar",
+    "Vaiant": "Capped",
+    "Orientation": "Vertical"
+   },
+   "target": ".ds-chart__bar",
+   "nodeW": 40,
+   "nodeH": 120
+  },
+  {
+   "slug": "swatch-default",
+   "nodeId": "3143:17628",
+   "props": {
+    "Part": "Swatch",
+    "Variant": "Default"
+   },
+   "target": ".ds-chart-swatch",
+   "nodeW": 10,
+   "nodeH": 10
+  },
+  {
+   "slug": "swatch-line",
+   "nodeId": "3143:17627",
+   "props": {
+    "Part": "Swatch",
+    "Variant": "Line"
+   },
+   "target": ".ds-chart-swatch",
+   "nodeW": 3,
+   "nodeH": 12
+  },
+  {
+   "slug": "swatch-line-horizontal",
+   "nodeId": "3143:17626",
+   "props": {
+    "Part": "Swatch",
+    "Variant": "Line Horizontal"
+   },
+   "target": ".ds-chart-swatch",
+   "nodeW": 12,
+   "nodeH": 3
+  },
+  {
+   "slug": "swatch-dashed",
+   "nodeId": "3143:17624",
+   "props": {
+    "Part": "Swatch",
+    "Variant": "Dashed"
+   },
+   "target": ".ds-chart-swatch",
+   "nodeW": 0,
+   "nodeH": 12,
+   "pixels": false,
+   "$why": "Figma draws the dashed swatch as a 0 px wide vector, so its render is a 1 px column; the code's 1.5 px dashed line is compared by spec only."
+  },
+  {
+   "slug": "swatch-dashed-horizontal",
+   "nodeId": "3143:17625",
+   "props": {
+    "Part": "Swatch",
+    "Variant": "Dashed Horizontal"
+   },
+   "target": ".ds-chart-swatch",
+   "nodeW": 12,
+   "nodeH": 0,
+   "pixels": false,
+   "$why": "Figma draws the dashed swatch as a 0 px wide vector, so its render is a 1 px column; the code's 1.5 px dashed line is compared by spec only."
+  }
+ ]
+}
