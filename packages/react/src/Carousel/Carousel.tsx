@@ -51,8 +51,8 @@ export interface CarouselProps extends Omit<HTMLAttributes<HTMLElement>, 'childr
   slideLabel?: (index: number, count: number) => string;
   /**
    * Look of the overlay controls: `auto` (default) reads what lies under each control (a slide's `tone`, the pixels
-   * of an image, its background colour or gradient) and takes a light control on dark content, a dark one on light
-   * content; `light` or `dark` fixes it.
+   * of an image, its background colour or gradient): a dark control (white arrow) on light and grey content, a white
+   * control (black arrow) only on near-black content; `light` or `dark` fixes it.
    */
   controlsTone?: 'auto' | CarouselTone;
 }

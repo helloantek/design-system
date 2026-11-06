@@ -13,8 +13,10 @@ const channel = (c: number) => {
 };
 const luminance = ([r, g, b]: RGB) => 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
 
-// The point where black and white text have the same contrast (WCAG): above it the background reads as light.
-const toneOf = (rgb: RGB): CarouselTone => (luminance(rgb) > 0.179 ? 'light' : 'dark');
+// Only near-black content counts as dark (relative luminance under 0.05, about #3f3f3f): the dark control (black at
+// 40 %, a white icon) reads on greys and light content, and only on black does it give way to the white control.
+const DARK_LIMIT = 0.05;
+const toneOf = (rgb: RGB): CarouselTone => (luminance(rgb) < DARK_LIMIT ? 'dark' : 'light');
 
 function parseColors(value: string): { rgb: RGB; alpha: number }[] {
   const out: { rgb: RGB; alpha: number }[] = [];

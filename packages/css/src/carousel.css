@@ -24,7 +24,7 @@
  *
  *   --overlay (the "Image Carousel" demo): Previous, Next and the indicators sit over the bottom of the viewport, as
  *   round translucent buttons (.ds-carousel__control) and a pill of dots: dark (black at 40 %, white icons) on light
- *   content, light (.ds-carousel__control--light, .ds-carousel__indicators--light) on dark content; the script picks
+ *   and grey content, light (.ds-carousel__control--light, .ds-carousel__indicators--light) on near-black content; the script picks
  *   each from what lies under it (a slide's data-tone, an image's pixels, a background colour or gradient).
  */
 
@@ -183,7 +183,7 @@
     background: var(--ds-alpha-black-60);
   }
 
-  /* --light: on dark content the control turns light (white at 90 %, a dark icon, a soft shadow), so the circle stays
+  /* --light: on near-black content the control turns light (white at 90 %, a dark icon, a soft shadow), so the circle stays
      visible; the script picks it from what lies under the control. */
   .ds-carousel__control--light {
     background: var(--ds-alpha-white-90);

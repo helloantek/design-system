@@ -97,11 +97,11 @@ export const Demo: StoryObj = {
 };
 
 // Placeholder photos: soft greyscale gradients standing in for the demo's blurred picture.
-// Dark and light ones alternate, so the overlay controls can be seen switching between their dark and light look.
+// Grey, light, black and light: the overlay controls are dark on the first, second and fourth and white on the black one.
 const photos = [
   'radial-gradient(120% 90% at 30% 40%, #8a8a8a, #1f1f1f 70%)',
   'radial-gradient(100% 80% at 70% 30%, #ffffff, #d4d4d4 75%)',
-  'linear-gradient(135deg, #5a5a5a, #121212)',
+  'linear-gradient(135deg, #1c1c1c, #050505)',
   'radial-gradient(90% 90% at 50% 60%, #f5f5f5, #c8c8c8 70%)',
 ];
 const lightPhoto = (i: number) => i % 2 === 1;
@@ -136,9 +136,10 @@ const pictures = [
   { alt: 'Night sky over a dark hill', src: svg('<rect width="768" height="512" fill="#0f172a"/><circle cx="560" cy="120" r="48" fill="#e2e8f0"/><path d="M0 420 Q 300 300 768 400 V512 H0Z" fill="#020617"/>') },
   { alt: 'Snowy field under a pale sky', src: svg('<rect width="768" height="512" fill="#f1f5f9"/><path d="M0 330 Q 380 260 768 340 V512 H0Z" fill="#ffffff"/><circle cx="180" cy="110" r="40" fill="#fde68a"/>') },
   { alt: 'Dusk: a bright sky over a dark shore', src: svg('<rect width="768" height="300" fill="#fed7aa"/><rect y="300" width="768" height="212" fill="#1c1917"/>') },
+  { alt: 'Fog over grey rocks', src: svg('<rect width="768" height="512" fill="#9ca3af"/><path d="M0 380 Q 260 320 768 390 V512 H0Z" fill="#6b7280"/>') },
 ];
 
-/** Overlay controls that adapt: each button and the dot pill read what lies under them (here the pixels of an <img>) and turn light on dark pictures, dark on light ones. */
+/** Overlay controls that adapt: each button and the dot pill read what lies under them (here the pixels of an <img>): white with a black arrow on near-black pictures, dark with a white arrow on grey and light ones. */
 export const AdaptiveControls: StoryObj = {
   render: () => (
     <div style={{ ...width(384), borderRadius: 20, overflow: 'hidden' }}>
