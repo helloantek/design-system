@@ -1089,6 +1089,35 @@ Short help for a control: the WAI-ARIA tooltip. It describes its trigger (`aria-
 
 The trigger must take focus and keep its own name; the tooltip is help, not a label. Like the menus, the tooltip does not flip near the edge of the viewport yet.
 
+## Usage Bar
+
+How a whole splits into parts (a budget, a disk, a night's sleep): Sort UI 2.0 **Usage Bar** with **Usage Bar Segment** (Variant, State), **Usage Bar Legend Item** (Variant) and **Usage Bar Tick** (Align).
+
+```tsx
+<UsageBar aria-label="Database storage" axis={['0 GB', '25 GB', '50 GB']}>
+  <UsageBarSegment value={18} label="Tables, 18 GB" />
+  <UsageBarSegment value={9} variant="muted" label="Logs, 9 GB" />
+  <UsageBarSegment value={11} variant="primary" label="Free, 11 GB" />
+  <UsageBarSegment value={5} variant="dashed" label="Restore point, 5 GB" />
+</UsageBar>
+<UsageBarSegment value={42} color="var(--ds-chart-2)" label="Photos, 42 GB" tooltip="Photos · 42 GB" />
+<UsageBarLegend columns={2}>
+  <UsageBarLegendItem color="var(--ds-chart-4)" value="$1,200">Rent</UsageBarLegendItem>
+  <UsageBarLegendItem variant="muted" value="$720">Left</UsageBarLegendItem>
+</UsageBarLegend>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Usage Bar › track | `<UsageBar>` children: the segments share the 28 px bar in proportion to their `value`, 1 px apart | `ds-usage-bar` · `ds-usage-bar__track` |
+| Usage Bar › axis · Usage Bar Tick Align = Start · Center · End | `axis`: the tick values, spread evenly (the first hangs right of its line, the last left); `<UsageBarTick align>` for other layouts | `ds-usage-bar__axis` · `ds-usage-bar-tick` · `--start` · `--end` |
+| Segment Variant = Default · Muted · Primary · Dashed · Striped | `variant`; `color` recolours Default (the demos use the chart colours) | `ds-usage-bar__segment` · `--muted` · `--primary` · `--dashed` · `--striped` (`--usage-bar-value`, `--usage-bar-color`) |
+| Segment State = Default · Active | `active`; also on hover and keyboard focus of a focusable segment (`tabIndex`, or a `tooltip`) | `ds-usage-bar__segment--active` |
+| — | `label` (read by screen readers; without it the segment is hidden from them) · `tooltip` · `tooltipProps` | `ds-usage-bar__cell` (around a tooltip) |
+| Legend Item Variant · Label | `<UsageBarLegendItem variant color value>` in `<UsageBarLegend columns>` (a wrapping row 16 px apart, or a grid) | `ds-usage-bar-legend` · `--columns` · `ds-usage-bar-legend__item` · `__swatch` · `__label` · `__value` |
+
+The bar is a `group` named with `aria-label`; each labelled segment is an `img` named by its `label`, so the parts are read in order. Segments with a `tooltip` take focus and show it on keyboard focus.
+
 ## Collapsible
 
 Shows or hides content under a trigger: the Sort UI 2.0 **Collapsible** (State=Closed / Open, a trigger slot and a content slot 16 px apart).
@@ -1387,6 +1416,7 @@ These come from the Figma files, not the code:
 - Menubar (2.0): the menus are the Dropdown Menu component placed in the trigger's slot 8 px below it; the code reuses DropdownMenu (and its Menubar checkbox type for the demos' left-hand checks). Figma draws no keyboard focus for Menubar Trigger; the code gives it the fill-1 tint and the 3 px ring the other controls use. The demos set the bar 320 px wide with the triggers at the start; the component hugs its triggers and the stories set the width.
 - Command (2.0): the Command Separator's line is 384 px wide in a 372 px list (it runs to the edges past the list's 6 px padding); the code does the same. The separator and the empty state are not options, so they sit outside what assistive technology reads as the listbox (the separator is decoration and the empty state follows the listbox). Shortcuts are drawn as 12/16 muted text, not Kbd keys; the code follows Figma. The "Dialog" demo shows the palette under its trigger; the code's CommandDialog is a modal window 15 % from the top, as palettes usually are, and the "In a popover" demo puts a `plain` Command in a Popover.
 - Sidebar (2.0): Sidebar Menu Button's Size=sm variant keeps its Tree chevron and dropdown when an instance turns them off (the properties are not wired in that variant), so the visual check compares its size and spec only. The Sub Item puts the 24 px indent on each row; the code puts it on the sub menu, with the 1 px line 16 px in. Figma shows the collapsed rail and Floating but no narrow-screen behaviour; the code starts collapsed on narrow screens and lays the open sidebar over dimmed content. The group label sizes in the demos are sm (12/16) while the component defaults to 14/20; the code keeps the component's default and the stories use `labelSize="sm"`.
+- Usage Bar (2.0): Figma has no states for hovering or focusing a segment; the code shows State=Active on hover and keyboard focus of a focusable segment, with the focus ring. The Dashed segment is drawn as an inset outline (a border would add to its share of the bar) and the Dashed swatch's 2/2 dashes with gradients; Active Dashed turns the stroke solid, as in Figma. Figma's ticks are 24 or 48 px boxes spread with space-between; in code a tick takes no width, so its line sits exactly on its point whatever the value's width. The "Sleep" demo's wake window is drawn as a plain track; the story uses Slider Variant=Scrubber, which puts the label and value inside it.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

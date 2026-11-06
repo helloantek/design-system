@@ -22,6 +22,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderItem } from './item';
+import { renderUsageBar } from './usage-bar';
 import { renderSidebar } from './sidebar';
 import { renderCommand } from './command';
 import { renderMenubar } from './menubar';
@@ -119,4 +120,5 @@ export const renderers: Record<string, Renderer> = {
   toggle: renderToggle,
   'toggle-group': renderToggleGroup,
   tooltip: renderTooltip,
+  'usage-bar': renderUsageBar,
 };

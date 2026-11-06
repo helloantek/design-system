@@ -23,6 +23,7 @@ import { Pagination } from '../Pagination';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarInset, SidebarLayout, SidebarMenuItem, SidebarTrigger } from '../Sidebar';
 import { Toaster, toast } from '../Sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../Table';
+import { UsageBar, UsageBarLegend, UsageBarLegendItem, UsageBarSegment } from '../UsageBar';
 
 const meta = {
   title: 'Playground/Workspace',
@@ -31,7 +32,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -49,6 +50,11 @@ const people = [
   { name: 'Omar Haddad', email: 'omar@orbit.dev', role: 'Member' },
 ];
 const pages = ['Home', 'Inbox', 'Reports', 'Members', 'Settings'];
+const storage = [
+  { name: 'Orbit app', gb: 38, color: 'var(--ds-chart-2)' },
+  { name: 'Marketing site', gb: 17, color: 'var(--ds-chart-1)' },
+  { name: 'Archive', gb: 21, color: undefined },
+];
 
 const logo: CSSProperties = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 8, background: 'var(--ds-sidebar-primary)', color: 'var(--ds-sidebar-primary-foreground)' };
 
@@ -153,8 +159,33 @@ export const App: StoryObj = {
                   </Table>
                   <Pagination page={tablePage} pageCount={Math.ceil(people.length / perPage)} onPageChange={setTablePage} aria-label="Members pages" />
                 </>
+              ) : page === 'Reports' ? (
+                <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 14, lineHeight: '20px' }}>
+                    <span id="storage-title" style={{ fontWeight: 500, color: 'var(--ds-foreground)' }}>
+                      Storage
+                    </span>
+                    <span style={{ color: 'var(--ds-muted-foreground)' }}>76 of 100 GB used · 4 GB syncing</span>
+                  </div>
+                  <UsageBar aria-labelledby="storage-title" axis={['0 GB', '25 GB', '50 GB', '75 GB', '100 GB']}>
+                    {storage.map((s) => (
+                      <UsageBarSegment key={s.name} value={s.gb} color={s.color} label={`${s.name}, ${s.gb} GB`} tooltip={`${s.name} · ${s.gb} GB`} />
+                    ))}
+                    <UsageBarSegment value={4} variant="striped" label="Syncing, 4 GB" tooltip="Syncing · 4 GB" />
+                    <UsageBarSegment value={20} variant="primary" label="Free, 20 GB" />
+                  </UsageBar>
+                  <UsageBarLegend aria-label="Storage by project">
+                    {storage.map((s) => (
+                      <UsageBarLegendItem key={s.name} color={s.color}>
+                        {s.name}
+                      </UsageBarLegendItem>
+                    ))}
+                    <UsageBarLegendItem variant="striped">Syncing</UsageBarLegendItem>
+                    <UsageBarLegendItem variant="primary">Free</UsageBarLegendItem>
+                  </UsageBarLegend>
+                </div>
               ) : (
-                <p style={{ margin: 0, color: 'var(--ds-muted-foreground)', fontSize: 14 }}>{page} is a placeholder page in this playground; open Members to see the table.</p>
+                <p style={{ margin: 0, color: 'var(--ds-muted-foreground)', fontSize: 14 }}>{page} is a placeholder page in this playground; open Members or Reports to see more.</p>
               )}
             </div>
           </SidebarInset>
