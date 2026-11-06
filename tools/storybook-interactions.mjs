@@ -2072,7 +2072,7 @@ Object.assign(tests, {
     assert.equal(await page.locator('#details-docs').isVisible(), true, 'the details row opens under its row');
     assert.equal(await page.locator('#details-api-gateway').count(), 0, 'and the other closes');
   },
-  'navigation menu: a named nav with triggers (aria-expanded) and links; click, Arrow Down and resting the mouse open a panel, one at a time; Escape, Tab out and a click outside close it; Arrow Left / Right move between items': async () => {
+  'navigation menu: a named nav with triggers (aria-expanded) and links; click, Arrow Down and resting the mouse open a panel, one at a time; Escape, Tab out and a click outside close it (a pending hover does not reopen it); Arrow Left / Right move between items': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-navigation-menu--default&viewMode=story');
     const nav = page.getByRole('navigation', { name: 'Main' });
     await nav.waitFor();
@@ -2094,6 +2094,24 @@ Object.assign(tests, {
     await page.keyboard.press('Escape');
     assert.equal(await solutions.getAttribute('aria-expanded'), 'false', 'Escape closes it');
     assert.equal(await solutions.evaluate((el) => el === document.activeElement), true, 'and focus is on the trigger');
+    // Resting the mouse after Escape opens the panel again (a hover flag used to stay stuck and block it).
+    const sb = await solutions.boundingBox();
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(300);
+    await page.mouse.move(sb.x + sb.width / 2, sb.y + sb.height / 2);
+    await page.waitForTimeout(300);
+    assert.equal(await solutions.getAttribute('aria-expanded'), 'true', 'resting the mouse after Escape opens it again');
+    await page.keyboard.press('Escape');
+    // A click and Escape decide over a pending hover: resting the mouse starts a 150 ms timer, and when the click and
+    // Escape land before it fires (a busy main thread runs input before timers, as on CI) it must not reopen the panel.
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(400);
+    await page.mouse.move(sb.x + sb.width / 2, sb.y + sb.height / 2);
+    await page.mouse.down();
+    await page.mouse.up();
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+    assert.equal(await solutions.getAttribute('aria-expanded'), 'false', 'a pending hover does not reopen the panel after Escape');
 
     await page.keyboard.press('ArrowRight');
     const resources = nav.getByRole('button', { name: 'Resources' });
@@ -2314,6 +2332,74 @@ Object.assign(tests, {
     await page.keyboard.press('Escape');
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
+  },
+  'carousel: a named carousel region of "n of total" slides; Previous / Next (disabled at the ends), the arrow keys, Home and End on the viewport, indicators and outside controls move it; slides out of view are hidden and inert; overlay controls are white over near-black pictures and dark over grey and light ones': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--demo&viewMode=story');
+    const region = page.getByRole('region', { name: 'Destinations' });
+    await region.waitFor();
+    assert.equal(await region.getAttribute('aria-roledescription'), 'carousel');
+    const previous = region.getByRole('button', { name: 'Previous slide' });
+    const next = region.getByRole('button', { name: 'Next slide' });
+    assert.ok(await previous.isDisabled(), 'Previous starts disabled');
+    const slide = (n) => region.locator('.ds-carousel__slide').nth(n);
+    assert.equal(await slide(0).getAttribute('aria-label'), '1 of 3');
+    assert.equal(await slide(1).getAttribute('aria-hidden'), 'true', 'slides out of view are hidden');
+    assert.equal(await slide(1).evaluate((el) => el.inert), true, 'and inert');
+    await next.click();
+    assert.equal(await slide(1).getAttribute('aria-hidden'), null);
+    assert.equal(await slide(0).getAttribute('aria-hidden'), 'true');
+    assert.ok(!(await previous.isDisabled()));
+    await page.waitForTimeout(400);
+    const viewport = region.locator('.ds-carousel__viewport');
+    const [vb, sb] = [await viewport.boundingBox(), await slide(1).boundingBox()];
+    assert.ok(Math.abs(vb.x - sb.x) < 1, 'the second slide moved into the viewport');
+    await next.click();
+    assert.ok(await next.isDisabled(), 'Next is disabled on the last slide');
+    await viewport.focus();
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await slide(1).getAttribute('aria-hidden'), null, 'Arrow Left goes back');
+    await page.keyboard.press('Home');
+    assert.equal(await slide(0).getAttribute('aria-hidden'), null);
+    await page.keyboard.press('End');
+    assert.equal(await slide(2).getAttribute('aria-hidden'), null);
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--multiple-items&viewMode=story');
+    const albums = page.getByRole('region', { name: 'New albums' });
+    await albums.waitFor();
+    assert.equal(await albums.locator('.ds-carousel__slide:not([aria-hidden])').count(), 3, 'three slides in view');
+    await albums.getByRole('button', { name: 'Next slide' }).click();
+    await albums.getByRole('button', { name: 'Next slide' }).click();
+    assert.ok(await albums.getByRole('button', { name: 'Next slide' }).isDisabled(), 'it stops when the last slide is in view');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--with-indicators&viewMode=story');
+    const steps = page.getByRole('region', { name: 'Getting started' });
+    await steps.waitFor();
+    await steps.getByRole('button', { name: 'Slide 3 of 3' }).click();
+    assert.equal(await steps.getByRole('button', { name: 'Slide 3 of 3' }).getAttribute('aria-current'), 'true');
+    assert.equal(await steps.locator('.ds-carousel__slide').nth(2).getAttribute('aria-hidden'), null, 'a dot moves to its slide');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--in-a-card&viewMode=story');
+    const reviews = page.getByRole('region', { name: 'Reviews' });
+    await reviews.waitFor();
+    assert.equal(await reviews.getByRole('button').count(), 0, 'controls="none" renders no buttons');
+    await page.getByRole('button', { name: 'Next review' }).click();
+    assert.equal(await reviews.locator('.ds-carousel__slide').nth(1).getAttribute('aria-hidden'), null, 'buttons outside drive it through index');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--adaptive-controls&viewMode=story');
+    const pictures = page.getByRole('region', { name: 'Pictures' });
+    await pictures.waitFor();
+    const nextPicture = pictures.getByRole('button', { name: 'Next slide' });
+    const isLight = (el) => el.evaluate((node) => node.classList.contains('ds-carousel__control--light'));
+    await page.waitForFunction(() => document.querySelector('.ds-carousel__next')?.classList.contains('ds-carousel__control--light'));
+    assert.ok(await isLight(nextPicture), 'over the night picture the control is light');
+    await nextPicture.click();
+    await page.waitForFunction(() => !document.querySelector('.ds-carousel__next')?.classList.contains('ds-carousel__control--light'));
+    assert.ok(!(await isLight(nextPicture)), 'over the snow picture it turns dark');
+    assert.ok(!(await pictures.locator('.ds-carousel__indicators').evaluate((n) => n.classList.contains('ds-carousel__indicators--light'))), 'and so does the dot pill');
+    await nextPicture.click();
+    await nextPicture.click();
+    await page.waitForTimeout(450);
+    assert.ok(!(await isLight(pictures.getByRole('button', { name: 'Previous slide' }))), 'over the grey picture it stays dark');
   },
   'chart: a named plot shows the hovered category in a tooltip (band highlight on bars, cursor and dot on lines) and hides it when the pointer leaves; arrows, Home, End and Escape do the same from the keyboard; every chart carries its data as a table; pies and rings are named images': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-chart--revenue&viewMode=story');

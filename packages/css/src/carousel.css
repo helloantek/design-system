@@ -1,0 +1,268 @@
+/*
+ * Carousel — Sort UI 2.0 component set "Carousel" (node 331:28) on page 329:2 in file 4JnqgEbdlnKgiFrfmiwEZw: slides
+ * shown one (or a few) at a time, moved with Previous / Next buttons, indicators or the arrow keys. Values are Sort
+ * UI 2.0 tokens. Framework-agnostic: any markup with these classes works; the script sets --carousel-index.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-carousel [ds-carousel--vertical] [ds-carousel--overlay]" role="region"
+ *     aria-roledescription="carousel" aria-label="Destinations"
+ *     style="--carousel-index: 0; [--carousel-per-view: 3; --carousel-gap: 8px; --carousel-slide-size: 88px]">
+ *     <div class="ds-carousel__body">
+ *       [<button class="ds-button ds-button--outline ds-button--size-sm ds-button--icon-only ds-carousel__previous"
+ *         aria-label="Previous slide" aria-controls="track">…chevron…</button>]        (Figma "Previous")
+ *       <div class="ds-carousel__viewport">                                            (Figma "viewport")
+ *         <div class="ds-carousel__track" id="track">                                  (Figma "slides")
+ *           <div class="ds-carousel__slide" role="group" aria-roledescription="slide" aria-label="1 of 3">…</div>
+ *           <div class="ds-carousel__slide" … aria-hidden="true" inert>…</div>        (out of view)
+ *         </div>
+ *       </div>
+ *       [<button class="… ds-carousel__next" aria-label="Next slide">…</button>]      (Figma "Next")
+ *     </div>
+ *     [<div class="ds-carousel__indicators"><button class="ds-carousel__indicator" aria-current="true"
+ *       aria-label="Slide 1 of 3"></button> …</div>]                                 (the "With indicators" demo)
+ *   </section>
+ *
+ *   --overlay (the "Image Carousel" demo): Previous, Next and the indicators sit over the bottom of the viewport, as
+ *   round translucent buttons (.ds-carousel__control) and a pill of dots: dark (black at 40 %, white icons) on light
+ *   and grey content, light (.ds-carousel__control--light, .ds-carousel__indicators--light) on near-black content; the script picks
+ *   each from what lies under it (a slide's data-tone, an image's pixels, a background colour or gradient).
+ */
+
+@layer ds.components {
+  .ds-carousel {
+    --carousel-gap: var(--ds-spacing-4);
+    --carousel-per-view: 1;
+    --carousel-slide-size: var(--ds-spacing-48);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-spacing-4);
+    min-width: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  /* Figma Orientation=Horizontal: Previous, the viewport and Next in a row, 20 px apart, centred across. */
+  .ds-carousel__body {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-5);
+    align-self: stretch;
+    min-width: 0;
+  }
+
+  /* Orientation=Vertical: the buttons above and below the viewport. */
+  .ds-carousel--vertical .ds-carousel__body {
+    flex-direction: column;
+  }
+
+  .ds-carousel__previous,
+  .ds-carousel__next {
+    flex: none;
+  }
+
+  .ds-carousel__viewport {
+    position: relative;
+    flex: 1;
+    align-self: stretch;
+    min-width: 0;
+    overflow: hidden;
+    outline: none;
+    touch-action: pan-y;
+  }
+
+  .ds-carousel__viewport:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /*
+   * Figma "slides": the slides 16 px apart (--carousel-gap), each a 1/--carousel-per-view share of the viewport; the
+   * track moves by one slide and gap per step.
+   */
+  .ds-carousel__track {
+    display: flex;
+    gap: var(--carousel-gap);
+    transition: translate var(--ds-duration-300) var(--ds-ease-out);
+    translate: calc(var(--carousel-index, 0) * -1 * (100% + var(--carousel-gap)) / var(--carousel-per-view)) 0;
+  }
+
+  .ds-carousel__slide {
+    box-sizing: border-box;
+    flex: none;
+    width: calc((100% - (var(--carousel-per-view) - 1) * var(--carousel-gap)) / var(--carousel-per-view));
+    min-width: 0;
+  }
+
+  /* Vertical: slides --carousel-slide-size tall; the viewport shows --carousel-per-view of them. */
+  .ds-carousel--vertical .ds-carousel__viewport {
+    flex: none;
+    height: calc(var(--carousel-slide-size) * var(--carousel-per-view) + var(--carousel-gap) * (var(--carousel-per-view) - 1));
+  }
+
+  .ds-carousel--vertical .ds-carousel__track {
+    flex-direction: column;
+    translate: 0 calc(var(--carousel-index, 0) * -1 * (var(--carousel-slide-size) + var(--carousel-gap)));
+  }
+
+  .ds-carousel--vertical .ds-carousel__slide {
+    width: auto;
+    height: var(--carousel-slide-size);
+  }
+
+  /* The "With indicators" demo: 6 px dots in fill-3, 6 px apart; the current one a 16 px pill in primary. */
+  .ds-carousel__indicators {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  .ds-carousel__indicator {
+    position: relative;
+    width: var(--ds-spacing-1-5);
+    height: var(--ds-spacing-1-5);
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-full);
+    background: var(--ds-fill-3);
+    cursor: pointer;
+    transition:
+      width var(--ds-duration-200) var(--ds-ease-out),
+      background-color var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  /* A 24 px hit area around each dot. */
+  .ds-carousel__indicator::before {
+    position: absolute;
+    inset: calc(var(--ds-spacing-2) * -1) calc(var(--ds-spacing-0-5) * -1);
+    content: '';
+  }
+
+  .ds-carousel__indicator[aria-current='true'] {
+    width: var(--ds-spacing-4);
+    background: var(--ds-primary);
+  }
+
+  .ds-carousel__indicator:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /*
+   * --overlay ("Image Carousel" demo): 28 px round buttons of black at 40 % (Figma: 20 %) with a faint white ring, a background blur and white icons,
+   * 12 px in from the bottom corners, and, with one slide in view, the dots in a blurred pill between them (with several, the dots go under the carousel) (16 × 3 current, 3 × 3 others at
+   * 50 %, 3 px apart).
+   */
+  /* Overlay controls lie over the bottom of the slides, so they are meant for media: keep text out of the bottom
+     52 px of an overlay slide. */
+  .ds-carousel--overlay .ds-carousel__body {
+    position: relative;
+  }
+
+  .ds-carousel__control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-7);
+    height: var(--ds-spacing-7);
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-full);
+    background: var(--ds-alpha-black-40);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-alpha-white-15);
+    color: var(--ds-alpha-white-90);
+    cursor: pointer;
+    backdrop-filter: blur(var(--ds-spacing-6));
+  }
+
+  .ds-carousel__control svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-carousel__control:hover:not(:disabled) {
+    background: var(--ds-alpha-black-60);
+  }
+
+  /* --light: on near-black content the control turns light (white at 90 %, a dark icon, a soft shadow), so the circle stays
+     visible; the script picks it from what lies under the control. */
+  .ds-carousel__control--light {
+    background: var(--ds-alpha-white-90);
+    box-shadow:
+      inset 0 0 0 var(--ds-stroke-width-1) var(--ds-alpha-black-10),
+      0 var(--ds-stroke-width-1) var(--ds-spacing-1) var(--ds-alpha-black-20);
+    color: var(--ds-alpha-black-90);
+  }
+
+  .ds-carousel__control--light:hover:not(:disabled) {
+    background: var(--ds-alpha-white-80);
+  }
+
+  .ds-carousel__control:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .ds-carousel__control:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-carousel--overlay .ds-carousel__previous,
+  .ds-carousel--overlay .ds-carousel__next {
+    position: absolute;
+    z-index: 1;
+    bottom: var(--ds-spacing-3);
+  }
+
+  .ds-carousel--overlay .ds-carousel__previous {
+    left: var(--ds-spacing-3);
+  }
+
+  .ds-carousel--overlay .ds-carousel__next {
+    right: var(--ds-spacing-3);
+  }
+
+  .ds-carousel--overlay .ds-carousel__body .ds-carousel__indicators {
+    position: absolute;
+    z-index: 1;
+    bottom: calc(var(--ds-spacing-3) + var(--ds-spacing-0-5) * 3 / 2);
+    left: 50%;
+    gap: calc(var(--ds-spacing-1) - var(--ds-stroke-width-1));
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-1);
+    border-radius: var(--ds-radius-full);
+    background: var(--ds-alpha-black-40);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-alpha-white-15);
+    translate: -50% 0;
+    backdrop-filter: blur(var(--ds-spacing-6));
+  }
+
+  .ds-carousel--overlay .ds-carousel__body .ds-carousel__indicator {
+    width: calc(var(--ds-spacing-1) - var(--ds-stroke-width-1));
+    height: calc(var(--ds-spacing-1) - var(--ds-stroke-width-1));
+    background: var(--ds-alpha-white-90);
+    opacity: 0.5;
+  }
+
+  .ds-carousel--overlay .ds-carousel__body .ds-carousel__indicator[aria-current='true'] {
+    width: var(--ds-spacing-4);
+    opacity: 1;
+  }
+
+  .ds-carousel--overlay .ds-carousel__body .ds-carousel__indicators--light {
+    background: var(--ds-alpha-white-90);
+    box-shadow:
+      inset 0 0 0 var(--ds-stroke-width-1) var(--ds-alpha-black-10),
+      0 var(--ds-stroke-width-1) var(--ds-spacing-1) var(--ds-alpha-black-20);
+  }
+
+  .ds-carousel--overlay .ds-carousel__body .ds-carousel__indicators--light .ds-carousel__indicator {
+    background: var(--ds-alpha-black-90);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-carousel__track,
+    .ds-carousel__indicator {
+      transition: none;
+    }
+  }
+}

@@ -465,6 +465,32 @@ A surface for related content and actions: Sort UI 2.0 **Card** (Size, Media) wi
 
 The card does not clip its content, so menus and tooltips inside it can overflow; media is rounded with the card's top corners.
 
+## Carousel
+
+Slides shown one (or a few) at a time: Sort UI 2.0 **Carousel** (Orientation), following the WAI-ARIA carousel pattern.
+
+```tsx
+<Carousel aria-label="Destinations">
+  <CarouselSlide>…</CarouselSlide>
+  <CarouselSlide>…</CarouselSlide>
+</Carousel>
+<Carousel aria-label="New albums" perView={3} gap={8}>…</Carousel>
+<Carousel aria-label="Upcoming events" orientation="vertical" perView={2} gap={8} slideSize={88}>…</Carousel>
+<Carousel aria-label="Getting started" indicators>…</Carousel>
+<Carousel aria-label="Photos" controls="overlay" indicators gap={0}>…</Carousel>
+<Carousel aria-label="Reviews" controls="none" index={index} onIndexChange={setIndex}>…</Carousel>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Orientation = Horizontal · Vertical | `orientation`; vertical slides are `slideSize` px tall (default 192) | `ds-carousel` · `ds-carousel--vertical` (`--carousel-slide-size`) |
+| Previous · Next | Button Variant=Outline, Size=sm, icon only, 20 px from the viewport; disabled at the ends · `controls="overlay"` (round translucent buttons over the bottom corners, for media slides: keep text out of the bottom 52 px; each control and the dot pill stay dark (white arrow) on light and grey content and turn white (black arrow) only on near-black content, read from a slide's `tone`, an `<img>`'s pixels or a background colour or gradient; `controlsTone` fixes it) · `controls="none"` | `ds-carousel__previous` · `__next` · `__control` · `ds-carousel--overlay` |
+| viewport › slides | `perView` (slides in view, stepping one at a time) · `gap` (default 16 px) · `index` / `defaultIndex` / `onIndexChange` | `ds-carousel__viewport` · `__track` · `__slide` (`--carousel-index`, `--carousel-per-view`, `--carousel-gap`) |
+| Indicators (the "With indicators" demo) | `indicators`: a 16 px pill for the current position, 6 px dots for the rest | `ds-carousel__indicators` · `__indicator` |
+| — | `slideLabel` (default "1 of 3") · `<CarouselSlide>` fills its slide | — |
+
+The carousel is a `region` with `aria-roledescription="carousel"`, named with `aria-label`; each slide is a `group` with `aria-roledescription="slide"`. Slides out of view are `aria-hidden` and `inert`, so Tab skips them. The arrow keys (Up and Down when vertical), Home and End move it while the viewport has focus, and a swipe works on touch. The track slides 300 ms; with reduced motion it jumps.
+
 ## Chart
 
 Bar, line, area, pie and radial charts: the Sort UI 2.0 **Chart** page, built from **Chart Grid**, **Chart Axis**, **Chart Bar** (Vaiant, Orientation), **Chart Reference Line**, **Chart Tooltip** and **Swatch** (Variant). Drawn with HTML and SVG, no chart library.
@@ -1449,6 +1475,7 @@ These come from the Figma files, not the code:
 - Sidebar (2.0): Sidebar Menu Button's Size=sm variant keeps its Tree chevron and dropdown when an instance turns them off (the properties are not wired in that variant), so the visual check compares its size and spec only. The Sub Item puts the 24 px indent on each row; the code puts it on the sub menu, with the 1 px line 16 px in. Figma shows the collapsed rail and Floating but no narrow-screen behaviour; the code starts collapsed on narrow screens and lays the open sidebar over dimmed content. The group label sizes in the demos are sm (12/16) while the component defaults to 14/20; the code keeps the component's default and the stories use `labelSize="sm"`.
 - Usage Bar (2.0): Figma has no states for hovering or focusing a segment; the code shows State=Active on hover and keyboard focus of a focusable segment, with the focus ring. The Dashed segment is drawn as an inset outline (a border would add to its share of the bar) and the Dashed swatch's 2/2 dashes with gradients; Active Dashed turns the stroke solid, as in Figma. Figma's ticks are 24 or 48 px boxes spread with space-between; in code a tick takes no width, so its line sits exactly on its point whatever the value's width. The "Sleep" demo's wake window is drawn as a plain track; the story uses Slider Variant=Scrubber, which puts the label and value inside it.
 - Chart (2.0): Figma draws charts from parts and demos rather than one component, so the code offers chart components (BarChart, LineChart, AreaChart, PieChart, RadialChart) that compute those parts from data. Figma's Axis component spreads 32 px ticks from edge to edge, while every demo centres one tick per band; the code follows the demos. The radial "Simple" rings run counter-clockwise from 3 o'clock and the "Stacked" half ring layers arcs from 3 o'clock; the code keeps those directions but draws the half ring's data side by side from the left. The pie samples start at 3 o'clock; the code starts slices at 12 o'clock, as is usual. Figma shows a hovered state (tooltip, highlighted band, cursor) but no keyboard path; the plot takes focus and the arrow keys move between categories. The dashed swatch is a 0 px vector in Figma; the code draws a 1.5 px dashed line.
+- Carousel (2.0): Figma's overlay controls are always dark (foreground at 20 %); the code reads what lies under each control and switches to a white control (white at 90 %, a black icon) over near-black pictures (relative luminance under 0.05), so the circle never disappears. Cross-origin images without CORS cannot be read: give their slides a `tone`. The component has only Previous and Next; the "With indicators" and "Image Carousel" demos draw the dots and the overlay controls themselves, and the code offers them as `indicators` and `controls="overlay"`. Figma has no slide transition, focus state for the viewport or keyboard path; the code slides the track in 300 ms (none with reduced motion), rings the focused viewport and moves with the arrow keys. The overlay buttons and dot pill use black at 40 % with a faint white ring and white icons where Figma's demo uses foreground at 20 % and primary-foreground: at 20 % they disappeared on darker photos, and primary-foreground is black in Dark.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.
