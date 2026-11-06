@@ -820,6 +820,44 @@ A modal panel along an edge of the screen: Sort UI 2.0 **Sheet** (Side, header, 
 
 Left and right sheets are full-height and 384 px wide; top and bottom are full-width and as tall as their content. The footer stacks full-width buttons, the main action first (put a row in a `div` for side-by-side buttons). The content scrolls; the header and footer stay. It behaves like Dialog (the two share their code): a native modal `<dialog>` that slides in from its edge (fades with reduced motion), keeps focus inside, closes on Escape, Close or a click on the backdrop and returns focus to the trigger. `SheetClose` makes a button close it.
 
+## Sidebar
+
+An app's side navigation: the Sort UI 2.0 **Sidebar**, **Sidebar Group**, **Sidebar Group Label**, **Sidebar Menu Item**, **Sidebar Menu Button**, **Sidebar Menu Sub Item** and **Sidebar Collapse Icon**.
+
+```tsx
+<SidebarLayout>
+  <Sidebar aria-label="Workspace">
+    <SidebarHeader plain>…</SidebarHeader>
+    <SidebarContent>
+      <SidebarGroup label="Workspace" labelSize="sm" action={<Button variant="ghost" size="xs" icon={<PlusIcon />} aria-label="New project" />}>
+        <SidebarMenuItem label="Projects" icon={<FolderIcon />} href="/projects" active badge="16" />
+        <SidebarMenuItem label="Components" icon={<FolderIcon />}>
+          <SidebarMenuItem label="Input" href="/input" />
+        </SidebarMenuItem>
+      </SidebarGroup>
+    </SidebarContent>
+    <SidebarFooter>…</SidebarFooter>
+  </Sidebar>
+  <SidebarInset>
+    <SidebarTrigger /> …
+  </SidebarInset>
+</SidebarLayout>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Sidebar Type=Default / Floating | `Sidebar variant` | `ds-sidebar`, `--floating` |
+| Header / Content / Footer slots | `SidebarHeader`, `SidebarContent`, `SidebarFooter` (`plain`: no line) | `ds-sidebar__header`, `__content`, `__footer` |
+| Sidebar Group / Group Label (Size, Action, Collapsible) | `SidebarGroup` (`label`, `labelSize`, `action`, `collapsible`, `defaultOpen`) | `ds-sidebar__group`, `__group-label`, `--sm` |
+| Sidebar Menu Button Size=Default / sm / lg | `SidebarMenuItem size` (`description` for lg) | `ds-sidebar__button`, `--sm`, `--lg` |
+| Menu Button State=hover / active / focus | the pointer; `active` (`aria-current="page"`); the keyboard | — |
+| Leading Icon / Media, Badge, Dropdown | `icon`, `badge`, `action` | `ds-sidebar__icon`, `__badge`, `__action` |
+| Collapsible + Sidebar Menu Sub Item (Level 2…5) | children of a `SidebarMenuItem` (`defaultOpen`) | `ds-sidebar__sub`, `ds-sidebar__menu--sub` |
+| Sidebar Collapse Icon (Default / Up Down) | the chevron of items with sub items; `endIcon` (a switcher's up-down) | `ds-sidebar__chevron` |
+| Menu Button Collapsed=True | `SidebarLayout` collapsed (`collapsed` / `defaultCollapsed`, `SidebarTrigger`) | `[data-state="collapsed"]` |
+
+The sidebar is an `aside` landmark of lists of links; the current page has `aria-current="page"`. An item with sub items is a button with `aria-expanded` and `aria-controls`, and its sub menu animates its height (as Collapsible does); a collapsible group's label works the same way. `SidebarTrigger` (named "Toggle sidebar", with `aria-expanded`) collapses the sidebar to a 48 px rail of 32 px icon buttons; their names stay for assistive technology and show as tooltips, while group labels, badges, actions and sub menus hide. Narrow screens (40 rem and less) start with the rail; the open sidebar lies over the dimmed content there, and a click on it or Escape closes it. `SidebarInset` is the page's `main` (`as="div"` inside a page that has one) and scrolls on its own.
+
 ## Slider
 
 Pick a number, or a range, along a track: the WAI-ARIA slider. Sort UI 2.0 **Slider** (Orientation, Range, State) and **Slider Thumb** (State).
@@ -1348,6 +1386,7 @@ These come from the Figma files, not the code:
 - Navigation Menu (2.0): Navigation Menu Link is 10 px rounded in its component set but 8 px in the Navigation Menu Content component; the code uses 10 px, as the demos do. Trigger State=Active is drawn both for an open trigger (with the chevron turned up and the panel 8 px below) and for Type=Link; the code uses it for open triggers and for the link to the current page. The "Featured" and "Groups" demos are layouts inside the panel (a promoted card, labelled columns), built in the stories from Badge, Button and NavigationMenuList; `flush` drops the panel padding for "Groups".
 - Menubar (2.0): the menus are the Dropdown Menu component placed in the trigger's slot 8 px below it; the code reuses DropdownMenu (and its Menubar checkbox type for the demos' left-hand checks). Figma draws no keyboard focus for Menubar Trigger; the code gives it the fill-1 tint and the 3 px ring the other controls use. The demos set the bar 320 px wide with the triggers at the start; the component hugs its triggers and the stories set the width.
 - Command (2.0): the Command Separator's line is 384 px wide in a 372 px list (it runs to the edges past the list's 6 px padding); the code does the same. The separator and the empty state are not options, so they sit outside what assistive technology reads as the listbox (the separator is decoration and the empty state follows the listbox). Shortcuts are drawn as 12/16 muted text, not Kbd keys; the code follows Figma. The "Dialog" demo shows the palette under its trigger; the code's CommandDialog is a modal window 15 % from the top, as palettes usually are, and the "In a popover" demo puts a `plain` Command in a Popover.
+- Sidebar (2.0): Sidebar Menu Button's Size=sm variant keeps its Tree chevron and dropdown when an instance turns them off (the properties are not wired in that variant), so the visual check compares its size and spec only. The Sub Item puts the 24 px indent on each row; the code puts it on the sub menu, with the 1 px line 16 px in. Figma shows the collapsed rail and Floating but no narrow-screen behaviour; the code starts collapsed on narrow screens and lays the open sidebar over dimmed content. The group label sizes in the demos are sm (12/16) while the component defaults to 14/20; the code keeps the component's default and the stories use `labelSize="sm"`.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

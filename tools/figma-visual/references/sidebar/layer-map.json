@@ -1,0 +1,48 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (a menu button, a group label or a sub menu) and how to read it.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "$why": "State=focus draws its 1 px ring stroke inside, as the first inset box-shadow."
+    },
+    "Menu Item": {
+      "selector": ".ds-sidebar__label"
+    },
+    "leading-icon": {
+      "selector": ".ds-sidebar__icon"
+    },
+    "Badge": {
+      "selector": ".ds-sidebar__badge",
+      "skip": [
+        "w"
+      ],
+      "$why": "The badge is as wide as its text plus 4 px each side; Figma's text box for \"16\" is a fixed 14 px while the glyphs are 12 px, so its height and padding are compared, not its width."
+    },
+    "Shiryoku": {
+      "selector": ".ds-sidebar__text > .ds-sidebar__label"
+    },
+    "Item Description": {
+      "selector": ".ds-sidebar__description"
+    },
+    "Media": {
+      "selector": ".ds-sidebar__icon"
+    },
+    "Group Label": {
+      "selector": ".ds-sidebar__group-text"
+    },
+    "Sub Item": {
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma puts the 24 px indent and the 2 px above and below on the sub item; the code puts the indent on the sub menu (the target) and the 2 px on each row, which the row's height and the button's size below check."
+    },
+    "Sidebar Menu Button": {
+      "selector": ".ds-sidebar__button"
+    },
+    "Border": {
+      "stroke": "before-border",
+      "$why": "The sub menu's line is its ::before border."
+    }
+  }
+}

@@ -22,6 +22,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderItem } from './item';
+import { renderSidebar } from './sidebar';
 import { renderCommand } from './command';
 import { renderMenubar } from './menubar';
 import { renderNavigationMenu } from './navigation-menu';
@@ -103,6 +104,7 @@ export const renderers: Record<string, Renderer> = {
   'select-item': renderSelectItem,
   separator: renderSeparator,
   sheet: renderSheet,
+  sidebar: renderSidebar,
   slider: renderSlider,
   'slider-thumb': renderSliderThumb,
   'slider-variants': renderSliderVariants,

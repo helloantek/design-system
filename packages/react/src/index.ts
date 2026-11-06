@@ -35,6 +35,7 @@ export * from './Radio';
 export * from './Select';
 export * from './Separator';
 export * from './Sheet';
+export * from './Sidebar';
 export * from './Slider';
 export * from './Sonner';
 export * from './Spinner';
