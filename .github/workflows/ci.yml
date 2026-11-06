@@ -6,7 +6,8 @@ on:
 
 jobs:
   web:
-    runs-on: ubuntu-latest
+    # Pinned: Playwright 1.56.1 (the visual check's calibrated Chromium 141) cannot install on ubuntu-latest = 26.04.
+    runs-on: ubuntu-24.04
     env:
       REFERENCE_CHROMIUM_PATH: /home/runner/.cache/ms-playwright/chromium-1194/chrome-linux/chrome
     steps:
