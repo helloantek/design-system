@@ -2271,6 +2271,10 @@ Object.assign(tests, {
     await trigger.click();
     assert.equal(await layout.getAttribute('data-state'), 'expanded', 'the trigger expands it again');
 
+    await page.goto('http://localhost:6008/iframe.html?id=components-sidebar--items&viewMode=story');
+    await page.locator('.ds-sidebar__label').first().waitFor();
+    assert.match(await page.locator('.ds-sidebar__label').first().evaluate((el) => getComputedStyle(el).fontFamily), /^Inter/, 'a group on its own (outside a Sidebar) still uses the sans font');
+
     await page.goto('http://localhost:6008/iframe.html?id=components-sidebar--sub-menus&viewMode=story');
     const library = page.getByRole('complementary', { name: 'Library' });
     await library.waitFor();

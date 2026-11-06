@@ -55,6 +55,7 @@
     width: var(--sidebar-width);
     min-height: 0;
     color: var(--ds-sidebar-foreground);
+    font-family: var(--ds-font-sans);
     font-size: var(--ds-text-sm);
     line-height: var(--ds-text-sm--line-height);
     letter-spacing: -0.005em;
@@ -119,10 +120,16 @@
     overscroll-behavior: contain;
   }
 
+  /* A group also stands on its own (outside a Sidebar), so it sets its own type. */
   .ds-sidebar__group {
     display: flex;
     flex-direction: column;
     min-width: 0;
+    color: var(--ds-sidebar-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
   }
 
   /* Figma "Sidebar Group Label": 32 px, 6 / 8 px padding, 14/20 Medium muted; Size=sm: 12/16 (8 px padding). */
