@@ -16,6 +16,7 @@ import {
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { Breadcrumb, BreadcrumbItem } from '../Breadcrumb';
+import { BarChart, ChartLegend, PieChart } from '../Chart';
 import { Button } from '../Button';
 import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList } from '../Command';
 import { Kbd } from '../Kbd';
@@ -32,7 +33,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -50,6 +51,16 @@ const people = [
   { name: 'Omar Haddad', email: 'omar@orbit.dev', role: 'Member' },
 ];
 const pages = ['Home', 'Inbox', 'Reports', 'Members', 'Settings'];
+const activity = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => ({ day, edits: [42, 58, 71, 64, 49, 12, 8][i], comments: [18, 26, 30, 22, 25, 4, 3][i] }));
+const activitySeries = [
+  { key: 'edits', label: 'Edits', color: 'var(--ds-chart-7)' },
+  { key: 'comments', label: 'Comments', color: 'var(--ds-chart-3)' },
+];
+const roles = [
+  { label: 'Owner', value: 1, color: 'var(--ds-chart-7)' },
+  { label: 'Admin', value: 1, color: 'var(--ds-chart-3)' },
+  { label: 'Member', value: 5, color: 'var(--ds-chart-5)' },
+];
 const storage = [
   { name: 'Orbit app', gb: 38, color: 'var(--ds-chart-2)' },
   { name: 'Marketing site', gb: 17, color: 'var(--ds-chart-1)' },
@@ -183,6 +194,17 @@ export const App: StoryObj = {
                     <UsageBarLegendItem variant="striped">Syncing</UsageBarLegendItem>
                     <UsageBarLegendItem variant="primary">Free</UsageBarLegendItem>
                   </UsageBarLegend>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 14, lineHeight: '20px', marginTop: 16 }}>
+                    <span id="activity-title" style={{ fontWeight: 500, color: 'var(--ds-foreground)' }}>
+                      Activity this week
+                    </span>
+                    <ChartLegend aria-label="Activity series" items={activitySeries} />
+                  </div>
+                  <BarChart aria-labelledby="activity-title" data={activity} index="day" series={activitySeries} stacked height={160} grid={4} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginTop: 16 }}>
+                    <PieChart aria-label="Members by role" variant="donut" data={roles} size={120} value="7" caption="Members" />
+                    <ChartLegend variant="totals" aria-label="Members by role" style={{ flex: 1 }} items={roles.map((r) => ({ label: r.label, color: r.color, value: r.value }))} />
+                  </div>
                 </div>
               ) : (
                 <p style={{ margin: 0, color: 'var(--ds-muted-foreground)', fontSize: 14 }}>{page} is a placeholder page in this playground; open Members or Reports to see more.</p>

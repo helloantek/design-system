@@ -465,6 +465,37 @@ A surface for related content and actions: Sort UI 2.0 **Card** (Size, Media) wi
 
 The card does not clip its content, so menus and tooltips inside it can overflow; media is rounded with the card's top corners.
 
+## Chart
+
+Bar, line, area, pie and radial charts: the Sort UI 2.0 **Chart** page, built from **Chart Grid**, **Chart Axis**, **Chart Bar** (Vaiant, Orientation), **Chart Reference Line**, **Chart Tooltip** and **Swatch** (Variant). Drawn with HTML and SVG, no chart library.
+
+```tsx
+const data = [{ month: 'Jan', web: 186, ios: 80 }, { month: 'Feb', web: 305, ios: 200 } /* … */];
+const series = [{ key: 'web', label: 'Web' }, { key: 'ios', label: 'iOS' }];
+
+<BarChart aria-label="Visitors" data={data} index="month" series={series} stacked />
+<LineChart aria-label="Visitors" data={data} index="month" series={series} curve="monotone" references={[{ value: 250, label: 'Goal' }]} />
+<AreaChart aria-label="Deploys" data={deploys} index="month" series={[{ key: 'deploys', label: 'Deploys' }]} curve="step" />
+<PieChart aria-label="Browsers" variant="donut" data={[{ label: 'Chrome', value: 275 }, { label: 'Safari', value: 200 }]} value="925" caption="Visitors" />
+<RadialChart aria-label="7,240 of 10,000 steps" variant="progress" data={[{ label: 'Steps', value: 7240 }]} max={10000} value="7,240" caption="Steps" />
+<ChartLegend items={[{ label: 'Web', color: 'var(--ds-chart-7)' }, { label: 'iOS', color: 'var(--ds-chart-3)' }]} />
+```
+
+| Figma | React prop | CSS class |
+|---|---|---|
+| Chart Grid | `grid` (intervals, default 6; `0` hides it) · `<ChartGrid lines vertical>` | `ds-chart__grid` · `__grid-line` |
+| Chart Axis Axis = X · Y | the `index` field of each row (bars), or `ticks` (lines with more points than labels); a value axis with `yAxis={{ side, ticks, format }}`; categories on the left of horizontal bars · `<ChartAxis>` | `ds-chart__axis--x` · `--y` · `--categories` · `--values` |
+| Chart Bar Vaiant = Default · Capped, Orientation = Vertical · Horizontal | `<BarChart variant layout stacked labels>`: bands 8 px in, grouped bars 4 px apart | `ds-chart__band` · `ds-chart__bar` · `--capped` · `--stacked` · `ds-chart--horizontal` |
+| Line and Area samples Default · Linear · Step · Multiple · Dots | `<LineChart curve dots area min>` · `<AreaChart>`: 1.5 px lines; areas fade from 15 % to 0 | `ds-chart__lines` · `__line` · `__area-stop` · `__dot` |
+| Chart Reference Line | `references={[{ value, label }]}`: 1 px, dashed 4/4, the label above its end | `ds-chart__reference` · `__reference-label` |
+| Chart Tooltip | on hover or keyboard focus (`tooltip`, `tooltipLabel`, `formatValue`; `activeIndex` / `defaultActiveIndex` / `onActiveIndexChange`) · `<ChartTooltip label items description>` | `ds-chart-tooltip` · `ds-chart__tooltip` · `__band--active` · `__cursor` |
+| Swatch Variant = Default · Line · Line Horizontal · Dashed · Dashed Horizontal | `<ChartSwatch variant color>` | `ds-chart-swatch` · `--line` · `--line-horizontal` · `--dashed` · `--dashed-horizontal` |
+| Pie samples Default · Donut · Donut with Label | `<PieChart variant data size value caption>`: slices clockwise from 12 o'clock, the donut 10 % thick | `ds-chart-pie` · `__slice` · `__center` |
+| Radial samples Simple · Stacked · Text | `<RadialChart variant="rings" · "half" · "progress" max>` | `ds-chart-pie--rings` · `--half` · `--progress` · `__track` |
+| Totals (demos) | `<ChartLegend variant="totals" columns>`; header legend: `variant="inline"` | `ds-chart-legend` · `--totals` |
+
+A series takes `{ key, label, color }`; without a colour the charts use `--ds-chart-7`, `-3`, `-5`, `-6`, `-1`… in turn, as the demos do. The plot is a `group` named with `aria-label` (or `aria-labelledby`); it takes focus, the arrow keys (Up and Down for horizontal bars), Home and End move between categories, Escape clears, and the tooltip (a `status`) describes the plot. Every chart also renders its data as a visually hidden table; pies and rings are named images.
+
 ## Checkbox
 
 A native `<input type="checkbox">` drawn as the Sort UI 2.0 **Checkbox**, alone or in a **Field** Orientation=Horizontal (label, description, error), and **Field Group** for a set of checkboxes under a legend. Indeterminate is ours: Figma's demos draw it with a minus on the unchecked box.
@@ -1417,6 +1448,7 @@ These come from the Figma files, not the code:
 - Command (2.0): the Command Separator's line is 384 px wide in a 372 px list (it runs to the edges past the list's 6 px padding); the code does the same. The separator and the empty state are not options, so they sit outside what assistive technology reads as the listbox (the separator is decoration and the empty state follows the listbox). Shortcuts are drawn as 12/16 muted text, not Kbd keys; the code follows Figma. The "Dialog" demo shows the palette under its trigger; the code's CommandDialog is a modal window 15 % from the top, as palettes usually are, and the "In a popover" demo puts a `plain` Command in a Popover.
 - Sidebar (2.0): Sidebar Menu Button's Size=sm variant keeps its Tree chevron and dropdown when an instance turns them off (the properties are not wired in that variant), so the visual check compares its size and spec only. The Sub Item puts the 24 px indent on each row; the code puts it on the sub menu, with the 1 px line 16 px in. Figma shows the collapsed rail and Floating but no narrow-screen behaviour; the code starts collapsed on narrow screens and lays the open sidebar over dimmed content. The group label sizes in the demos are sm (12/16) while the component defaults to 14/20; the code keeps the component's default and the stories use `labelSize="sm"`.
 - Usage Bar (2.0): Figma has no states for hovering or focusing a segment; the code shows State=Active on hover and keyboard focus of a focusable segment, with the focus ring. The Dashed segment is drawn as an inset outline (a border would add to its share of the bar) and the Dashed swatch's 2/2 dashes with gradients; Active Dashed turns the stroke solid, as in Figma. Figma's ticks are 24 or 48 px boxes spread with space-between; in code a tick takes no width, so its line sits exactly on its point whatever the value's width. The "Sleep" demo's wake window is drawn as a plain track; the story uses Slider Variant=Scrubber, which puts the label and value inside it.
+- Chart (2.0): Figma draws charts from parts and demos rather than one component, so the code offers chart components (BarChart, LineChart, AreaChart, PieChart, RadialChart) that compute those parts from data. Figma's Axis component spreads 32 px ticks from edge to edge, while every demo centres one tick per band; the code follows the demos. The radial "Simple" rings run counter-clockwise from 3 o'clock and the "Stacked" half ring layers arcs from 3 o'clock; the code keeps those directions but draws the half ring's data side by side from the left. The pie samples start at 3 o'clock; the code starts slices at 12 o'clock, as is usual. Figma shows a hovered state (tooltip, highlighted band, cursor) but no keyboard path; the plot takes focus and the arrow keys move between categories. The dashed swatch is a 0 px vector in Figma; the code draws a 1.5 px dashed line.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

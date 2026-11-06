@@ -1,0 +1,57 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "tooltip": {
+      "stroke": "inset-shadow"
+    },
+    "Label": {
+      "selector": ".ds-chart-tooltip__label"
+    },
+    "Row 1": {
+      "selector": ".ds-chart-tooltip__row"
+    },
+    "Swatch": {
+      "selector": ".ds-chart-swatch"
+    },
+    "Name": {
+      "selector": ".ds-chart-tooltip__name",
+      "skip": [
+        "color"
+      ],
+      "$why": "popover-foreground and foreground are the same colour in Light"
+    },
+    "Value": {
+      "selector": ".ds-chart-tooltip__value"
+    },
+    "Description": {
+      "selector": ".ds-chart-tooltip__description"
+    },
+    "Description/TEXT": {
+      "selector": ".ds-chart-tooltip__description"
+    },
+    "Tick": {
+      "selector": ".ds-chart__tick"
+    },
+    "Reference label": {
+      "selector": ".ds-chart__reference-label"
+    },
+    "Line": {
+      "selector": ".ds-chart__reference",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma's line is a 0 px vector with a 1 px stroke; the code draws a 1 px box."
+    },
+    "bar-capped": {
+      "stroke": "inset-shadow"
+    },
+    "swatch-dashed": {
+      "skip": [
+        "w",
+        "h"
+      ],
+      "$why": "Figma's dashed swatch is a 0 px wide vector with a 1.5 px stroke; the code draws the 1.5 px line as a box."
+    }
+  }
+}

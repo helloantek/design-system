@@ -9,6 +9,7 @@ export * from './Button';
 export * from './ButtonGroup';
 export * from './Calendar';
 export * from './Card';
+export * from './Chart';
 export * from './Checkbox';
 export * from './Combobox';
 export * from './Command';
