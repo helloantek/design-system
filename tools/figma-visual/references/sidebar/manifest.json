@@ -1,0 +1,141 @@
+{
+ "$comment": "Sort UI 2.0 Sidebar reference renders (1x PNG, exportAsync with absolute bounds, so the Focus ring falls outside the box), exported from instances with Tree and Dropdown off and Leading Icon, Badge and Collapsible on (Sidebar Menu Button), Action off and Collapsible on (Sidebar Group Label): Sidebar Menu Button Size=Default State=Default / hover / active / focus, Size=sm and lg, Collapsed=True; Group Label Size=Default and sm; Menu Sub Item Variant=Level 2. renderers/sidebar.tsx renders them with SidebarMenuItem and SidebarGroup; hover and focus come from real input.",
+ "component": "sidebar",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "662:36838",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "button-default",
+   "nodeId": "662:36839",
+   "props": {
+    "Part": "Button",
+    "Size": "Default",
+    "State": "Default",
+    "Collapsed": "False"
+   },
+   "nodeW": 280,
+   "nodeH": 32,
+   "target": ".ds-sidebar__button"
+  },
+  {
+   "slug": "button-hover",
+   "nodeId": "662:36907",
+   "props": {
+    "Part": "Button",
+    "Size": "Default",
+    "State": "Hover",
+    "Collapsed": "False"
+   },
+   "nodeW": 280,
+   "nodeH": 32,
+   "target": ".ds-sidebar__button"
+  },
+  {
+   "slug": "button-active",
+   "nodeId": "662:36918",
+   "props": {
+    "Part": "Button",
+    "Size": "Default",
+    "State": "Active",
+    "Collapsed": "False"
+   },
+   "nodeW": 280,
+   "nodeH": 32,
+   "target": ".ds-sidebar__button",
+   "interaction": "Default"
+  },
+  {
+   "slug": "button-focus",
+   "nodeId": "662:36897",
+   "props": {
+    "Part": "Button",
+    "Size": "Default",
+    "State": "Focus",
+    "Collapsed": "False"
+   },
+   "nodeW": 280,
+   "nodeH": 32,
+   "target": ".ds-sidebar__button"
+  },
+  {
+   "slug": "button-sm",
+   "nodeId": "1274:20996",
+   "props": {
+    "Part": "Button",
+    "Size": "sm",
+    "State": "Default",
+    "Collapsed": "False"
+   },
+   "nodeW": 280,
+   "nodeH": 28,
+   "target": ".ds-sidebar__button",
+   "pixels": false,
+   "$why": "Figma's Size=sm variant keeps its Tree chevron and dropdown when the instance turns them off (its properties are not wired), so only its size and spec (padding, 12/16 label, icon) are compared."
+  },
+  {
+   "slug": "button-lg",
+   "nodeId": "662:36847",
+   "props": {
+    "Part": "Button",
+    "Size": "lg",
+    "State": "Default",
+    "Collapsed": "False"
+   },
+   "nodeW": 280,
+   "nodeH": 48,
+   "target": ".ds-sidebar__button"
+  },
+  {
+   "slug": "button-collapsed",
+   "nodeId": "662:36895",
+   "props": {
+    "Part": "Button",
+    "Size": "Default",
+    "State": "Default",
+    "Collapsed": "True"
+   },
+   "nodeW": 32,
+   "nodeH": 32,
+   "target": ".ds-sidebar__button"
+  },
+  {
+   "slug": "group-label",
+   "nodeId": "670:38407",
+   "props": {
+    "Part": "GroupLabel",
+    "Size": "Default"
+   },
+   "nodeW": 280,
+   "nodeH": 32,
+   "target": ".ds-sidebar__group-label"
+  },
+  {
+   "slug": "group-label-sm",
+   "nodeId": "670:38411",
+   "props": {
+    "Part": "GroupLabel",
+    "Size": "sm"
+   },
+   "nodeW": 280,
+   "nodeH": 32,
+   "target": ".ds-sidebar__group-label"
+  },
+  {
+   "slug": "sub-item",
+   "nodeId": "670:41784",
+   "props": {
+    "Part": "SubItem"
+   },
+   "nodeW": 300,
+   "nodeH": 32,
+   "target": ".ds-sidebar__menu--sub"
+  }
+ ]
+}

@@ -1,0 +1,527 @@
+/*
+ * Sidebar — Sort UI 2.0 component sets "Sidebar" (280:12254, Type=Default / Floating), "Sidebar Group" (280:12205),
+ * "Sidebar Group Label" (670:38406), "Sidebar Menu Item" (670:42009), "Sidebar Menu Button" (662:36838), "Sidebar Menu
+ * Sub Item" (670:41781), "Sidebar Popover Trigger" (280:12243) and "Sidebar Collapse Icon" (280:12034) on page 265:3 in
+ * file 4JnqgEbdlnKgiFrfmiwEZw. Values are Sort UI 2.0 tokens (the sidebar-* colours).
+ *
+ * Markup:
+ *   <div class="ds-sidebar-layout" data-state="expanded | collapsed">
+ *     <aside class="ds-sidebar [ds-sidebar--floating]" aria-label="…">
+ *       <div class="ds-sidebar__panel">
+ *         <div class="ds-sidebar__header">…</div>
+ *         <div class="ds-sidebar__content">
+ *           <div class="ds-sidebar__group" role="group" aria-labelledby="g">
+ *             <div class="ds-sidebar__group-label [ds-sidebar__group-label--sm]" id="g">Workspace</div>   (or a <button> when collapsible)
+ *             <ul class="ds-sidebar__menu">
+ *               <li class="ds-sidebar__item">
+ *                 <a class="ds-sidebar__button [ds-sidebar__button--sm | --lg]" href="…" [aria-current="page"]>
+ *                   [<span class="ds-sidebar__icon"><svg/></span>] <span class="ds-sidebar__label">Projects</span>
+ *                   [<span class="ds-sidebar__badge">16</span>] [<span class="ds-sidebar__chevron"><svg/></span>]
+ *                 </a>
+ *                 [<span class="ds-sidebar__action">…a ghost icon Button…</span>]
+ *                 [<div class="ds-sidebar__sub" data-state="open"><div class="ds-sidebar__sub-clip"><ul class="ds-sidebar__menu ds-sidebar__menu--sub">…</ul></div></div>]
+ *               </li>
+ *             </ul>
+ *           </div>
+ *         </div>
+ *         <div class="ds-sidebar__footer">…</div>
+ *       </div>
+ *     </aside>
+ *     <main class="ds-sidebar-inset">…<button class="ds-sidebar-trigger">…</button>…</main>
+ *     <div class="ds-sidebar-scrim" aria-hidden="true"></div>   (shown on narrow screens while expanded)
+ *   </div>
+ */
+
+@layer ds.components {
+  /* The page: the sidebar and the content beside it. */
+  .ds-sidebar-layout {
+    --sidebar-width: calc(var(--ds-spacing-64) + var(--ds-spacing-1));
+    --sidebar-rail: var(--ds-spacing-12);
+
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  /* Figma "Sidebar" Type=Default: 260 px, the sidebar fill, a 1 px border on its end edge. */
+  .ds-sidebar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    min-height: 0;
+    color: var(--ds-sidebar-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+    transition: width var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-sidebar__panel {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    background-color: var(--ds-sidebar);
+    box-shadow: inset calc(-1 * var(--ds-stroke-width-1)) 0 0 var(--ds-sidebar-border);
+  }
+
+  /* Type=Floating: 8 px from the edges, a 20 px radius, a 1 px border outside and the xs shadow. */
+  .ds-sidebar--floating {
+    padding: var(--ds-spacing-2);
+  }
+
+  .ds-sidebar--floating > .ds-sidebar__panel {
+    border-radius: var(--ds-radius-3xl);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-shadow-xs);
+  }
+
+  /* Figma "Header" and "Footer": 8 px padding and gaps, a 1 px line toward the content. */
+  .ds-sidebar__header,
+  .ds-sidebar__footer {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2);
+  }
+
+  .ds-sidebar__header {
+    box-shadow: inset 0 calc(-1 * var(--ds-stroke-width-1)) 0 var(--ds-sidebar-border);
+  }
+
+  .ds-sidebar__footer {
+    box-shadow: inset 0 var(--ds-stroke-width-1) 0 var(--ds-sidebar-border);
+  }
+
+  /* Without a line (the demos' header holding one row). */
+  .ds-sidebar__header--plain,
+  .ds-sidebar__footer--plain {
+    box-shadow: none;
+  }
+
+  /* Figma "Content": scrolls; groups 8 px from the edges, 16 px apart. */
+  .ds-sidebar__content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-4);
+    min-height: 0;
+    padding: var(--ds-spacing-2);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* A group also stands on its own (outside a Sidebar), so it sets its own type. */
+  .ds-sidebar__group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    color: var(--ds-sidebar-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Figma "Sidebar Group Label": 32 px, 6 / 8 px padding, 14/20 Medium muted; Size=sm: 12/16 (8 px padding). */
+  .ds-sidebar__group-label {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    width: 100%;
+    min-height: var(--ds-spacing-8);
+    margin: 0;
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border: 0;
+    border-radius: var(--ds-radius-lg);
+    outline: none;
+    background: none;
+    color: var(--ds-muted-foreground);
+    font: inherit;
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: inherit;
+    text-align: start;
+  }
+
+  .ds-sidebar__group-label--sm {
+    padding-block: var(--ds-spacing-2);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* A group label with an action (Figma "action": a 24 px icon button at the end, 4 px in). */
+  .ds-sidebar__group-head {
+    position: relative;
+  }
+
+  .ds-sidebar__group-head > .ds-sidebar__action {
+    top: var(--ds-spacing-1);
+  }
+
+  .ds-sidebar__group-head:has(> .ds-sidebar__action) > .ds-sidebar__group-label {
+    padding-inline-end: var(--ds-spacing-8);
+  }
+
+  .ds-sidebar__group-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* A collapsible group label is a button: State=hover fill-1, State=focus the ring. */
+  button.ds-sidebar__group-label {
+    cursor: pointer;
+  }
+
+  button.ds-sidebar__group-label:hover {
+    background-color: var(--ds-fill-1);
+  }
+
+  button.ds-sidebar__group-label:focus-visible,
+  .ds-sidebar__button:focus-visible {
+    background-color: var(--ds-sidebar);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-sidebar-ring), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-sidebar__menu {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-sidebar__item {
+    position: relative;
+    min-width: 0;
+  }
+
+  /* Figma "Sidebar Menu Button" Size=Default: 32 px, 6 / 8 px padding, 8 px gaps, 10 px radius, 14/20. */
+  .ds-sidebar__button {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    width: 100%;
+    min-height: var(--ds-spacing-8);
+    margin: 0;
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border: 0;
+    border-radius: var(--ds-radius-lg);
+    outline: none;
+    background: none;
+    color: var(--ds-sidebar-foreground);
+    font: inherit;
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: inherit;
+    text-align: start;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  /* Size=sm: 28 px, 4 / 8 px padding, 12/16. */
+  .ds-sidebar__button--sm {
+    min-height: calc(var(--ds-spacing-7));
+    padding-block: var(--ds-spacing-1);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* Size=lg: 48 px, 10 px gaps, for a 32 px picture and two lines (a workspace or a person). */
+  .ds-sidebar__button--lg {
+    gap: var(--ds-spacing-2-5);
+    min-height: var(--ds-spacing-12);
+  }
+
+  /* State=hover: fill-1; State=active (the current page): fill-2 and Medium text. */
+  .ds-sidebar__button:hover {
+    background-color: var(--ds-fill-1);
+  }
+
+  .ds-sidebar__button[aria-current='page'],
+  .ds-sidebar__button[data-active] {
+    background-color: var(--ds-fill-2);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-sidebar__button:disabled,
+  .ds-sidebar__button[aria-disabled='true'] {
+    background: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ds-sidebar__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--ds-sidebar-foreground);
+  }
+
+  .ds-sidebar__icon > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-sidebar__label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Size=lg: the name (14/20 Medium) over a 12/16 muted line. */
+  .ds-sidebar__text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-sidebar__text > .ds-sidebar__label {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-sidebar__description {
+    overflow: hidden;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Figma "Badge": 12/16 Medium muted, 4 px side padding (foreground under the pointer and when active). */
+  .ds-sidebar__badge {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    height: var(--ds-spacing-5);
+    padding: 0 var(--ds-spacing-1);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  .ds-sidebar__button:is(:hover, [aria-current='page'], [data-active]) > .ds-sidebar__badge {
+    color: var(--ds-sidebar-foreground);
+  }
+
+  /* Figma "Sidebar Collapse Icon": a 16 px chevron that turns down (Variant=Default) when its section is open. */
+  .ds-sidebar__chevron {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--ds-sidebar-foreground);
+    transition: rotate var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-sidebar__chevron > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  [aria-expanded='true'] > .ds-sidebar__chevron:not(.ds-sidebar__chevron--static) {
+    rotate: 90deg;
+  }
+
+  /* Figma "dropdown" (Menu actions demo): a 24 px icon button at the end of the row, 4 px in. */
+  .ds-sidebar__action {
+    position: absolute;
+    top: var(--ds-spacing-1);
+    right: var(--ds-spacing-1);
+    display: flex;
+  }
+
+  .ds-sidebar__item:has(> .ds-sidebar__action) > .ds-sidebar__button {
+    padding-inline-end: var(--ds-spacing-8);
+  }
+
+  /* Figma "Sidebar Menu Sub Item": nested items 24 px in, 28 px with 2 px between rows, a 1 px line 16 px in. The open
+     and close animate their height (grid rows 0fr ↔ 1fr), as Collapsible and Accordion do. */
+  .ds-sidebar__sub {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition:
+      grid-template-rows var(--ds-duration-200) var(--ds-ease-out),
+      visibility 0s linear 0s;
+  }
+
+  .ds-sidebar__sub[data-state='closed'] {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--ds-duration-200) var(--ds-ease-out),
+      visibility 0s linear var(--ds-duration-200);
+  }
+
+  .ds-sidebar__sub-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .ds-sidebar__menu--sub {
+    position: relative;
+    padding-inline-start: var(--ds-spacing-6);
+  }
+
+  .ds-sidebar__menu--sub::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--ds-spacing-4);
+    border: 0 solid var(--ds-sidebar-border);
+    border-inline-start-width: var(--ds-stroke-width-1);
+  }
+
+  .ds-sidebar__menu--sub > .ds-sidebar__item {
+    padding-block: var(--ds-spacing-0-5);
+  }
+
+  .ds-sidebar__menu--sub > .ds-sidebar__item > .ds-sidebar__button {
+    min-height: calc(var(--ds-spacing-7));
+    padding-block: var(--ds-spacing-1);
+  }
+
+  .ds-sidebar__menu--sub > .ds-sidebar__item > .ds-sidebar__action {
+    top: calc(var(--ds-spacing-0-5) + var(--ds-spacing-0-5));
+  }
+
+  /* Collapsed (the icon rail): 48 px, 32 px square buttons with the icon only; labels stay for assistive
+     technology, group labels, badges, chevrons, actions and sub menus hide. */
+  .ds-sidebar-layout[data-state='collapsed'] > .ds-sidebar {
+    width: var(--sidebar-rail);
+  }
+
+  .ds-sidebar-layout[data-state='collapsed'] > .ds-sidebar--floating {
+    width: calc(var(--sidebar-rail) + var(--ds-spacing-4));
+  }
+
+  .ds-sidebar-layout[data-state='collapsed'] .ds-sidebar__button {
+    justify-content: center;
+    width: var(--ds-spacing-8);
+    min-height: var(--ds-spacing-8);
+    padding: var(--ds-spacing-2);
+  }
+
+  .ds-sidebar-layout[data-state='collapsed'] .ds-sidebar__button--lg {
+    padding: 0;
+  }
+
+  .ds-sidebar-layout[data-state='collapsed'] :is(.ds-sidebar__label, .ds-sidebar__text) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ds-sidebar-layout[data-state='collapsed']
+    :is(.ds-sidebar__group-label, .ds-sidebar__badge, .ds-sidebar__chevron, .ds-sidebar__action, .ds-sidebar__sub, .ds-sidebar__collapsed-hidden) {
+    display: none;
+  }
+
+  /* The content beside the sidebar; it scrolls on its own when the layout has a height. */
+  .ds-sidebar-inset {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    background-color: var(--ds-background);
+    color: var(--ds-foreground);
+  }
+
+  /* The toggle (the demos' panel icon before the breadcrumb): a 28 px ghost icon button. */
+  .ds-sidebar-trigger {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--ds-spacing-7));
+    height: calc(var(--ds-spacing-7));
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-md);
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    cursor: pointer;
+  }
+
+  .ds-sidebar-trigger:hover {
+    background-color: var(--ds-fill-1);
+  }
+
+  .ds-sidebar-trigger:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-sidebar-trigger > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  /* The scrim over the content while the sidebar is open on a narrow screen; a click on it closes the sidebar. */
+  .ds-sidebar-scrim {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: none;
+    background-color: var(--ds-alpha-black-50);
+  }
+
+  /* Narrow screens: the open sidebar lies over the content (with the scrim) instead of squeezing it. */
+  @media (max-width: 40rem) {
+    .ds-sidebar-layout[data-state='expanded'] > .ds-sidebar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      max-width: calc(100% - var(--ds-spacing-12));
+    }
+
+    .ds-sidebar-layout[data-state='expanded'] > .ds-sidebar:not(.ds-sidebar--floating) > .ds-sidebar__panel {
+      box-shadow: inset calc(-1 * var(--ds-stroke-width-1)) 0 0 var(--ds-sidebar-border), var(--ds-shadow-lg);
+    }
+
+    .ds-sidebar-layout[data-state='expanded'] > .ds-sidebar-inset {
+      margin-left: var(--sidebar-rail);
+    }
+
+    .ds-sidebar-layout[data-state='expanded'] > .ds-sidebar-scrim {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-sidebar,
+    .ds-sidebar__button,
+    .ds-sidebar__chevron,
+    .ds-sidebar__sub,
+    .ds-sidebar__sub[data-state='closed'] {
+      transition: none;
+    }
+  }
+}

@@ -2249,6 +2249,72 @@ Object.assign(tests, {
     await page.getByRole('button', { name: /Mira Bloom/ }).waitFor();
     assert.equal(await page.getByRole('combobox', { name: 'People' }).isVisible(), false, 'picking a person closes the popover');
   },
+  'sidebar: a named sidebar of links (the current page marked); the trigger collapses it to a 48 px rail and back, keeping the names; sub menus and collapsible groups open and close; actions open their menu; narrow screens start collapsed and the open sidebar lies over the content': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-sidebar--default&viewMode=story');
+    const sidebar = page.getByRole('complementary', { name: 'Workspace', exact: true });
+    await sidebar.waitFor();
+    const layout = page.locator('.ds-sidebar-layout').first();
+    assert.equal(await sidebar.getByRole('link', { name: /Home/ }).getAttribute('aria-current'), 'page', 'the current page is marked');
+    assert.equal(Math.round((await sidebar.boundingBox()).width), 260, 'the sidebar is 260 px');
+    assert.equal(Math.round((await sidebar.getByRole('link', { name: /Search/ }).boundingBox()).height), 32, 'items are 32 px');
+    const trigger = layout.getByRole('button', { name: 'Toggle sidebar' });
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.equal(await trigger.getAttribute('aria-controls'), await sidebar.getAttribute('id'), 'the trigger controls the sidebar');
+    await trigger.click();
+    assert.equal(await layout.getAttribute('data-state'), 'collapsed');
+    await page.waitForTimeout(300);
+    assert.equal(Math.round((await sidebar.boundingBox()).width), 48, 'collapsed to the 48 px rail');
+    const home = sidebar.getByRole('link', { name: 'Home' });
+    assert.equal(await home.getAttribute('title'), 'Home', 'a rail item keeps its name and shows it as a tooltip');
+    assert.deepEqual(await home.evaluate((el) => { const r = el.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; }), [32, 32], 'rail items are 32 px squares');
+    assert.equal(await sidebar.getByText('Workspace', { exact: true }).isVisible(), false, 'group labels hide in the rail');
+    await trigger.click();
+    assert.equal(await layout.getAttribute('data-state'), 'expanded', 'the trigger expands it again');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-sidebar--items&viewMode=story');
+    await page.locator('.ds-sidebar__label').first().waitFor();
+    assert.match(await page.locator('.ds-sidebar__label').first().evaluate((el) => getComputedStyle(el).fontFamily), /^Inter/, 'a group on its own (outside a Sidebar) still uses the sans font');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-sidebar--sub-menus&viewMode=story');
+    const library = page.getByRole('complementary', { name: 'Library' });
+    await library.waitFor();
+    const components = library.getByRole('button', { name: 'Components' });
+    assert.equal(await components.getAttribute('aria-expanded'), 'true');
+    assert.equal(await library.getByRole('link', { name: 'Input' }).getAttribute('aria-current'), 'page');
+    await components.click();
+    assert.equal(await components.getAttribute('aria-expanded'), 'false', 'a parent item closes its sub menu');
+    await library.getByRole('button', { name: 'Overlays' }).or(library.getByRole('link', { name: 'Overlays' })).waitFor({ state: 'hidden' });
+    const archive = library.getByRole('button', { name: 'Archive' });
+    assert.equal(await archive.getAttribute('aria-expanded'), 'false', 'a collapsible group starts closed');
+    assert.equal(await library.getByRole('link', { name: '2025' }).isVisible(), false);
+    await archive.click();
+    await library.getByRole('link', { name: '2025' }).waitFor();
+    assert.equal(await archive.getAttribute('aria-expanded'), 'true', 'its label opens it');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-sidebar--menu-actions&viewMode=story');
+    const projects = page.getByRole('complementary', { name: 'Projects' });
+    await projects.waitFor();
+    await projects.getByRole('button', { name: 'Actions for Mobile app' }).click();
+    await page.getByRole('menu', { name: 'Actions for Mobile app' }).waitFor();
+    await page.keyboard.press('Escape');
+
+    const viewport = page.viewportSize();
+    await page.setViewportSize({ width: 480, height: viewport.height });
+    await page.goto('http://localhost:6008/iframe.html?id=components-sidebar--menu-actions&viewMode=story');
+    const narrow = page.locator('.ds-sidebar-layout');
+    await narrow.waitFor();
+    await page.waitForFunction(() => document.querySelector('.ds-sidebar-layout')?.getAttribute('data-state') === 'collapsed');
+    await narrow.getByRole('button', { name: 'Toggle sidebar' }).click();
+    assert.equal(await narrow.getAttribute('data-state'), 'expanded');
+    assert.equal(await page.locator('.ds-sidebar').evaluate((el) => getComputedStyle(el).position), 'absolute', 'on a narrow screen the open sidebar lies over the content');
+    const box = await narrow.boundingBox();
+    await page.mouse.click(box.x + box.width - 10, box.y + box.height - 10);
+    assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'a click on the dimmed content closes it');
+    await narrow.getByRole('button', { name: 'Toggle sidebar' }).click();
+    await page.keyboard.press('Escape');
+    assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
+    await page.setViewportSize(viewport);
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });
