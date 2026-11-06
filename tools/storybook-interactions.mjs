@@ -2315,6 +2315,47 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'usage-bar: a named group whose segments share the bar by value and are read by their labels; hovering or focusing a focusable segment highlights it (and the readout names it); a segment tooltip shows on hover and keyboard focus; the axis spreads its ticks evenly': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-usage-bar--variants-and-an-axis&viewMode=story');
+    const bar = page.getByRole('group', { name: 'Database storage' });
+    await bar.waitFor();
+    const segments = bar.getByRole('img');
+    assert.equal(await segments.count(), 5);
+    const widths = await segments.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
+    const total = widths.reduce((a, b) => a + b, 0);
+    [18, 7, 9, 11, 5].forEach((gb, i) => assert.ok(Math.abs(widths[i] / total - gb / 50) < 0.005, `segment ${i} takes its share`));
+    const tables = bar.getByRole('img', { name: 'Tables, 18 GB' });
+    const tint = () => tables.evaluate((el) => getComputedStyle(el, '::after').content);
+    assert.equal(await tint(), 'none');
+    await tables.hover();
+    assert.notEqual(await tint(), 'none', 'hover draws the active overlay');
+    await page.getByText('Tables · 18 GB').waitFor();
+    await page.mouse.move(0, 0);
+    await page.getByText('Hover a segment').waitFor();
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Tables, 18 GB');
+    await page.getByText('Tables · 18 GB').waitFor();
+    await page.keyboard.press('Tab');
+    await page.getByText('Indexes · 7 GB').waitFor();
+    const ticks = await bar.locator('.ds-usage-bar-tick').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().left));
+    const gaps = ticks.slice(1).map((x, i) => x - ticks[i]);
+    assert.ok(gaps.every((g) => Math.abs(g - gaps[0]) < 0.5), 'ticks are evenly spaced');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-usage-bar--with-tooltips&viewMode=story');
+    const phone = page.getByRole('group', { name: 'Phone storage' });
+    await phone.waitFor();
+    const photosTip = page.getByRole('tooltip', { name: 'Photos · 42 GB' });
+    await photosTip.waitFor();
+    await page.keyboard.press('Escape');
+    await photosTip.waitFor({ state: 'hidden' });
+    await phone.getByRole('img', { name: 'Apps, 31 GB' }).hover();
+    await page.getByRole('tooltip', { name: 'Apps · 31 GB' }).waitFor();
+    await page.mouse.move(0, 0);
+    await page.getByRole('tooltip', { name: 'Apps · 31 GB' }).waitFor({ state: 'hidden' });
+    await page.keyboard.press('Tab');
+    await page.getByRole('tooltip', { name: 'Photos · 42 GB' }).waitFor();
+    assert.ok((await phone.getByRole('img', { name: 'Photos, 42 GB' }).getAttribute('aria-describedby'))?.length, 'the tooltip describes its segment');
+  },
   'alert: a live region (status, alert when destructive) that appears on action; its action takes focus; title only is 48 px': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-alert--live&viewMode=story');
     const save = page.getByRole('button', { name: 'Save changes' });

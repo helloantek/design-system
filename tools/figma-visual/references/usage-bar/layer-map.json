@@ -1,0 +1,64 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it. skip: spec keys not compared for this layer.",
+  "layers": {
+    "root": {},
+    "root-active": {
+      "stroke": "after-inset-shadow"
+    },
+    "root-dashed": {
+      "stroke": "outline"
+    },
+    "legend-item": {
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma sizes the 'Label' text box to 36 px; the label hugs its text in code."
+    },
+    "Swatch": {
+      "selector": ".ds-usage-bar-legend__swatch"
+    },
+    "Swatch-dashed": {
+      "selector": ".ds-usage-bar-legend__swatch",
+      "skip": [
+        "stroke",
+        "r"
+      ],
+      "$why": "The 2/2 dashes are drawn with gradients on a square box (a border dashes 3/3); compared by pixels."
+    },
+    "Label": {
+      "selector": ".ds-usage-bar-legend__label"
+    },
+    "Value": {
+      "selector": ".ds-usage-bar-tick__label"
+    },
+    "track": {
+      "selector": ".ds-usage-bar__track"
+    },
+    "axis": {
+      "selector": ".ds-usage-bar__axis"
+    },
+    "Usage Bar Segment": {
+      "selector": ".ds-usage-bar__segment:nth-child(1)"
+    },
+    "Usage Bar Segment#2": {
+      "selector": ".ds-usage-bar__segment:nth-child(3)"
+    },
+    "Usage Bar Segment#4": {
+      "selector": ".ds-usage-bar__segment:nth-child(5)",
+      "stroke": "outline"
+    },
+    "Usage Bar Tick": {
+      "selector": ".ds-usage-bar-tick:nth-child(1)",
+      "skip": [
+        "w"
+      ],
+      "$why": "A tick takes no width in code, so its line sits on its point of the axis whatever the value's width."
+    },
+    "Usage Bar Tick#1": {
+      "selector": ".ds-usage-bar-tick:nth-child(2)",
+      "skip": [
+        "w"
+      ]
+    }
+  }
+}

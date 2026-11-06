@@ -1,0 +1,257 @@
+/*
+ * Usage Bar — Sort UI 2.0 components "Usage Bar" (node 1742:2), "Usage Bar Segment" (1741:1121), "Usage Bar Legend
+ * Item" (1741:45140) and "Usage Bar Tick" (1741:45150) on page 1741:1112 in file 4JnqgEbdlnKgiFrfmiwEZw: how a whole
+ * (a budget, a disk, a night) splits into parts, as one bar of segments 1 px apart, with an optional axis under it
+ * and a legend. Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-usage-bar" role="group" aria-label="Storage">
+ *     <div class="ds-usage-bar__track">                                                   (Figma "track")
+ *       <span class="ds-usage-bar__segment [variant] [ds-usage-bar__segment--active]" role="img" aria-label="Photos, 42 GB"
+ *         style="--usage-bar-value: 42; [--usage-bar-color: var(--ds-chart-2)]"></span>
+ *       …
+ *     </div>
+ *     [<div class="ds-usage-bar__axis">                                                    (Figma "axis")
+ *       <span class="ds-usage-bar-tick ds-usage-bar-tick--start"><span class="ds-usage-bar-tick__label">0 GB</span></span>
+ *       <span class="ds-usage-bar-tick">…</span>  (centred)          <span class="ds-usage-bar-tick ds-usage-bar-tick--end">…</span>
+ *     </div>]
+ *   </div>
+ *   A segment grows by its --usage-bar-value, so the segments share the bar in proportion to their values.
+ *   Figma Variant: none (Default, foreground at 30 %), --muted, --primary, --dashed, --striped; --usage-bar-color
+ *   recolours Default (the demos use the chart colours). Figma State=Active: --active, also on hover and keyboard focus
+ *   of a focusable segment (one with tabindex). A segment with a tooltip is wrapped in
+ *   <span class="ds-usage-bar__cell" style="--usage-bar-value: 42"> around the .ds-tooltip-anchor.
+ *
+ *   <ul class="ds-usage-bar-legend [ds-usage-bar-legend--columns]" style="[--usage-bar-legend-columns: 2]">
+ *     <li class="ds-usage-bar-legend__item [variant]" style="[--usage-bar-color: …]">       (Figma "Usage Bar Legend Item")
+ *       <span class="ds-usage-bar-legend__swatch"></span><span class="ds-usage-bar-legend__label">Rent</span>
+ *       [<span class="ds-usage-bar-legend__value">$1,200</span>]
+ *     </li>
+ *   </ul>
+ *   The legend item takes the same variant classes on .ds-usage-bar-legend__item (--muted, --primary, --dashed, --striped).
+ */
+
+@layer ds.components {
+  /* The track and the axis 4 px apart. */
+  .ds-usage-bar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  /* Figma "track": 28 px tall, the segments 1 px apart. */
+  .ds-usage-bar__track {
+    display: flex;
+    gap: var(--ds-stroke-width-1);
+    height: var(--ds-spacing-7);
+  }
+
+  .ds-usage-bar__segment,
+  .ds-usage-bar__cell {
+    flex: var(--usage-bar-value, 1) 1 0;
+    min-width: 0;
+  }
+
+  /* A segment with a tooltip: the cell takes the share, the anchor and the segment fill it. */
+  .ds-usage-bar__cell {
+    display: flex;
+  }
+
+  .ds-usage-bar__cell > .ds-tooltip-anchor {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ds-usage-bar__cell .ds-usage-bar__segment {
+    flex: 1;
+  }
+
+  /* Figma "Usage Bar Segment", Variant=Default: foreground at 30 %, radius 2. */
+  .ds-usage-bar__segment {
+    --usage-bar-fill: var(--usage-bar-color, var(--ds-alpha-foreground-30));
+
+    position: relative;
+    border-radius: calc(var(--ds-radius-xs) / 2);
+    background: var(--usage-bar-fill);
+    outline: none;
+  }
+
+  .ds-usage-bar__segment--muted,
+  .ds-usage-bar-legend__item--muted {
+    --usage-bar-fill: var(--ds-alpha-foreground-10);
+  }
+
+  .ds-usage-bar__segment--primary,
+  .ds-usage-bar-legend__item--primary {
+    --usage-bar-fill: var(--ds-chart-4);
+  }
+
+  /* Variant=Dashed: no fill, a 1 px inside stroke of foreground at 20 %, dashed 3/3 (Chromium dashes a 1 px line
+     3 px on, 3 px off). An inset outline, as a border would add to the segment's share. */
+  .ds-usage-bar__segment--dashed {
+    background: transparent;
+    outline: var(--ds-stroke-width-1) dashed var(--ds-alpha-foreground-20);
+    outline-offset: calc(var(--ds-stroke-width-1) * -1);
+  }
+
+  /*
+   * Variant=Striped: foreground at 5 % with 1.5 px stripes in the border colour, rising 45° every 12 px. The stripes
+   * are a repeating gradient across the diagonal: a line every 12 px / √2 along it, centred where x + y is a multiple
+   * of 12 px (where Figma's stripes vector puts them).
+   */
+  .ds-usage-bar__segment--striped,
+  .ds-usage-bar-legend__item--striped .ds-usage-bar-legend__swatch {
+    --usage-bar-stripe-period: calc(var(--ds-spacing-3) * 0.7071);
+    --usage-bar-stripe-offset: var(--ds-spacing-0);
+    --usage-bar-stripe-half: calc(var(--ds-stroke-width-3) / 2);
+
+    background:
+      repeating-linear-gradient(
+        135deg,
+        var(--ds-border) calc(var(--usage-bar-stripe-offset) - var(--usage-bar-stripe-half)),
+        var(--ds-border) calc(var(--usage-bar-stripe-offset) + var(--usage-bar-stripe-half)),
+        transparent calc(var(--usage-bar-stripe-offset) + var(--usage-bar-stripe-half)),
+        transparent calc(var(--usage-bar-stripe-offset) - var(--usage-bar-stripe-half) + var(--usage-bar-stripe-period))
+      ),
+      var(--ds-alpha-foreground-5);
+  }
+
+  /* State=Active (and hover or keyboard focus of a focusable segment): foreground at 10 % over the fill and a 1 px
+     inside stroke in the border colour. */
+  .ds-usage-bar__segment--active::after,
+  .ds-usage-bar__segment[tabindex]:hover::after,
+  .ds-usage-bar__segment:focus-visible::after {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--ds-alpha-foreground-10);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    content: '';
+  }
+
+  /* Active Dashed: Figma's stroke turns solid. */
+  .ds-usage-bar__segment--dashed.ds-usage-bar__segment--active,
+  .ds-usage-bar__segment--dashed[tabindex]:hover,
+  .ds-usage-bar__segment--dashed:focus-visible {
+    outline-color: transparent;
+  }
+
+  .ds-usage-bar__segment:focus-visible {
+    z-index: 1;
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma "axis": the ticks spread evenly, the first at the start and the last at the end. */
+  .ds-usage-bar__axis {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /*
+   * Figma "Usage Bar Tick": a 4 px line in the border colour over its value, 4 px apart. The tick takes no width, so
+   * the line sits on its point of the axis; Align=Start hangs the value to the right of it, Center centres it and
+   * End hangs it to the left.
+   */
+  .ds-usage-bar-tick {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    width: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  .ds-usage-bar-tick::before {
+    width: var(--ds-stroke-width-1);
+    height: var(--ds-spacing-1);
+    background: var(--ds-border);
+    content: '';
+  }
+
+  .ds-usage-bar-tick--start {
+    align-items: flex-start;
+  }
+
+  .ds-usage-bar-tick--end {
+    align-items: flex-end;
+  }
+
+  .ds-usage-bar-tick__label {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--ds-text-2xs--line-height);
+    white-space: nowrap;
+  }
+
+  /* The legend: items in a row 16 px apart, wrapping; --columns lays them out in a grid (the demos' value lists). */
+  .ds-usage-bar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-2) var(--ds-spacing-4);
+    margin: 0;
+    padding: 0;
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-sm--line-height);
+    list-style: none;
+  }
+
+  .ds-usage-bar-legend--columns {
+    display: grid;
+    grid-template-columns: repeat(var(--usage-bar-legend-columns, 2), minmax(0, 1fr));
+    column-gap: var(--ds-spacing-8);
+  }
+
+  /* Figma "Usage Bar Legend Item": an 8 × 12 swatch 6 px before the label. */
+  .ds-usage-bar-legend__item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+  }
+
+  .ds-usage-bar-legend__swatch {
+    flex: none;
+    width: var(--ds-spacing-2);
+    height: var(--ds-spacing-3);
+    border-radius: calc(var(--ds-radius-xs) / 2);
+    background: var(--usage-bar-fill, var(--usage-bar-color, var(--ds-alpha-foreground-30)));
+  }
+
+  /* Dashed swatch: a 1 px outline of foreground at 20 %, dashed 2/2 (drawn with gradients, as a border dashes 3/3). */
+  .ds-usage-bar-legend__item--dashed .ds-usage-bar-legend__swatch {
+    border-radius: 0;
+    background:
+      repeating-linear-gradient(90deg, var(--ds-alpha-foreground-20) 0 var(--ds-spacing-0-5), transparent var(--ds-spacing-0-5) var(--ds-spacing-1)) top / 100% var(--ds-stroke-width-1) no-repeat,
+      repeating-linear-gradient(90deg, var(--ds-alpha-foreground-20) 0 var(--ds-spacing-0-5), transparent var(--ds-spacing-0-5) var(--ds-spacing-1)) bottom / 100% var(--ds-stroke-width-1) no-repeat,
+      repeating-linear-gradient(180deg, var(--ds-alpha-foreground-20) 0 var(--ds-spacing-0-5), transparent var(--ds-spacing-0-5) var(--ds-spacing-1)) left / var(--ds-stroke-width-1) 100% no-repeat,
+      repeating-linear-gradient(180deg, var(--ds-alpha-foreground-20) 0 var(--ds-spacing-0-5), transparent var(--ds-spacing-0-5) var(--ds-spacing-1)) right / var(--ds-stroke-width-1) 100% no-repeat;
+  }
+
+  /* Striped swatch: the stripes every 7 px, where x + y is 3 px past a multiple of 7 (Figma's swatch vector). */
+  .ds-usage-bar-legend__item--striped .ds-usage-bar-legend__swatch {
+    --usage-bar-stripe-period: calc(var(--ds-spacing-7) / 4 * 0.7071);
+    --usage-bar-stripe-offset: calc((var(--ds-spacing-1) - var(--ds-stroke-width-1)) * 0.7071);
+  }
+
+  .ds-usage-bar-legend__label {
+    overflow: hidden;
+    color: var(--ds-muted-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* An optional value at the end of the item (the demos' amounts). */
+  .ds-usage-bar-legend__value {
+    margin-inline-start: auto;
+    padding-inline-start: var(--ds-spacing-3);
+    color: var(--ds-foreground);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}

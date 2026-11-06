@@ -1,0 +1,238 @@
+{
+ "$comment": "Sort UI 2.0 Usage Bar reference renders (1x PNG, exportAsync with absolute bounds): Usage Bar Segment (1741:1121) in every Variant and State, Usage Bar Legend Item (1741:45140) in every Variant with its 'Label', Usage Bar Tick (1741:45150) Align=Start/Center/End with '0', and the Usage Bar (1742:2) sample: segments 9/4/3/3/1 (Default, Default, Muted, Primary, Dashed) over ticks 0-200. renderers/usage-bar.tsx renders them with UsageBarSegment, UsageBarLegendItem, UsageBarTick and UsageBar.",
+ "component": "usage-bar",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "1741:1121",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "segment-default",
+   "nodeId": "1741:1113",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Default",
+    "State": "Default"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28
+  },
+  {
+   "slug": "segment-default-active",
+   "nodeId": "1741:1114",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Default",
+    "State": "Active"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28,
+   "interaction": "Default"
+  },
+  {
+   "slug": "segment-muted",
+   "nodeId": "1741:1115",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Muted",
+    "State": "Default"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28
+  },
+  {
+   "slug": "segment-muted-active",
+   "nodeId": "1741:1116",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Muted",
+    "State": "Active"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28,
+   "interaction": "Default"
+  },
+  {
+   "slug": "segment-primary",
+   "nodeId": "1741:1117",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Primary",
+    "State": "Default"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28
+  },
+  {
+   "slug": "segment-primary-active",
+   "nodeId": "1741:1118",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Primary",
+    "State": "Active"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28,
+   "interaction": "Default"
+  },
+  {
+   "slug": "segment-dashed",
+   "nodeId": "1741:1119",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Dashed",
+    "State": "Default"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28
+  },
+  {
+   "slug": "segment-dashed-active",
+   "nodeId": "1741:1120",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Dashed",
+    "State": "Active"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28,
+   "interaction": "Default"
+  },
+  {
+   "slug": "segment-striped",
+   "nodeId": "1750:359",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Striped",
+    "State": "Default"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28
+  },
+  {
+   "slug": "segment-striped-active",
+   "nodeId": "1750:361",
+   "props": {
+    "Part": "Segment",
+    "Variant": "Striped",
+    "State": "Active"
+   },
+   "target": "#target > .ds-usage-bar__segment",
+   "nodeW": 80,
+   "nodeH": 28,
+   "interaction": "Default"
+  },
+  {
+   "slug": "legend-default",
+   "nodeId": "1741:45128",
+   "props": {
+    "Part": "Legend",
+    "Variant": "Default"
+   },
+   "target": ".ds-usage-bar-legend__item",
+   "nodeW": 50,
+   "nodeH": 20
+  },
+  {
+   "slug": "legend-muted",
+   "nodeId": "1741:45131",
+   "props": {
+    "Part": "Legend",
+    "Variant": "Muted"
+   },
+   "target": ".ds-usage-bar-legend__item",
+   "nodeW": 50,
+   "nodeH": 20
+  },
+  {
+   "slug": "legend-primary",
+   "nodeId": "1741:45134",
+   "props": {
+    "Part": "Legend",
+    "Variant": "Primary"
+   },
+   "target": ".ds-usage-bar-legend__item",
+   "nodeW": 50,
+   "nodeH": 20
+  },
+  {
+   "slug": "legend-dashed",
+   "nodeId": "1741:45137",
+   "props": {
+    "Part": "Legend",
+    "Variant": "Dashed"
+   },
+   "target": ".ds-usage-bar-legend__item",
+   "nodeW": 50,
+   "nodeH": 20
+  },
+  {
+   "slug": "legend-striped",
+   "nodeId": "1750:364",
+   "props": {
+    "Part": "Legend",
+    "Variant": "Striped"
+   },
+   "target": ".ds-usage-bar-legend__item",
+   "nodeW": 50,
+   "nodeH": 20
+  },
+  {
+   "slug": "tick-start",
+   "nodeId": "1741:45141",
+   "props": {
+    "Part": "Tick",
+    "Align": "Start"
+   },
+   "target": "#target",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "tick-center",
+   "nodeId": "1741:45144",
+   "props": {
+    "Part": "Tick",
+    "Align": "Center"
+   },
+   "target": "#target",
+   "nodeW": 48,
+   "nodeH": 24
+  },
+  {
+   "slug": "tick-end",
+   "nodeId": "1741:45147",
+   "props": {
+    "Part": "Tick",
+    "Align": "End"
+   },
+   "target": "#target",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "usage-bar",
+   "nodeId": "1742:2",
+   "props": {
+    "Part": "Bar"
+   },
+   "target": ".ds-usage-bar",
+   "nodeW": 480,
+   "nodeH": 56
+  }
+ ]
+}
