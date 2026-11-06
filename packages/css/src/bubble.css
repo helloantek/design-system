@@ -15,7 +15,7 @@
  *     [<p class="ds-bubble-group__footer">Sent 9:51 AM · Read by Mira</p>]
  *   </div>
  *
- *   Figma Variant: none (Default: card, 1 px border, Surface/Card), --muted (fill-2, no border), --ghost (plain text
+ *   Figma Variant: none (Default: card, 1 px border, a soft shadow), --muted (fill-2, no border), --ghost (plain text
  *   across the width), --destructive (card, destructive border at 30 %, destructive text).
  *   Reactions sit on a corner, 7 px over the bubble: --reactions-bottom-end (the default: 12 px in, as on Figma's start
  *   bubbles), --reactions-bottom-start (8 px in, as on its end bubbles), --reactions-top-start or --reactions-top-end.
@@ -62,7 +62,7 @@
   }
 
   /* Figma "Content", Variant=Default: card, a 1 px border (inside the size, as Figma lays it out), 12 × 8 px padding,
-     radius 12 and Surface/Card. */
+     radius 12 and a soft shadow. */
   .ds-bubble__content {
     display: flex;
     flex-direction: column;
@@ -73,7 +73,11 @@
     border: var(--ds-stroke-width-1) solid var(--ds-border);
     border-radius: var(--ds-radius-xl);
     background: var(--ds-card);
-    box-shadow: var(--ds-surface-card);
+    /* Figma's two soft drop shadows (black at 3-4 %), without Surface/Card's inset white top highlight: under a real
+       border it shows as a glow along the top edge on dark cards (on light cards it is invisible anyway). */
+    box-shadow:
+      0 var(--ds-spacing-0-5) calc(var(--ds-spacing-1) - var(--ds-stroke-width-1)) calc(var(--ds-stroke-width-1) * -1) var(--ds-alpha-black-5),
+      0 var(--ds-stroke-width-1) var(--ds-spacing-0-5) calc(var(--ds-stroke-width-1) * -1) var(--ds-alpha-black-5);
     color: var(--ds-foreground);
     font-size: var(--ds-text-xs);
     letter-spacing: -0.005em;
