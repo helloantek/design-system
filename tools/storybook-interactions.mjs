@@ -2072,7 +2072,7 @@ Object.assign(tests, {
     assert.equal(await page.locator('#details-docs').isVisible(), true, 'the details row opens under its row');
     assert.equal(await page.locator('#details-api-gateway').count(), 0, 'and the other closes');
   },
-  'navigation menu: a named nav with triggers (aria-expanded) and links; click, Arrow Down and resting the mouse open a panel, one at a time; Escape, Tab out and a click outside close it; Arrow Left / Right move between items': async () => {
+  'navigation menu: a named nav with triggers (aria-expanded) and links; click, Arrow Down and resting the mouse open a panel, one at a time; Escape, Tab out and a click outside close it (a pending hover does not reopen it); Arrow Left / Right move between items': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-navigation-menu--default&viewMode=story');
     const nav = page.getByRole('navigation', { name: 'Main' });
     await nav.waitFor();
@@ -2094,6 +2094,24 @@ Object.assign(tests, {
     await page.keyboard.press('Escape');
     assert.equal(await solutions.getAttribute('aria-expanded'), 'false', 'Escape closes it');
     assert.equal(await solutions.evaluate((el) => el === document.activeElement), true, 'and focus is on the trigger');
+    // Resting the mouse after Escape opens the panel again (a hover flag used to stay stuck and block it).
+    const sb = await solutions.boundingBox();
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(300);
+    await page.mouse.move(sb.x + sb.width / 2, sb.y + sb.height / 2);
+    await page.waitForTimeout(300);
+    assert.equal(await solutions.getAttribute('aria-expanded'), 'true', 'resting the mouse after Escape opens it again');
+    await page.keyboard.press('Escape');
+    // A click and Escape decide over a pending hover: resting the mouse starts a 150 ms timer, and when the click and
+    // Escape land before it fires (a busy main thread runs input before timers, as on CI) it must not reopen the panel.
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(400);
+    await page.mouse.move(sb.x + sb.width / 2, sb.y + sb.height / 2);
+    await page.mouse.down();
+    await page.mouse.up();
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(300);
+    assert.equal(await solutions.getAttribute('aria-expanded'), 'false', 'a pending hover does not reopen the panel after Escape');
 
     await page.keyboard.press('ArrowRight');
     const resources = nav.getByRole('button', { name: 'Resources' });
