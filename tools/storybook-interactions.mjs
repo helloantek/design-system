@@ -2315,7 +2315,7 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
-  'carousel: a named carousel region of "n of total" slides; Previous / Next (disabled at the ends), the arrow keys, Home and End on the viewport, indicators and outside controls move it; slides out of view are hidden and inert': async () => {
+  'carousel: a named carousel region of "n of total" slides; Previous / Next (disabled at the ends), the arrow keys, Home and End on the viewport, indicators and outside controls move it; slides out of view are hidden and inert; overlay controls turn light over dark pictures and dark over light ones': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-carousel--demo&viewMode=story');
     const region = page.getByRole('region', { name: 'Destinations' });
     await region.waitFor();
@@ -2366,6 +2366,18 @@ Object.assign(tests, {
     assert.equal(await reviews.getByRole('button').count(), 0, 'controls="none" renders no buttons');
     await page.getByRole('button', { name: 'Next review' }).click();
     assert.equal(await reviews.locator('.ds-carousel__slide').nth(1).getAttribute('aria-hidden'), null, 'buttons outside drive it through index');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--adaptive-controls&viewMode=story');
+    const pictures = page.getByRole('region', { name: 'Pictures' });
+    await pictures.waitFor();
+    const nextPicture = pictures.getByRole('button', { name: 'Next slide' });
+    const isLight = (el) => el.evaluate((node) => node.classList.contains('ds-carousel__control--light'));
+    await page.waitForFunction(() => document.querySelector('.ds-carousel__next')?.classList.contains('ds-carousel__control--light'));
+    assert.ok(await isLight(nextPicture), 'over the night picture the control is light');
+    await nextPicture.click();
+    await page.waitForFunction(() => !document.querySelector('.ds-carousel__next')?.classList.contains('ds-carousel__control--light'));
+    assert.ok(!(await isLight(nextPicture)), 'over the snow picture it turns dark');
+    assert.ok(!(await pictures.locator('.ds-carousel__indicators').evaluate((n) => n.classList.contains('ds-carousel__indicators--light'))), 'and so does the dot pill');
   },
   'chart: a named plot shows the hovered category in a tooltip (band highlight on bars, cursor and dot on lines) and hides it when the pointer leaves; arrows, Home, End and Escape do the same from the keyboard; every chart carries its data as a table; pies and rings are named images': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-chart--revenue&viewMode=story');

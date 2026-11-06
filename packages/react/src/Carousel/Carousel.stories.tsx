@@ -51,18 +51,20 @@ export const Playground: StoryObj<PlaygroundArgs> = {
   render: ({ orientation, perView, indicators, controls }) => (
     <div style={width(448)}>
       <Carousel aria-label="Projects" orientation={orientation} perView={perView} indicators={indicators} controls={controls} slideSize={orientation === 'vertical' ? 200 : undefined}>
-        {controls === 'overlay' ? samples.map(([t, m], i) => photoSlide(t, m, photos[i])) : samples.map(([t, m]) => sampleSlide(t, m))}
+        {controls === 'overlay' ? samples.map(([t, m], i) => photoSlide(t, m, i)) : samples.map(([t, m]) => sampleSlide(t, m))}
       </Carousel>
     </div>
   ),
 };
 
 // A photo slide for overlay controls: the text at the top, the bottom left free for the controls.
-function photoSlide(title: string, meta: string, background: string): ReactNode {
+// The slide sets no `tone`: the carousel reads the gradient under each control.
+function photoSlide(title: string, meta: string, i: number): ReactNode {
+  const ink = lightPhoto(i) ? 'black' : 'white';
   return (
-    <CarouselSlide key={title} style={{ display: 'flex', flexDirection: 'column', gap: 4, minHeight: 192, padding: 20, borderRadius: 20, background }}>
-      <p style={{ ...text, fontSize: 14, lineHeight: '20px', fontWeight: 500, color: 'var(--ds-alpha-white-90)' }}>{title}</p>
-      <p style={{ ...text, fontSize: 12, lineHeight: '16px', color: 'var(--ds-alpha-white-70)' }}>{meta}</p>
+    <CarouselSlide key={title} style={{ display: 'flex', flexDirection: 'column', gap: 4, minHeight: 192, padding: 20, borderRadius: 20, background: photos[i] }}>
+      <p style={{ ...text, fontSize: 14, lineHeight: '20px', fontWeight: 500, color: `var(--ds-alpha-${ink}-90)` }}>{title}</p>
+      <p style={{ ...text, fontSize: 12, lineHeight: '16px', color: `var(--ds-alpha-${ink}-70)` }}>{meta}</p>
     </CarouselSlide>
   );
 }
@@ -95,12 +97,14 @@ export const Demo: StoryObj = {
 };
 
 // Placeholder photos: soft greyscale gradients standing in for the demo's blurred picture.
+// Dark and light ones alternate, so the overlay controls can be seen switching between their dark and light look.
 const photos = [
   'radial-gradient(120% 90% at 30% 40%, #8a8a8a, #1f1f1f 70%)',
-  'radial-gradient(100% 80% at 70% 30%, #b8b8b8, #2a2a2a 75%)',
+  'radial-gradient(100% 80% at 70% 30%, #ffffff, #d4d4d4 75%)',
   'linear-gradient(135deg, #5a5a5a, #121212)',
-  'radial-gradient(90% 90% at 50% 60%, #9c9c9c, #181818 70%)',
+  'radial-gradient(90% 90% at 50% 60%, #f5f5f5, #c8c8c8 70%)',
 ];
+const lightPhoto = (i: number) => i % 2 === 1;
 const roundButton: CSSProperties = { pointerEvents: 'auto' };
 
 /** Figma demo "Image Carousel": photos with the controls and a dot pill over them, and actions at the top. */
@@ -122,6 +126,29 @@ export const ImageCarousel: StoryObj = {
           <RiMore2Fill aria-hidden />
         </button>
       </div>
+    </div>
+  ),
+};
+
+// Pictures as <img>, drawn as SVG data URLs: a night sky, snow, and a dusk with a light top and a dark bottom.
+const svg = (body: string) => `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="768" height="512">${body}</svg>`)}`;
+const pictures = [
+  { alt: 'Night sky over a dark hill', src: svg('<rect width="768" height="512" fill="#0f172a"/><circle cx="560" cy="120" r="48" fill="#e2e8f0"/><path d="M0 420 Q 300 300 768 400 V512 H0Z" fill="#020617"/>') },
+  { alt: 'Snowy field under a pale sky', src: svg('<rect width="768" height="512" fill="#f1f5f9"/><path d="M0 330 Q 380 260 768 340 V512 H0Z" fill="#ffffff"/><circle cx="180" cy="110" r="40" fill="#fde68a"/>') },
+  { alt: 'Dusk: a bright sky over a dark shore', src: svg('<rect width="768" height="300" fill="#fed7aa"/><rect y="300" width="768" height="212" fill="#1c1917"/>') },
+];
+
+/** Overlay controls that adapt: each button and the dot pill read what lies under them (here the pixels of an <img>) and turn light on dark pictures, dark on light ones. */
+export const AdaptiveControls: StoryObj = {
+  render: () => (
+    <div style={{ ...width(384), borderRadius: 20, overflow: 'hidden' }}>
+      <Carousel aria-label="Pictures" controls="overlay" indicators gap={0}>
+        {pictures.map((p) => (
+          <CarouselSlide key={p.alt}>
+            <img src={p.src} alt={p.alt} style={{ display: 'block', width: '100%', height: 256, objectFit: 'cover' }} />
+          </CarouselSlide>
+        ))}
+      </Carousel>
     </div>
   ),
 };
@@ -270,7 +297,7 @@ export const Themes: StoryObj = {
             {samples.map(([t, m]) => sampleSlide(t, m))}
           </Carousel>
           <Carousel aria-label={`Photos (${scheme})`} controls="overlay" indicators defaultIndex={1}>
-            {samples.map(([t, m], i) => photoSlide(t, m, photos[i]))}
+            {samples.map(([t, m], i) => photoSlide(t, m, i))}
           </Carousel>
         </div>
       ))}

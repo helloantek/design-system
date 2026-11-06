@@ -1,5 +1,6 @@
-import { Children, isValidElement, useId, useRef, useState, type CSSProperties, type HTMLAttributes, type KeyboardEvent, type PointerEvent, type ReactNode, type Ref } from 'react';
+import { Children, isValidElement, useEffect, useId, useRef, useState, type CSSProperties, type HTMLAttributes, type KeyboardEvent, type PointerEvent, type ReactNode, type Ref } from 'react';
 import { Button } from '../Button';
+import { toneUnder, type CarouselTone } from './tone';
 
 // Styles live in @helloantek/ds-css (classes ds-carousel*); this component only renders the markup and moves the track.
 
@@ -48,7 +49,16 @@ export interface CarouselProps extends Omit<HTMLAttributes<HTMLElement>, 'childr
   indicators?: boolean;
   /** Name of a slide for screen readers (default "1 of 3"). */
   slideLabel?: (index: number, count: number) => string;
+  /**
+   * Look of the overlay controls: `auto` (default) reads what lies under each control (a slide's `tone`, the pixels
+   * of an image, its background colour or gradient) and takes a light control on dark content, a dark one on light
+   * content; `light` or `dark` fixes it.
+   */
+  controlsTone?: 'auto' | CarouselTone;
 }
+
+type Tones = { previous: CarouselTone; next: CarouselTone; indicators: CarouselTone };
+const flip = (under: CarouselTone | null): CarouselTone => (under === 'dark' ? 'light' : 'dark');
 
 /**
  * Figma "Carousel": slides shown one (or `perView`) at a time. A region named by `aria-label`; each slide is a group
@@ -67,6 +77,7 @@ export function Carousel({
   controls = 'outside',
   indicators = false,
   slideLabel = (i, n) => `${i + 1} of ${n}`,
+  controlsTone = 'auto',
   className,
   style,
   ...rest
@@ -105,13 +116,41 @@ export function Carousel({
   };
 
   const overlay = controls === 'overlay';
+  const trackRef = useRef<HTMLDivElement>(null);
+  const controlRefs = { previous: useRef<HTMLButtonElement>(null), next: useRef<HTMLButtonElement>(null), indicators: useRef<HTMLDivElement>(null) };
+  const [tones, setTones] = useState<Tones>({ previous: 'dark', next: 'dark', indicators: 'dark' });
+
+  // Overlay controls follow what lies under them: re-read after the track has moved, on resize and when an image loads.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!overlay || controlsTone !== 'auto' || !track) return;
+    const update = () => {
+      const read = (el: Element | null) => (el ? flip(toneUnder(el, track)) : 'dark');
+      const next: Tones = { previous: read(controlRefs.previous.current), next: read(controlRefs.next.current), indicators: read(controlRefs.indicators.current) };
+      setTones((prev) => (prev.previous === next.previous && prev.next === next.next && prev.indicators === next.indicators ? prev : next));
+    };
+    update();
+    const timer = setTimeout(update, 350);
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update);
+    observer?.observe(track);
+    track.addEventListener('transitionend', update);
+    track.addEventListener('load', update, true);
+    return () => {
+      clearTimeout(timer);
+      observer?.disconnect();
+      track.removeEventListener('transitionend', update);
+      track.removeEventListener('load', update, true);
+    };
+  }, [overlay, controlsTone, index, perView, count]);
+  const toneFor = (part: keyof Tones) => (controlsTone === 'auto' ? tones[part] : controlsTone);
+
   const button = (direction: 'previous' | 'next') => {
     const disabled = direction === 'previous' ? index === 0 : index >= last;
     const label = direction === 'previous' ? 'Previous slide' : 'Next slide';
     const icon = direction === 'previous' ? (vertical ? icons.up : icons.left) : vertical ? icons.down : icons.right;
     const onClick = () => go(index + (direction === 'previous' ? -1 : 1));
     return overlay ? (
-      <button type="button" className={`ds-carousel__control ds-carousel__${direction}`} aria-label={label} aria-controls={trackId} disabled={disabled} onClick={onClick}>
+      <button ref={controlRefs[direction]} type="button" className={cx('ds-carousel__control', `ds-carousel__${direction}`, toneFor(direction) === 'light' && 'ds-carousel__control--light')} aria-label={label} aria-controls={trackId} disabled={disabled} onClick={onClick}>
         {icon}
       </button>
     ) : (
@@ -120,7 +159,7 @@ export function Carousel({
   };
 
   const dots = indicators && last > 0 && (
-    <div className="ds-carousel__indicators">
+    <div ref={controlRefs.indicators} className={cx('ds-carousel__indicators', overlay && perView === 1 && toneFor('indicators') === 'light' && 'ds-carousel__indicators--light')}>
       {Array.from({ length: last + 1 }, (_, i) => (
         <button key={i} type="button" className="ds-carousel__indicator" aria-label={`Slide ${i + 1} of ${last + 1}`} aria-current={i === index ? 'true' : undefined} aria-controls={trackId} onClick={() => go(i)} />
       ))}
@@ -144,7 +183,7 @@ export function Carousel({
       <div className="ds-carousel__body">
         {controls !== 'none' && button('previous')}
         <div className="ds-carousel__viewport" tabIndex={0} onKeyDown={onKeyDown} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => (swipe.current = null)}>
-          <div className="ds-carousel__track" id={trackId} aria-live="polite">
+          <div ref={trackRef} className="ds-carousel__track" id={trackId} aria-live="polite">
             {slides.map((slide, i) => {
               const hidden = i < index || i >= index + perView;
               return (
@@ -165,9 +204,11 @@ export function Carousel({
 
 export interface CarouselSlideProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>;
+  /** Whether the slide is light or dark, for overlay controls; without it the carousel reads the slide's pixels or colours. */
+  tone?: CarouselTone;
 }
 
 /** The content of one slide; the carousel wraps it in the slide group. Fills the slide's box. */
-export function CarouselSlide({ className, style, ...rest }: CarouselSlideProps) {
-  return <div {...rest} className={className} style={{ height: '100%', boxSizing: 'border-box', ...style }} />;
+export function CarouselSlide({ tone, className, style, ...rest }: CarouselSlideProps) {
+  return <div data-tone={tone} {...rest} className={className} style={{ height: '100%', boxSizing: 'border-box', ...style }} />;
 }
