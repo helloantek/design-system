@@ -60,7 +60,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
 // A photo slide for overlay controls: the text at the top, the bottom left free for the controls.
 function photoSlide(title: string, meta: string, background: string): ReactNode {
   return (
-    <CarouselSlide key={title} style={{ display: 'flex', flexDirection: 'column', gap: 4, minHeight: 192, padding: 20, background }}>
+    <CarouselSlide key={title} style={{ display: 'flex', flexDirection: 'column', gap: 4, minHeight: 192, padding: 20, borderRadius: 20, background }}>
       <p style={{ ...text, fontSize: 14, lineHeight: '20px', fontWeight: 500, color: 'var(--ds-alpha-white-90)' }}>{title}</p>
       <p style={{ ...text, fontSize: 12, lineHeight: '16px', color: 'var(--ds-alpha-white-70)' }}>{meta}</p>
     </CarouselSlide>
