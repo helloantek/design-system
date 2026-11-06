@@ -150,8 +150,19 @@
    * 12 px in from the bottom corners, and the dots in a blurred pill between them (16 × 3 current, 3 × 3 others at
    * 50 %, 3 px apart).
    */
+  /* Overlay controls lie over the bottom of the slides, so they are meant for full-bleed media: the slides meet
+     edge to edge (no gap unless set) and the viewport takes the demo's 20 px radius. Keep text out of the bottom
+     52 px of an overlay slide. */
+  .ds-carousel--overlay {
+    --carousel-gap: var(--ds-spacing-0);
+  }
+
   .ds-carousel--overlay .ds-carousel__body {
     position: relative;
+  }
+
+  .ds-carousel--overlay .ds-carousel__viewport {
+    border-radius: var(--ds-radius-3xl);
   }
 
   .ds-carousel__control {
@@ -164,7 +175,7 @@
     border: 0;
     border-radius: var(--ds-radius-full);
     background: var(--ds-alpha-black-20);
-    color: var(--ds-primary-foreground);
+    color: var(--ds-alpha-white-90);
     cursor: pointer;
     backdrop-filter: blur(var(--ds-spacing-6));
   }
@@ -219,7 +230,7 @@
   .ds-carousel--overlay .ds-carousel__indicator {
     width: calc(var(--ds-spacing-1) - var(--ds-stroke-width-1));
     height: calc(var(--ds-spacing-1) - var(--ds-stroke-width-1));
-    background: var(--ds-primary-foreground);
+    background: var(--ds-alpha-white-90);
     opacity: 0.5;
   }
 

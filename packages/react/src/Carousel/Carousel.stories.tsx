@@ -47,14 +47,25 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     indicators: { name: 'Indicators', control: 'boolean' },
     controls: { name: 'Controls', control: 'inline-radio', options: ['outside', 'overlay', 'none'] },
   },
+  // Overlay controls cover the bottom of the slides, so with them the slides are photos with the text at the top.
   render: ({ orientation, perView, indicators, controls }) => (
     <div style={width(448)}>
       <Carousel aria-label="Projects" orientation={orientation} perView={perView} indicators={indicators} controls={controls} slideSize={orientation === 'vertical' ? 200 : undefined}>
-        {samples.map(([t, m]) => sampleSlide(t, m))}
+        {controls === 'overlay' ? samples.map(([t, m], i) => photoSlide(t, m, photos[i])) : samples.map(([t, m]) => sampleSlide(t, m))}
       </Carousel>
     </div>
   ),
 };
+
+// A photo slide for overlay controls: the text at the top, the bottom left free for the controls.
+function photoSlide(title: string, meta: string, background: string): ReactNode {
+  return (
+    <CarouselSlide key={title} style={{ display: 'flex', flexDirection: 'column', gap: 4, minHeight: 192, padding: 20, background }}>
+      <p style={{ ...text, fontSize: 14, lineHeight: '20px', fontWeight: 500, color: 'var(--ds-alpha-white-90)' }}>{title}</p>
+      <p style={{ ...text, fontSize: 12, lineHeight: '16px', color: 'var(--ds-alpha-white-70)' }}>{meta}</p>
+    </CarouselSlide>
+  );
+}
 
 const cities = [
   { name: 'Lisbon', meta: 'Portugal · 248 stays', hue: 'orange', icon: <RiSunLine size={32} /> },
@@ -254,9 +265,12 @@ export const Themes: StoryObj = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
       {(['light', 'dark'] as const).map((scheme) => (
-        <div key={scheme} data-ds-brand="theme-1" data-ds-scheme={scheme} style={{ background: 'var(--ds-background)', padding: 24 }}>
+        <div key={scheme} data-ds-brand="theme-1" data-ds-scheme={scheme} style={{ background: 'var(--ds-background)', padding: 24, display: 'grid', gap: 32 }}>
           <Carousel aria-label={`Projects (${scheme})`} indicators defaultIndex={1}>
             {samples.map(([t, m]) => sampleSlide(t, m))}
+          </Carousel>
+          <Carousel aria-label={`Photos (${scheme})`} controls="overlay" indicators defaultIndex={1}>
+            {samples.map(([t, m], i) => photoSlide(t, m, photos[i]))}
           </Carousel>
         </div>
       ))}

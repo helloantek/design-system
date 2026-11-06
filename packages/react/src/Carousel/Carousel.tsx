@@ -40,7 +40,8 @@ export interface CarouselProps extends Omit<HTMLAttributes<HTMLElement>, 'childr
   /**
    * Where Previous and Next go: `outside` (default, Figma's outline buttons beside or above and below the viewport),
    * `overlay` (round translucent buttons over its bottom corners, the "Image Carousel" demo) or `none` (drive it with
-   * `index`, as in the "In a card" demo).
+   * `index`, as in the "In a card" demo). `overlay` is for full-bleed media: the controls cover the bottom 52 px of
+   * the slides, so keep text out of it; the slides meet edge to edge unless `gap` is set.
    */
   controls?: 'outside' | 'overlay' | 'none';
   /** Show a dot per position under the carousel (or in the overlay); the dots move to their slide. */
