@@ -2333,6 +2333,35 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'bubble: groups align theirs to the start and yours to the end; reactions sit on the bottom corner (end for start bubbles, start for end bubbles) or the top; a long message shows 8 lines and a Show more toggle that expands and collapses it': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-bubble--reactions&viewMode=story');
+    const bubbles = page.locator('.ds-bubble');
+    await bubbles.first().waitFor();
+    const box = (loc) => loc.boundingBox();
+    const [b0, r0] = [await box(bubbles.nth(0)), await box(bubbles.nth(0).locator('.ds-bubble__reactions'))];
+    assert.ok(Math.abs(b0.x + b0.width - 12 - (r0.x + r0.width)) < 1, 'a start bubble keeps its reactions 12 px from its end');
+    assert.ok(Math.abs(b0.y + b0.height - 7 - r0.y) < 1, '7 px over its bottom edge');
+    const [b1, r1] = [await box(bubbles.nth(1)), await box(bubbles.nth(1).locator('.ds-bubble__reactions'))];
+    assert.ok(Math.abs(b1.x + 8 - r1.x) < 1, 'an end bubble keeps them 8 px from its start');
+    const [b2, r2] = [await box(bubbles.nth(2)), await box(bubbles.nth(2).locator('.ds-bubble__reactions'))];
+    assert.ok(Math.abs(b2.y + 7 - (r2.y + r2.height)) < 1, 'top-start puts them 7 px over the top edge');
+    const column = await page.locator('.ds-bubble-group').first().boundingBox();
+    assert.ok(Math.abs(column.x + column.width - (b1.x + b1.width)) < 1, 'an end group aligns its bubbles to the end');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-bubble--long-message&viewMode=story');
+    const more = page.getByRole('button', { name: 'Show more' });
+    await more.waitFor();
+    assert.equal(await more.getAttribute('aria-expanded'), 'false');
+    const text = page.locator(`#${await more.getAttribute('aria-controls')}`);
+    assert.equal(Math.round((await text.boundingBox()).height), 160, 'the long message shows 8 lines');
+    await more.click();
+    const less = page.getByRole('button', { name: 'Show less' });
+    assert.equal(await less.getAttribute('aria-expanded'), 'true');
+    assert.ok((await text.boundingBox()).height > 160, 'Show more expands it');
+    await less.click();
+    assert.equal(Math.round((await text.boundingBox()).height), 160, 'Show less collapses it');
+    assert.equal(await page.locator('.ds-bubble__more').count(), 1, 'short messages get no toggle');
+  },
   'carousel: a named carousel region of "n of total" slides; Previous / Next (disabled at the ends), the arrow keys, Home and End on the viewport, indicators and outside controls move it; slides out of view are hidden and inert; overlay controls are white over near-black pictures and dark over grey and light ones': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-carousel--demo&viewMode=story');
     const region = page.getByRole('region', { name: 'Destinations' });

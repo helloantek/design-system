@@ -22,6 +22,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderItem } from './item';
+import { renderBubble } from './bubble';
 import { renderCarousel } from './carousel';
 import { renderChart } from './chart';
 import { renderUsageBar } from './usage-bar';
@@ -91,6 +92,7 @@ export const renderers: Record<string, Renderer> = {
   'input-group-dropdown': renderInputGroupDropdown,
   'input-otp': renderInputOTP,
   item: renderItem,
+  bubble: renderBubble,
   carousel: renderCarousel,
   chart: renderChart,
   menubar: renderMenubar,

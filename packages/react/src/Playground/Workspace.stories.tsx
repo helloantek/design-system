@@ -16,6 +16,7 @@ import {
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { Breadcrumb, BreadcrumbItem } from '../Breadcrumb';
+import { Bubble, BubbleGroup } from '../Bubble';
 import { Carousel, CarouselSlide } from '../Carousel';
 import { BarChart, ChartLegend, PieChart } from '../Chart';
 import { Button } from '../Button';
@@ -34,7 +35,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble (a conversation on Inbox, with reactions, a read receipt and Show more), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -176,6 +177,23 @@ export const App: StoryObj = {
                   </Table>
                   <Pagination page={tablePage} pageCount={Math.ceil(people.length / perPage)} onPageChange={setTablePage} aria-label="Members pages" />
                 </>
+              ) : page === 'Inbox' ? (
+                <div role="log" aria-label="Conversation with Priya" style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 480 }}>
+                  <BubbleGroup>
+                    <Bubble variant="muted">Can we move the design review to Thursday?</Bubble>
+                    <Bubble variant="muted" reactions="🙏">
+                      Two people are out on Wednesday.
+                    </Bubble>
+                  </BubbleGroup>
+                  <BubbleGroup align="end" footer="Sent 10:24 AM · Read by Priya">
+                    <Bubble>Sure, Thursday at 2 PM works. I will update the invite.</Bubble>
+                  </BubbleGroup>
+                  <BubbleGroup>
+                    <Bubble variant="muted" collapsible={3}>
+                      Thanks! I will also bring the notes from last week, the open questions on the onboarding flow, the numbers from the pricing test and a first draft of the release plan for 2.5, so we can go through everything in one go instead of booking another slot next week.
+                    </Bubble>
+                  </BubbleGroup>
+                </div>
               ) : page === 'Home' ? (
                 <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
                   <span style={{ fontSize: 14, lineHeight: '20px', fontWeight: 500, color: 'var(--ds-foreground)' }}>What's new</span>

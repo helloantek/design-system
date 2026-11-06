@@ -1,0 +1,33 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target and how to read it.",
+  "layers": {
+    "root": {
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma's Bubble frame has a 4 px gap for its Reactions slot; the code positions reactions absolutely, so the wrapper has no gap or padding of its own."
+    },
+    "Content": {
+      "selector": ".ds-bubble__content"
+    },
+    "TEXT": {
+      "selector": ".ds-bubble__text"
+    },
+    "reactions-pill": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "g",
+        "p"
+      ],
+      "$why": "Figma lays the 0.5 px inside border out around its 6 px padding (39 px wide for 26 px of reactions); the code adds the half pixel to the padding instead, so the size matches and the padding reads 6.5. The gap applies between reactions (Figma's sample has one text node)."
+    },
+    "Reaction": {
+      "selector": "span",
+      "skip": [
+        "fs"
+      ],
+      "$why": "The component samples 13 px reactions while every demo uses 14 px; the code follows the demos."
+    }
+  }
+}
