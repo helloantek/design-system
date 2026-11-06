@@ -16,6 +16,7 @@ import {
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { Breadcrumb, BreadcrumbItem } from '../Breadcrumb';
+import { Carousel, CarouselSlide } from '../Carousel';
 import { BarChart, ChartLegend, PieChart } from '../Chart';
 import { Button } from '../Button';
 import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList } from '../Command';
@@ -33,7 +34,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -51,6 +52,11 @@ const people = [
   { name: 'Omar Haddad', email: 'omar@orbit.dev', role: 'Member' },
 ];
 const pages = ['Home', 'Inbox', 'Reports', 'Members', 'Settings'];
+const news = [
+  { title: 'Command palette', body: 'Press ⌘K anywhere to jump to a page or a member.', hue: 'blue' },
+  { title: 'Storage reports', body: 'See which projects use your space on the Reports page.', hue: 'green' },
+  { title: 'Weekly activity', body: 'Edits and comments per day, with a tooltip on every bar.', hue: 'fuchsia' },
+];
 const activity = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => ({ day, edits: [42, 58, 71, 64, 49, 12, 8][i], comments: [18, 26, 30, 22, 25, 4, 3][i] }));
 const activitySeries = [
   { key: 'edits', label: 'Edits', color: 'var(--ds-chart-7)' },
@@ -170,6 +176,18 @@ export const App: StoryObj = {
                   </Table>
                   <Pagination page={tablePage} pageCount={Math.ceil(people.length / perPage)} onPageChange={setTablePage} aria-label="Members pages" />
                 </>
+              ) : page === 'Home' ? (
+                <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
+                  <span style={{ fontSize: 14, lineHeight: '20px', fontWeight: 500, color: 'var(--ds-foreground)' }}>What's new</span>
+                  <Carousel aria-label="What's new" indicators>
+                    {news.map((n) => (
+                      <CarouselSlide key={n.title} style={{ display: 'grid', alignContent: 'end', gap: 4, minHeight: 140, padding: 20, borderRadius: 16, background: `var(--ds-palette-${n.hue}-tint)`, color: `var(--ds-palette-${n.hue}-text)` }}>
+                        <span style={{ fontSize: 16, lineHeight: '24px', fontWeight: 600 }}>{n.title}</span>
+                        <span style={{ fontSize: 14, lineHeight: '20px' }}>{n.body}</span>
+                      </CarouselSlide>
+                    ))}
+                  </Carousel>
+                </div>
               ) : page === 'Reports' ? (
                 <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 14, lineHeight: '20px' }}>
@@ -207,7 +225,7 @@ export const App: StoryObj = {
                   </div>
                 </div>
               ) : (
-                <p style={{ margin: 0, color: 'var(--ds-muted-foreground)', fontSize: 14 }}>{page} is a placeholder page in this playground; open Members or Reports to see more.</p>
+                <p style={{ margin: 0, color: 'var(--ds-muted-foreground)', fontSize: 14 }}>{page} is a placeholder page in this playground; open Home, Members or Reports to see more.</p>
               )}
             </div>
           </SidebarInset>

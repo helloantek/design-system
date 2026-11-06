@@ -2315,6 +2315,58 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'carousel: a named carousel region of "n of total" slides; Previous / Next (disabled at the ends), the arrow keys, Home and End on the viewport, indicators and outside controls move it; slides out of view are hidden and inert': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--demo&viewMode=story');
+    const region = page.getByRole('region', { name: 'Destinations' });
+    await region.waitFor();
+    assert.equal(await region.getAttribute('aria-roledescription'), 'carousel');
+    const previous = region.getByRole('button', { name: 'Previous slide' });
+    const next = region.getByRole('button', { name: 'Next slide' });
+    assert.ok(await previous.isDisabled(), 'Previous starts disabled');
+    const slide = (n) => region.locator('.ds-carousel__slide').nth(n);
+    assert.equal(await slide(0).getAttribute('aria-label'), '1 of 3');
+    assert.equal(await slide(1).getAttribute('aria-hidden'), 'true', 'slides out of view are hidden');
+    assert.equal(await slide(1).evaluate((el) => el.inert), true, 'and inert');
+    await next.click();
+    assert.equal(await slide(1).getAttribute('aria-hidden'), null);
+    assert.equal(await slide(0).getAttribute('aria-hidden'), 'true');
+    assert.ok(!(await previous.isDisabled()));
+    await page.waitForTimeout(400);
+    const viewport = region.locator('.ds-carousel__viewport');
+    const [vb, sb] = [await viewport.boundingBox(), await slide(1).boundingBox()];
+    assert.ok(Math.abs(vb.x - sb.x) < 1, 'the second slide moved into the viewport');
+    await next.click();
+    assert.ok(await next.isDisabled(), 'Next is disabled on the last slide');
+    await viewport.focus();
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await slide(1).getAttribute('aria-hidden'), null, 'Arrow Left goes back');
+    await page.keyboard.press('Home');
+    assert.equal(await slide(0).getAttribute('aria-hidden'), null);
+    await page.keyboard.press('End');
+    assert.equal(await slide(2).getAttribute('aria-hidden'), null);
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--multiple-items&viewMode=story');
+    const albums = page.getByRole('region', { name: 'New albums' });
+    await albums.waitFor();
+    assert.equal(await albums.locator('.ds-carousel__slide:not([aria-hidden])').count(), 3, 'three slides in view');
+    await albums.getByRole('button', { name: 'Next slide' }).click();
+    await albums.getByRole('button', { name: 'Next slide' }).click();
+    assert.ok(await albums.getByRole('button', { name: 'Next slide' }).isDisabled(), 'it stops when the last slide is in view');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--with-indicators&viewMode=story');
+    const steps = page.getByRole('region', { name: 'Getting started' });
+    await steps.waitFor();
+    await steps.getByRole('button', { name: 'Slide 3 of 3' }).click();
+    assert.equal(await steps.getByRole('button', { name: 'Slide 3 of 3' }).getAttribute('aria-current'), 'true');
+    assert.equal(await steps.locator('.ds-carousel__slide').nth(2).getAttribute('aria-hidden'), null, 'a dot moves to its slide');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-carousel--in-a-card&viewMode=story');
+    const reviews = page.getByRole('region', { name: 'Reviews' });
+    await reviews.waitFor();
+    assert.equal(await reviews.getByRole('button').count(), 0, 'controls="none" renders no buttons');
+    await page.getByRole('button', { name: 'Next review' }).click();
+    assert.equal(await reviews.locator('.ds-carousel__slide').nth(1).getAttribute('aria-hidden'), null, 'buttons outside drive it through index');
+  },
   'chart: a named plot shows the hovered category in a tooltip (band highlight on bars, cursor and dot on lines) and hides it when the pointer leaves; arrows, Home, End and Escape do the same from the keyboard; every chart carries its data as a table; pies and rings are named images': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-chart--revenue&viewMode=story');
     const plot = page.getByRole('group', { name: 'Revenue from subscriptions' });

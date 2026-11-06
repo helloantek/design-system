@@ -1,0 +1,35 @@
+{
+ "$comment": "Sort UI 2.0 Carousel (331:28) reference renders (1x PNG, exportAsync with absolute bounds): Orientation=Horizontal (448 \u00d7 192, 352 px slides) and Vertical (448 \u00d7 296, 200 px slides) on their first slide, with Figma's sample slides ('Token inspector', '6 participants' on fill-2) and Previous disabled. renderers/carousel.tsx renders them with Carousel and CarouselSlide.",
+ "component": "carousel",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "331:28",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "horizontal",
+   "nodeId": "330:2",
+   "props": {
+    "Orientation": "Horizontal"
+   },
+   "target": ".ds-carousel__body",
+   "nodeW": 448,
+   "nodeH": 192
+  },
+  {
+   "slug": "vertical",
+   "nodeId": "331:8",
+   "props": {
+    "Orientation": "Vertical"
+   },
+   "target": ".ds-carousel__body",
+   "nodeW": 448,
+   "nodeH": 296
+  }
+ ]
+}

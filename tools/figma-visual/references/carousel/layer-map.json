@@ -1,0 +1,26 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-carousel__body) and how to read it.",
+  "layers": {
+    "root": {},
+    "Previous": {
+      "selector": ".ds-carousel__previous",
+      "stroke": "inset-shadow"
+    },
+    "Next": {
+      "selector": ".ds-carousel__next",
+      "stroke": "inset-shadow"
+    },
+    "viewport": {
+      "selector": ".ds-carousel__viewport"
+    },
+    "Slide": {
+      "selector": ".ds-carousel__slide:first-child > div"
+    },
+    "Title": {
+      "selector": ".ds-carousel__slide:first-child p:first-child"
+    },
+    "Meta": {
+      "selector": ".ds-carousel__slide:first-child p:last-child"
+    }
+  }
+}
