@@ -15,7 +15,7 @@
  *     [<span class="ds-attachment__actions">…ghost xs icon buttons…</span>]            (Figma "actions")
  *   </div>
  *
- * Figma State: Done (no modifier), Uploading (--uploading), Error (--error: destructive border at 30 % and message);
+ * Figma State: Done (no modifier), Uploading (--uploading), Error (--error: destructive border at 70 %, Figma 30 %, and message);
  * Hover comes from :hover. A card or a picture shows its actions on hover or focus, and always when it failed.
  */
 
@@ -44,8 +44,9 @@
     background-color: var(--ds-control-hover);
   }
 
+  /* Figma: destructive at 30 %; at 70 % by design review, so a failed upload stands out in Light and Dark. */
   .ds-attachment--error {
-    --attachment-border: var(--ds-alpha-destructive-30);
+    --attachment-border: var(--ds-alpha-destructive-70);
   }
 
   /* Figma "Media": a 32 px file icon (24 px with a 20 px icon in File sm). */

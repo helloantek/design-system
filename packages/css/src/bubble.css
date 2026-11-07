@@ -16,7 +16,7 @@
  *   </div>
  *
  *   Figma Variant: none (Default: card, 1 px border, a soft shadow), --muted (fill-2, no border), --ghost (plain text
- *   across the width), --destructive (card, destructive border at 30 %, destructive text).
+ *   across the width), --destructive (card, destructive border at 70 % — Figma 30 % — and destructive text).
  *   Reactions sit on a corner, 7 px over the bubble: --reactions-bottom-end (the default: 12 px in, as on Figma's start
  *   bubbles), --reactions-bottom-start (8 px in, as on its end bubbles), --reactions-top-start or --reactions-top-end.
  */
@@ -106,8 +106,9 @@
     box-shadow: none;
   }
 
+  /* Figma: destructive at 30 %; at 70 % by design review, as on Attachment's Error state. */
   .ds-bubble--destructive .ds-bubble__content {
-    border-color: var(--ds-alpha-destructive-30);
+    border-color: var(--ds-alpha-destructive-70);
     color: var(--ds-destructive-foreground);
   }
 

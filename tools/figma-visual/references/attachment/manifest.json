@@ -53,7 +53,13 @@
    },
    "target": ".ds-attachment",
    "nodeW": 240,
-   "nodeH": 54
+   "nodeH": 54,
+   "specOverride": {
+    "root": {
+     "stroke": "#fb2c36b3"
+    }
+   },
+   "$why": "Design review (PR #131): the error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark; listed under Known design findings."
   },
   {
    "slug": "file-sm-done",
@@ -97,7 +103,13 @@
    },
    "target": ".ds-attachment",
    "nodeW": 240,
-   "nodeH": 36
+   "nodeH": 36,
+   "specOverride": {
+    "root": {
+     "stroke": "#fb2c36b3"
+    }
+   },
+   "$why": "Design review (PR #131): the error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark; listed under Known design findings."
   }
  ]
 }
