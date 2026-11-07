@@ -1,0 +1,156 @@
+/*
+ * Message Scroller — Sort UI 2.0 component "Message Scroller" (node 359:3) on page 359:2 in file 4JnqgEbdlnKgiFrfmiwEZw:
+ * a chat transcript that scrolls inside a fixed height, with a fade over the bottom edge and buttons that jump to the
+ * end (or the start). Values are Sort UI 2.0 tokens. Framework-agnostic; the scrolling behaviour (following the live
+ * edge, anchoring turns, keeping the place when history loads) lives in the React adapter.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-message-scroller" data-at-start data-at-end data-animation="slide" style="height: 440px">
+ *     <div class="ds-message-scroller__viewport" role="log" tabindex="0" aria-label="…">
+ *       <div class="ds-message-scroller__content">                                (Figma "content", 32 px gap)
+ *         <div class="ds-message-scroller__item" data-scroll-anchor id="…">…a Message or a Marker…</div>
+ *       </div>
+ *       <div class="ds-message-scroller__spacer" style="height: 0"></div>       (room for an anchored turn)
+ *     </div>
+ *     [<div class="ds-message-scroller__fade"></div>]                            (Figma "Fade")
+ *     [<button class="ds-button ds-button--outline ds-button--sm ds-message-scroller__to-start">…</button>]
+ *     [<button class="ds-button ds-button--outline ds-button--sm ds-message-scroller__to-end">…</button>]
+ *   </div>
+ *
+ * The fade and the end button show while there is more below (no data-at-end); the start button while there is more
+ * above (no data-at-start). The fade ends in --message-scroller-surface (Figma: card), the surface behind the scroller.
+ */
+
+@layer ds.components {
+  .ds-message-scroller {
+    --message-scroller-surface: var(--ds-card);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    font-family: var(--ds-font-sans);
+  }
+
+  /* Figma draws no scrollbar; the end and start buttons and the keyboard (the log is focusable) move through it. The
+     browser's own scroll anchoring is off: the adapter keeps the reader's place itself, the same in every browser. */
+  .ds-message-scroller__viewport {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overflow-anchor: none;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    border-radius: var(--ds-radius-sm);
+  }
+
+  .ds-message-scroller__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ds-message-scroller__viewport:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Figma "content": the turns 32 px apart. */
+  .ds-message-scroller__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-8);
+    min-width: 0;
+  }
+
+  .ds-message-scroller__item {
+    min-width: 0;
+  }
+
+  .ds-message-scroller__spacer {
+    flex: none;
+  }
+
+  /* Figma "Fade": 40 px from the background at 5 % to the surface, over the bottom edge. */
+  .ds-message-scroller__fade {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: var(--ds-spacing-10);
+    background: linear-gradient(var(--ds-alpha-background-5), var(--message-scroller-surface));
+    pointer-events: none;
+    transition: opacity var(--ds-duration-200) var(--ds-ease-out);
+  }
+
+  .ds-message-scroller[data-at-end] .ds-message-scroller__fade {
+    opacity: 0;
+  }
+
+  /* Figma "Scroll to end" / "Scroll to start": an outline sm icon button, centred 16 px from the edge. */
+  .ds-message-scroller__to-end,
+  .ds-message-scroller__to-start {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .ds-message-scroller__to-end {
+    bottom: var(--ds-spacing-4);
+  }
+
+  .ds-message-scroller__to-start {
+    top: var(--ds-spacing-4);
+  }
+
+  .ds-message-scroller__to-end[hidden],
+  .ds-message-scroller__to-start[hidden] {
+    display: none;
+  }
+
+  /* New turns added at the end come in with the chosen animation (the "Animation" demo). */
+  .ds-message-scroller[data-animation='fade'] .ds-message-scroller__item[data-entering] {
+    animation: ds-message-scroller-fade var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  .ds-message-scroller[data-animation='slide'] .ds-message-scroller__item[data-entering] {
+    animation: ds-message-scroller-slide var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  .ds-message-scroller[data-animation='scale'] .ds-message-scroller__item[data-entering] {
+    transform-origin: bottom right;
+    animation: ds-message-scroller-scale var(--ds-duration-300) var(--ds-ease-out);
+  }
+
+  @keyframes ds-message-scroller-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes ds-message-scroller-slide {
+    from {
+      opacity: 0;
+      translate: 0 var(--ds-spacing-4);
+    }
+  }
+
+  @keyframes ds-message-scroller-scale {
+    from {
+      opacity: 0;
+      scale: 0.9;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-message-scroller__fade {
+      transition: none;
+    }
+
+    .ds-message-scroller .ds-message-scroller__item[data-entering] {
+      animation: none;
+    }
+  }
+}

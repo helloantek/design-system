@@ -711,6 +711,43 @@ One chat message laid out around its bubbles: Sort UI 2.0 **Message** (Align, Av
 
 Put a conversation in an element with `role="log"` and a name so new messages are announced. Avatars take `--avatar-fill` and `--avatar-ink` for the coloured fallbacks the demos use. The "With a trace" demo waits for AI Trace, and the Attachment story draws its file card inline until Attachment ships.
 
+## Message Scroller
+
+A chat transcript in a fixed height: Sort UI 2.0 **Message Scroller** (Fade, Button end, Button start, content).
+
+```tsx
+const scroller = useRef<MessageScrollerHandle>(null);
+
+<MessageScroller aria-label="Conversation" anchorOffset={64} controlRef={scroller} style={{ height: 440 }}>
+  {turns.map((turn) => (
+    <MessageScrollerItem key={turn.id} id={turn.id} scrollAnchor={turn.role === 'user'}>
+      <Message align={turn.role === 'user' ? 'end' : 'start'}>
+        <Bubble variant={turn.role === 'user' ? 'muted' : 'ghost'}>{turn.text}</Bubble>
+      </Message>
+    </MessageScrollerItem>
+  ))}
+</MessageScroller>
+
+scroller.current?.scrollToItem('turn-12');
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| content | children: `MessageScrollerItem`s (an `id` to jump to, `scrollAnchor` for a turn that settles near the top edge) holding Messages and Markers, 32 px apart | `ds-message-scroller__content` · `__item` |
+| Fade | `fade` (default true): 40 px from the background at 5 % to the surface (`--message-scroller-surface`, default card), while there is more below | `ds-message-scroller__fade` |
+| Button end | `scrollToEndButton` (default true): an outline sm icon button 16 px above the bottom, while the reader is above the live edge (`scrollToEndLabel`) | `ds-message-scroller__to-end` |
+| Button start | `scrollToStartButton` (default false): the same 16 px below the top, while the reader is below the first message (`scrollToStartLabel`) | `ds-message-scroller__to-start` |
+| "Following the Live Edge" demo | `autoScroll` (default true): messages that arrive or stream keep the live edge in view while the reader is at it | — |
+| "Anchoring Turns", "Group Chat", "Keeping Context Visible" demos | a new `scrollAnchor` turn added at the end settles at the top edge with `anchorOffset` px of the previous reply in view; room below it lets it get there before its reply fills the view | `ds-message-scroller__spacer` |
+| "Opening Saved Threads" demo | `defaultScrollPosition`: `end` (default) · `start` · `last-anchor` | — |
+| "Loading Earlier Messages" demo | messages added above keep the first visible message in place, the same in every browser | — |
+| "Animating New Messages" demo | `animation`: `none` (default) · `fade` · `slide` · `scale`, for turns added at the end (still with reduced motion) | `[data-animation]` · `__item[data-entering]` |
+| "Jumping to Messages" demo | `controlRef`: `scrollToStart()`, `scrollToEnd()`, `scrollToItem(id)` | — |
+| "Tracking the Reader's Position" demo | `onAnchorChange(id)`: the anchored turn at the top edge as the reader scrolls | — |
+| "Reading Scroll State" demo | `onScrollStateChange({ atStart, atEnd })` | `[data-at-start]` · `[data-at-end]` |
+
+The transcript is a focusable `role="log"` (name it with `aria-label`), so new messages are announced and the arrow keys, Page Up/Down, Home and End scroll it. The buttons hide once used, and focus moves to the log. Figma draws no scrollbar, and neither does the code; the buttons and the keyboard move through it. The demos' composer is a stand-in until AI Chat Composer ships.
+
 ## Navigation Menu
 
 A site's main navigation: the Sort UI 2.0 **Navigation Menu**, **Navigation Menu Trigger**, **Navigation Menu Content** and **Navigation Menu Link**.
@@ -1537,6 +1574,7 @@ These come from the Figma files, not the code:
 - Carousel (2.0): Figma's overlay controls are always dark (foreground at 20 %); the code reads what lies under each control and switches to a white control (white at 90 %, a black icon) over near-black pictures (relative luminance under 0.05), so the circle never disappears. Cross-origin images without CORS cannot be read: give their slides a `tone`. The component has only Previous and Next; the "With indicators" and "Image Carousel" demos draw the dots and the overlay controls themselves, and the code offers them as `indicators` and `controls="overlay"`. Figma has no slide transition, focus state for the viewport or keyboard path; the code slides the track in 300 ms (none with reduced motion), rings the focused viewport and moves with the arrow keys. The overlay buttons and dot pill use black at 40 % with a faint white ring and white icons where Figma's demo uses foreground at 20 % and primary-foreground: at 20 % they disappeared on darker photos, and primary-foreground is black in Dark.
 - Bubble (2.0): the component samples 13 px reactions, every demo uses 14 px; the code follows the demos. Figma counts the reactions pill's 0.5 px border in its layout (39 × 21 for two emoji); the code adds the half pixel to the padding. The demos place reactions on the bottom-end corner of start bubbles, the bottom-start corner of end bubbles and the top-start corner when a bubble's top is free; the code makes those the defaults and the `reactionsPlacement` options. Figma's "Long message" bubble draws its border outside; the code keeps it inside like the other bubbles. Figma's Default and Destructive bubbles carry Surface/Card's inset white top highlight; under the 1 px border it reads as a glow on dark cards, so the code keeps only the two soft drop shadows (black at 5 %).
 - Message (2.0): Figma's Time text in the footer is Regular while the component's text style is Medium; the code follows the demos (Regular, with the sender in Medium). The "Attachment" demo's file card is a placeholder until Attachment is built. The demos colour fallback avatars with palette solids; Avatar gained `--avatar-fill` and `--avatar-ink` for that instead of a new prop.
+- Message Scroller (2.0): the component is a single component with a slot, not a set; its booleans (Fade, Button end, Button start) are the props, and the eleven demos describe behaviour (anchoring, streaming, opening position, history, animation, commands, outline, scroll state) that the adapter implements. Figma shows the fade and the end button whatever the position; the code shows them only while there is more below. Figma draws no scrollbar; the code hides it too and keeps the transcript keyboard-scrollable. The sample's fallback avatars put white initials on `palette/orange-solid` (2.88:1, under the 4.5:1 AA minimum).
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

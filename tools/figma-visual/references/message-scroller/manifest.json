@@ -1,0 +1,27 @@
+{
+ "$comment": "Sort UI 2.0 Message Scroller (359:3) reference render (1x PNG, exportAsync with absolute bounds): the component's sample thread (a Separator Marker, three Start messages from Tomás Herrera and Mira Okafor with 'TH'/'MO' on palette orange, one End message) opened at the start, so the fade and the end button show over the bottom edge. renderers/message-scroller.tsx renders it with MessageScroller, Marker, Message, Avatar and Bubble.",
+ "component": "message-scroller",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "359:3",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "default",
+   "nodeId": "359:3",
+   "props": {
+    "Fade": "True",
+    "Button end": "True",
+    "Button start": "False"
+   },
+   "target": ".ds-message-scroller",
+   "nodeW": 448,
+   "nodeH": 440
+  }
+ ]
+}

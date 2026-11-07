@@ -2333,6 +2333,72 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'message scroller: a named, focusable log; the end button shows while there is more below and jumps to the end (focus stays on the log); a new anchored turn settles at the top edge; streaming follows the live edge; loading earlier messages keeps the place; it opens at start / end; commands jump to a message; the scroll state is reported': async () => {
+    const url = (id) => `http://localhost:6008/iframe.html?id=components-message-scroller--${id}&viewMode=story`;
+    const viewport = () => page.locator('.ds-message-scroller__viewport').first();
+    const atEnd = () => viewport().evaluate((v) => v.scrollHeight - v.scrollTop - v.clientHeight <= 2);
+    const topOf = (sel) => page.evaluate((s) => { const v = document.querySelector('.ds-message-scroller__viewport'); return document.querySelector(s).getBoundingClientRect().top - v.getBoundingClientRect().top; }, sel);
+
+    await page.goto(url('playground'));
+    const log = page.getByRole('log', { name: 'Design system thread' });
+    await log.waitFor();
+    assert.equal(await log.getAttribute('tabindex'), '0', 'the log is focusable for the keyboard');
+    assert.equal(await viewport().evaluate((v) => v.scrollTop), 0, 'Playground opens at the start');
+    const toEnd = page.getByRole('button', { name: 'Scroll to latest message' });
+    assert.ok(await toEnd.isVisible(), 'the end button shows while there is more below');
+    await toEnd.click();
+    await page.waitForFunction(() => { const v = document.querySelector('.ds-message-scroller__viewport'); return v.scrollHeight - v.scrollTop - v.clientHeight <= 2; });
+    assert.ok(await toEnd.isHidden(), 'and hides at the end');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('role')), 'log', 'focus moves to the log');
+
+    await page.goto(url('demo'));
+    const send = page.getByRole('button', { name: 'Send' });
+    await send.click();
+    await page.waitForTimeout(4500);
+    await send.click();
+    await page.waitForFunction(() => { const v = document.querySelector('.ds-message-scroller__viewport'); const a = [...v.querySelectorAll('[data-scroll-anchor]')].pop(); return a && Math.abs(a.getBoundingClientRect().top - v.getBoundingClientRect().top) < 2; }, null, { timeout: 3000 });
+    await page.waitForTimeout(2500);
+    const pinned = await page.evaluate(() => { const v = document.querySelector('.ds-message-scroller__viewport'); const a = [...v.querySelectorAll('[data-scroll-anchor]')].pop(); return a.getBoundingClientRect().top - v.getBoundingClientRect().top; });
+    assert.ok(Math.abs(pinned) < 2, `the new question stays at the top edge while its reply streams (${pinned})`);
+
+    await page.goto(url('following-the-live-edge'));
+    await page.getByRole('button', { name: 'Send' }).click();
+    for (let i = 0; i < 6; i++) {
+      await page.waitForTimeout(500);
+      assert.ok(await atEnd(), 'streaming keeps the live edge in view');
+    }
+
+    await page.goto(url('loading-earlier-messages'));
+    await viewport().waitFor();
+    await viewport().evaluate((v) => (v.scrollTop = 150));
+    await page.waitForTimeout(100);
+    const before = await topOf('#l3');
+    await page.getByRole('button', { name: 'Load History' }).click();
+    await page.waitForTimeout(200);
+    assert.ok(Math.abs((await topOf('#l3')) - before) < 1, 'earlier messages load above without moving the reader');
+    assert.ok((await viewport().evaluate((v) => v.scrollTop)) > 150);
+
+    await page.goto(url('opening-saved-threads'));
+    await viewport().waitFor();
+    assert.ok(await atEnd(), 'last-anchor opens a short last turn at the end');
+    await page.getByRole('button', { name: 'start', exact: true }).click();
+    await page.waitForTimeout(200);
+    assert.equal(await viewport().evaluate((v) => v.scrollTop), 0, 'start opens at the first message');
+
+    await page.goto(url('jumping-to-messages'));
+    await page.getByRole('button', { name: 'Jump to…' }).click();
+    await page.getByRole('menuitem', { name: 'Question 2' }).click();
+    await page.waitForFunction(() => { const v = document.querySelector('.ds-message-scroller__viewport'); return Math.abs(document.getElementById('saved-user-1').getBoundingClientRect().top - v.getBoundingClientRect().top) < 2; }, null, { timeout: 3000 });
+
+    await page.goto(url('reading-scroll-state'));
+    const status = page.getByRole('status');
+    await status.waitFor();
+    assert.equal(await status.textContent(), 'You are at the top. You can only scroll down.');
+    assert.ok(await page.getByRole('button', { name: 'Scroll to first message' }).isHidden(), 'no start button at the top');
+    await viewport().evaluate((v) => (v.scrollTop = 100));
+    await page.waitForFunction(() => document.querySelector('[role="status"]').textContent === 'You can scroll up and down.');
+    assert.ok(await page.getByRole('button', { name: 'Scroll to first message' }).isVisible(), 'the start button shows below the top');
+  },
   'message: a group shows its avatar beside the last message only, 8 px from the bubbles and level with their bottom; end messages mirror it; header and footer sit 8 px from the bubbles; bubbles hug up to 320 px; the typing line is a status': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-message--demo&viewMode=story');
     const messages = page.locator('.ds-message');

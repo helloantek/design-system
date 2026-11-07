@@ -1,0 +1,16 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-message-scroller) and how to read it.",
+  "layers": {
+    "root": {},
+    "content": {
+      "selector": ".ds-message-scroller__content"
+    },
+    "Fade": {
+      "selector": ".ds-message-scroller__fade"
+    },
+    "Scroll to end": {
+      "selector": ".ds-message-scroller__to-end",
+      "stroke": "inset-shadow"
+    }
+  }
+}

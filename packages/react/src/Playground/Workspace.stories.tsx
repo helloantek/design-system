@@ -22,7 +22,9 @@ import { BarChart, ChartLegend, PieChart } from '../Chart';
 import { Button } from '../Button';
 import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList } from '../Command';
 import { Kbd } from '../Kbd';
+import { Marker } from '../Marker';
 import { Message, MessageGroup, MessageTyping } from '../Message';
+import { MessageScroller, MessageScrollerItem } from '../MessageScroller';
 import { Pagination } from '../Pagination';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarInset, SidebarLayout, SidebarMenuItem, SidebarTrigger } from '../Sidebar';
 import { Toaster, toast } from '../Sonner';
@@ -36,7 +38,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble and Message (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more and a typing line), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message and Message Scroller (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more and a typing line, scrolling with a fade and a jump-to-latest button; Send a reply settles the new message near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -58,6 +60,72 @@ const chatAvatar = (initials: string, name: string, hue: string) => (
 );
 const priya = chatAvatar('P', 'Priya Raman', 'lime');
 const me = chatAvatar('T', 'You', 'orange');
+
+const replies = ['Perfect, see you Thursday.', 'Can you share the pricing numbers before the review?', 'I moved the invite to 2 PM and added the notes doc.'];
+
+/** Inbox: a conversation in a Message Scroller; earlier messages sit above, and a reply settles near the top edge. */
+function InboxThread() {
+  const [sent, setSent] = useState<string[]>([]);
+  return (
+    <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
+      <MessageScroller aria-label="Conversation with Priya" defaultScrollPosition="end" animation="slide" anchorOffset={96} style={{ height: 380, '--message-scroller-surface': 'var(--ds-background)' } as CSSProperties}>
+        <MessageScrollerItem>
+          <Marker variant="separator">Yesterday</Marker>
+        </MessageScrollerItem>
+        <MessageScrollerItem>
+          <Message avatar={priya} sender="Priya Raman" footer="4:12 PM">
+            <Bubble variant="muted">The onboarding numbers are in: 61% finish the first project, up from 48%.</Bubble>
+          </Message>
+        </MessageScrollerItem>
+        <MessageScrollerItem>
+          <Message align="end" avatar={me} footer="4:15 PM">
+            <Bubble>Great jump. Let’s go through it in the design review.</Bubble>
+          </Message>
+        </MessageScrollerItem>
+        <MessageScrollerItem>
+          <Marker variant="separator">Today</Marker>
+        </MessageScrollerItem>
+        <MessageScrollerItem>
+          <MessageGroup avatar={priya}>
+            <Message sender="Priya Raman" badge={<Badge shape="pill">Design</Badge>}>
+              <Bubble variant="muted">Can we move the design review to Thursday?</Bubble>
+            </Message>
+            <Message footer="10:21 AM">
+              <Bubble variant="muted" reactions="🙏">
+                Two people are out on Wednesday.
+              </Bubble>
+            </Message>
+          </MessageGroup>
+        </MessageScrollerItem>
+        <MessageScrollerItem>
+          <Message align="end" avatar={me} footer="10:24 AM · Read by Priya">
+            <Bubble>Sure, Thursday at 2 PM works. I will update the invite.</Bubble>
+          </Message>
+        </MessageScrollerItem>
+        <MessageScrollerItem>
+          <Message avatar={priya} footer="10:26 AM">
+            <Bubble variant="muted" collapsible={3}>
+              Thanks! I will also bring the notes from last week, the open questions on the onboarding flow, the numbers from the pricing test and a first draft of the release plan for 2.5, so we can go through everything in one go instead of booking another slot next week.
+            </Bubble>
+          </Message>
+        </MessageScrollerItem>
+        {sent.map((text, i) => (
+          <MessageScrollerItem key={i} scrollAnchor>
+            <Message align="end" avatar={me} footer="Just now">
+              <Bubble>{text}</Bubble>
+            </Message>
+          </MessageScrollerItem>
+        ))}
+      </MessageScroller>
+      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+        <MessageTyping>Priya is typing…</MessageTyping>
+        <Button size="sm" onClick={() => setSent((l) => [...l, replies[l.length % replies.length]])}>
+          Send a reply
+        </Button>
+      </span>
+    </div>
+  );
+}
 
 const pages = ['Home', 'Inbox', 'Reports', 'Members', 'Settings'];
 const news = [
@@ -185,27 +253,7 @@ export const App: StoryObj = {
                   <Pagination page={tablePage} pageCount={Math.ceil(people.length / perPage)} onPageChange={setTablePage} aria-label="Members pages" />
                 </>
               ) : page === 'Inbox' ? (
-                <div role="log" aria-label="Conversation with Priya" style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 480 }}>
-                  <MessageGroup avatar={priya}>
-                    <Message sender="Priya Raman" badge={<Badge shape="pill">Design</Badge>}>
-                      <Bubble variant="muted">Can we move the design review to Thursday?</Bubble>
-                    </Message>
-                    <Message footer="10:21 AM">
-                      <Bubble variant="muted" reactions="🙏">
-                        Two people are out on Wednesday.
-                      </Bubble>
-                    </Message>
-                  </MessageGroup>
-                  <Message align="end" avatar={me} footer="10:24 AM · Read by Priya">
-                    <Bubble>Sure, Thursday at 2 PM works. I will update the invite.</Bubble>
-                  </Message>
-                  <Message avatar={priya} footer="10:26 AM">
-                    <Bubble variant="muted" collapsible={3}>
-                      Thanks! I will also bring the notes from last week, the open questions on the onboarding flow, the numbers from the pricing test and a first draft of the release plan for 2.5, so we can go through everything in one go instead of booking another slot next week.
-                    </Bubble>
-                  </Message>
-                  <MessageTyping>Priya is typing…</MessageTyping>
-                </div>
+                <InboxThread />
               ) : page === 'Home' ? (
                 <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
                   <span style={{ fontSize: 14, lineHeight: '20px', fontWeight: 500, color: 'var(--ds-foreground)' }}>What's new</span>
