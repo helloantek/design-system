@@ -2,6 +2,7 @@ import { renderAlert } from './alert';
 import { renderAccordion } from './accordion';
 import { renderAlertDialog } from './alert-dialog';
 import { renderAspectRatio } from './aspect-ratio';
+import { renderAttachment } from './attachment';
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
 import { renderBreadcrumb } from './breadcrumb';
@@ -61,6 +62,8 @@ export const renderers: Record<string, Renderer> = {
   alert: renderAlert,
   'alert-dialog': renderAlertDialog,
   'aspect-ratio': renderAspectRatio,
+  attachment: renderAttachment,
+  'attachment-card': renderAttachment,
   avatar: renderAvatar,
   'avatar-group': renderAvatarGroup,
   badge: renderBadge,

@@ -104,7 +104,7 @@ A chat message: Sort UI 2.0 **Bubble** (Variant, Text, Reactions) and **Bubble R
 
 | Figma property | React prop | CSS class |
 |---|---|---|
-| Variant = Default · Muted · Ghost · Destructive | `variant`: card with a 1 px border and a soft shadow (yours) · fill-2 (theirs) · plain text across the width · destructive border at 30 % and text | `ds-bubble` · `--muted` · `--ghost` · `--destructive` · `ds-bubble__content` |
+| Variant = Default · Muted · Ghost · Destructive | `variant`: card with a 1 px border and a soft shadow (yours) · fill-2 (theirs) · plain text across the width · destructive border at 70 % (Figma 30 %) and text | `ds-bubble` · `--muted` · `--ghost` · `--destructive` · `ds-bubble__content` |
 | Text | children: 13/20, up to 320 px wide (`--bubble-max-width`), line breaks kept | `ds-bubble__text` |
 | Reactions · Bubble Reactions | `reactions` (emoji, a count, a short reply) in a muted pill 7 px over a corner; `reactionsPlacement` `bottom-end` (default) · `bottom-start` (default for end bubbles) · `top-start` · `top-end` | `ds-bubble__reactions` · `ds-bubble--reactions-…` |
 | "Long message" demo | `collapsible` (`true` = 8 lines, or a number): the text is clamped and a "Show more" / "Show less" toggle (`moreLabel`, `lessLabel`) with `aria-expanded` appears when it is cut | `ds-bubble__text--clamped` · `ds-bubble__more` |
@@ -150,6 +150,34 @@ A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **A
 | — (the demos' 12 px corners) | `rounded` | `ds-aspect-ratio--rounded` |
 
 The box takes its container's width; an `img`, `video`, `iframe`, `picture`, `svg` or `canvas` inside fills it and is cropped from the middle (`object-fit: cover`), like Figma's image fill.
+
+## Attachment
+
+A file added to a message or a composer: Sort UI 2.0 **Attachment** (Type, State, Title, Type label, Size, Error, Icon, actions).
+
+```tsx
+<AttachmentGroup direction="column" aria-label="Attachments">
+  <Attachment title="acme-audit.zip" description="2.1 MB" icon={<ArchiveIcon />} actions={<Button variant="ghost" size="xs" icon={<RiDownloadLine />} aria-label="Download acme-audit.zip" />} />
+  <Attachment state="uploading" title="pricing-model.xlsx" icon={<SpreadsheetIcon />} actions={removeButton} />
+  <Attachment state="error" title="site-visit.mov" error="Over the 25 MB limit" icon={<VideoIcon />} actions={retryButton} />
+</AttachmentGroup>
+<Attachment type="card" title="brand-assets.pdf" typeLabel="PDF" description="2.1 MB" />
+<Attachment type="image" title="red-forest-peak.webp" description="1.4 MB" src={picture} />
+<Attachment type="card" typeLabel="northwind.app" title="Northwind — Plans and pricing" description="https://northwind.app/pricing" href="https://northwind.app/pricing" />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Type = File · File sm · Card · Image | `type`: a 240 × 54 row with a 32 px icon · a 240 × 36 row with a 20 px icon and the title alone · a 160 px square with the type label at the top · a 160 px picture under a scrim (`--attachment-width`, `--attachment-height`) | `ds-attachment--file` · `--file-sm` · `--card` · `--image` (`--picture` once it shows one) |
+| State = Done · Uploading · Hover · Error | `state` `done` · `uploading` (`aria-busy`, `uploadingLabel`, default "Uploading…") · `error` (destructive border at 70 %, Figma 30 %, and message); Hover comes from the pointer: control-hover, or black at 20 % more over a picture | `--uploading` · `--error` |
+| Title · Size · Error | `title` (cut with an ellipsis) · `description` (the size, a link's address) · `error` | `ds-attachment__title` · `__description` |
+| Type label | `typeLabel` (Card), 12/16 Geist Mono | `ds-attachment__type` |
+| Icon | `icon` (File, File sm); a plain document when omitted | `ds-attachment__media` |
+| — | `src` (Image): the picture, a background under the scrim | `style="background-image: …"` |
+| actions | `actions`: ghost xs icon buttons, each with an `aria-label`; on a card or a picture they show on hover or focus, and always when it failed | `ds-attachment__actions` |
+| Group (demo) | `<AttachmentGroup direction>`: a row that scrolls sideways (default) or a column, 8 px apart | `ds-attachment-group` · `--column` |
+
+`href` (with `target`) turns the title into a link that covers the whole attachment, under the actions. The demos' file icons come from Figma's File Icons set as story fixtures until File Icons ships, and their composer is a stand-in until AI Chat Composer.
 
 ## Avatar
 
@@ -709,7 +737,7 @@ One chat message laid out around its bubbles: Sort UI 2.0 **Message** (Align, Av
 | Message Group (demos) | `<MessageGroup align avatar>`: one sender's messages 8 px apart, the avatar on the last one | `ds-message-group` |
 | typing-shimmer (demo) | `<MessageTyping>`: a 12/16 Medium line with a light sweeping across it (still with reduced motion), `role="status"` | `ds-message-typing` |
 
-Put a conversation in an element with `role="log"` and a name so new messages are announced. Avatars take `--avatar-fill` and `--avatar-ink` for the coloured fallbacks the demos use. The "With a trace" demo waits for AI Trace, and the Attachment story draws its file card inline until Attachment ships.
+Put a conversation in an element with `role="log"` and a name so new messages are announced. Avatars take `--avatar-fill` and `--avatar-ink` for the coloured fallbacks the demos use. The "With a trace" demo waits for AI Trace.
 
 ## Message Scroller
 
@@ -1572,9 +1600,10 @@ These come from the Figma files, not the code:
 - Usage Bar (2.0): Figma has no states for hovering or focusing a segment; the code shows State=Active on hover and keyboard focus of a focusable segment, with the focus ring. The Dashed segment is drawn as an inset outline (a border would add to its share of the bar) and the Dashed swatch's 2/2 dashes with gradients; Active Dashed turns the stroke solid, as in Figma. Figma's ticks are 24 or 48 px boxes spread with space-between; in code a tick takes no width, so its line sits exactly on its point whatever the value's width. The "Sleep" demo's wake window is drawn as a plain track; the story uses Slider Variant=Scrubber, which puts the label and value inside it.
 - Chart (2.0): Figma draws charts from parts and demos rather than one component, so the code offers chart components (BarChart, LineChart, AreaChart, PieChart, RadialChart) that compute those parts from data. Figma's Axis component spreads 32 px ticks from edge to edge, while every demo centres one tick per band; the code follows the demos. The radial "Simple" rings run counter-clockwise from 3 o'clock and the "Stacked" half ring layers arcs from 3 o'clock; the code keeps those directions but draws the half ring's data side by side from the left. The pie samples start at 3 o'clock; the code starts slices at 12 o'clock, as is usual. Figma shows a hovered state (tooltip, highlighted band, cursor) but no keyboard path; the plot takes focus and the arrow keys move between categories. The dashed swatch is a 0 px vector in Figma; the code draws a 1.5 px dashed line.
 - Carousel (2.0): Figma's overlay controls are always dark (foreground at 20 %); the code reads what lies under each control and switches to a white control (white at 90 %, a black icon) over near-black pictures (relative luminance under 0.05), so the circle never disappears. Cross-origin images without CORS cannot be read: give their slides a `tone`. The component has only Previous and Next; the "With indicators" and "Image Carousel" demos draw the dots and the overlay controls themselves, and the code offers them as `indicators` and `controls="overlay"`. Figma has no slide transition, focus state for the viewport or keyboard path; the code slides the track in 300 ms (none with reduced motion), rings the focused viewport and moves with the arrow keys. The overlay buttons and dot pill use black at 40 % with a faint white ring and white icons where Figma's demo uses foreground at 20 % and primary-foreground: at 20 % they disappeared on darker photos, and primary-foreground is black in Dark.
-- Bubble (2.0): the component samples 13 px reactions, every demo uses 14 px; the code follows the demos. Figma counts the reactions pill's 0.5 px border in its layout (39 × 21 for two emoji); the code adds the half pixel to the padding. The demos place reactions on the bottom-end corner of start bubbles, the bottom-start corner of end bubbles and the top-start corner when a bubble's top is free; the code makes those the defaults and the `reactionsPlacement` options. Figma's "Long message" bubble draws its border outside; the code keeps it inside like the other bubbles. Figma's Default and Destructive bubbles carry Surface/Card's inset white top highlight; under the 1 px border it reads as a glow on dark cards, so the code keeps only the two soft drop shadows (black at 5 %).
-- Message (2.0): Figma's Time text in the footer is Regular while the component's text style is Medium; the code follows the demos (Regular, with the sender in Medium). The "Attachment" demo's file card is a placeholder until Attachment is built. The demos colour fallback avatars with palette solids; Avatar gained `--avatar-fill` and `--avatar-ink` for that instead of a new prop.
+- Bubble (2.0): the Destructive border is destructive at 70 % instead of Figma's 30 %, as on Attachment's Error state (design review). The component samples 13 px reactions, every demo uses 14 px; the code follows the demos. Figma counts the reactions pill's 0.5 px border in its layout (39 × 21 for two emoji); the code adds the half pixel to the padding. The demos place reactions on the bottom-end corner of start bubbles, the bottom-start corner of end bubbles and the top-start corner when a bubble's top is free; the code makes those the defaults and the `reactionsPlacement` options. Figma's "Long message" bubble draws its border outside; the code keeps it inside like the other bubbles. Figma's Default and Destructive bubbles carry Surface/Card's inset white top highlight; under the 1 px border it reads as a glow on dark cards, so the code keeps only the two soft drop shadows (black at 5 %).
+- Message (2.0): Figma's Time text in the footer is Regular while the component's text style is Medium; the code follows the demos (Regular, with the sender in Medium). The demos colour fallback avatars with palette solids; Avatar gained `--avatar-fill` and `--avatar-ink` for that instead of a new prop.
 - Message Scroller (2.0): the component is a single component with a slot, not a set; its booleans (Fade, Button end, Button start) are the props, and the eleven demos describe behaviour (anchoring, streaming, opening position, history, animation, commands, outline, scroll state) that the adapter implements. Figma shows the fade and the end button whatever the position; the code shows them only while there is more below. Figma draws no scrollbar; the code hides it too and keeps the transcript keyboard-scrollable. The sample's fallback avatars put white initials on `palette/orange-solid` (2.88:1, under the 4.5:1 AA minimum).
+- Attachment (2.0): the Error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark (design review); Bubble's Destructive border follows. Figma draws the text on a picture in `primary-foreground`, which turns dark in Dark; the code keeps it white in both schemes (the white of `alpha-white-90`, made opaque). The Card and Image squares pad two inner frames (12 12 0 12 and 12) in an unpadded square; the code pads the square by 12 px, which lands every part in the same place. A card's actions only appear in Figma's Hover and Error variants; the code also shows them on keyboard focus. The File Icons in the demos are illustrations with raw colours, not tokens, so they stay the same in Dark.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

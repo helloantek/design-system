@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/react-vite';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';
+import '@fontsource/geist-mono/400.css';
 import '@helloantek/ds-tokens/css/scoped/theme-1.css';
 import '@helloantek/ds-css';
 import brands from '@helloantek/ds-tokens/brands.json';

@@ -193,7 +193,13 @@ for (const component of components) {
       animations: 'disabled',
     });
     // Exact values (while Hover/Press/Focus is still active).
-    const expected = spec && layersFor(spec, entry.nodeId);
+    // `specOverride` (with a `$why`) replaces Figma values the code deliberately departs from, e.g. a design decision
+    // taken after review; the rest of the layer is still compared with Figma.
+    if (entry.specOverride && !entry.$why) throw new Error(`${component}/${entry.slug}: specOverride needs a $why`);
+    const figmaLayers = spec && layersFor(spec, entry.nodeId);
+    const expected = figmaLayers && entry.specOverride
+      ? Object.fromEntries(Object.entries(figmaLayers).map(([path, values]) => [path, { ...values, ...(entry.specOverride[path] ?? {}) }]))
+      : figmaLayers;
     const specIssues = expected ? await page.evaluate(compareInPage, { map: layerMap, layers: expected, target }) : spec ? [`no spec for ${entry.nodeId}`] : [];
     if (state === 'Press') await page.mouse.up();
     await page.mouse.move(0, 0);

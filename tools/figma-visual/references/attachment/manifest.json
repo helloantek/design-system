@@ -1,0 +1,115 @@
+{
+ "$comment": "Sort UI 2.0 Attachment (1683:628), Type=File and File sm, all four states (1x PNG, exportAsync with absolute bounds): 'acme-audit.pdf' with the File Icons Archive icon, '2.1 MB' / 'Uploading...' / 'Over the 5 MB limit', and the actions slot's ghost xs button (download when done or hovered, remove while uploading, retry when failed). renderers/attachment.tsx renders them with Attachment and Button.",
+ "component": "attachment",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "1683:628",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "file-done",
+   "nodeId": "1683:612",
+   "props": {
+    "Type": "File",
+    "State": "Done"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 240,
+   "nodeH": 54
+  },
+  {
+   "slug": "file-uploading",
+   "nodeId": "1683:613",
+   "props": {
+    "Type": "File",
+    "State": "Uploading"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 240,
+   "nodeH": 54
+  },
+  {
+   "slug": "file-hover",
+   "nodeId": "1683:616",
+   "props": {
+    "Type": "File",
+    "State": "Hover"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 240,
+   "nodeH": 54
+  },
+  {
+   "slug": "file-error",
+   "nodeId": "1683:617",
+   "props": {
+    "Type": "File",
+    "State": "Error"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 240,
+   "nodeH": 54,
+   "specOverride": {
+    "root": {
+     "stroke": "#fb2c36b3"
+    }
+   },
+   "$why": "Design review (PR #131): the error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark; listed under Known design findings."
+  },
+  {
+   "slug": "file-sm-done",
+   "nodeId": "1683:614",
+   "props": {
+    "Type": "File sm",
+    "State": "Done"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 240,
+   "nodeH": 36
+  },
+  {
+   "slug": "file-sm-uploading",
+   "nodeId": "1683:615",
+   "props": {
+    "Type": "File sm",
+    "State": "Uploading"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 240,
+   "nodeH": 36
+  },
+  {
+   "slug": "file-sm-hover",
+   "nodeId": "1683:618",
+   "props": {
+    "Type": "File sm",
+    "State": "Hover"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 240,
+   "nodeH": 36
+  },
+  {
+   "slug": "file-sm-error",
+   "nodeId": "1683:619",
+   "props": {
+    "Type": "File sm",
+    "State": "Error"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 240,
+   "nodeH": 36,
+   "specOverride": {
+    "root": {
+     "stroke": "#fb2c36b3"
+    }
+   },
+   "$why": "Design review (PR #131): the error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark; listed under Known design findings."
+  }
+ ]
+}
