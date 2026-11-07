@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { RiAddLine, RiArrowUpLine, RiChatSmile2Line, RiRefreshLine } from '@remixicon/react';
+import { AIChatComposer } from '../AIChatComposer';
 import { Avatar } from '../Avatar';
 import { Bubble } from '../Bubble';
 import { Button } from '../Button';
@@ -188,18 +189,17 @@ function ChatCard({ title, description, action, children, footer, note }: { titl
 const ResetButton = ({ onClick }: { onClick: () => void }) => <Button variant="outline" size="sm" icon={<RiRefreshLine />} aria-label="Reset the conversation" onClick={onClick} />;
 const SendButton = ({ onClick, disabled }: { onClick: () => void; disabled?: boolean }) => <Button size="sm" icon={<RiArrowUpLine />} aria-label="Send" onClick={onClick} disabled={disabled} />;
 
-/** A read-only stand-in for AI Chat Composer: the next scripted prompt, a + and a send button. */
+/** AI Chat Composer holding the next scripted prompt (read only); Enter or send posts it. Extra controls go in its badges slot. */
 function Composer({ prompt, onSend, children }: { prompt: string; onSend: () => void; children?: ReactNode }) {
   return (
-    <div style={{ display: 'grid', gap: 8, width: '100%', padding: 8, boxSizing: 'border-box', borderRadius: 16, background: 'var(--ds-fill-2)', fontFamily: 'var(--ds-font-sans)' }}>
-      <span style={{ display: '-webkit-box', overflow: 'hidden', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, color: 'var(--ds-foreground)', fontSize: 13, lineHeight: '20px' }}>{prompt}</span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <Button variant="outline" size="xs" icon={<RiAddLine />} aria-label="Add an attachment" />
-        {children}
-        <span style={{ flex: 1 }} />
-        <SendButton onClick={onSend} />
-      </span>
-    </div>
+    <AIChatComposer
+      style={{ width: '100%' }}
+      value={prompt}
+      onSubmit={onSend}
+      dictate={false}
+      leading={<Button variant="ghost" size="sm" icon={<RiAddLine />} aria-label="Add an attachment" />}
+      badges={children}
+    />
   );
 }
 

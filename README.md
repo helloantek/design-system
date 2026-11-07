@@ -151,6 +151,38 @@ A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **A
 
 The box takes its container's width; an `img`, `video`, `iframe`, `picture`, `svg` or `canvas` inside fills it and is cropped from the middle (`object-fit: cover`), like Figma's image fill.
 
+## AI Chat Composer
+
+The prompt box of an AI chat: Sort UI 2.0 **AI Chat Composer** (Layout, State, header, Maximize), **AI Chat Composer Bar** (Type, Dictate, Placeholder) and **AI Chat Composer Token**.
+
+```tsx
+const [prompt, setPrompt] = useState('');
+<AIChatComposer
+  value={prompt}
+  onValueChange={setPrompt}
+  onSubmit={(text) => { send(text); setPrompt(''); }}
+  leading={<Button variant="ghost" size="sm" icon={<RiAddLine />} aria-label="Add files or tools" />}
+  model={<Button variant="ghost" size="sm" trailingIcon={<RiArrowDownSLine />}>Opus 5.5 High</Button>}
+  onDictate={startDictation}
+/>
+<AIChatComposer state="recording" levels={levels} onCancelRecording={cancel} onStopRecording={stop} />
+<AIChatComposer header={<Attachment type="card" title="acme-audit.docx" typeLabel="DOCX" />} badges={<Badge size="lg" color="blue" onRemove={…}>Web search</Badge>} />
+<p>Use <AIChatComposerToken>/release-notes</AIChatComposerToken> for 4.2.</p>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Layout = Row · Column | `layout`: `auto` (default: a 40 px row until the text wraps or has a line break, or there is a `header` or `badges`; the textarea is never remounted, so focus stays) · `row` · `column` | `ds-ai-composer` · `--column` |
+| State = Default · Recording · Transcribing | `state`: `default` · `recording` (cancel, the waveform from `levels` 0–1, stop) · `transcribing` (cancel, `transcribingLabel` as a status, a spinner) | `--recording` · `--transcribing` |
+| header | `header`: attachments above the text | `ds-ai-composer__header` |
+| Placeholder · text | `placeholder` (default "Ask about anything…"), `value` / `defaultValue` / `onValueChange`, `inputLabel` (default "Message"); 13/20, grows to 8 lines; Enter calls `onSubmit`, Shift+Enter adds a line | `ds-ai-composer__field` · `__input` |
+| Maximize | `maximize`: `auto` (default: the expand button once the text scrolls; expanded it grows to 24 lines) · `true` · `false` | `ds-ai-composer__expand` · `--expanded` |
+| Bar: + · Type=Badges · model · Dictate | `leading` (usually a ghost sm + that opens a menu) · `badges` · `model` (a ghost sm button with a chevron; its label is regular weight and its chevron 14 px) · `dictate` (default true) with `onDictate` | `ds-ai-composer__leading` · `__badges` · `__trailing` |
+| send | the default sm button, disabled while the prompt is empty and there is no header (`submitDisabled` overrides), and all of it with `disabled` | — |
+| AI Chat Composer Token | `tokens` tints /commands in the prompt (default `/\/[\w.-]+/` at a word start; `false` turns it off); `AIChatComposerToken` draws one elsewhere | `ds-ai-composer-token` |
+
+Labels for the icon buttons: `sendLabel`, `dictateLabel`, `cancelRecordingLabel`, `stopRecordingLabel`, `expandLabel`, `collapseLabel`. `inputRef` reaches the textarea.
+
 ## Attachment
 
 A file added to a message or a composer: Sort UI 2.0 **Attachment** (Type, State, Title, Type label, Size, Error, Icon, actions).
@@ -177,7 +209,7 @@ A file added to a message or a composer: Sort UI 2.0 **Attachment** (Type, State
 | actions | `actions`: ghost xs icon buttons, each with an `aria-label`; on a card or a picture they show on hover or focus, and always when it failed | `ds-attachment__actions` |
 | Group (demo) | `<AttachmentGroup direction>`: a row that scrolls sideways (default) or a column, 8 px apart | `ds-attachment-group` · `--column` |
 
-`href` (with `target`) turns the title into a link that covers the whole attachment, under the actions. The demos' file icons come from Figma's File Icons set as story fixtures until File Icons ships, and their composer is a stand-in until AI Chat Composer.
+`href` (with `target`) turns the title into a link that covers the whole attachment, under the actions. The demos' file icons come from Figma's File Icons set as story fixtures until File Icons ships.
 
 ## Avatar
 
@@ -1604,6 +1636,7 @@ These come from the Figma files, not the code:
 - Message (2.0): Figma's Time text in the footer is Regular while the component's text style is Medium; the code follows the demos (Regular, with the sender in Medium). The demos colour fallback avatars with palette solids; Avatar gained `--avatar-fill` and `--avatar-ink` for that instead of a new prop.
 - Message Scroller (2.0): the component is a single component with a slot, not a set; its booleans (Fade, Button end, Button start) are the props, and the eleven demos describe behaviour (anchoring, streaming, opening position, history, animation, commands, outline, scroll state) that the adapter implements. Figma shows the fade and the end button whatever the position; the code shows them only while there is more below. Figma draws no scrollbar; the code hides it too and keeps the transcript keyboard-scrollable. The sample's fallback avatars put white initials on `palette/orange-solid` (2.88:1, under the 4.5:1 AA minimum).
 - Attachment (2.0): the Error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark (design review); Bubble's Destructive border follows. Figma draws the text on a picture in `primary-foreground`, which turns dark in Dark; the code keeps it white in both schemes (the white of `alpha-white-90`, made opaque). The Card and Image squares pad two inner frames (12 12 0 12 and 12) in an unpadded square; the code pads the square by 12 px, which lands every part in the same place. A card's actions only appear in Figma's Hover and Error variants; the code also shows them on keyboard focus. The File Icons in the demos are illustrations with raw colours, not tokens, so they stay the same in Dark.
+- AI Chat Composer (2.0): Figma's box has an inset white top highlight; under the 1 px border it reads as a glow in Dark, so the code leaves it out, as on Bubble. Figma's trailing frame stretches over the bar's free middle (and, while dictating, wraps the waveform or status); the code's hugs its buttons, with every part in the same place. A /command in the prompt cannot take room (the textarea's text would no longer line up), so the token's 4 px sides are drawn with shadows there. The Effort slider of Figma's model menu is shown as a radio group in the stories.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

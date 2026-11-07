@@ -1,0 +1,70 @@
+{
+ "$comment": "Sort UI 2.0 AI Chat Composer (1660:754), Layout=Row, State=Default/Recording/Transcribing (1x PNG, exportAsync with absolute bounds): the ghost sm + button, the 'Ask about anything...' placeholder, the 'Opus 5.5 High' model button with a chevron, dictate and send; Figma's sample waveform; 'Transcribing...' with a spinner. renderers/ai-chat-composer.tsx renders them with AIChatComposer and Button.",
+ "component": "ai-chat-composer",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "1660:754",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "row",
+   "nodeId": "1660:465",
+   "props": {
+    "Layout": "Row",
+    "State": "Default"
+   },
+   "target": ".ds-ai-composer",
+   "nodeW": 448,
+   "nodeH": 40
+  },
+  {
+   "slug": "row-recording",
+   "nodeId": "1660:488",
+   "props": {
+    "Layout": "Row",
+    "State": "Recording"
+   },
+   "target": ".ds-ai-composer",
+   "nodeW": 448,
+   "nodeH": 40,
+   "specOverride": {
+    "trailing": {
+     "p": [
+      6,
+      6,
+      6,
+      4
+     ]
+    }
+   },
+   "$why": "The trailing group holds only the stop (or busy) and send buttons; the waveform or status is its own grid area before it, 6 px in, so the group is 4 px in on the left instead of wrapping the waveform with 6 px (same positions as Figma)."
+  },
+  {
+   "slug": "row-transcribing",
+   "nodeId": "1660:566",
+   "props": {
+    "Layout": "Row",
+    "State": "Transcribing"
+   },
+   "target": ".ds-ai-composer",
+   "nodeW": 448,
+   "nodeH": 40,
+   "specOverride": {
+    "trailing": {
+     "p": [
+      6,
+      6,
+      6,
+      4
+     ]
+    }
+   },
+   "$why": "The trailing group holds only the stop (or busy) and send buttons; the waveform or status is its own grid area before it, 6 px in, so the group is 4 px in on the left instead of wrapping the waveform with 6 px (same positions as Figma)."
+  }
+ ]
+}
