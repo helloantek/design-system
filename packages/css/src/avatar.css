@@ -126,7 +126,7 @@
     height: 100%;
     overflow: hidden;
     border-radius: var(--avatar-radius);
-    background-color: var(--ds-fill-2);
+    background-color: var(--avatar-fill, var(--ds-fill-2));
   }
 
   .ds-avatar__image > img {
@@ -136,9 +136,10 @@
     object-fit: cover;
   }
 
-  /* variant=fallback: initials, 12 px up to sm and 14 px from default. */
+  /* variant=fallback: initials, 12 px up to sm and 14 px from default. --avatar-fill and --avatar-ink recolour the
+     circle and the initials (the Message demos use a palette solid with primary-foreground). */
   .ds-avatar__initials {
-    color: var(--ds-muted-foreground);
+    color: var(--avatar-ink, var(--ds-muted-foreground));
     font-family: var(--ds-font-sans);
     font-size: var(--avatar-text);
     font-weight: var(--ds-font-weight-normal);

@@ -678,6 +678,39 @@ An application menu bar: the Sort UI 2.0 **Menubar** and **Menubar Trigger**, ea
 
 It follows the WAI-ARIA menubar pattern: `role="menubar"` with `menuitem` triggers and one Tab stop; Arrow Left / Right (Home / End) move between the triggers; Enter, Space or Arrow Down opens a menu on its first item (Arrow Up on its last). While a menu is open, Arrow Left / Right in it, or pointing at another trigger, switches to that menu; submenus keep their own Left / Right. Escape closes the menu and returns focus to its trigger; a click outside closes it.
 
+## Message
+
+One chat message laid out around its bubbles: Sort UI 2.0 **Message** (Align, Avatar, Footer), with the demos' Message Group and typing line.
+
+```tsx
+<div role="log" aria-label="Payments thread">
+  <MessageGroup avatar={<Avatar initials="J" name="Jonas Lindqvist" />}>
+    <Message sender="Jonas Lindqvist" badge={<Badge shape="pill">Payments</Badge>}>
+      <Bubble variant="muted">Weekly checkout digest is in.</Bubble>
+    </Message>
+    <Message footer="Today, 9:02 AM">
+      <Bubble variant="muted">Only invoices still use the old flow.</Bubble>
+    </Message>
+  </MessageGroup>
+  <Message align="end" avatar={<Avatar initials="M" name="Mira Okafor" />} footer="9:05 AM · Seen by Jonas">
+    <Bubble>Great. Are invoices blocked on capacity?</Bubble>
+  </Message>
+  <MessageTyping>Olivia is typing…</MessageTyping>
+</div>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Align = Start · End | `align`: theirs with the avatar on the left · yours with it on the right | `ds-message` · `--end` |
+| Avatar = True · False | `avatar` (an `Avatar`, 32 px column, 8 px from the bubbles, level with the last bubble's bottom); none drops the column, `avatarSpace` keeps it empty | `ds-message__avatar` · `--no-avatar` |
+| bubbles | children: `Bubble`s, a carousel, a file… 8 px apart, hugging up to 320 px | `ds-message__bubbles` |
+| header | `sender` (12/16 Medium) and `badge`, or a custom `header`, 8 px above the bubbles | `ds-message__header` · `__sender` |
+| Footer = True | `footer`: the time, receipts, actions or a send error, 12/16 muted, 8 px below | `ds-message__footer` |
+| Message Group (demos) | `<MessageGroup align avatar>`: one sender's messages 8 px apart, the avatar on the last one | `ds-message-group` |
+| typing-shimmer (demo) | `<MessageTyping>`: a 12/16 Medium line with a light sweeping across it (still with reduced motion), `role="status"` | `ds-message-typing` |
+
+Put a conversation in an element with `role="log"` and a name so new messages are announced. Avatars take `--avatar-fill` and `--avatar-ink` for the coloured fallbacks the demos use. The "With a trace" demo waits for AI Trace, and the Attachment story draws its file card inline until Attachment ships.
+
 ## Navigation Menu
 
 A site's main navigation: the Sort UI 2.0 **Navigation Menu**, **Navigation Menu Trigger**, **Navigation Menu Content** and **Navigation Menu Link**.
@@ -1503,6 +1536,7 @@ These come from the Figma files, not the code:
 - Chart (2.0): Figma draws charts from parts and demos rather than one component, so the code offers chart components (BarChart, LineChart, AreaChart, PieChart, RadialChart) that compute those parts from data. Figma's Axis component spreads 32 px ticks from edge to edge, while every demo centres one tick per band; the code follows the demos. The radial "Simple" rings run counter-clockwise from 3 o'clock and the "Stacked" half ring layers arcs from 3 o'clock; the code keeps those directions but draws the half ring's data side by side from the left. The pie samples start at 3 o'clock; the code starts slices at 12 o'clock, as is usual. Figma shows a hovered state (tooltip, highlighted band, cursor) but no keyboard path; the plot takes focus and the arrow keys move between categories. The dashed swatch is a 0 px vector in Figma; the code draws a 1.5 px dashed line.
 - Carousel (2.0): Figma's overlay controls are always dark (foreground at 20 %); the code reads what lies under each control and switches to a white control (white at 90 %, a black icon) over near-black pictures (relative luminance under 0.05), so the circle never disappears. Cross-origin images without CORS cannot be read: give their slides a `tone`. The component has only Previous and Next; the "With indicators" and "Image Carousel" demos draw the dots and the overlay controls themselves, and the code offers them as `indicators` and `controls="overlay"`. Figma has no slide transition, focus state for the viewport or keyboard path; the code slides the track in 300 ms (none with reduced motion), rings the focused viewport and moves with the arrow keys. The overlay buttons and dot pill use black at 40 % with a faint white ring and white icons where Figma's demo uses foreground at 20 % and primary-foreground: at 20 % they disappeared on darker photos, and primary-foreground is black in Dark.
 - Bubble (2.0): the component samples 13 px reactions, every demo uses 14 px; the code follows the demos. Figma counts the reactions pill's 0.5 px border in its layout (39 × 21 for two emoji); the code adds the half pixel to the padding. The demos place reactions on the bottom-end corner of start bubbles, the bottom-start corner of end bubbles and the top-start corner when a bubble's top is free; the code makes those the defaults and the `reactionsPlacement` options. Figma's "Long message" bubble draws its border outside; the code keeps it inside like the other bubbles. Figma's Default and Destructive bubbles carry Surface/Card's inset white top highlight; under the 1 px border it reads as a glow on dark cards, so the code keeps only the two soft drop shadows (black at 5 %).
+- Message (2.0): Figma's Time text in the footer is Regular while the component's text style is Medium; the code follows the demos (Regular, with the sender in Medium). The "Attachment" demo's file card is a placeholder until Attachment is built. The demos colour fallback avatars with palette solids; Avatar gained `--avatar-fill` and `--avatar-ink` for that instead of a new prop.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
 - Switch (2.0): the Thumb's stroke is a white gradient (30 % at the top to nothing; 25 % when on) and its unchecked fill has an 8 % white highlight; the code draws a 1 px white rim along the top and uses the 10 % token. Both are invisible on the white thumb and only show in Dark.

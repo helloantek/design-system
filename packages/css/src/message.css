@@ -1,0 +1,157 @@
+/*
+ * Message — Sort UI 2.0 component set "Message" (node 348:64) on page 348:2 in file 4JnqgEbdlnKgiFrfmiwEZw: one chat
+ * message laid out around its bubbles: the sender's avatar beside the last bubble, a header (sender, a badge) above
+ * and a footer (time, receipts, actions) below. Values are Sort UI 2.0 tokens. Framework-agnostic.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-message-group">                                             (the demos' "Message Group", 8 px gap)
+ *     <div class="ds-message [ds-message--end] [ds-message--no-avatar]">
+ *       [<div class="ds-message__header"><span class="ds-message__sender">Jonas</span> <span class="ds-badge">…</span></div>]
+ *       <div class="ds-message__avatar">[<span class="ds-avatar">…</span>]</div>  (empty keeps the column)
+ *       <div class="ds-message__bubbles"> …Bubbles, an attachment… </div>        (Figma "bubbles")
+ *       [<div class="ds-message__footer">Today, 9:02 AM</div>]                     (Figma "footer")
+ *     </div>
+ *   </div>
+ *   <p class="ds-message-typing">Olivia is typing…</p>                          (the demo's "typing-shimmer")
+ *
+ * Figma Align: start (theirs: avatar on the left) or --end (yours: on the right). Avatar=False: --no-avatar drops the
+ * avatar column. The avatar sits at the bottom of the bubbles, 8 px from them, whatever the header and footer hold.
+ */
+
+@layer ds.components {
+  .ds-message-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  /* A grid keeps the avatar beside the bubbles; the header and footer keep 8 px from the bubbles with margins, so an
+     absent header or footer leaves no gap. */
+  .ds-message {
+    display: grid;
+    grid-template-areas:
+      '. header'
+      'avatar bubbles'
+      '. footer';
+    grid-template-columns: var(--ds-spacing-8) minmax(0, 1fr);
+    column-gap: var(--ds-spacing-2);
+    min-width: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  .ds-message--end {
+    grid-template-areas:
+      'header .'
+      'bubbles avatar'
+      'footer .';
+    grid-template-columns: minmax(0, 1fr) var(--ds-spacing-8);
+  }
+
+  .ds-message--no-avatar {
+    grid-template-areas: 'header' 'bubbles' 'footer';
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ds-message--no-avatar .ds-message__avatar {
+    display: none;
+  }
+
+  .ds-message__avatar {
+    display: flex;
+    grid-area: avatar;
+    align-self: end;
+  }
+
+  /* Figma "bubbles": the bubbles 8 px apart, at the start or the end. */
+  .ds-message__bubbles {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    grid-area: bubbles;
+    justify-self: start;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  /* The Bubble's own cap is min(100%, 320 px); a percentage counts as none when the grid sizes this column to its
+     content, so the column would grow to the full width. A fixed cap here keeps it hugging 320 px; a bubble in a flex
+     column already fits a narrower container on its own. */
+  .ds-message__bubbles > .ds-bubble:not(.ds-bubble--ghost) {
+    max-width: var(--bubble-max-width, var(--ds-spacing-80));
+  }
+
+  /* Figma "header" and "footer": 12/16 muted lines 8 px in from the bubble edge. */
+  .ds-message__header,
+  .ds-message__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-self: start;
+    min-width: 0;
+    padding: 0 var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  .ds-message__header {
+    grid-area: header;
+    gap: var(--ds-spacing-2);
+    margin-bottom: var(--ds-spacing-2);
+  }
+
+  .ds-message__footer {
+    grid-area: footer;
+    gap: var(--ds-spacing-1-5);
+    margin-top: var(--ds-spacing-2);
+  }
+
+  .ds-message__sender {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-message--end .ds-message__bubbles {
+    align-items: flex-end;
+  }
+
+  .ds-message--end .ds-message__header,
+  .ds-message--end .ds-message__footer,
+  .ds-message--end .ds-message__bubbles {
+    justify-self: end;
+  }
+
+  /* An end message without an avatar keeps its bubbles at the end. */
+  .ds-message--end.ds-message--no-avatar .ds-message__bubbles {
+    align-items: flex-end;
+  }
+
+  /* "Olivia is typing…": a 12/16 Medium muted line with a light sweeping across it. */
+  .ds-message-typing {
+    margin: 0;
+    background: linear-gradient(90deg, var(--ds-muted-foreground) 40%, var(--ds-foreground) 50%, var(--ds-muted-foreground) 60%) 100% 0 / 300% 100%;
+    background-clip: text;
+    color: transparent;
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-2xs);
+    font-weight: var(--ds-font-weight-medium);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-2xs--line-height);
+    animation: ds-message-typing 2s linear infinite;
+  }
+
+  @keyframes ds-message-typing {
+    to {
+      background-position: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-message-typing {
+      background: none;
+      color: var(--ds-muted-foreground);
+      animation: none;
+    }
+  }
+}

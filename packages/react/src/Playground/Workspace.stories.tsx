@@ -16,12 +16,13 @@ import {
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { Breadcrumb, BreadcrumbItem } from '../Breadcrumb';
-import { Bubble, BubbleGroup } from '../Bubble';
+import { Bubble } from '../Bubble';
 import { Carousel, CarouselSlide } from '../Carousel';
 import { BarChart, ChartLegend, PieChart } from '../Chart';
 import { Button } from '../Button';
 import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList } from '../Command';
 import { Kbd } from '../Kbd';
+import { Message, MessageGroup, MessageTyping } from '../Message';
 import { Pagination } from '../Pagination';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarInset, SidebarLayout, SidebarMenuItem, SidebarTrigger } from '../Sidebar';
 import { Toaster, toast } from '../Sonner';
@@ -35,7 +36,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble (a conversation on Inbox, with reactions, a read receipt and Show more), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble and Message (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more and a typing line), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -52,6 +53,12 @@ const people = [
   { name: 'Lena Fischer', email: 'lena@orbit.dev', role: 'Member' },
   { name: 'Omar Haddad', email: 'omar@orbit.dev', role: 'Member' },
 ];
+const chatAvatar = (initials: string, name: string, hue: string) => (
+  <Avatar initials={initials} name={name} style={{ '--avatar-fill': `var(--ds-palette-${hue}-solid)`, '--avatar-ink': 'var(--ds-primary-foreground)' } as CSSProperties} />
+);
+const priya = chatAvatar('P', 'Priya Raman', 'lime');
+const me = chatAvatar('T', 'You', 'orange');
+
 const pages = ['Home', 'Inbox', 'Reports', 'Members', 'Settings'];
 const news = [
   { title: 'Command palette', body: 'Press ⌘K anywhere to jump to a page or a member.', hue: 'blue' },
@@ -178,21 +185,26 @@ export const App: StoryObj = {
                   <Pagination page={tablePage} pageCount={Math.ceil(people.length / perPage)} onPageChange={setTablePage} aria-label="Members pages" />
                 </>
               ) : page === 'Inbox' ? (
-                <div role="log" aria-label="Conversation with Priya" style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 480 }}>
-                  <BubbleGroup>
-                    <Bubble variant="muted">Can we move the design review to Thursday?</Bubble>
-                    <Bubble variant="muted" reactions="🙏">
-                      Two people are out on Wednesday.
-                    </Bubble>
-                  </BubbleGroup>
-                  <BubbleGroup align="end" footer="Sent 10:24 AM · Read by Priya">
+                <div role="log" aria-label="Conversation with Priya" style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 480 }}>
+                  <MessageGroup avatar={priya}>
+                    <Message sender="Priya Raman" badge={<Badge shape="pill">Design</Badge>}>
+                      <Bubble variant="muted">Can we move the design review to Thursday?</Bubble>
+                    </Message>
+                    <Message footer="10:21 AM">
+                      <Bubble variant="muted" reactions="🙏">
+                        Two people are out on Wednesday.
+                      </Bubble>
+                    </Message>
+                  </MessageGroup>
+                  <Message align="end" avatar={me} footer="10:24 AM · Read by Priya">
                     <Bubble>Sure, Thursday at 2 PM works. I will update the invite.</Bubble>
-                  </BubbleGroup>
-                  <BubbleGroup>
+                  </Message>
+                  <Message avatar={priya} footer="10:26 AM">
                     <Bubble variant="muted" collapsible={3}>
                       Thanks! I will also bring the notes from last week, the open questions on the onboarding flow, the numbers from the pricing test and a first draft of the release plan for 2.5, so we can go through everything in one go instead of booking another slot next week.
                     </Bubble>
-                  </BubbleGroup>
+                  </Message>
+                  <MessageTyping>Priya is typing…</MessageTyping>
                 </div>
               ) : page === 'Home' ? (
                 <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>

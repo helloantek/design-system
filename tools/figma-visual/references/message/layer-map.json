@@ -1,0 +1,41 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-message) and how to read it.",
+  "layers": {
+    "root": {},
+    "avatar": {
+      "selector": ".ds-message__avatar",
+      "skip": [
+        "h",
+        "p"
+      ],
+      "$why": "Figma pads the avatar frame 24 px at the bottom to line it up with the last bubble above the footer; the code places it in the bubbles' grid row instead."
+    },
+    "header": {
+      "selector": ".ds-message__header",
+      "skip": [
+        "w"
+      ],
+      "$why": "The header hugs the sender's name, whose width follows glyph rasterisation."
+    },
+    "Sender": {
+      "selector": ".ds-message__sender"
+    },
+    "bubbles": {
+      "selector": ".ds-message__bubbles"
+    },
+    "footer": {
+      "selector": ".ds-message__footer",
+      "skip": [
+        "w"
+      ],
+      "$why": "Hugs its text."
+    },
+    "Time": {
+      "selector": ".ds-message__footer",
+      "skip": [
+        "fw"
+      ],
+      "$why": "The component's footer text is Medium; four of the five demo footers are Regular, and the code follows the demos."
+    }
+  }
+}
