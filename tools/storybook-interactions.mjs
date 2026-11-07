@@ -2333,6 +2333,49 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'attachment: a named group of files; uploading is busy; retry and remove act on the right file; card actions show on hover or focus only; a link card opens from anywhere on it; long names are cut with an ellipsis': async () => {
+    const url = (id) => `http://localhost:6008/iframe.html?id=components-attachment--${id}&viewMode=story`;
+    await page.goto(url('demo'));
+    const group = page.getByRole('group', { name: 'Attachments' });
+    await group.waitFor();
+    const items = group.locator('.ds-attachment');
+    assert.equal(await items.count(), 3);
+    assert.equal(await items.nth(1).getAttribute('aria-busy'), 'true', 'an uploading file is busy');
+    assert.equal(await items.nth(0).getAttribute('aria-busy'), null);
+    await page.getByRole('button', { name: 'Retry site-visit.mov' }).click();
+    assert.equal(await items.nth(2).getAttribute('aria-busy'), 'true', 'Retry starts the upload again');
+    await page.getByRole('button', { name: 'Remove pricing-model.xlsx' }).click();
+    assert.equal(await items.count(), 2, 'Remove takes the file away');
+    assert.ok((await group.textContent()).includes('acme-audit.zip'));
+
+    await page.goto(url('group'));
+    const card = page.locator('.ds-attachment--card').first();
+    await card.waitFor();
+    const actions = card.locator('.ds-attachment__actions');
+    assert.equal(await actions.evaluate((el) => getComputedStyle(el).opacity), '0', 'card actions hide at rest');
+    await card.hover();
+    await page.waitForFunction((el) => getComputedStyle(el).opacity === '1', await actions.elementHandle());
+    await page.mouse.move(0, 0);
+    await page.keyboard.press('Tab');
+    await page.waitForFunction((el) => getComputedStyle(el).opacity === '1', await actions.elementHandle());
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Remove acme-audit.docx', 'focus reaches the remove button');
+
+    await page.goto(url('link'));
+    const link = page.getByRole('link', { name: 'Northwind — Plans and pricing' });
+    await link.waitFor();
+    assert.equal(await link.getAttribute('href'), 'https://northwind.app/pricing');
+    const hit = await page.evaluate(() => {
+      const box = document.querySelector('.ds-attachment').getBoundingClientRect();
+      return document.elementFromPoint(box.left + 10, box.top + 10).closest('a')?.getAttribute('href');
+    });
+    assert.equal(hit, 'https://northwind.app/pricing', 'the whole card opens the link');
+
+    await page.goto(url('types'));
+    const title = page.locator('.ds-attachment--image .ds-attachment__title');
+    await title.waitFor();
+    assert.equal(await title.evaluate((el) => getComputedStyle(el).textOverflow), 'ellipsis');
+    assert.ok(await title.evaluate((el) => el.scrollWidth > el.clientWidth), 'a long name is cut');
+  },
   'message scroller: a named, focusable log; the end button shows while there is more below and jumps to the end (focus stays on the log); a new anchored turn settles at the top edge; streaming follows the live edge; loading earlier messages keeps the place; it opens at start / end; commands jump to a message; the scroll state is reported': async () => {
     const url = (id) => `http://localhost:6008/iframe.html?id=components-message-scroller--${id}&viewMode=story`;
     const viewport = () => page.locator('.ds-message-scroller__viewport').first();

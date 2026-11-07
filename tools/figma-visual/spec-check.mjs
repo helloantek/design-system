@@ -7,6 +7,13 @@ export function compareInPage({ map, layers, target: targetSelector = '#target' 
   const target = document.querySelector(targetSelector);
   const px = (v) => parseFloat(v) || 0;
   const parseColor = (s) => {
+    // Relative colours (rgb(from var(--token) r g b)) compute to color(srgb r g b [/ a]) with 0–1 channels.
+    const srgb = s.match(/color\(srgb ([^)]+)\)/);
+    if (srgb) {
+      const [rgb, a] = srgb[1].split('/');
+      const c = rgb.trim().split(/\s+/).map(Number);
+      return [c[0] * 255, c[1] * 255, c[2] * 255, a === undefined ? 1 : Number(a)];
+    }
     const m = s.match(/rgba?\(([^)]+)\)/);
     if (!m) return s === 'transparent' ? [0, 0, 0, 0] : null;
     const parts = m[1].split(/[ ,/]+/).filter(Boolean).map(Number);

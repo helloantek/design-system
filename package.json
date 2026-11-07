@@ -2,8 +2,15 @@
   "name": "@helloantek/design-system",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/tokens", "packages/css", "packages/react", "apps/storybook"],
-  "engines": { "node": ">=20" },
+  "workspaces": [
+    "packages/tokens",
+    "packages/css",
+    "packages/react",
+    "apps/storybook"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "npm run build -w @helloantek/ds-tokens && npm run build -w @helloantek/ds-react",
     "test": "npm test -w @helloantek/ds-tokens",
@@ -17,6 +24,7 @@
   "devDependencies": {
     "@axe-core/playwright": "4.14.0",
     "@changesets/cli": "2.29.7",
+    "@fontsource/geist-mono": "5.3.0",
     "@fontsource/inter": "5.3.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",

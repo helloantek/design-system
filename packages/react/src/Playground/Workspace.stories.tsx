@@ -3,6 +3,7 @@ import { useState, type CSSProperties } from 'react';
 import {
   RiAddLine,
   RiBarChartLine,
+  RiDownloadLine,
   RiExpandUpDownLine,
   RiFileTextLine,
   RiFolderLine,
@@ -13,6 +14,7 @@ import {
   RiStackLine,
   RiTeamLine,
 } from '@remixicon/react';
+import { Attachment } from '../Attachment';
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { Breadcrumb, BreadcrumbItem } from '../Breadcrumb';
@@ -38,7 +40,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message and Message Scroller (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more and a typing line, scrolling with a fade and a jump-to-latest button; Send a reply settles the new message near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message, Message Scroller and Attachment (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more, a shared file and a typing line, scrolling with a fade and a jump-to-latest button; Send a reply settles the new message near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -107,6 +109,11 @@ function InboxThread() {
             <Bubble variant="muted" collapsible={3}>
               Thanks! I will also bring the notes from last week, the open questions on the onboarding flow, the numbers from the pricing test and a first draft of the release plan for 2.5, so we can go through everything in one go instead of booking another slot next week.
             </Bubble>
+            <Attachment
+              title="release-plan-2.5.pdf"
+              description="1.2 MB"
+              actions={<Button variant="ghost" size="xs" icon={<RiDownloadLine />} aria-label="Download release-plan-2.5.pdf" onClick={() => toast('Downloading release-plan-2.5.pdf')} />}
+            />
           </Message>
         </MessageScrollerItem>
         {sent.map((text, i) => (

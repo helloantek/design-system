@@ -2,6 +2,7 @@ export * from './Accordion';
 export * from './Alert';
 export * from './AlertDialog';
 export * from './AspectRatio';
+export * from './Attachment';
 export * from './Avatar';
 export * from './Badge';
 export * from './Breadcrumb';

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
-import { RiDownloadLine, RiFileCopyLine, RiFilePdf2Fill, RiPushpinLine, RiRefreshLine, RiShareForwardLine } from '@remixicon/react';
+import { RiDownloadLine, RiFileCopyLine, RiPushpinLine, RiRefreshLine, RiShareForwardLine } from '@remixicon/react';
+import { Attachment as FileAttachment } from '../Attachment';
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
 import { Bubble } from '../Bubble';
@@ -113,7 +114,7 @@ export const Actions: StoryObj = {
 
 const shot = 'radial-gradient(120% 90% at 30% 40%, #9a9a9a, #1f1f1f 70%)';
 
-/** Figma demo "Attachment": a picture in a carousel and a file sent with a message. */
+/** Figma demo "Attachment": a picture in a carousel and a file (Attachment) sent with a message. */
 export const Attachment: StoryObj = {
   render: () => (
     <div style={column(16)}>
@@ -136,15 +137,7 @@ export const Attachment: StoryObj = {
           <Bubble variant="muted">Looks great. I wrote up the copy for the acme audit, too.</Bubble>
         </Message>
         <Message footer="Today, 9:02 AM">
-          {/* A file card until Attachment (later in stage 6) provides one. */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, width: 240, boxSizing: 'border-box', padding: '8px 12px', borderRadius: 12, background: 'var(--ds-popover)', boxShadow: '0 0 0 1px var(--ds-border)', fontFamily: 'var(--ds-font-sans)' }}>
-            <RiFilePdf2Fill size={28} color="var(--ds-palette-orange-solid)" aria-hidden />
-            <span style={{ display: 'grid', flex: 1, minWidth: 0 }}>
-              <span style={{ fontSize: 14, lineHeight: '20px', color: 'var(--ds-foreground)' }}>acme-audit.pdf</span>
-              <span style={{ fontSize: 12, lineHeight: '16px', color: 'var(--ds-muted-foreground)' }}>2.1 MB</span>
-            </span>
-            <Button variant="ghost" size="xs" icon={<RiDownloadLine />} aria-label="Download acme-audit.pdf" />
-          </div>
+          <FileAttachment title="acme-audit.pdf" description="2.1 MB" actions={<Button variant="ghost" size="xs" icon={<RiDownloadLine />} aria-label="Download acme-audit.pdf" />} />
         </Message>
       </MessageGroup>
       <Message align="end" avatar={mira}>

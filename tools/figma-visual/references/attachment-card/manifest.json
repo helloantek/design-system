@@ -1,0 +1,103 @@
+{
+ "$comment": "Sort UI 2.0 Attachment (1683:628), Type=Card and Image, all four states (1x PNG, exportAsync with absolute bounds): 'acme-audit.pdf', the 'PDF' type label (Card), the sample picture (Image Done and Hover) and the corner actions (remove on hover, retry and remove when failed). Kept apart from the File rows because Figma lays the squares out with inner padded frames, so the root's padding and gap differ by structure. renderers/attachment.tsx renders them with Attachment and Button.",
+ "component": "attachment-card",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "1683:628",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "card-done",
+   "nodeId": "1683:620",
+   "props": {
+    "Type": "Card",
+    "State": "Done"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 160,
+   "nodeH": 160
+  },
+  {
+   "slug": "card-uploading",
+   "nodeId": "1683:621",
+   "props": {
+    "Type": "Card",
+    "State": "Uploading"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 160,
+   "nodeH": 160
+  },
+  {
+   "slug": "card-hover",
+   "nodeId": "1683:623",
+   "props": {
+    "Type": "Card",
+    "State": "Hover"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 160,
+   "nodeH": 160
+  },
+  {
+   "slug": "card-error",
+   "nodeId": "1683:624",
+   "props": {
+    "Type": "Card",
+    "State": "Error"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 160,
+   "nodeH": 160
+  },
+  {
+   "slug": "image-uploading",
+   "nodeId": "1683:622",
+   "props": {
+    "Type": "Image",
+    "State": "Uploading"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 160,
+   "nodeH": 160
+  },
+  {
+   "slug": "image-error",
+   "nodeId": "1683:625",
+   "props": {
+    "Type": "Image",
+    "State": "Error"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 160,
+   "nodeH": 160
+  },
+  {
+   "slug": "image-done",
+   "nodeId": "1683:626",
+   "props": {
+    "Type": "Image",
+    "State": "Done"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 160,
+   "nodeH": 160
+  },
+  {
+   "slug": "image-hover",
+   "nodeId": "1683:627",
+   "props": {
+    "Type": "Image",
+    "State": "Hover"
+   },
+   "target": ".ds-attachment",
+   "nodeW": 160,
+   "nodeH": 160
+  }
+ ]
+}

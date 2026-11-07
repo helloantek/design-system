@@ -1,0 +1,25 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-attachment) and how to read it.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma pads two inner frames (the type label row, 12 12 0 12, and the title block, 12 all round) inside an unpadded square; the code pads the square itself by 12 px, which puts every part in the same place."
+    },
+    "Title": {
+      "selector": ".ds-attachment__title"
+    },
+    "Description": {
+      "selector": ".ds-attachment__description"
+    },
+    "File type": {
+      "selector": ".ds-attachment__type"
+    },
+    "actions": {
+      "selector": ".ds-attachment__actions"
+    }
+  }
+}

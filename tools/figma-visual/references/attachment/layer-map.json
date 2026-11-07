@@ -1,0 +1,23 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-attachment) and how to read it.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Media": {
+      "selector": ".ds-attachment__media"
+    },
+    "File Icons": {
+      "selector": ".ds-attachment__media > svg"
+    },
+    "Title": {
+      "selector": ".ds-attachment__title"
+    },
+    "Description": {
+      "selector": ".ds-attachment__description"
+    },
+    "actions": {
+      "selector": ".ds-attachment__actions"
+    }
+  }
+}

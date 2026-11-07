@@ -1,0 +1,267 @@
+/*
+ * Attachment — Sort UI 2.0 component set "Attachment" (node 1683:628) on page 351:2 in file 4JnqgEbdlnKgiFrfmiwEZw: a file
+ * added to a message or a composer, as a row (File, File sm), a square card (Card) or a picture (Image), while it
+ * uploads, once it is done, and when it fails. Values are Sort UI 2.0 tokens. Framework-agnostic.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-attachment ds-attachment--file [--file-sm | --card | --image [--picture]] [--uploading | --error]"
+ *        [style="background-image: url(…)"]>                                    (Image, once uploaded: --picture)
+ *     [<span class="ds-attachment__media">…a file icon…</span>]                        (File, File sm: Figma "Media")
+ *     [<span class="ds-attachment__type">PDF</span>]                                   (Card: Figma "Type label")
+ *     <span class="ds-attachment__body">
+ *       <span class="ds-attachment__title">acme-audit.pdf</span>                       (or <a class="…__title" href>)
+ *       [<span class="ds-attachment__description">2.1 MB</span>]                       (not in File sm)
+ *     </span>
+ *     [<span class="ds-attachment__actions">…ghost xs icon buttons…</span>]            (Figma "actions")
+ *   </div>
+ *
+ * Figma State: Done (no modifier), Uploading (--uploading), Error (--error: destructive border at 30 % and message);
+ * Hover comes from :hover. A card or a picture shows its actions on hover or focus, and always when it failed.
+ */
+
+@layer ds.components {
+  .ds-attachment {
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    gap: var(--ds-spacing-2-5);
+    width: var(--attachment-width, var(--ds-spacing-60));
+    min-width: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-3);
+    overflow: hidden;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-popover);
+    /* Figma: a 1 px border inside the box, and the Surface/Card effect style. */
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--attachment-border, var(--ds-border)), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+    transition: background-color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-attachment:hover {
+    background-color: var(--ds-control-hover);
+  }
+
+  .ds-attachment--error {
+    --attachment-border: var(--ds-alpha-destructive-30);
+  }
+
+  /* Figma "Media": a 32 px file icon (24 px with a 20 px icon in File sm). */
+  .ds-attachment__media {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-8);
+    height: var(--ds-spacing-8);
+  }
+
+  .ds-attachment__media > svg,
+  .ds-attachment__media > img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ds-attachment__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  /* 14/20 title, cut with an ellipsis. As a link it covers the whole attachment, under the actions. */
+  .ds-attachment__title {
+    overflow: hidden;
+    color: inherit;
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  a.ds-attachment__title::after {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    content: '';
+  }
+
+  a.ds-attachment__title:focus-visible {
+    outline: none;
+  }
+
+  .ds-attachment:has(a.ds-attachment__title:focus-visible) {
+    box-shadow:
+      inset 0 0 0 var(--ds-stroke-width-1) var(--attachment-border, var(--ds-border)),
+      0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* 12/16 muted: the size, "Uploading…", a link's address; the message in destructive when it failed. */
+  .ds-attachment__description {
+    overflow: hidden;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-attachment--error .ds-attachment__description {
+    color: var(--ds-destructive-foreground);
+  }
+
+  /* Figma "actions": ghost xs icon buttons, 4 px apart, above a link's cover. */
+  .ds-attachment__actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+  }
+
+  /* Type=File sm: 36 px tall, 6 × 8 px padding, 6 px gap, radius 10, a 20 px icon in a 24 px box, the title alone. */
+  .ds-attachment--file-sm {
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-lg);
+  }
+
+  .ds-attachment--file-sm .ds-attachment__media {
+    width: var(--ds-spacing-6);
+    height: var(--ds-spacing-6);
+  }
+
+  .ds-attachment--file-sm .ds-attachment__media > svg,
+  .ds-attachment--file-sm .ds-attachment__media > img {
+    width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+  }
+
+  /* Type=Card and Image: 160 px squares, the type label at the top, the title and description at the bottom, 12 px in. */
+  .ds-attachment--card,
+  .ds-attachment--image {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 0;
+    width: var(--attachment-width, var(--ds-spacing-40));
+    height: var(--attachment-height, var(--ds-spacing-40));
+    padding: var(--ds-spacing-3);
+  }
+
+  .ds-attachment__type {
+    overflow: hidden;
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+    letter-spacing: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-attachment--card .ds-attachment__body,
+  .ds-attachment--image .ds-attachment__body {
+    flex: none;
+    margin-top: auto;
+  }
+
+  /* The actions sit 8 px from the top-right corner; on hover or focus, and always when the upload failed. */
+  .ds-attachment--card .ds-attachment__actions,
+  .ds-attachment--image .ds-attachment__actions {
+    position: absolute;
+    top: var(--ds-spacing-2);
+    right: var(--ds-spacing-2);
+    gap: 0;
+    opacity: 0;
+    transition: opacity var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-attachment--card:is(:hover, :focus-within, .ds-attachment--error) .ds-attachment__actions,
+  .ds-attachment--image:is(:hover, :focus-within, .ds-attachment--error) .ds-attachment__actions {
+    opacity: 1;
+  }
+
+  /* Type=Image once uploaded (--picture): the picture fills the square (a background, so the inset border stays above
+     it) under a scrim, transparent to black at 40 % (plus black at 20 % on hover), with white text and the description
+     at 70 %. */
+  /* Figma uses primary-foreground, which turns dark in Dark; on a picture the text stays white in both schemes (the
+     white of alpha-white-90, made opaque; browsers without relative colours keep the 90 % white). */
+  .ds-attachment--picture {
+    --attachment-on-picture: var(--ds-alpha-white-90);
+
+    background: var(--ds-alpha-black-40) center / cover no-repeat;
+    color: var(--attachment-on-picture);
+  }
+
+  @supports (color: rgb(from red r g b)) {
+    .ds-attachment--picture {
+      --attachment-on-picture: rgb(from var(--ds-alpha-white-90) r g b / 1);
+    }
+  }
+
+  .ds-attachment--picture:hover {
+    background-color: var(--ds-alpha-black-40);
+  }
+
+  .ds-attachment--picture::before {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent, var(--ds-alpha-black-40));
+    content: '';
+    transition: background-color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-attachment--picture:hover::before {
+    background-color: var(--ds-alpha-black-20);
+  }
+
+  .ds-attachment--picture .ds-attachment__body {
+    position: relative;
+  }
+
+  .ds-attachment--picture .ds-attachment__description {
+    color: inherit;
+    opacity: 0.7;
+  }
+
+  /* On a picture the ghost buttons take the light text colour, and a light hover. */
+  .ds-attachment--picture .ds-attachment__actions .ds-button {
+    --btn-fg: var(--attachment-on-picture);
+  }
+
+  .ds-attachment--picture .ds-attachment__actions .ds-button:hover:not(:disabled) {
+    --btn-bg: var(--ds-alpha-white-15);
+  }
+
+  /* A row of attachments (the "Group" demo), 8 px apart, scrolling sideways when it overflows. */
+  .ds-attachment-group {
+    display: flex;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .ds-attachment-group > .ds-attachment {
+    flex: none;
+  }
+
+  .ds-attachment-group--column {
+    flex-direction: column;
+    overflow-x: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-attachment,
+    .ds-attachment__actions,
+    .ds-attachment--picture::before {
+      transition: none;
+    }
+  }
+}
