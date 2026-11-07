@@ -33,6 +33,7 @@
 @import './marker.css';
 @import './menubar.css';
 @import './message.css';
+@import './message-scroller.css';
 @import './navigation-menu.css';
 @import './pagination.css';
 @import './popover.css';
