@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState, type InputHTMLAttributes, 
 import { usePlacement } from '../internal/usePlacement';
 import { useField } from '../Field/FieldContext';
 import type { SelectCaption, SelectGroup, SelectItem, SelectOption, SelectSeparator } from '../Select';
-import { revealInList } from '../internal/revealInList';
+import { revealInList } from '@helloantek/ds-core';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-combobox*, and ds-select* for the menu and its options);
 // this component renders the markup and the WAI-ARIA combobox with list autocomplete
