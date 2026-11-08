@@ -3002,7 +3002,10 @@ Object.assign(tests, {
   'storybook: every component has a Docs page whose stories show their code': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-button--docs&viewMode=docs');
     await page.locator('#storybook-docs button', { hasText: 'Show code' }).first().click();
-    const code = await page.locator('#storybook-docs pre').first().innerText();
+    // The highlighter fills the block after it opens; wait for the code rather than read an empty block.
+    const block = page.locator('#storybook-docs pre', { hasText: '<Button' }).first();
+    await block.waitFor();
+    const code = await block.innerText();
     assert.match(code, /<Button[\s\S]*leadingIcon=\{<Icon \/>\}/, 'the code names the components (names survive minification)');
   },
 });
