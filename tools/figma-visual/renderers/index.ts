@@ -18,6 +18,7 @@ import { renderContextMenu } from './context-menu';
 import { renderDatePicker } from './date-picker';
 import { renderCollapsible } from './collapsible';
 import { renderDialog } from './dialog';
+import { renderDiff, renderDiffLine } from './diff';
 import { renderDrawer } from './drawer';
 import { renderDropdownMenu } from './dropdown-menu';
 import { renderEmpty } from './empty';
@@ -91,6 +92,8 @@ export const renderers: Record<string, Renderer> = {
   'date-picker': renderDatePicker,
   collapsible: renderCollapsible,
   dialog: renderDialog,
+  diff: renderDiff,
+  'diff-line': renderDiffLine,
   drawer: renderDrawer,
   'dropdown-menu': renderDropdownMenu,
   empty: renderEmpty,

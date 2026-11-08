@@ -1,0 +1,62 @@
+{
+  "$comment": "Figma layer path -> element inside .ds-diff-line. The added and removed tint is the line's own background (Figma: an absolute 'tint' rectangle). Figma's content slot hugs its text; the code element fills the line (so its background and guides span it), so its width is not compared. The actions group's width follows its buttons' label text, which rasterises differently from Figma (see the Button label note), so it is not compared.",
+  "layers": {
+    "root": {},
+    "tint": {},
+    "gutter": {
+      "selector": ".ds-diff-line__gutter",
+      "stroke": "border-right"
+    },
+    "old": {
+      "selector": ".ds-diff-line__number--old"
+    },
+    "new": {
+      "selector": ".ds-diff-line__number--new"
+    },
+    "number": {
+      "selector": ".ds-diff-line__number"
+    },
+    "Old": {
+      "selector": ".ds-diff-line__number--old"
+    },
+    "New": {
+      "selector": ".ds-diff-line__number--new"
+    },
+    "Number": {
+      "selector": ".ds-diff-line__number"
+    },
+    "rule": {
+      "selector": ".ds-diff-line__rule"
+    },
+    "code": {
+      "selector": ".ds-diff-line__body"
+    },
+    "sign": {
+      "selector": ".ds-diff-line__sign"
+    },
+    "Sign": {
+      "selector": ".ds-diff-line__sign"
+    },
+    "content": {
+      "selector": ".ds-diff-line__code",
+      "skip": [
+        "w"
+      ]
+    },
+    "Code": {
+      "selector": ".ds-diff-line__code"
+    },
+    "Label": {
+      "selector": ".ds-diff-line__label"
+    },
+    "Icon": {
+      "selector": ".ds-diff-line__icon"
+    },
+    "actions": {
+      "selector": ".ds-diff-line__actions",
+      "skip": [
+        "w"
+      ]
+    }
+  }
+}

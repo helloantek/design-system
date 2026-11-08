@@ -2333,6 +2333,36 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'diff: a figure named by its file; diffLines finds the changed lines of two versions and diffWords their changed words; a fold is a button that shows its lines; accepting or rejecting a change keeps one side and updates the counts': async () => {
+    const url = (id) => `http://localhost:6008/iframe.html?id=components-diff--${id}&viewMode=story`;
+    await page.goto(url('from-two-versions'));
+    const figure = page.getByRole('figure', { name: /package\.json/ });
+    await figure.waitFor();
+    assert.equal(await figure.locator('.ds-diff-line--added').count(), 6);
+    assert.equal(await figure.locator('.ds-diff-line--removed').count(), 5);
+    assert.deepEqual(await figure.locator('.ds-diff-line--added .ds-diff-word').allTextContents(), ['4', ' --turbopack', ',', '16', '0', '2']);
+    assert.ok((await figure.locator('.ds-diff-line--added .ds-diff-line__code').first().textContent()).startsWith('Added: '), 'an added line says so to assistive technology');
+
+    await page.goto(url('folded-context'));
+    const fold = page.getByRole('button', { name: 'Show 5 unchanged lines' });
+    await fold.waitFor();
+    const before = await page.locator('.ds-diff-line--context').count();
+    await fold.focus();
+    await page.keyboard.press('Enter');
+    await page.getByRole('button', { name: 'Show 5 unchanged lines' }).waitFor({ state: 'detached' });
+    assert.equal(await page.locator('.ds-diff-line--context').count(), before + 5, 'the fold shows its five lines');
+
+    await page.goto(url('review-an-agents-edit'));
+    const stats = page.locator('.ds-diff__stats');
+    await stats.waitFor();
+    assert.equal(await stats.textContent(), '+10−3');
+    await page.getByRole('button', { name: 'Accept' }).first().click();
+    assert.equal(await stats.textContent(), '+3−1', 'the accepted change leaves the counts');
+    assert.equal(await page.getByRole('button', { name: 'Accept' }).count(), 1, 'its actions go away');
+    await page.getByRole('button', { name: 'Reject' }).click();
+    assert.equal(await page.locator('.ds-diff-line--added, .ds-diff-line--removed').count(), 0, 'nothing is left to review');
+    assert.ok((await page.locator('.ds-diff__lines').textContent()).includes('return [...notes].sort((a, b) => b.updatedAt - a.updatedAt)'), 'the rejected change keeps the old line');
+  },
   'ai trace: a step that opens is a button with aria-expanded and aria-controls; click, Enter and Space open and close it; running, failed and pending steps say so; a link step opens its page': async () => {
     const url = (id) => `http://localhost:6008/iframe.html?id=components-ai-trace--${id}&viewMode=story`;
     await page.goto(url('collapsible'));

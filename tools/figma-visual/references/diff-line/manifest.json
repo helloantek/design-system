@@ -1,0 +1,181 @@
+{
+ "$comment": "Sort UI 2.0 Diff Line (1699:107), every Type with both and single numbers (1x PNG, exportAsync with absolute bounds): Figma's samples ('for (const note of queue) {', '  const saved = await api.save(note)', '  await api.save(note)', '@@ -21,3 +22,3 @@', 'Show 5 unchanged lines', Accept and Reject) at 520 px. renderers/diff.tsx renders them with DiffLine, DiffFold and DiffActions.",
+ "component": "diff-line",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "componentSet": "1699:107",
+ "entries": [
+  {
+   "slug": "context",
+   "nodeId": "1699:3",
+   "props": {
+    "Type": "Context",
+    "Numbers": "Both"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20
+  },
+  {
+   "slug": "added",
+   "nodeId": "1699:14",
+   "props": {
+    "Type": "Added",
+    "Numbers": "Both"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20,
+   "specOverride": {
+    "rule": {
+     "fill": "#00c950"
+    }
+   },
+   "$why": "The added bar is bound to the primitive green/600 (#00a63e), which is not a Sort UI 2.0 semantic variable the tokens export; the code uses palette/green-solid (#00c950), the nearest one. Listed under Known design findings."
+  },
+  {
+   "slug": "removed",
+   "nodeId": "1699:26",
+   "props": {
+    "Type": "Removed",
+    "Numbers": "Both"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20
+  },
+  {
+   "slug": "empty",
+   "nodeId": "1699:39",
+   "props": {
+    "Type": "Empty",
+    "Numbers": "Both"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20
+  },
+  {
+   "slug": "hunk",
+   "nodeId": "1699:49",
+   "props": {
+    "Type": "Hunk",
+    "Numbers": "Both"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20
+  },
+  {
+   "slug": "folded",
+   "nodeId": "1714:1318",
+   "props": {
+    "Type": "Folded",
+    "Numbers": "Both"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 28
+  },
+  {
+   "slug": "actions",
+   "nodeId": "1714:1326",
+   "props": {
+    "Type": "Actions",
+    "Numbers": "Both"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 32
+  },
+  {
+   "slug": "single-context",
+   "nodeId": "1699:60",
+   "props": {
+    "Type": "Context",
+    "Numbers": "Single"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20
+  },
+  {
+   "slug": "single-added",
+   "nodeId": "1699:69",
+   "props": {
+    "Type": "Added",
+    "Numbers": "Single"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20,
+   "specOverride": {
+    "rule": {
+     "fill": "#00c950"
+    }
+   },
+   "$why": "The added bar is bound to the primitive green/600 (#00a63e), which is not a Sort UI 2.0 semantic variable the tokens export; the code uses palette/green-solid (#00c950), the nearest one. Listed under Known design findings."
+  },
+  {
+   "slug": "single-removed",
+   "nodeId": "1699:79",
+   "props": {
+    "Type": "Removed",
+    "Numbers": "Single"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20
+  },
+  {
+   "slug": "single-empty",
+   "nodeId": "1699:90",
+   "props": {
+    "Type": "Empty",
+    "Numbers": "Single"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20
+  },
+  {
+   "slug": "single-hunk",
+   "nodeId": "1699:98",
+   "props": {
+    "Type": "Hunk",
+    "Numbers": "Single"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 20
+  },
+  {
+   "slug": "single-folded",
+   "nodeId": "1714:1352",
+   "props": {
+    "Type": "Folded",
+    "Numbers": "Single"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 28
+  },
+  {
+   "slug": "single-actions",
+   "nodeId": "1714:1359",
+   "props": {
+    "Type": "Actions",
+    "Numbers": "Single"
+   },
+   "target": ".ds-diff-line",
+   "nodeW": 520,
+   "nodeH": 32
+  }
+ ]
+}

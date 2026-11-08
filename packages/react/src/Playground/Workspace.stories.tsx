@@ -25,6 +25,7 @@ import { Bubble } from '../Bubble';
 import { Carousel, CarouselSlide } from '../Carousel';
 import { BarChart, ChartLegend, PieChart } from '../Chart';
 import { Button } from '../Button';
+import { Diff, DiffLine, DiffWord } from '../Diff';
 import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList } from '../Command';
 import { Kbd } from '../Kbd';
 import { Marker } from '../Marker';
@@ -43,7 +44,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message, Message Scroller, Attachment and AI Trace (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more, a shared file, the assistant’s steps in an AI Trace (Checked calendars opens) and a typing line, scrolling with a fade and a jump-to-latest button; AI Chat Composer sends a reply, typed or dictated, which settles near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message, Message Scroller, Attachment, AI Trace and Diff (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more, a shared file, the assistant’s steps in an AI Trace (Checked calendars and Edited the invite open, the latter on a Diff) and a typing line, scrolling with a fade and a jump-to-latest button; AI Chat Composer sends a reply, typed or dictated, which settles near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -132,6 +133,17 @@ function InboxThread() {
               </TraceLine>
               <TraceCollapsible icon={<RiCalendarLine />} title="Checked calendars" description="2 people">
                 <p>Priya and you are both free on Thursday from 2 PM to 4 PM.</p>
+              </TraceCollapsible>
+              <TraceCollapsible icon={<RiFileTextLine />} title="Edited the invite" description="+1 −1">
+                <Diff title="design-review.ics" added={1} removed={1} numbers="single">
+                  <DiffLine number={4}>SUMMARY:Design review</DiffLine>
+                  <DiffLine type="removed" number={5}>
+                    DTSTART:20261111T<DiffWord>1000</DiffWord>00
+                  </DiffLine>
+                  <DiffLine type="added" number={5}>
+                    DTSTART:20261112T<DiffWord>1400</DiffWord>00
+                  </DiffLine>
+                </Diff>
               </TraceCollapsible>
             </Trace>
             <Bubble variant="muted">Summary: the review moves to Thursday at 2 PM; Priya brings the onboarding numbers and the 2.5 release plan.</Bubble>

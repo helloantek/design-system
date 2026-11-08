@@ -1,0 +1,23 @@
+{
+ "$comment": "Sort UI 2.0 Diff (1699:42634): 'src/notes/sync.ts', +5 \u22121 and Figma's seven sample lines at 520 px.",
+ "component": "diff",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "componentSet": "1699:42634",
+ "entries": [
+  {
+   "slug": "diff",
+   "nodeId": "1699:42634",
+   "props": {},
+   "target": ".ds-diff",
+   "nodeW": 520,
+   "nodeH": 185
+  }
+ ]
+}

@@ -80,7 +80,9 @@ export function compareInPage({ map, layers, target: targetSelector = '#target' 
         : cfg.stroke === 'outer-shadow' ? (cs.boxShadow.match(/rgba?\([^)]+\)/) || [null])[0]
         : cfg.stroke === 'outline' ? cs.outlineColor
         : cfg.stroke === 'svg' ? cs.stroke
-        : cfg.stroke === 'color' ? cs.color : cs.borderTopColor;
+        : cfg.stroke === 'color' ? cs.color
+        : cfg.stroke === 'border-right' ? cs.borderRightColor
+        : cfg.stroke === 'border-bottom' ? cs.borderBottomColor : cs.borderTopColor;
       if (!got || !sameColor(got, expected.stroke)) fail('stroke', got, expected.stroke);
     }
     // Only layers exported with an opacity below 1 carry the key (specs exported before it existed have none).

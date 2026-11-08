@@ -209,6 +209,37 @@ The steps an AI agent took: Sort UI 2.0 **Trace Line** (Status, Type, State, Tit
 | Trace | `Trace`: the lines, 8 px apart | `ds-trace` |
 | — (the demos' command output) | `TraceCode`: 12 px Geist Mono on fill-1 | `ds-trace-code` |
 
+## Diff
+
+A file's changes: Sort UI 2.0 **Diff Line** (Type, Numbers, Old, New, Number, content, Label, actions) and **Diff**.
+
+```tsx
+<Diff title="src/notes/sync.ts" icon={<RiCodeSSlashLine />} added={5} removed={1} numbers="single">
+  <DiffLine number={18}>{'  for (const note of queue) {'}</DiffLine>
+  <DiffLine type="removed" number={19}>{'    await api.save(note)'}</DiffLine>
+  <DiffLine type="added" number={19}>
+    {'    '}<DiffWord>const saved = </DiffWord><DiffToken kind="keyword">await</DiffToken> api.save(note)
+  </DiffLine>
+  <DiffFold label="Show 5 unchanged lines" onClick={expand} />
+  <DiffActions><Button size="xs">Accept</Button><Button size="xs" variant="outline">Reject</Button></DiffActions>
+</Diff>
+<Diff title="src/billing/invoice.ts" added={5} removed={4}><DiffSplit before={oldLines} after={newLines} /></Diff>
+const rows = diffLines(before, after); // [{ type: 'removed', oldNumber: 3, text: '…' }, …]
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Type = Context · Added · Removed · Empty · Hunk | `DiffLine` `type` (default `context`): added and removed lines get the syntax tint, a coloured number and sign, a bar (solid) or a hatched bar on the gutter, and a visually hidden "Added:" or "Removed:"; empty and hunk lines are fill-1 without a sign (a hunk's number defaults to "⋯") | `ds-diff-line` · `--added` · `--removed` · `--empty` · `--hunk` |
+| Type = Folded | `DiffFold` (`label`, `onClick`, `icon`): a 28 px button | `ds-diff-line--folded` |
+| Type = Actions | `DiffActions`: xs buttons lined up with the code, 32 px | `ds-diff-line--actions` · `ds-diff-line__actions` |
+| Numbers = Both · Single | `numbers` on `Diff` (or a line): `oldNumber` and `newNumber`, or `number`; 32 px each (`--diff-number-width` for longer files) | `ds-diff-line__number` · `--old` · `--new` |
+| content | the code: plain, or with `DiffToken` (`kind` `keyword` · `string` · `constant` · `function` · `variable` · `tag` · `comment`, Figma's syntax colours) and `DiffWord` (a changed word); 1 px guides at each two-space indent (`indent`, by default counted from a string) | `ds-diff-line__code` (`--diff-indent`) · `ds-diff-token--*` · `ds-diff-word` |
+| Diff: header, Title, Added, Removed | `Diff` `title`, `icon`, `added`, `removed`: a `<figure>` named by its `<figcaption>` | `ds-diff` · `__header` · `__title` · `__stats` |
+| — (the "Split" demo) | `DiffSplit` `before` and `after`: two columns of single-numbered lines | `ds-diff__split` · `__side` |
+| — (the "From two versions" demo) | `diffLines(before, after)` (longest common subsequence of lines; removed before added in each change) and `diffWords(line, other)` (changed word ranges for `DiffWord`) | — |
+
+Long lines scroll sideways inside the card, the old and new sides each on their own.
+
 ## Attachment
 
 A file added to a message or a composer: Sort UI 2.0 **Attachment** (Type, State, Title, Type label, Size, Error, Icon, actions).
@@ -1662,6 +1693,7 @@ These come from the Figma files, not the code:
 - Message (2.0): Figma's Time text in the footer is Regular while the component's text style is Medium; the code follows the demos (Regular, with the sender in Medium). The demos colour fallback avatars with palette solids; Avatar gained `--avatar-fill` and `--avatar-ink` for that instead of a new prop.
 - Message Scroller (2.0): the component is a single component with a slot, not a set; its booleans (Fade, Button end, Button start) are the props, and the eleven demos describe behaviour (anchoring, streaming, opening position, history, animation, commands, outline, scroll state) that the adapter implements. Figma shows the fade and the end button whatever the position; the code shows them only while there is more below. Figma draws no scrollbar; the code hides it too and keeps the transcript keyboard-scrollable. The sample's fallback avatars put white initials on `palette/orange-solid` (2.88:1, under the 4.5:1 AA minimum).
 - Attachment (2.0): the Error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark (design review); Bubble's Destructive border follows. Figma draws the text on a picture in `primary-foreground`, which turns dark in Dark; the code keeps it white in both schemes (the white of `alpha-white-90`, made opaque). The Card and Image squares pad two inner frames (12 12 0 12 and 12) in an unpadded square; the code pads the square by 12 px, which lands every part in the same place. A card's actions only appear in Figma's Hover and Error variants; the code also shows them on keyboard focus. The File Icons in the demos are illustrations with raw colours, not tokens, so they stay the same in Dark.
+- Diff (2.0): an added line's bar is bound to the primitive green/600 (#00a63e), which the Sort UI 2.0 semantic variables (and so the tokens) do not include; the code uses palette green-solid (#00c950), and the removed bar's red/500 is palette red-solid. The header icon is a 16 px icon scaled to 17.3 px, drawn at 16 px as in AI Trace. In the Empty and Hunk variants the sign frame is hidden but its text layer is not; the code draws no sign. The "Folded context" demo numbers its removed line 31 after line 32; the stories keep Figma's numbers.
 - AI Trace (2.0): the line's icon and chevron are 16 px lucide icons scaled to 17.3 px (an instance scaled by 1.08, no token); the code draws them at 16 px, which puts the icon's centre on Trace Content's rule and the title on its 24 px indent, so a line is 1.3 px narrower per icon (design review; `sizeOverride` in the visual check). Figma's lines have a 10 px radius that only shows as the 4 px focus ring; the code keeps both. The code interpreter demo's lines are separate 16 px text layers 4 px apart; `TraceCode` is one block with 20 px lines, which lands the text in the same places. The Description (muted at 70 %, about 3.2:1 on white) and Pending steps (60 %, about 2.6:1) fall below 4.5:1 (axe reports them); the code follows Figma.
 - AI Chat Composer (2.0): Figma's box has an inset white top highlight; under the 1 px border it reads as a glow in Dark, so the code leaves it out, as on Bubble. Figma's trailing frame stretches over the bar's free middle (and, while dictating, wraps the waveform or status); the code's hugs its buttons, with every part in the same place. A /command in the prompt cannot take room (the textarea's text would no longer line up), so the token's 4 px sides are drawn with shadows there. The Effort slider of Figma's model menu is shown as a radio group in the stories.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
