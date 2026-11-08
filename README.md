@@ -8,7 +8,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 | [`@helloantek/ds-css`](packages/css) | Component styles as plain CSS classes, built only on tokens | every web project |
 | [`@helloantek/ds-core`](packages/core) | Framework-free behaviour the adapters share: popup placement, list navigation, type-ahead ([ADR 0002](docs/adr/0002-angular.md)) | `ds-react` (and the coming `ds-angular`); installed with them |
 | [`@helloantek/ds-react`](packages/react) | React components (markup + classes) | React / Next.js |
-| [`@helloantek/ds-angular`](packages/angular) | Angular 22 components (markup + classes, the same as `ds-react`): pilot, Button and Badge so far ([ADR 0002](docs/adr/0002-angular.md)) | Angular |
+| [`@helloantek/ds-angular`](packages/angular) | Angular 22 components (markup + classes, the same as `ds-react`): pilot: Button, Badge, Input, Checkbox ([ADR 0002](docs/adr/0002-angular.md)) | Angular |
 | [`apps/storybook`](apps/storybook) | Documentation with brand and colour-scheme switchers; composes the Angular Storybook ([`apps/storybook-angular`](apps/storybook-angular)) under **Angular** | design, development |
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). How an Angular adapter fits in: [ADR 0002](docs/adr/0002-angular.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
@@ -58,7 +58,7 @@ On phones, components turn off the browser's grey tap highlight (they draw their
 
 ### Angular
 
-Angular 22 (pilot: Button and Badge; the rest follows [ADR 0002](docs/adr/0002-angular.md)):
+Angular 22 (pilot: Button, Badge, Input, Checkbox; the rest follows [ADR 0002](docs/adr/0002-angular.md)):
 
 ```sh
 npm i @helloantek/ds-tokens @helloantek/ds-css @helloantek/ds-angular @fontsource/inter
@@ -79,6 +79,25 @@ import { DsBadge, DsButton, DsLeadingIcon } from '@helloantek/ds-angular';
 ```
 
 Inputs are named after the Figma properties, as in React (`variant`, `size`, `badge`, `color`, `dot`…). Icon slots are marked on the projected element: `dsLeadingIcon`, `dsTrailingIcon`, `dsIcon` (an icon-only button, named with `aria-label`), `dsImage`. A badge's Close Icon is `removable` with the `(remove)` output. Storybook: **Angular** in the sidebar.
+
+Fields work with every Angular form API: `<ds-input>` and `<ds-checkbox>` take Signal Forms (`[formField]`), Reactive Forms (`formControlName`, `[formControl]`) and `ngModel`, or plain two-way binding (`[(value)]`, `[(checked)]`). A form's disabled state, and with Signal Forms its `invalid`, `required` and `name`, reach the native input. `<ds-input>` and `<ds-checkbox>` render no box of their own (`display: contents`); the T-slot button is `<button dsInputAction>`, a group of checkboxes `<fieldset dsCheckboxGroup label="…">`.
+
+```ts
+import { DsCheckbox, DsInput } from '@helloantek/ds-angular';
+import { FormField, form, required } from '@angular/forms/signals';
+
+@Component({
+  imports: [DsInput, DsCheckbox, FormField],
+  template: `
+    <ds-input label="Email" caption="We never share it." [formField]="signup.email" />
+    <ds-checkbox label="Send me product news" [formField]="signup.news" />
+  `,
+})
+class Signup {
+  model = signal({ email: '', news: false });
+  signup = form(this.model, (p) => required(p.email));
+}
+```
 
 ### Other web frameworks (Vue, Svelte, Angular, plain HTML)
 
