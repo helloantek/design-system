@@ -25,6 +25,7 @@
   "peerDependencies": {
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
     "@helloantek/ds-css": "^2.0.0"
   },
   "dependencies": {
@@ -36,6 +37,7 @@
     "@angular/compiler": "22.2.5",
     "@angular/compiler-cli": "22.2.5",
     "@angular/core": "22.2.5",
+    "@angular/forms": "22.2.5",
     "@angular/platform-browser": "22.2.5",
     "ng-packagr": "22.2.6",
     "rxjs": "7.8.2"

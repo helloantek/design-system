@@ -5,11 +5,12 @@
 //   components covers the Angular ones;
 // - the interaction tests every adapter shares (shared-interactions.mjs) pass.
 // Usage: npm run build-storybook && npm run test:angular
+import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { readFileSync, existsSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import { chromium } from 'playwright';
-import { sharedTests } from './shared-interactions.mjs';
+import { settles, sharedTests } from './shared-interactions.mjs';
 
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.woff2': 'font/woff2', '.woff': 'font/woff', '.svg': 'image/svg+xml' };
 const serve = (dir, port) =>
@@ -30,17 +31,33 @@ const reactIds = new Set(storiesOf(reactDir).map((e) => e.id));
 const angularStories = storiesOf(angularDir);
 
 // Runs in the page: the story's markup in a canonical form.
+// - Angular component hosts (<ds-checkbox>, <ds-input>: `display: contents`, no box of their own) are transparent;
+// - a form control's state is compared by its properties (`:value`, `:checked`, `:indeterminate`), not its value /
+//   checked attributes, which React and Angular set differently;
+// - generated ids (React's useId, the adapter's own) become #1, #2… in order of appearance, in `id` and in every
+//   attribute that refers to one, so a label, a description or aria-controls still has to point at the same element.
 const canonical = () => {
   const skip = (name) => name === 'ng-version' || /^ds[a-z]*$/i.test(name) || name.startsWith('_ng');
+  const refs = new Set(['id', 'for', 'aria-describedby', 'aria-labelledby', 'aria-controls', 'aria-owns', 'aria-activedescendant', 'list', 'form', 'headers']);
+  const ids = new Map();
+  const id = (value) => value.split(/\s+/).filter(Boolean).map((v) => (ids.has(v) ? ids.get(v) : (ids.set(v, `#${ids.size + 1}`), ids.get(v)))).join(' ');
   const tidy = (html) => html.replace(/\s+/g, ' ').replace(/ ?(<[^>]+>) ?/g, '$1').trim();
+  const isControl = (node) => node.localName === 'input' || node.localName === 'textarea' || node.localName === 'select';
   const walk = (node) => {
     if (node.nodeType === 3) return node.textContent.replace(/\s+/g, ' ');
     if (node.nodeType !== 1) return '';
+    const kids = () => [...node.childNodes].map(walk).join('');
+    if (node.localName.startsWith('ds-') && getComputedStyle(node).display === 'contents') return kids();
     const attrs = [...node.attributes]
-      .filter((a) => !skip(a.name))
-      .map((a) => (a.name === 'class' ? `class="${a.value.split(/\s+/).filter(Boolean).sort().join(' ')}"` : `${a.name}="${a.value}"`))
-      .sort();
-    return `<${node.localName}${attrs.length ? ` ${attrs.join(' ')}` : ''}>${tidy([...node.childNodes].map(walk).join(''))}</${node.localName}>`;
+      .filter((a) => !skip(a.name) && !(isControl(node) && (a.name === 'value' || a.name === 'checked')))
+      .sort((a, b) => (a.name < b.name ? -1 : 1))
+      .map((a) => (a.name === 'class' ? `class="${a.value.split(/\s+/).filter(Boolean).sort().join(' ')}"` : refs.has(a.name) ? `${a.name}="${id(a.value)}"` : `${a.name}="${a.value}"`));
+    if (isControl(node)) {
+      attrs.push(`:value="${node.value}"`);
+      if (node.type === 'checkbox' || node.type === 'radio') attrs.push(`:checked="${node.checked}"`, `:indeterminate="${node.indeterminate}"`);
+    }
+    attrs.sort();
+    return `<${node.localName}${attrs.length ? ` ${attrs.join(' ')}` : ''}>${tidy(kids())}</${node.localName}>`;
   };
   let root = document.querySelector('#storybook-root');
   // Angular renders a story inside a host element named after it (<components-button--playground>).
@@ -63,6 +80,13 @@ const render = async (base, id) => {
 
 let failed = 0;
 for (const story of angularStories) {
+  // Angular-only stories (e.g. form bindings) have no React counterpart: they must render, and are tested below.
+  if (story.tags?.includes('angular-only')) {
+    const angular = await render(ANGULAR, story.id);
+    if (angular.errors.length) failed++;
+    console.log(angular.errors.length ? `FAIL ${story.id}: ${angular.errors.join(' | ')}` : `ok   ${story.id.padEnd(40)} renders (Angular only)`);
+    continue;
+  }
   if (!reactIds.has(story.id)) {
     failed++;
     console.log(`FAIL ${story.id}: no React story with this id`);
@@ -77,6 +101,48 @@ for (const story of angularStories) {
     while (angular.markup[i] === react.markup[i]) i++;
     console.log(`FAIL ${story.id}: markup differs from React\n     React   …${react.markup.slice(Math.max(0, i - 80), i + 160)}\n     Angular …${angular.markup.slice(Math.max(0, i - 80), i + 160)}`);
   } else console.log(`ok   ${story.id.padEnd(40)} same markup as React`);
+}
+
+// Angular only: Signal Forms, Reactive Forms and ngModel move values both ways through Input and Checkbox.
+const angularTests = {
+  'angular forms: [formField], formControlName and ngModel bind Input and Checkbox both ways; an invalid value shows once the field is touched; disabled follows': async () => {
+    await page.goto(`${ANGULAR}/iframe.html?id=angular-forms--bindings&viewMode=story`);
+    const value = (form) => page.locator(`[data-form="${form}"] output`).textContent().then((t) => JSON.parse(t));
+    const signalEmail = page.getByRole('textbox', { name: 'Email (signal)' });
+    await signalEmail.waitFor();
+    assert.equal(await signalEmail.inputValue(), 'ada@example.com', 'the model fills the input');
+    assert.equal(await page.getByRole('checkbox', { name: 'Newsletter (signal)' }).isChecked(), true);
+    await signalEmail.fill('not an email');
+    await settles(() => page.locator('[data-form="signal"]').textContent().then((t) => /Email valid: false/.test(t)), true, 'the email validator runs');
+    assert.equal(await signalEmail.getAttribute('aria-invalid'), null, 'while typing, an invalid value is not flagged yet');
+    await page.keyboard.press('Tab');
+    await settles(() => signalEmail.getAttribute('aria-invalid'), 'true', 'leaving the field (touched) flags it');
+    assert.match(await signalEmail.locator('xpath=ancestor::div[contains(@class,"ds-input ")]').getAttribute('class'), /ds-input--invalid/);
+    await page.getByRole('checkbox', { name: 'Newsletter (signal)' }).click();
+    await settles(() => value('signal'), { email: 'not an email', newsletter: false }, 'typing and ticking update the model');
+    const reactiveEmail = page.getByRole('textbox', { name: 'Email (reactive)' });
+    assert.equal(await reactiveEmail.inputValue(), 'grace@example.com');
+    await reactiveEmail.fill('grace@hopper.dev');
+    await page.getByText('Newsletter (reactive)').click();
+    await settles(() => value('reactive'), { email: 'grace@hopper.dev', newsletter: true });
+    await page.getByRole('button', { name: 'Disable the reactive form' }).click();
+    await settles(() => reactiveEmail.isDisabled(), true, 'disabling the form control disables the input');
+    await settles(() => page.getByRole('checkbox', { name: 'Newsletter (reactive)' }).isDisabled(), true);
+    const plainEmail = page.getByRole('textbox', { name: 'Email (ngModel)' });
+    await plainEmail.fill('alan@turing.dev');
+    await page.getByRole('checkbox', { name: 'Newsletter (ngModel)' }).click();
+    await settles(() => value('ngmodel'), { email: 'alan@turing.dev', newsletter: false });
+  },
+};
+for (const [name, run] of Object.entries(angularTests)) {
+  try {
+    await page.mouse.move(0, 0);
+    await run();
+    console.log(`ok   ${name}`);
+  } catch (error) {
+    failed++;
+    console.log(`FAIL ${name}\n     ${error.message.split('\n').join('\n     ')}`);
+  }
 }
 
 for (const [name, run] of Object.entries(sharedTests)) {
