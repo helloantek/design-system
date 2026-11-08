@@ -2944,6 +2944,31 @@ Object.assign(tests, {
     await page.keyboard.press('Escape');
     assert.equal(await trigger.getAttribute('aria-expanded'), 'false');
   },
+  'storybook: the HTML panel shows the story markup, follows its controls and folds SVG contents': async () => {
+    await page.goto('http://localhost:6008/?path=/story/components-button--playground&args=variant:outline');
+    await page.getByRole('tab', { name: 'HTML' }).click();
+    const panel = page.locator('#storybook-panel-root');
+    await panel.getByText('ds-button--outline').first().waitFor();
+    const text = await panel.innerText();
+    assert.match(text, /<button type="button" class="ds-button ds-button--outline ds-button--size-default">/);
+    assert.match(text, /<span class="ds-button__label">Button<\/span>/);
+    assert.match(text, /<svg [^>]*>…<\/svg>/, 'SVG contents are folded');
+    await panel.getByText('SVG in full').click();
+    await panel.getByText('<path', { exact: false }).first().waitFor();
+    // A click in the story (opening a menu) shows up in the panel.
+    await page.goto('http://localhost:6008/?path=/story/components-dropdown-menu--playground');
+    await page.getByRole('tab', { name: 'HTML' }).click();
+    await panel.getByText('ds-dropdown').first().waitFor();
+    assert.match(await panel.innerText(), /aria-expanded="false"/);
+    await page.frameLocator('#storybook-preview-iframe').locator('#storybook-root button').first().click();
+    await panel.getByText('aria-expanded="true"', { exact: false }).first().waitFor();
+  },
+  'storybook: every component has a Docs page whose stories show their code': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=components-button--docs&viewMode=docs');
+    await page.locator('#storybook-docs button', { hasText: 'Show code' }).first().click();
+    const code = await page.locator('#storybook-docs pre').first().innerText();
+    assert.match(code, /<Button[\s\S]*leadingIcon=\{<Icon \/>\}/, 'the code names the components (names survive minification)');
+  },
 });
 
 let failed = 0;

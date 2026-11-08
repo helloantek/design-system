@@ -90,6 +90,7 @@ type View = 'all' | 'active' | 'pending';
 
 const meta = {
   title: 'Playground/Team',
+  tags: ['!autodocs'],
   parameters: {
     layout: 'padded',
     docs: {

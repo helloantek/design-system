@@ -10,6 +10,8 @@ const config: StorybookConfig = {
   // Use component sources directly, so Storybook needs no package build and reloads on edits.
   viteFinal: (vite) => ({
     ...vite,
+    // Keep function names through minification, so "Show code" names the components and icons (<RiAddLine />, not <d />).
+    build: { ...vite.build, rolldownOptions: { ...vite.build?.rolldownOptions, output: { ...(vite.build?.rolldownOptions?.output as object), keepNames: true } } },
     resolve: {
       ...vite.resolve,
       alias: { ...vite.resolve?.alias, '@helloantek/ds-react': fileURLToPath(new URL('../../../packages/react/src/index.ts', import.meta.url)) },

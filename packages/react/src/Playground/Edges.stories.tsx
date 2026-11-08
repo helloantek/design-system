@@ -11,6 +11,7 @@ import { Tooltip } from '../Tooltip';
 
 const meta = {
   title: 'Playground/Popups near the edge',
+  tags: ['!autodocs'],
   parameters: {
     layout: 'fullscreen',
     docs: {

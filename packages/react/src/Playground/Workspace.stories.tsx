@@ -39,6 +39,7 @@ import { UsageBar, UsageBarLegend, UsageBarLegendItem, UsageBarSegment } from '.
 
 const meta = {
   title: 'Playground/Workspace',
+  tags: ['!autodocs'],
   parameters: {
     layout: 'padded',
     docs: {
