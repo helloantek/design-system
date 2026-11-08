@@ -7,13 +7,15 @@
       "@helloantek/ds-tokens",
       "@helloantek/ds-css",
       "@helloantek/ds-core",
-      "@helloantek/ds-react"
+      "@helloantek/ds-react",
+      "@helloantek/ds-angular"
     ]
   ],
   "access": "restricted",
   "baseBranch": "main",
   "ignore": [
-    "@helloantek/ds-storybook"
+    "@helloantek/ds-storybook",
+    "@helloantek/ds-storybook-angular"
   ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true

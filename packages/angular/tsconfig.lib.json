@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "jsx": "preserve",
+    "experimentalDecorators": false,
+    "useDefineForClassFields": false,
+    "noUnusedLocals": true,
+    "verbatimModuleSyntax": false,
+    "isolatedModules": false,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "partial",
+    "strictTemplates": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.stories.ts", "src/**/*.spec.ts", "src/lib/fixtures.ts"]
+}

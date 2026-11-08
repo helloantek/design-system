@@ -5,6 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { sharedTests } from './shared-interactions.mjs';
 
 const dir = join(import.meta.dirname, '../apps/storybook/storybook-static');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
@@ -249,15 +250,6 @@ const tests = {
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('Enter');
     assert.equal(await page.locator('.ds-select__main > :first-child').first().getAttribute('class'), 'ds-select__icon');
-  },
-  'badge: the close icon is a named button that removes the badge': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=components-badge--playground&viewMode=story&args=closeIcon:!true;label:Design');
-    const remove = page.getByRole('button', { name: 'Remove Design' });
-    await remove.waitFor();
-    await page.keyboard.press('Tab');
-    assert.equal(await remove.evaluate((el) => document.activeElement === el), true, 'reachable with Tab');
-    await page.keyboard.press('Enter');
-    assert.equal(await page.locator('.ds-badge').count(), 0);
   },
   'avatar: badges and ring sit where Figma puts them; names and fallback': async () => {
     // Status Badges: size and position per size and shape (x, y relative to the avatar), as in Sort UI 1.3; ring 2 px outside.
@@ -3012,6 +3004,9 @@ Object.assign(tests, {
     assert.match(code, /<Button[\s\S]*leadingIcon=\{<Icon \/>\}/, 'the code names the components (names survive minification)');
   },
 });
+
+// The tests every adapter shares (tools/shared-interactions.mjs), here against the React Storybook.
+for (const [name, run] of Object.entries(sharedTests)) tests[name] = () => run(page, 'http://localhost:6008');
 
 let failed = 0;
 for (const [name, run] of Object.entries(tests)) {

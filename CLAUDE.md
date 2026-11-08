@@ -6,7 +6,8 @@ Multi-brand design system: one UI kit, many brands. See `README.md` for the arch
 - `packages/css` — component styles. BEM `ds-<component>`, `@layer ds.components`, only `var(--ds-*)` values.
 - `packages/core` — framework-free behaviour shared by the adapters (placement maths, list navigation, type-ahead, `revealInList`); unit tests with `node --test`. Adapters keep rendering, state, events and focus (`docs/adr/0002-angular.md`).
 - `packages/react` — thin adapter: markup and classes, props named after Figma properties.
-- `apps/storybook` — documentation; stories live next to components in `packages/*/src`.
+- `packages/angular` — the Angular 22 adapter (ADR 0002): the same markup and classes as `ds-react`, standalone components on native elements (`<button dsButton>`), signal inputs named after Figma properties, built with ng-packagr. Its Storybook is `apps/storybook-angular` (composed into `apps/storybook`); `tools/adapter-parity.mjs` (`npm run test:angular`) checks every Angular story renders React's markup and runs `tools/shared-interactions.mjs`.
+- `apps/storybook` — documentation; stories live next to components in `packages/react/src` (Angular's in `packages/angular/src`, for `apps/storybook-angular`).
 - `tools/figma-visual` — pixel comparison with Figma reference renders; `tools/storybook-smoke.mjs` — every story renders, axe report; `tools/storybook-interactions.mjs` — keyboard/mouse tests.
 - Previews: every pushed branch is published as a Storybook on GitHub Pages (`docs/previews.md`); `Playground/*` stories compose components for review.
 
@@ -14,6 +15,6 @@ To build a component from Figma, use the `figma-to-component` skill and `docs/pl
 
 Branches: `claude/<kind>/<topic>` with kind `component`, `fix`, `tokens`, `tooling` or `docs` (`docs/branches.md`), e.g. `claude/component/tag-input`. One change per branch.
 
-Before pushing: `npm run build && npm test && npm run typecheck && npm run build-storybook && npm run test:storybook && npm run test:visual`.
+Before pushing: `npm run build && npm test && npm run typecheck && npm run build-storybook && npm run test:storybook && npm run test:angular && npm run test:visual`. The Angular CLI (in `build-storybook`) needs Node ^22.22.3 or ^24.15.
 The visual check is calibrated on Chromium 141.0.7390.37 (`npx -y playwright@1.56.1 install chromium`, then `CHROMIUM_PATH=~/.cache/ms-playwright/chromium-1194/chrome-linux/chrome`); in cloud sessions it is preinstalled at `/opt/pw-browsers/chromium`.
 User-facing changes need a changeset (`npm run changeset`).

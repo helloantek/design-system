@@ -7,18 +7,21 @@
     "packages/css",
     "packages/core",
     "packages/react",
-    "apps/storybook"
+    "packages/angular",
+    "apps/storybook",
+    "apps/storybook-angular"
   ],
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "build": "npm run build -w @helloantek/ds-tokens && npm run build -w @helloantek/ds-core && npm run build -w @helloantek/ds-react",
+    "build": "npm run build -w @helloantek/ds-tokens && npm run build -w @helloantek/ds-core && npm run build -w @helloantek/ds-react && npm run build -w @helloantek/ds-angular",
     "test": "npm test -w @helloantek/ds-tokens && npm test -w @helloantek/ds-core",
     "typecheck": "tsc -p packages/core --noEmit && tsc -p packages/react --noEmit && tsc -p apps/storybook --noEmit",
     "storybook": "npm run build -w @helloantek/ds-tokens && npm run dev -w @helloantek/ds-storybook",
-    "build-storybook": "npm run build -w @helloantek/ds-tokens && npm run build -w @helloantek/ds-storybook",
+    "build-storybook": "npm run build -w @helloantek/ds-tokens && npm run build -w @helloantek/ds-storybook && npm run build -w @helloantek/ds-storybook-angular && node tools/compose-storybooks.mjs",
     "test:storybook": "node tools/storybook-smoke.mjs && node tools/storybook-interactions.mjs",
+    "test:angular": "node tools/adapter-parity.mjs",
     "test:visual": "vite build --config tools/figma-visual/vite.config.ts && node tools/figma-visual/check.mjs",
     "changeset": "changeset"
   },
