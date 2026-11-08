@@ -58,6 +58,7 @@ export class DsSuffix {}
     '[attr.readonly]': 'null',
     '[attr.required]': 'null',
     '[attr.invalid]': 'null',
+    '[attr.touched]': 'null',
     '[attr.shortcut]': 'null',
     '[attr.prefix]': 'null',
     '[attr.suffix]': 'null',
@@ -184,6 +185,11 @@ export class DsInput implements FormValueControl<string>, ControlValueAccessor {
   readonly loading = input<boolean | 'start' | 'end' | ''>(false);
   /** Figma State=Invalid without a message. */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /**
+   * Whether the user has left the field. Signal Forms binds it, so a form's `invalid` waits until then; without a
+   * form it stays `true` and `invalid` shows at once.
+   */
+  readonly touched = input<boolean, unknown>(true, { transform: (value: unknown) => value !== false });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly readonly = input(false, { transform: booleanAttribute });
   readonly required = input(false, { transform: booleanAttribute });
@@ -220,7 +226,8 @@ export class DsInput implements FormValueControl<string>, ControlValueAccessor {
   });
   protected readonly hasError = computed(() => !!this.error());
   protected readonly help = computed(() => (this.hasError() ? this.error() : this.caption()));
-  protected readonly isInvalid = computed(() => this.invalid() || this.hasError());
+  // A form's `invalid` shows once the field is touched (Signal Forms binds `touched`); an `error` message always shows.
+  protected readonly isInvalid = computed(() => this.hasError() || (this.invalid() && this.touched()));
   /** Disabled by the `disabled` input or by the form; an InputAction inside follows it. */
   readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
   protected readonly describedBy = computed(() => [this.blockEnd() !== undefined ? this.blockEndId() : null, this.help() !== undefined ? this.captionId() : null].filter(Boolean).join(' ') || null);

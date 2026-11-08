@@ -105,7 +105,7 @@ for (const story of angularStories) {
 
 // Angular only: Signal Forms, Reactive Forms and ngModel move values both ways through Input and Checkbox.
 const angularTests = {
-  'angular forms: [formField], formControlName and ngModel bind Input and Checkbox both ways; validity and disabled follow': async () => {
+  'angular forms: [formField], formControlName and ngModel bind Input and Checkbox both ways; an invalid value shows once the field is touched; disabled follows': async () => {
     await page.goto(`${ANGULAR}/iframe.html?id=angular-forms--bindings&viewMode=story`);
     const value = (form) => page.locator(`[data-form="${form}"] output`).textContent().then((t) => JSON.parse(t));
     const signalEmail = page.getByRole('textbox', { name: 'Email (signal)' });
@@ -113,9 +113,13 @@ const angularTests = {
     assert.equal(await signalEmail.inputValue(), 'ada@example.com', 'the model fills the input');
     assert.equal(await page.getByRole('checkbox', { name: 'Newsletter (signal)' }).isChecked(), true);
     await signalEmail.fill('not an email');
+    await settles(() => page.locator('[data-form="signal"]').textContent().then((t) => /Email valid: false/.test(t)), true, 'the email validator runs');
+    assert.equal(await signalEmail.getAttribute('aria-invalid'), null, 'while typing, an invalid value is not flagged yet');
+    await page.keyboard.press('Tab');
+    await settles(() => signalEmail.getAttribute('aria-invalid'), 'true', 'leaving the field (touched) flags it');
+    assert.match(await signalEmail.locator('xpath=ancestor::div[contains(@class,"ds-input ")]').getAttribute('class'), /ds-input--invalid/);
     await page.getByRole('checkbox', { name: 'Newsletter (signal)' }).click();
     await settles(() => value('signal'), { email: 'not an email', newsletter: false }, 'typing and ticking update the model');
-    await settles(() => page.locator('[data-form="signal"]').textContent().then((t) => /Email valid: false/.test(t)), true, 'the email validator runs');
     const reactiveEmail = page.getByRole('textbox', { name: 'Email (reactive)' });
     assert.equal(await reactiveEmail.inputValue(), 'grace@example.com');
     await reactiveEmail.fill('grace@hopper.dev');

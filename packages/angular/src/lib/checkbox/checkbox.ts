@@ -34,6 +34,7 @@ import { uniqueId } from '../internal/ids';
     '[attr.control]': 'null',
     '[attr.card]': 'null',
     '[attr.invalid]': 'null',
+    '[attr.touched]': 'null',
     '[attr.disabled]': 'null',
     '[attr.required]': 'null',
     '[attr.name]': 'null',
@@ -94,6 +95,11 @@ export class DsCheckbox implements FormCheckboxControl, ControlValueAccessor {
   readonly card = input(false, { transform: booleanAttribute });
   /** Figma State=Invalid without a message. */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /**
+   * Whether the user has left the field. Signal Forms binds it, so a form's `invalid` waits until then; without a
+   * form it stays `true` and `invalid` shows at once.
+   */
+  readonly touched = input<boolean, unknown>(true, { transform: (value: unknown) => value !== false });
   /** Figma State=Disabled. */
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly required = input(false, { transform: booleanAttribute });
@@ -113,7 +119,8 @@ export class DsCheckbox implements FormCheckboxControl, ControlValueAccessor {
   protected readonly captionId = computed(() => `${this.inputId()}-caption`);
   protected readonly hasError = computed(() => !!this.error());
   protected readonly help = computed(() => (this.hasError() ? this.error() : this.caption()));
-  protected readonly isInvalid = computed(() => this.invalid() || this.hasError());
+  // A form's `invalid` shows once the field is touched (Signal Forms binds `touched`); an `error` message always shows.
+  protected readonly isInvalid = computed(() => this.hasError() || (this.invalid() && this.touched()));
   protected readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
 
   protected toggle(event: Event) {

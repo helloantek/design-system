@@ -80,7 +80,7 @@ import { DsBadge, DsButton, DsLeadingIcon } from '@helloantek/ds-angular';
 
 Inputs are named after the Figma properties, as in React (`variant`, `size`, `badge`, `color`, `dot`…). Icon slots are marked on the projected element: `dsLeadingIcon`, `dsTrailingIcon`, `dsIcon` (an icon-only button, named with `aria-label`), `dsImage`. A badge's Close Icon is `removable` with the `(remove)` output. Storybook: **Angular** in the sidebar.
 
-Fields work with every Angular form API: `<ds-input>` and `<ds-checkbox>` take Signal Forms (`[formField]`), Reactive Forms (`formControlName`, `[formControl]`) and `ngModel`, or plain two-way binding (`[(value)]`, `[(checked)]`). A form's disabled state, and with Signal Forms its `invalid`, `required` and `name`, reach the native input. `<ds-input>` and `<ds-checkbox>` render no box of their own (`display: contents`); the T-slot button is `<button dsInputAction>`, a group of checkboxes `<fieldset dsCheckboxGroup label="…">`.
+Fields work with every Angular form API: `<ds-input>` and `<ds-checkbox>` take Signal Forms (`[formField]`), Reactive Forms (`formControlName`, `[formControl]`) and `ngModel`, or plain two-way binding (`[(value)]`, `[(checked)]`). A form's disabled state, and with Signal Forms its `invalid`, `required` and `name`, reach the native input. With Signal Forms an invalid value is flagged once the user leaves the field (`touched`); an `error` message, or `invalid` set by hand, shows at once. `<ds-input>` and `<ds-checkbox>` render no box of their own (`display: contents`); the T-slot button is `<button dsInputAction>`, a group of checkboxes `<fieldset dsCheckboxGroup label="…">`.
 
 ```ts
 import { DsCheckbox, DsInput } from '@helloantek/ds-angular';
