@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
+import { usePlacement } from '../internal/usePlacement';
 import { Button } from '../Button';
 import { Calendar, type CalendarCaptionLayout, type DateRange } from '../Calendar';
 import { useField } from '../Field';
@@ -145,6 +146,7 @@ export function DatePicker(props: DatePickerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const placed = usePlacement(panelRef, open, 'bottom');
   const focusOnOpen = useRef(false);
 
   const setOpen = (next: boolean, focusTrigger = false) => {
@@ -283,7 +285,7 @@ export function DatePicker(props: DatePickerProps) {
         role="dialog"
         aria-label={calendarProps['aria-label']}
         hidden={!open}
-        className={cx('ds-date-picker__panel', align === 'end' && 'ds-date-picker__panel--end')}
+        className={cx('ds-date-picker__panel', align === 'end' && 'ds-date-picker__panel--end', placed === 'top' && 'ds-date-picker__panel--top')}
         onKeyDown={(event) => {
           if (event.key === 'Escape') {
             event.stopPropagation();

@@ -1665,6 +1665,16 @@ npm run test:visual      # every component matches Figma: renders (pixels) and e
 - New brand: [adding a brand](docs/adding-a-brand.md).
 - Releases: add a changeset (`npm run changeset`); the Release workflow opens a "Version packages" PR on each push to `main` (or from "Run workflow" in the Actions tab), and merging it publishes. It runs only when the repository variable `RELEASE_ENABLED` is `true` (Settings → Secrets and variables → Actions → Variables) and Actions may open pull requests (Settings → Actions → General → Workflow permissions: read and write, and "Allow GitHub Actions to create and approve pull requests").
 
+## Popups near the window's edge
+
+Select, Combobox, Dropdown Menu (and its submenus), Menubar, Date Picker, Popover, Hover Card, Tooltip and Navigation Menu keep their popup inside the window. When it opens, the popup is measured before it is painted:
+
+- it flips to the opposite side when its side (`side`, or below the trigger) has no room and the other has more: a menu at the bottom of the page opens upwards, a submenu at the right edge opens on the left;
+- it shifts along its side so it stays 8 px from the window's edges (`--popup-shift-x` / `--popup-shift-y`, added to its `transform`; a tooltip's triangle still points at the trigger);
+- a Select or Combobox list gets shorter, and scrolls, when neither side has room for it (`--popup-max-block-size`).
+
+It measures again when the page scrolls or the window resizes. The flipped sides are the `--top` / `--left` modifiers (`ds-select__menu--top`, `ds-dropdown__content--top`, `ds-dropdown__content--left`, `ds-date-picker__panel--top`; Popover, Hover Card and Tooltip use their side classes). Navigation Menu only shifts. Context Menu already opens inside the window at the pointer. See the Playground story "Popups near the edge".
+
 ## Known design findings
 
 These come from the Figma files, not the code:

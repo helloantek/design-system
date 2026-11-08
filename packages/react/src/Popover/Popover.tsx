@@ -15,6 +15,7 @@ import {
   type ReactNode,
   type Ref,
 } from 'react';
+import { usePlacement } from '../internal/usePlacement';
 
 // Styles live in @helloantek/ds-css (classes ds-popover*); these components only render the markup.
 
@@ -65,6 +66,7 @@ export function Popover({ trigger, title, description, children, open: openProp,
   const triggerRef = useRef<HTMLElement | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const opened = useRef(false);
+  const placed = usePlacement(panelRef, open, side);
 
   const setOpen = (next: boolean) => {
     if (openProp === undefined) setUncontrolled(next);
@@ -126,7 +128,7 @@ export function Popover({ trigger, title, description, children, open: openProp,
           aria-label={title === undefined ? ariaLabel : undefined}
           aria-describedby={description !== undefined ? descriptionId : undefined}
           hidden={!open}
-          className={['ds-popover__content', side !== 'bottom' && `ds-popover__content--${side}`, align !== 'center' && `ds-popover__content--${align}`, className].filter(Boolean).join(' ')}
+          className={['ds-popover__content', placed !== 'bottom' && `ds-popover__content--${placed}`, align !== 'center' && `ds-popover__content--${align}`, className].filter(Boolean).join(' ')}
           style={width !== undefined ? ({ '--popover-width': width } as CSSProperties) : undefined}
           onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
             if (event.key === 'Escape') {

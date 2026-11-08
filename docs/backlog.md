@@ -15,7 +15,6 @@ Found in the code, not missing from Figma.
 
 | Item | What | Notes |
 |---|---|---|
-| Popup positioning | Flip and shift near the viewport edge for Select, Combobox, Dropdown Menu, Context Menu, Menubar, Popover, Hover Card and Date Picker; Tooltip only has a fixed `side` | They open below (or beside) their trigger with `position: absolute` and do not move when there is no room. CSS anchor positioning (`position-try`) with a small fallback, in one place for all of them. |
 | Select indicators | `indicator="checkbox"` and `"radio"` should draw `ds-checkbox` / `ds-radio` | Select draws its own boxes (`ds-select__box`). Sort UI 2.0 Select Item only has the check mark (the default); the boxes are kept for multiple selects. |
 | Textarea character-count ring | Use `ProgressCircle` | Textarea draws its own 16 px ring (`ds-textarea__progress`) although `ProgressCircle` exists. |
 
@@ -39,3 +38,4 @@ Items from the previous backlog that Sort UI 2.0 components now cover.
 | Select Menu Items · Caption | Select Item Description (`description`) |
 | Select Menu · Button | Dropped in Sort UI 2.0 (Select Content holds only items) |
 | Input · Tags, Inline tags | Combobox with `multiple` (removable chips) |
+| Popup positioning (code debt) | Popups flip and shift inside the window (README, "Popups near the window's edge") |

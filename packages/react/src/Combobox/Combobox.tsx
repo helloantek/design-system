@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type InputHTMLAttributes, type KeyboardEvent, type ReactNode, type Ref } from 'react';
+import { usePlacement } from '../internal/usePlacement';
 import { useField } from '../Field/FieldContext';
 import type { SelectCaption, SelectGroup, SelectItem, SelectOption, SelectSeparator } from '../Select';
 
@@ -137,6 +138,8 @@ export function Combobox(props: ComboboxProps) {
   const [uncontrolled, setUncontrolled] = useState(() => toList(props.defaultValue) ?? []);
   const values = toList(props.value) ?? uncontrolled;
   const [open, setOpen] = useState(defaultOpen && !disabled);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const placed = usePlacement(menuRef, open, 'bottom', { constrain: true });
   // The typed text, or null while the field shows the selection (single) or nothing (multiple): then every option shows.
   const [query, setQuery] = useState<string | null>(null);
   const [highlighted, setHighlighted] = useState<string | null>(null);
@@ -419,9 +422,10 @@ export function Combobox(props: ComboboxProps) {
           </button>
         </div>
         <div
+          ref={menuRef}
           id={menuId}
           role="listbox"
-          className="ds-select__menu"
+          className={placed === 'top' ? 'ds-select__menu ds-select__menu--top' : 'ds-select__menu'}
           aria-labelledby={label !== undefined ? labelId : undefined}
           aria-label={label === undefined ? rest['aria-label'] : undefined}
           aria-multiselectable={multiple || undefined}

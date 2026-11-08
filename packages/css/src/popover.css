@@ -49,6 +49,8 @@
     top: calc(100% + var(--ds-spacing-1));
     left: 50%;
     translate: -50% 0;
+    /* usePlacement (React) shifts it back inside the viewport near an edge. */
+    transform: translate(var(--popup-shift-x, 0px), var(--popup-shift-y, 0px));
   }
 
   .ds-popover > .ds-popover__content--start {

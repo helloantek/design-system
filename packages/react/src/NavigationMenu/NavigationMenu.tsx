@@ -15,6 +15,7 @@ import {
   type PointerEvent,
   type ReactNode,
 } from 'react';
+import { usePlacement } from '../internal/usePlacement';
 
 // Styles live in @helloantek/ds-css (classes ds-navigation-menu*). A nav landmark with a list of triggers and links.
 // A trigger is a button with aria-expanded that opens its panel of links under it: on click, on Enter / Space /
@@ -134,6 +135,8 @@ export function NavigationMenuItem({
   const id = value ?? autoId;
   const contentId = `${autoId}-content`;
   const open = menu.open === id;
+  const contentRef = useRef<HTMLDivElement>(null);
+  usePlacement(contentRef, open, 'bottom', { flip: false });
   const itemRef = useRef<HTMLLIElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -254,6 +257,7 @@ export function NavigationMenuItem({
         {chevron}
       </button>
       <div
+        ref={contentRef}
         id={contentId}
         hidden={!open}
         className={cx('ds-navigation-menu__content', align === 'end' && 'ds-navigation-menu__content--end', flush && 'ds-navigation-menu__content--flush', contentClassName)}
