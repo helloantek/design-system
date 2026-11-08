@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type ReactElement, type ReactNode } from 'react';
+import { usePlacement } from '../internal/usePlacement';
 
 // Styles live in @helloantek/ds-css (classes ds-hover-card*). A hover card previews what is behind a link for sighted
 // pointer and keyboard users: it opens after the pointer rests on the trigger (or at once on keyboard focus), stays
@@ -36,6 +37,8 @@ export function HoverCard({ trigger, children, side = 'bottom', align = 'center'
   const [uncontrolled, setUncontrolled] = useState(defaultOpen);
   const open = openProp ?? uncontrolled;
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const placed = usePlacement(cardRef, open, side);
 
   const setOpen = (next: boolean) => {
     clearTimeout(timer.current);
@@ -73,8 +76,9 @@ export function HoverCard({ trigger, children, side = 'bottom', align = 'center'
     >
       {trigger}
       <div
+        ref={cardRef}
         hidden={!open}
-        className={['ds-hover-card__content', side !== 'bottom' && `ds-hover-card__content--${side}`, align !== 'center' && `ds-hover-card__content--${align}`, className].filter(Boolean).join(' ')}
+        className={['ds-hover-card__content', placed !== 'bottom' && `ds-hover-card__content--${placed}`, align !== 'center' && `ds-hover-card__content--${align}`, className].filter(Boolean).join(' ')}
         style={width !== undefined ? ({ '--hover-card-width': width } as CSSProperties) : undefined}
       >
         {children}

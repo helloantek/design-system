@@ -53,6 +53,8 @@
     left: 50%;
     translate: -50% 0;
     animation: ds-hover-card-in var(--ds-duration-200) var(--ds-ease-out);
+    /* usePlacement (React) shifts it back inside the viewport near an edge. */
+    transform: translate(var(--popup-shift-x, 0px), var(--popup-shift-y, 0px));
   }
 
   .ds-hover-card > .ds-hover-card__content--start {

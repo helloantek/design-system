@@ -242,7 +242,7 @@
     left: 0;
     box-sizing: border-box;
     /* Nine 32 px items plus the menu padding; override --select-menu-max-height per use. */
-    max-height: var(--select-menu-max-height, 296px);
+    max-height: min(var(--select-menu-max-height, 296px), var(--popup-max-block-size, var(--select-menu-max-height, 296px)));
     padding: var(--ds-spacing-1);
     overflow-y: auto;
     /* 8 px like the field (Figma draws 14 px); the items inside the 4 px padding take 8 − 4 = 4 px. */
@@ -254,6 +254,14 @@
     color: var(--ds-popover-foreground);
     font-family: var(--ds-font-sans);
     letter-spacing: -0.005em;
+    /* usePlacement (React) shifts it back inside the viewport near an edge. */
+    transform: translate(var(--popup-shift-x, 0px), var(--popup-shift-y, 0px));
+  }
+
+  /* Opened above the field when there is no room below (usePlacement). */
+  .ds-select__menu--top {
+    top: auto;
+    bottom: calc(100% + var(--ds-spacing-1-5));
   }
 
   .ds-select__menu[hidden] {

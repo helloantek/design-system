@@ -1,4 +1,5 @@
 import { cloneElement, useEffect, useId, useRef, useState, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type ReactElement, type ReactNode, type Ref } from 'react';
+import { usePlacement } from '../internal/usePlacement';
 
 // Styles live in @helloantek/ds-css (classes ds-tooltip*); this component renders the markup and the WAI-ARIA
 // tooltip behaviour (https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/): the trigger is described by the tooltip,
@@ -34,6 +35,8 @@ export function Tooltip({ content, children, side = 'top', icon, shortcut, delay
   const [uncontrolled, setUncontrolled] = useState(defaultOpen);
   const open = openProp ?? uncontrolled;
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const tipRef = useRef<HTMLSpanElement>(null);
+  const placed = usePlacement(tipRef, open, side);
 
   const setOpen = (next: boolean) => {
     clearTimeout(timer.current);
@@ -85,7 +88,7 @@ export function Tooltip({ content, children, side = 'top', icon, shortcut, delay
           }
         },
       })}
-      <span id={id} role="tooltip" className={['ds-tooltip', `ds-tooltip--${side}`, className].filter(Boolean).join(' ')} hidden={!open}>
+      <span ref={tipRef} id={id} role="tooltip" className={['ds-tooltip', `ds-tooltip--${placed}`, className].filter(Boolean).join(' ')} hidden={!open}>
         {icon && (
           <span className="ds-tooltip__icon" aria-hidden>
             {icon}

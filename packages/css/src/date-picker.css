@@ -56,10 +56,18 @@
     top: calc(100% + var(--ds-spacing-1));
     inset-inline-start: 0;
     width: max-content;
+    /* usePlacement (React) shifts it back inside the viewport near an edge. */
+    transform: translate(var(--popup-shift-x, 0px), var(--popup-shift-y, 0px));
   }
 
   .ds-date-picker__panel--end {
     inset-inline: auto 0;
+  }
+
+  /* Opened above the trigger when there is no room below (usePlacement). */
+  .ds-date-picker__panel--top {
+    top: auto;
+    bottom: calc(100% + var(--ds-spacing-1));
   }
 
   .ds-date-picker__panel[hidden] {

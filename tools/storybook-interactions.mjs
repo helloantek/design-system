@@ -2333,6 +2333,64 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'popups near the edge: menus, lists and the calendar open upwards at the bottom, a submenu and a tooltip flip to the left at the right edge, a popover shifts left; all stay inside the window': async () => {
+    const viewport = page.viewportSize();
+    await page.setViewportSize({ width: 900, height: 600 });
+    try {
+      await page.goto('http://localhost:6008/iframe.html?id=playground-popups-near-the-edge--corners&viewMode=story');
+      await page.getByRole('button', { name: 'Popover' }).waitFor();
+      const box = (selector) => page.evaluate((s) => {
+        const el = [...document.querySelectorAll(s)].find((e) => !e.hidden && e.getBoundingClientRect().width);
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return { left: r.left, top: r.top, right: r.right, bottom: r.bottom, className: el.className };
+      }, selector);
+      const inside = async (name, selector, cls) => {
+        const r = await box(selector);
+        assert.ok(r, `${name} is open`);
+        assert.ok(r.left >= 7.5 && r.top >= 7.5 && r.right <= 892.5 && r.bottom <= 592.5, `${name} stays 8 px inside the window (${JSON.stringify(r)})`);
+        if (cls) assert.ok(r.className.includes(cls), `${name} has ${cls}`);
+      };
+
+      await page.getByRole('button', { name: 'Popover' }).click();
+      await inside('the popover', '.ds-popover__content');
+      await page.keyboard.press('Escape');
+
+      await page.getByRole('combobox', { name: 'Fruit at the bottom left' }).click();
+      await inside('the Select list', '.ds-select__menu', 'ds-select__menu--top');
+      await page.keyboard.press('Escape');
+
+      await page.getByRole('combobox', { name: 'Fruit to search' }).click();
+      await inside('the Combobox list', '.ds-select__menu', 'ds-select__menu--top');
+      await page.keyboard.press('Escape');
+
+      await page.locator('.ds-date-picker button').first().click();
+      await inside('the calendar', '.ds-date-picker__panel', 'ds-date-picker__panel--top');
+      await page.keyboard.press('Escape');
+
+      await page.getByRole('button', { name: 'Menu' }).click();
+      await inside('the menu', '.ds-dropdown > .ds-dropdown__content', 'ds-dropdown__content--top');
+      await page.getByRole('menuitem', { name: 'More' }).hover();
+      await page.getByRole('menuitem', { name: 'Opens on the left' }).waitFor();
+      await inside('the submenu', '.ds-dropdown__sub > .ds-dropdown__content', 'ds-dropdown__content--left');
+      await page.keyboard.press('Escape');
+      await page.keyboard.press('Escape');
+
+      await page.getByRole('button', { name: 'Tooltip' }).focus();
+      await page.keyboard.press('Shift+Tab');
+      await page.keyboard.press('Tab');
+      await inside('the tooltip', '.ds-tooltip', 'ds-tooltip--left');
+
+      // A short window: the list is capped to the room above and scrolls.
+      await page.setViewportSize({ width: 900, height: 300 });
+      await page.getByRole('combobox', { name: 'Fruit at the bottom left' }).click();
+      await inside('the capped Select list', '.ds-select__menu');
+      assert.ok(await page.locator('.ds-select__menu').first().evaluate((el) => el.scrollHeight > el.clientHeight), 'the capped list scrolls');
+      await page.keyboard.press('Escape');
+    } finally {
+      await page.setViewportSize(viewport);
+    }
+  },
   'file icon: decorative unless titled; each icon has its own gradient id; fileIconFor picks the variant from the extension; Attachment uses it by default': async () => {
     const url = (id) => `http://localhost:6008/iframe.html?id=components-file-icon--${id}&viewMode=story`;
     await page.goto(url('types'));
