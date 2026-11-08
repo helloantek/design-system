@@ -14,7 +14,11 @@ const config: StorybookConfig = {
     build: { ...vite.build, rolldownOptions: { ...vite.build?.rolldownOptions, output: { ...(vite.build?.rolldownOptions?.output as object), keepNames: true } } },
     resolve: {
       ...vite.resolve,
-      alias: { ...vite.resolve?.alias, '@helloantek/ds-react': fileURLToPath(new URL('../../../packages/react/src/index.ts', import.meta.url)) },
+      alias: {
+        ...vite.resolve?.alias,
+        '@helloantek/ds-react': fileURLToPath(new URL('../../../packages/react/src/index.ts', import.meta.url)),
+        '@helloantek/ds-core': fileURLToPath(new URL('../../../packages/core/src/index.ts', import.meta.url)),
+      },
     },
   }),
 };

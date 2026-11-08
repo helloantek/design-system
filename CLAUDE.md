@@ -4,6 +4,7 @@ Multi-brand design system: one UI kit, many brands. See `README.md` for the arch
 
 - `packages/tokens` — Sort UI 2.0 variables (Figma `4JnqgEbdlnKgiFrfmiwEZw`, `figma/sort-ui-2/`) + the few Sort UI 1.3 colours Badge and Status Badge still use (`figma/sort-ui-1.3-kept.json`) + `brands.json` → CSS/JS/Swift/Kotlin. Generated `dist/` is never edited. History: `docs/migration-sort-ui-2.md`.
 - `packages/css` — component styles. BEM `ds-<component>`, `@layer ds.components`, only `var(--ds-*)` values.
+- `packages/core` — framework-free behaviour shared by the adapters (placement maths, list navigation, type-ahead, `revealInList`); unit tests with `node --test`. Adapters keep rendering, state, events and focus (`docs/adr/0002-angular.md`).
 - `packages/react` — thin adapter: markup and classes, props named after Figma properties.
 - `apps/storybook` — documentation; stories live next to components in `packages/*/src`.
 - `tools/figma-visual` — pixel comparison with Figma reference renders; `tools/storybook-smoke.mjs` — every story renders, axe report; `tools/storybook-interactions.mjs` — keyboard/mouse tests.

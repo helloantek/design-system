@@ -4,7 +4,7 @@ import { useField } from '../Field/FieldContext';
 import { Badge } from '../Badge';
 import { CheckboxMark } from '../Checkbox/Checkbox';
 import { RadioMark } from '../Radio/Radio';
-import { revealInList } from '../internal/revealInList';
+import { firstEnabled, lastEnabled, moveEnabled, pageEnabled, revealInList, Typeahead } from '@helloantek/ds-core';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-select*); this component renders the markup and the
 // WAI-ARIA select-only combobox behaviour (https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
@@ -140,7 +140,6 @@ const checkMark = (
     <path d="M20 6 9 17l-5-5" />
   </svg>
 );
-const PAGE = 10;
 const toList = (value: string | string[] | null | undefined) => (value === undefined ? undefined : value === null ? [] : Array.isArray(value) ? value : [value]);
 
 export function Select(props: SelectProps) {
@@ -200,7 +199,7 @@ export function Select(props: SelectProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const placed = usePlacement(menuRef, open, 'bottom', { constrain: true });
   const hiddenRef = useRef<HTMLInputElement | null>(null);
-  const typeahead = useRef({ text: '', at: 0 });
+  const [typeahead] = useState(() => new Typeahead());
   // Tags: what was removed, announced through a live region (the combobox's own text changes silently).
   const [status, setStatus] = useState('');
 
@@ -270,13 +269,10 @@ export function Select(props: SelectProps) {
   }, [open, highlighted, id]);
 
   const enabled = (i: number) => i >= 0 && i < flat.length && !flat[i].disabled;
-  // Next enabled index from `from` in direction `step`, or `from` itself when there is none.
-  const move = (from: number, step: number) => {
-    for (let i = from + step; i >= 0 && i < flat.length; i += step) if (enabled(i)) return i;
-    return enabled(from) ? from : -1;
-  };
-  const first = () => move(-1, 1);
-  const last = () => move(flat.length, -1);
+  // List navigation from ds-core: the next enabled option in a direction, the first and the last.
+  const move = (from: number, step: 1 | -1) => moveEnabled(flat.length, enabled, from, step);
+  const first = () => firstEnabled(flat.length, enabled);
+  const last = () => lastEnabled(flat.length, enabled);
 
   const openMenu = (index: number) => {
     setOpen(true);
@@ -308,19 +304,16 @@ export function Select(props: SelectProps) {
     setHighlighted(index);
   };
 
-  // Type-ahead: characters typed within 500 ms form one search (any other key starts a new one);
+  // Type-ahead (ds-core): characters typed within 500 ms form one search (any other key starts a new one);
   // repeating one letter cycles through matches.
   const search = (char: string) => {
-    const now = Date.now();
-    const t = typeahead.current;
-    t.text = now - t.at > 500 ? char : t.text + char;
-    t.at = now;
-    const query = t.text.toLowerCase();
-    const cycling = query.split('').every((c) => c === query[0]);
-    const start = open ? highlighted : selectedIndex;
-    const order = flat.map((_, i) => (start + 1 + i) % flat.length);
-    const match = order.find((i) => enabled(i) && flat[i].label.toLowerCase().startsWith(cycling ? query[0] : query));
-    if (match !== undefined) openMenu(match);
+    const match = typeahead.find(
+      char,
+      flat.map((o) => o.label),
+      enabled,
+      open ? highlighted : selectedIndex,
+    );
+    if (match >= 0) openMenu(match);
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -329,7 +322,7 @@ export function Select(props: SelectProps) {
     const { key, altKey } = event;
     const current = highlighted >= 0 ? highlighted : selectedIndex;
     const printable = key.length === 1 && !event.ctrlKey && !event.metaKey && !altKey;
-    if (!printable) typeahead.current.text = '';
+    if (!printable) typeahead.reset();
     let handled = true;
     if (tags && (key === 'Backspace' || key === 'Delete') && selected.length) remove(selected[selected.length - 1]);
     else if (!open) {
@@ -343,8 +336,8 @@ export function Select(props: SelectProps) {
     else if (key === 'ArrowUp') setHighlighted(current < 0 ? last() : move(current, -1));
     else if (key === 'Home') setHighlighted(first());
     else if (key === 'End') setHighlighted(last());
-    else if (key === 'PageDown') setHighlighted(move(Math.min(current + PAGE, flat.length), -1));
-    else if (key === 'PageUp') setHighlighted(move(Math.max(current - PAGE, -1), 1));
+    else if (key === 'PageDown') setHighlighted(pageEnabled(flat.length, enabled, current, 1));
+    else if (key === 'PageUp') setHighlighted(pageEnabled(flat.length, enabled, current, -1));
     else if (key === 'Enter' || key === ' ') (highlighted >= 0 ? choose(highlighted) : close());
     else if (key === 'Escape') close();
     // Tab picks the highlighted option of a single select (as the APG example does); a multiple select just closes.
