@@ -27,7 +27,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
   args: { variant: 'pdf', size: 24 },
   argTypes: {
     variant: { name: 'Variant', control: 'select', options: VARIANTS },
-    size: { name: 'Size', control: { type: 'range', min: 16, max: 96, step: 4 } },
+    size: { name: 'Size', control: 'inline-radio', options: [16, 20, 24, 32, 40, 48, 64], description: 'Pixels; 16–40 are the Figma demo sizes' },
   },
   render: ({ variant, size }) => <FileIcon variant={variant} size={size} title={`${variant} file`} />,
 };
