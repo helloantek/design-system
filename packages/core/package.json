@@ -1,6 +1,6 @@
 {
   "name": "@helloantek/ds-core",
-  "version": "2.55.1",
+  "version": "2.56.0",
   "description": "Framework-free behaviour shared by the @helloantek/ds adapters (React, Angular): popup placement, list navigation, type-ahead.",
   "type": "module",
   "files": [
