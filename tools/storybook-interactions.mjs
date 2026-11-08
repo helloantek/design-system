@@ -2333,6 +2333,24 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'file icon: decorative unless titled; each icon has its own gradient id; fileIconFor picks the variant from the extension; Attachment uses it by default': async () => {
+    const url = (id) => `http://localhost:6008/iframe.html?id=components-file-icon--${id}&viewMode=story`;
+    await page.goto(url('types'));
+    await page.getByRole('img', { name: 'pdf' }).waitFor();
+    assert.equal(await page.getByRole('img').count(), 9, 'titled icons are images');
+    const ids = await page.locator('.ds-file-icon radialGradient').evaluateAll((els) => els.map((el) => el.id));
+    assert.equal(new Set(ids).size, ids.length, 'gradient ids are unique on the page');
+
+    await page.goto(url('from-a-file-name'));
+    const table = page.locator('#storybook-root table');
+    await table.waitFor();
+    assert.deepEqual(await table.locator('td:nth-child(3)').allTextContents(), ['pdf', 'spreadsheet', 'presentation', 'document', 'video', 'music', 'image', 'archive', 'file']);
+    assert.equal(await table.locator('.ds-file-icon').first().getAttribute('aria-hidden'), 'true', 'an untitled icon is decorative');
+
+    await page.goto('http://localhost:6008/iframe.html?id=components-message--attachment&viewMode=story');
+    await page.locator('.ds-attachment').first().waitFor();
+    assert.ok(await page.locator('.ds-attachment__media .ds-file-icon').count() > 0, 'an attachment without an icon shows the File Icon for its name');
+  },
   'diff: a figure named by its file; diffLines finds the changed lines of two versions and diffWords their changed words; a fold is a button that shows its lines; accepting or rejecting a change keeps one side and updates the counts': async () => {
     const url = (id) => `http://localhost:6008/iframe.html?id=components-diff--${id}&viewMode=story`;
     await page.goto(url('from-two-versions'));

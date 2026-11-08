@@ -23,6 +23,7 @@ import { renderDrawer } from './drawer';
 import { renderDropdownMenu } from './dropdown-menu';
 import { renderEmpty } from './empty';
 import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, renderFieldSet } from './field';
+import { renderFileIcon } from './file-icon';
 import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderItem } from './item';
@@ -102,6 +103,7 @@ export const renderers: Record<string, Renderer> = {
   'field-label': renderFieldLabel,
   'field-separator': renderFieldSeparator,
   'field-set': renderFieldSet,
+  'file-icon': renderFileIcon,
   'hover-card': renderHoverCard,
   input: renderInput,
   'input-group-dropdown': renderInputGroupDropdown,

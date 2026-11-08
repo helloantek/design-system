@@ -1,0 +1,10 @@
+{
+  "$comment": "Figma layer path -> element inside .ds-file-icon. 'outline' is the page shape's stroked copy (the second Vector; inside the mask group in Image).",
+  "layers": {
+    "root": {},
+    "outline": {
+      "selector": ".ds-file-icon__outline",
+      "stroke": "svg"
+    }
+  }
+}

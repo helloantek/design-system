@@ -27,6 +27,7 @@ export * from './Drawer';
 export * from './DropdownMenu';
 export * from './Empty';
 export * from './Field';
+export * from './FileIcon';
 export * from './HoverCard';
 export * from './Input';
 export * from './InputOTP';
