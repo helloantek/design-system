@@ -14,5 +14,5 @@ The design system must serve several projects (React/Next.js, other web framewor
 
 ## Consequences
 - A new web framework costs one thin adapter; a new brand costs a JSON entry and Figma modes.
-- Component logic (keyboard, ARIA) is duplicated per adapter; keep adapters thin and covered by the same stories and visual references.
+- Component logic (keyboard, ARIA) is duplicated per adapter; keep adapters thin and covered by the same stories and visual references. (ADR 0002 moves the shared behaviour into `ds-core`.)
 - Native platforms get tokens now; native components are separate work.

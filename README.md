@@ -9,7 +9,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 | [`@helloantek/ds-react`](packages/react) | React components (markup + classes) | React / Next.js |
 | [`apps/storybook`](apps/storybook) | Documentation with brand and colour-scheme switchers | design, development |
 
-Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
+Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). How an Angular adapter fits in: [ADR 0002](docs/adr/0002-angular.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
 **Source of truth:** Figma file Sort UI 2.0 (`4JnqgEbdlnKgiFrfmiwEZw`); Badge and Status Badge stay on Sort UI 1.3 (`4tiBR2hKd4yvQehtKhM9OY`), see the [migration plan](docs/migration-sort-ui-2.md). **Components:** Alert, Alert Dialog, Avatar (with Avatar Badge, Avatar Group and Status Badge), Badge, Button, Button Group, Card, Checkbox, Combobox, Context Menu, Dropdown Menu, Input, Marker, Radio, Select, Sonner, Switch, Textarea, Tooltip. Planned: see [backlog](docs/backlog.md). **Brands:** `theme-1`.
 
