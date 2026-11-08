@@ -6,7 +6,7 @@ What is left after the Sort UI 2.0 component pages (all implemented, see [migrat
 
 | Item | What | Notes |
 |---|---|---|
-| Icons (page `1:2`) | Figma's icon set (lucide) next to, or instead of, Remix Icons | The components and stories use Remix Icons; several findings note Figma's lucide icons (AI Trace, Diff), drawn as 16 px icons scaled to 17.3 px. Decide the set, then how it ships (a package of React components, or one icon component with names). |
+| Brand logos (Icons page `1:2`) | The 131 logos (GitHub, Google, Apple Pay, Visa…) | Later, from their owners' official sources (e.g. simple-icons), when a section needs them. The icon set itself is decided: Remix Icons, lucide only where Remix has none ([icons.md](icons.md)). |
 | Marketing sections | Navigation Bar (with Logo), Hero, Features, Social Proof, About, Content, Pricing, Stats, CTA, FAQ, Footer | Eleven pages of page sections built from the components. To be scoped first: library components or Playground compositions. |
 
 ## Code debt
