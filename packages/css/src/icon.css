@@ -1,0 +1,19 @@
+/*
+ * Icons — Remix first, lucide where Remix has none (docs/icons.md). Framework-agnostic.
+ *
+ * Remix icons are filled shapes that take `currentColor`: they need nothing here. lucide icons are strokes, 2 units on a
+ * 24-unit grid, so at the 16 px the components give them they draw a 1.33 px line, heavier than the components' own glyphs.
+ * Sort UI 2.0 draws lucide at 1.25 px whatever the size; this gives every lucide icon (lucide-react and lucide's other
+ * packages put the `lucide` class on the <svg>) that line, measured on the screen, at any size. Set `--icon-stroke-width`
+ * on an icon or a parent to change it.
+ */
+
+@layer ds.components {
+  svg.lucide {
+    stroke-width: var(--icon-stroke-width, calc(var(--ds-stroke-width-1) * 1.25));
+  }
+
+  svg.lucide * {
+    vector-effect: non-scaling-stroke;
+  }
+}

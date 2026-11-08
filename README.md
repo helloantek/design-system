@@ -42,6 +42,16 @@ import { Button } from '@helloantek/ds-react';
 
 Colour scheme: `data-ds-scheme="dark"` on `<html>` (or any section), `"system"` to follow the OS. Light is the default.
 
+Icons: Remix Icons (`@remixicon/react`) first, lucide (`lucide-react`, installed by the project) for the few Remix lacks ([docs/icons.md](docs/icons.md)). Every icon slot takes either: the component sizes it and colours it with `currentColor`, and ds-css draws lucide's lines at Sort UI 2.0's 1.25 px at any size (`--icon-stroke-width` on the icon or a parent changes it). Storybook: Playground → Remix and lucide.
+
+```tsx
+import { RiShareLine } from '@remixicon/react';
+import { Telescope } from 'lucide-react';
+
+<Button variant="outline" leadingIcon={<RiShareLine />}>Share</Button>
+<TraceLine icon={<Telescope />}>Planned 5 questions</TraceLine>
+```
+
 On phones, components turn off the browser's grey tap highlight (they draw their own states); `-webkit-tap-highlight-color` on your own element brings it back.
 
 ### Other web frameworks (Vue, Svelte, Angular, plain HTML)
