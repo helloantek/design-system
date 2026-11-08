@@ -2232,22 +2232,26 @@ Object.assign(tests, {
     await page.waitForTimeout(100);
     assert.equal(await page.evaluate(() => window.scrollY), 0, 'the page stays where it is');
     // In a list taller than its box (the capped Select near the bottom of a short window), End brings the last
-    // option into view inside the list.
-    await page.setViewportSize({ width: 900, height: 300 });
-    await page.goto('http://localhost:6008/iframe.html?id=playground-popups-near-the-edge--corners&viewMode=story');
-    await page.getByRole('combobox', { name: 'Fruit at the bottom left' }).click();
-    await page.keyboard.press('End');
-    const menu = page.locator('.ds-select__menu').first();
-    await page.waitForTimeout(100);
-    const [top, bottom, listTop, listBottom, scrolled] = await menu.evaluate((el) => {
-      const item = el.querySelector('[data-highlighted]').getBoundingClientRect();
-      const box = el.getBoundingClientRect();
-      return [item.top, item.bottom, box.top, box.bottom, el.scrollTop];
-    });
-    assert.ok(scrolled > 0, 'the list scrolled');
-    assert.ok(top >= listTop - 1 && bottom <= listBottom + 1, 'the last option is inside the list box');
-    assert.equal(await page.evaluate(() => window.scrollY), 0, 'the page stays where it is');
-    await page.setViewportSize({ width: 1280, height: 720 });
+    // option into view inside the list, and the page does not move.
+    const viewport = page.viewportSize();
+    try {
+      await page.setViewportSize({ width: 900, height: 300 });
+      await page.goto('http://localhost:6008/iframe.html?id=playground-popups-near-the-edge--corners&viewMode=story');
+      await page.getByRole('combobox', { name: 'Fruit at the bottom left' }).click();
+      const before = await page.evaluate(() => window.scrollY);
+      await page.keyboard.press('End');
+      await page.waitForTimeout(100);
+      const [top, bottom, listTop, listBottom, scrolled] = await page.locator('.ds-select__menu').first().evaluate((el) => {
+        const item = el.querySelector('[data-highlighted]').getBoundingClientRect();
+        const box = el.getBoundingClientRect();
+        return [item.top, item.bottom, box.top, box.bottom, el.scrollTop];
+      });
+      assert.ok(scrolled > 0, 'the list scrolled');
+      assert.ok(top >= listTop - 1 && bottom <= listBottom + 1, `the last option is inside the list box (${top}–${bottom} in ${listTop}–${listBottom})`);
+      assert.equal(await page.evaluate(() => window.scrollY), before, 'the page stays where it is');
+    } finally {
+      await page.setViewportSize(viewport);
+    }
   },
   'command: the search field is a combobox over a listbox; arrows move the selection (skipping disabled items, wrapping); typing filters by text and keywords, hiding empty groups and separators; Enter and clicks run items; the dialog opens on a key and closes on Escape': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-command--default&viewMode=story');
