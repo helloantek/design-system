@@ -2238,6 +2238,9 @@ Object.assign(tests, {
       await page.setViewportSize({ width: 900, height: 300 });
       await page.goto('http://localhost:6008/iframe.html?id=playground-popups-near-the-edge--corners&viewMode=story');
       await page.getByRole('combobox', { name: 'Fruit at the bottom left' }).click();
+      // The click scrolled the window to the trigger, so the open list is placed again on the next frame; let that
+      // settle before moving through it.
+      await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
       const before = await page.evaluate(() => window.scrollY);
       await page.keyboard.press('End');
       await page.waitForTimeout(100);
