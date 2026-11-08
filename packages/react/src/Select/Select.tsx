@@ -2,6 +2,8 @@ import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type Focu
 import { usePlacement } from '../internal/usePlacement';
 import { useField } from '../Field/FieldContext';
 import { Badge } from '../Badge';
+import { CheckboxMark } from '../Checkbox/Checkbox';
+import { RadioMark } from '../Radio/Radio';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-select*); this component renders the markup and the
 // WAI-ARIA select-only combobox behaviour (https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
@@ -134,11 +136,6 @@ const chevronDown = (
 );
 const checkMark = (
   <svg viewBox="0.9 0.9 22.2 22.2" fill="none" stroke="currentColor" strokeWidth={1.736} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-    <path d="M20 6 9 17l-5-5" />
-  </svg>
-);
-const checkboxGlyph = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.14} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
     <path d="M20 6 9 17l-5-5" />
   </svg>
 );
@@ -364,12 +361,7 @@ export function Select(props: SelectProps) {
     const i = ++index;
     const isSelected = values.includes(option.value);
     const large = option.description !== undefined;
-    const mark =
-      indicator === 'check' ? (
-        isSelected && checkMark
-      ) : (
-        <span className={`ds-select__box ds-select__box--${indicator}`}>{indicator === 'checkbox' ? checkboxGlyph : <span className="ds-select__dot" />}</span>
-      );
+    const mark = indicator === 'check' ? isSelected && checkMark : indicator === 'checkbox' ? <CheckboxMark checked={isSelected} /> : <RadioMark checked={isSelected} />;
     return (
       <div
         key={option.value}

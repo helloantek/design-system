@@ -15,6 +15,20 @@ const minus = (
   </svg>
 );
 
+/**
+ * The checkbox as a picture of a state, for a control that owns the state itself (a Select option with
+ * `indicator="checkbox"`): the same markup and look, but the input is inert, out of the tab order and hidden from
+ * assistive technology, so it never takes focus or clicks and is not submitted.
+ */
+export function CheckboxMark({ checked }: { checked: boolean }) {
+  return (
+    <span className="ds-checkbox" aria-hidden>
+      <input className="ds-checkbox__input" type="checkbox" checked={checked} readOnly tabIndex={-1} inert />
+      {check}
+    </span>
+  );
+}
+
 interface CheckboxBaseProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size' | 'onChange'> {
   ref?: Ref<HTMLInputElement>;
   /** Figma Checked (controlled). */
