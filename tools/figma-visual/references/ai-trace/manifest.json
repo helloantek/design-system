@@ -1,0 +1,242 @@
+{
+ "$comment": "Sort UI 2.0 Trace Line (3030:157), every variant (1x PNG, exportAsync with absolute bounds): the lucide search icon and 'Searched for minimumReleaseAge'. renderers/ai-trace.tsx renders them with TraceLine and TraceCollapsible and Remix's search icon.",
+ "component": "ai-trace",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "componentSet": "3030:157",
+ "entries": [
+  {
+   "slug": "line-done",
+   "nodeId": "3030:3",
+   "props": {
+    "Status": "Done",
+    "Type": "Line",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 234,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 233.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "line-running",
+   "nodeId": "3030:14",
+   "props": {
+    "Status": "Running",
+    "Type": "Line",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 234,
+   "nodeH": 20,
+   "pixels": false,
+   "$why": "Running sweeps a light over the title (an animation); Figma draws one frame of it, so only the spec (sizes, icon colour) is compared. Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings.",
+   "sizeOverride": {
+    "w": 233.0
+   }
+  },
+  {
+   "slug": "line-error",
+   "nodeId": "3030:25",
+   "props": {
+    "Status": "Error",
+    "Type": "Line",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 234,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 233.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "line-pending",
+   "nodeId": "3030:36",
+   "props": {
+    "Status": "Pending",
+    "Type": "Line",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 234,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 233.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "trigger-done",
+   "nodeId": "3030:47",
+   "props": {
+    "Status": "Done",
+    "Type": "Trigger",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 253.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "trigger-running",
+   "nodeId": "3030:58",
+   "props": {
+    "Status": "Running",
+    "Type": "Trigger",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "pixels": false,
+   "$why": "Running sweeps a light over the title (an animation); Figma draws one frame of it, so only the spec (sizes, icon colour) is compared. Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings.",
+   "sizeOverride": {
+    "w": 253.0
+   }
+  },
+  {
+   "slug": "trigger-error",
+   "nodeId": "3030:69",
+   "props": {
+    "Status": "Error",
+    "Type": "Trigger",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 253.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "trigger-pending",
+   "nodeId": "3030:80",
+   "props": {
+    "Status": "Pending",
+    "Type": "Trigger",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 253.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "open-done",
+   "nodeId": "3030:91",
+   "props": {
+    "Status": "Done",
+    "Type": "Trigger open",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 253.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "open-running",
+   "nodeId": "3030:102",
+   "props": {
+    "Status": "Running",
+    "Type": "Trigger open",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "pixels": false,
+   "$why": "Running sweeps a light over the title (an animation); Figma draws one frame of it, so only the spec (sizes, icon colour) is compared. Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings.",
+   "sizeOverride": {
+    "w": 253.0
+   }
+  },
+  {
+   "slug": "open-error",
+   "nodeId": "3030:113",
+   "props": {
+    "Status": "Error",
+    "Type": "Trigger open",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 253.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "open-pending",
+   "nodeId": "3030:124",
+   "props": {
+    "Status": "Pending",
+    "Type": "Trigger open",
+    "State": "Default"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 253.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "trigger-hover",
+   "nodeId": "3030:135",
+   "props": {
+    "Status": "Done",
+    "Type": "Trigger",
+    "State": "Hover"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 253.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  },
+  {
+   "slug": "trigger-focus",
+   "nodeId": "3030:146",
+   "props": {
+    "Status": "Done",
+    "Type": "Trigger",
+    "State": "Focus"
+   },
+   "target": ".ds-trace-line",
+   "nodeW": 256,
+   "nodeH": 20,
+   "sizeOverride": {
+    "w": 253.0
+   },
+   "$why": "Design decision (PR review question): Figma's icon and chevron are 16 px icons scaled to 17.3 px; the code draws them at 16 px, so the line is 1.3 px narrower per icon (Figma 234.3 / 255.6 px). Listed under Known design findings."
+  }
+ ]
+}

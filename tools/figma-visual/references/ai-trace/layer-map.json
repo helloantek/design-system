@@ -1,0 +1,45 @@
+{
+  "$comment": "Figma layer path -> element inside the entry's target (.ds-trace-line). Figma's icons are 16 px lucide icons scaled to 17.3 px (an instance scaled by 1.08); the code draws them at 16 px, which lines the icon's centre up with Trace Content's rule and its 24 px indent, so the icon boxes and the lines holding them are not compared by width.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": [
+        "w"
+      ]
+    },
+    "Line": {
+      "selector": ".ds-trace-line__line",
+      "skip": [
+        "w"
+      ]
+    },
+    "Icon": {
+      "selector": ".ds-trace-line__icon",
+      "skip": [
+        "w",
+        "h"
+      ]
+    },
+    "Icon/VECTOR": {
+      "selector": ".ds-trace-line__icon",
+      "stroke": "color"
+    },
+    "Title": {
+      "selector": ".ds-trace-line__title"
+    },
+    "Title/TEXT": {
+      "selector": ".ds-trace-line__text"
+    },
+    "Chevron": {
+      "selector": ".ds-trace-line__chevron",
+      "skip": [
+        "w",
+        "h"
+      ]
+    },
+    "Chevron/VECTOR": {
+      "selector": ".ds-trace-line__chevron > svg",
+      "stroke": "color"
+    }
+  }
+}

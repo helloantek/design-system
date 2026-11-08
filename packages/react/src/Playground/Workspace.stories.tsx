@@ -3,6 +3,7 @@ import { useState, type CSSProperties } from 'react';
 import {
   RiAddLine,
   RiBarChartLine,
+  RiCalendarLine,
   RiDownloadLine,
   RiExpandUpDownLine,
   RiFileTextLine,
@@ -15,6 +16,7 @@ import {
   RiTeamLine,
 } from '@remixicon/react';
 import { AIChatComposer } from '../AIChatComposer';
+import { Trace, TraceCollapsible, TraceLine } from '../AITrace';
 import { Attachment } from '../Attachment';
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
@@ -41,7 +43,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message, Message Scroller and Attachment (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more, a shared file and a typing line, scrolling with a fade and a jump-to-latest button; AI Chat Composer sends a reply, typed or dictated, which settles near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message, Message Scroller, Attachment and AI Trace (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more, a shared file, the assistant’s steps in an AI Trace (Checked calendars opens) and a typing line, scrolling with a fade and a jump-to-latest button; AI Chat Composer sends a reply, typed or dictated, which settles near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -63,6 +65,7 @@ const chatAvatar = (initials: string, name: string, hue: string) => (
 );
 const priya = chatAvatar('P', 'Priya Raman', 'lime');
 const me = chatAvatar('T', 'You', 'orange');
+const assistant = chatAvatar('O', 'Orbit assistant', 'violet');
 
 const replies = ['Perfect, see you Thursday.', 'Can you share the pricing numbers before the review?', 'I moved the invite to 2 PM and added the notes doc.'];
 
@@ -116,6 +119,22 @@ function InboxThread() {
               description="1.2 MB"
               actions={<Button variant="ghost" size="xs" icon={<RiDownloadLine />} aria-label="Download release-plan-2.5.pdf" onClick={() => toast('Downloading release-plan-2.5.pdf')} />}
             />
+          </Message>
+        </MessageScrollerItem>
+        <MessageScrollerItem>
+          <Message avatar={assistant} sender="Orbit assistant" footer="10:27 AM">
+            <Trace>
+              <TraceLine icon={<RiSearchLine />} description="14 messages">
+                Searched the thread
+              </TraceLine>
+              <TraceLine icon={<RiFileTextLine />} description="6 pages">
+                Read release-plan-2.5.pdf
+              </TraceLine>
+              <TraceCollapsible icon={<RiCalendarLine />} title="Checked calendars" description="2 people">
+                <p>Priya and you are both free on Thursday from 2 PM to 4 PM.</p>
+              </TraceCollapsible>
+            </Trace>
+            <Bubble variant="muted">Summary: the review moves to Thursday at 2 PM; Priya brings the onboarding numbers and the 2.5 release plan.</Bubble>
           </Message>
         </MessageScrollerItem>
         {sent.map((text, i) => (

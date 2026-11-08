@@ -208,11 +208,14 @@ for (const component of components) {
     const r = compare(ref, PNG.sync.read(shot), box);
     const diffFile = `${component}--${entry.slug}.png`;
     writeFileSync(join(out, 'diff', diffFile), PNG.sync.write(sideBySide(ref, r.cand, r.diff)));
-    const sizeDelta = Math.max(Math.abs(box.width - entry.nodeW), Math.abs(box.height - entry.nodeH));
+    // `sizeOverride` (with a `$why`) is the size the code is meant to have when it departs from Figma's on purpose.
+    if (entry.sizeOverride && !entry.$why) throw new Error(`${component}/${entry.slug}: sizeOverride needs a $why`);
+    const wantW = entry.sizeOverride?.w ?? entry.nodeW, wantH = entry.sizeOverride?.h ?? entry.nodeH;
+    const sizeDelta = Math.max(Math.abs(box.width - wantW), Math.abs(box.height - wantH));
     // `pixels: false` (with a `$why` in the manifest) leaves a variant to the size and spec checks.
     const pixelsOk = entry.pixels === false || (r.mismatch <= maxMismatch && r.tint <= maxTint);
     const pass = pixelsOk && sizeDelta <= maxSizeDelta && specIssues.length === 0;
-    results.push({ component, slug: entry.slug, nodeId: entry.nodeId, mismatch: r.mismatch, tint: r.tint, specIssues, size: [box.width, box.height], figmaSize: [entry.nodeW, entry.nodeH], sizeDelta, pass, diffFile });
+    results.push({ component, slug: entry.slug, nodeId: entry.nodeId, mismatch: r.mismatch, tint: r.tint, specIssues, size: [box.width, box.height], figmaSize: [wantW, wantH], sizeDelta, pass, diffFile });
     const pct = (v) => `${(v * 100).toFixed(1).padStart(5)}%`;
     console.log(`${pass ? 'ok  ' : 'FAIL'} ${component}/${entry.slug.padEnd(42)} mismatch ${pct(r.mismatch)}  tint ${pct(r.tint)}${entry.pixels === false ? ' (not gated)' : ''}  Δsize ${sizeDelta.toFixed(1)}px  spec ${specIssues.length ? `${specIssues.length} off` : 'exact'}`);
     for (const issue of specIssues.slice(0, 4)) console.log(`       ${issue}`);

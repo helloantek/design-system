@@ -1,0 +1,255 @@
+/*
+ * AI Trace — Sort UI 2.0 "Trace Line" (component set 3030:157), "Trace Content" (3031:26) and "Trace" (3031:30) on page
+ * 3030:2 in file 4JnqgEbdlnKgiFrfmiwEZw: the steps an AI agent took (searched, read, ran…), one line each, with a
+ * status, and lines that open to show what the step returned. Values are Sort UI 2.0 tokens. Framework-agnostic.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-trace">                                                        (Figma "Trace": the lines, 8 px apart)
+ *     <div class="ds-trace-line [--done | --running | --error | --pending]">      (or <a href> / <button>: Type=Trigger)
+ *       <span class="ds-trace-line__line">
+ *         [<span class="ds-trace-line__icon">…svg…</span>]                        (Figma "Icon")
+ *         <span class="ds-trace-line__title">
+ *           <span class="ds-trace-line__text">Searched for minimumReleaseAge</span>
+ *           [<span class="ds-trace-line__description">8 results</span>]           (Figma "Description")
+ *           [<span class="ds-trace-line__trailing">…svg…</span>]                  (Figma "Trailing icon", e.g. a link's arrow)
+ *         </span>
+ *       </span>
+ *       [<span class="ds-trace-line__status">Failed</span>]                       (the status for assistive technology)
+ *       [<span class="ds-trace-line__chevron">…svg…</span>]                       (Type=Trigger: right; Trigger open: down)
+ *     </div>
+ *     <div class="ds-trace-collapsible">                                          (a trigger and its content)
+ *       <button class="ds-trace-line" aria-expanded="true" aria-controls="…">…</button>
+ *       <div class="ds-trace-content" id="…"><div class="ds-trace-content__body">…</div></div>
+ *     </div>
+ *   </div>
+ *   <pre class="ds-trace-code">…</pre>                                            (the demos' command output)
+ */
+
+@layer ds.components {
+  /* Figma "Trace": a column of lines, 8 px apart. */
+  .ds-trace {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    font-family: var(--ds-font-sans);
+  }
+
+  /* Figma "Trace Line": 20 px, the line and the chevron 4 px apart; 13/20 muted text and icons. */
+  .ds-trace-line {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    box-sizing: border-box;
+    gap: var(--ds-spacing-1);
+    max-width: 100%;
+    min-height: var(--ds-text-xs--line-height);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-lg);
+    outline: none;
+    background: none;
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-normal);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-xs--line-height);
+    text-align: start;
+    text-decoration: none;
+    transition: color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-trace-line:is(a, button) {
+    cursor: pointer;
+  }
+
+  /* Figma State=Hover: the text, icons and chevron in the foreground colour. */
+  .ds-trace-line:is(a, button):not(.ds-trace-line--error):hover {
+    color: var(--ds-foreground);
+  }
+
+  /* Figma State=Focus: the 3 px ring, radius 4. */
+  .ds-trace-line:focus-visible {
+    border-radius: var(--ds-radius-xs);
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* The icon and the title, 8 px apart. */
+  .ds-trace-line__line {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  .ds-trace-line__icon,
+  .ds-trace-line__trailing,
+  .ds-trace-line__chevron {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-trace-line__icon > svg,
+  .ds-trace-line__trailing > svg,
+  .ds-trace-line__chevron > svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The title, the description and a trailing icon, 4 px apart; the title is cut with an ellipsis. */
+  .ds-trace-line__title {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+  }
+
+  .ds-trace-line__text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-trace-line__description {
+    flex: none;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  /* The chevron: foreground at 40 % (full on hover and in red when the step failed). */
+  .ds-trace-line__chevron {
+    color: var(--ds-foreground);
+  }
+
+  .ds-trace-line__chevron > svg {
+    opacity: 0.4;
+    transition: opacity var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-trace-line:is(a, button):hover .ds-trace-line__chevron > svg,
+  .ds-trace-line--error .ds-trace-line__chevron > svg {
+    opacity: 1;
+  }
+
+  .ds-trace-line--error .ds-trace-line__chevron {
+    color: inherit;
+  }
+
+  /* Status=Error: the text and icons in destructive. */
+  .ds-trace-line--error {
+    color: var(--ds-destructive-foreground);
+  }
+
+  /* Status=Pending: the line (and the chevron) at 60 %. */
+  .ds-trace-line--pending .ds-trace-line__line,
+  .ds-trace-line--pending .ds-trace-line__chevron {
+    opacity: 0.6;
+  }
+
+  /* Status=Running: a light sweeping over the title (Figma: muted → foreground → muted). */
+  .ds-trace-line--running .ds-trace-line__text {
+    background-image: linear-gradient(90deg, var(--ds-muted-foreground) 25%, var(--ds-foreground) 50%, var(--ds-muted-foreground) 75%);
+    background-position: 100% 0;
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: ds-trace-shimmer calc(var(--ds-duration-200) * 10) linear infinite;
+  }
+
+  @keyframes ds-trace-shimmer {
+    to {
+      background-position: -100% 0;
+    }
+  }
+
+  .ds-trace-line__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Figma "Trace Content": what a step returned, 24 px in under its line, with a 1 px rule under the line's icon. */
+  .ds-trace-content {
+    position: relative;
+    display: flex;
+    box-sizing: border-box;
+    min-width: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-1) var(--ds-spacing-1) var(--ds-spacing-6);
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-trace-content::before {
+    position: absolute;
+    top: var(--ds-spacing-2);
+    bottom: var(--ds-spacing-1);
+    left: calc(var(--ds-spacing-2) - var(--ds-stroke-width-1) / 2);
+    border: 0 solid var(--ds-border);
+    border-left-width: var(--ds-stroke-width-1);
+    content: '';
+  }
+
+  .ds-trace-content[hidden] {
+    display: none;
+  }
+
+  /* Its slot: a column, 8 px apart. */
+  .ds-trace-content__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  .ds-trace-content__body > p {
+    margin: 0;
+  }
+
+  .ds-trace-collapsible {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* The demos' command output: fill-1, radius 8, 8 × 12 px in, 12/16 Geist Mono, lines 4 px apart. */
+  .ds-trace-code {
+    box-sizing: border-box;
+    margin: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-3);
+    overflow-x: auto;
+    border-radius: var(--ds-radius-md);
+    background-color: var(--ds-fill-1);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-2xs);
+    letter-spacing: 0;
+    line-height: calc(var(--ds-text-2xs--line-height) + var(--ds-spacing-1));
+    white-space: pre-wrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-trace-line,
+    .ds-trace-line__chevron > svg {
+      transition: none;
+    }
+
+    .ds-trace-line--running .ds-trace-line__text {
+      background-position: 50% 0;
+      animation: none;
+    }
+  }
+}

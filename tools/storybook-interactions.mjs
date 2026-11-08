@@ -2333,6 +2333,35 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'ai trace: a step that opens is a button with aria-expanded and aria-controls; click, Enter and Space open and close it; running, failed and pending steps say so; a link step opens its page': async () => {
+    const url = (id) => `http://localhost:6008/iframe.html?id=components-ai-trace--${id}&viewMode=story`;
+    await page.goto(url('collapsible'));
+    const trigger = page.getByRole('button', { name: 'Ran node --version' });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true', 'it starts open');
+    const content = page.locator(`#${await trigger.getAttribute('aria-controls')}`);
+    assert.ok(await content.isVisible(), 'aria-controls points at the visible content');
+    await trigger.click();
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'false');
+    assert.ok(await content.isHidden(), 'closed, the content is hidden');
+    await page.keyboard.press('Enter');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true', 'Enter opens it');
+    await page.keyboard.press('Space');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'false', 'Space closes it');
+    assert.equal(await trigger.evaluate((el) => getComputedStyle(el).boxShadow.includes('rgba')), true, 'focus shows the ring');
+
+    await page.goto(url('status'));
+    await page.locator('.ds-trace').waitFor();
+    const lines = await page.locator('.ds-trace-line').evaluateAll((els) => els.map((el) => el.textContent));
+    assert.deepEqual(lines, ['Ran pnpm install', 'Failed to start the dev server, Failed', 'Running the test suite, In progress', 'Deploy a preview, Not started']);
+    assert.equal(await page.locator('.ds-trace-line__status').first().evaluate((el) => el.getBoundingClientRect().width), 1, 'the status is visually hidden');
+
+    await page.goto(url('link'));
+    const link = page.getByRole('link', { name: 'Read the Base UI install guide' });
+    await link.waitFor();
+    assert.equal(await link.getAttribute('target'), '_blank');
+    assert.equal(await link.getAttribute('rel'), 'noreferrer');
+  },
   'ai chat composer: Enter sends and clears, Shift+Enter adds a line; a wrapping prompt turns the row into a column without losing focus; /commands are tinted; the expand button grows a long prompt; dictation records, transcribes and fills the prompt': async () => {
     const url = (id) => `http://localhost:6008/iframe.html?id=components-ai-chat-composer--${id}&viewMode=story`;
     await page.goto(url('playground'));

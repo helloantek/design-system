@@ -1,0 +1,16 @@
+{
+  "$comment": "Figma layer path -> element inside .ds-trace-content. The rule is the content's ::before (a left border), so only its colour is compared.",
+  "layers": {
+    "root": {},
+    "content": {
+      "selector": ".ds-trace-content__body"
+    },
+    "Rule": {
+      "stroke": "before-border",
+      "skip": [
+        "w",
+        "h"
+      ]
+    }
+  }
+}

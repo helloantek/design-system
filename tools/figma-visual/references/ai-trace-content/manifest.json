@@ -1,0 +1,23 @@
+{
+ "$comment": "Sort UI 2.0 Trace Content (3031:26): 'Found 2 matches in packages/web/package.json and pnpm-workspace.yaml.' in 480 px.",
+ "component": "ai-trace-content",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "componentSet": "3031:26",
+ "entries": [
+  {
+   "slug": "content",
+   "nodeId": "3031:26",
+   "props": {},
+   "target": ".ds-trace-content",
+   "nodeW": 480,
+   "nodeH": 52
+  }
+ ]
+}
