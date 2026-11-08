@@ -1,17 +1,41 @@
-# Component backlog
+# Backlog
 
-Figma variants that are not implemented yet, and the component each one becomes. Ordered by how much other work they unblock.
+What is left after the Sort UI 2.0 component pages (all implemented, see [migration-sort-ui-2.md](migration-sort-ui-2.md)). Reviewed against the Sort UI 2.0 file (`4JnqgEbdlnKgiFrfmiwEZw`) on 2026-11-08. Each item follows [playbook.md](playbook.md) and is done when [definition-of-done.md](definition-of-done.md) holds.
 
-| Figma source | Becomes | Notes |
+## Next
+
+| Item | What | Notes |
 |---|---|---|
-| Input · Variant = Lead dropdown, Tail dropdown | `Select` composed into `Input` as an add-on | `Select` exists; needs a compact trigger without the field box. |
-| Select indicators | `ds-checkbox` / `ds-radio` in Select | `Checkbox` and `Radio` exist; Select still draws its own boxes as indicators (`ds-select__box`), which should reuse them. |
-| Select Menu · Search Input, Empty State; Menu Search Input | `Select` with `searchable` (combobox with listbox popup) | Filtering changes the ARIA pattern: focus moves to the search input. |
-| Select Menu · Button; Select Menu Items · Type = Caption, Default Large | `Select` menu footer and option description | Small; waiting for a use case. |
-| Select Menu positioning | Flip/shift near the viewport edge | CSS anchor positioning or a small positioning helper. |
-| Input · Variant = Tags, Inline tags | `Tag` + `TagInput` | `Tag` is reusable on its own (filters, chips). |
-| Input · Variant = Quantity, Quantity 2 | `NumberInput` (stepper) | Native `type="number"` semantics, `−`/`+` or chevron buttons, min/max/step. |
-| Textarea's character-count ring | `ProgressCircle` in Textarea | `ProgressCircle` exists; Textarea still draws its own 16 px ring (`ds-textarea__progress`), which should reuse it. |
-| Input · Variant = Lead button | `FileInput` | Wraps `<input type="file">`; shows the chosen file name. |
+| Icons (page `1:2`) | Figma's icon set (lucide) next to, or instead of, Remix Icons | The components and stories use Remix Icons; several findings note Figma's lucide icons (AI Trace, Diff), drawn as 16 px icons scaled to 17.3 px. Decide the set, then how it ships (a package of React components, or one icon component with names). |
+| Marketing sections | Navigation Bar (with Logo), Hero, Features, Social Proof, About, Content, Pricing, Stats, CTA, FAQ, Footer | Eleven pages of page sections built from the components. To be scoped first: library components or Playground compositions. |
 
-Each one follows [playbook.md](playbook.md) and is done when [definition-of-done.md](definition-of-done.md) holds.
+## Code debt
+
+Found in the code, not missing from Figma.
+
+| Item | What | Notes |
+|---|---|---|
+| Popup positioning | Flip and shift near the viewport edge for Select, Combobox, Dropdown Menu, Context Menu, Menubar, Popover, Hover Card and Date Picker; Tooltip only has a fixed `side` | They open below (or beside) their trigger with `position: absolute` and do not move when there is no room. CSS anchor positioning (`position-try`) with a small fallback, in one place for all of them. |
+| Select indicators | `indicator="checkbox"` and `"radio"` should draw `ds-checkbox` / `ds-radio` | Select draws its own boxes (`ds-select__box`). Sort UI 2.0 Select Item only has the check mark (the default); the boxes are kept for multiple selects. |
+| Textarea character-count ring | Use `ProgressCircle` | Textarea draws its own 16 px ring (`ds-textarea__progress`) although `ProgressCircle` exists. |
+
+## Not in Sort UI 2.0
+
+Sort UI 1.3 Input variants that Sort UI 2.0 dropped. Build them only when a product needs them, then ask design for a 2.0 spec first.
+
+| 1.3 variant | Would become |
+|---|---|
+| Input · Quantity, Quantity 2 | `NumberInput` (stepper: native `type="number"`, `−`/`+` buttons, min/max/step) |
+| Input · Lead button | `FileInput` (wraps `<input type="file">`, shows the chosen file's name) |
+
+## Done since the last backlog
+
+Items from the previous backlog that Sort UI 2.0 components now cover.
+
+| Previous item | Covered by |
+|---|---|
+| Input · Lead / Tail dropdown | Input Group Dropdown (`InputDropdown` as a DropdownMenu trigger, passed as the Input's `action`) |
+| Select Menu · Search Input, Empty State | Combobox (search in the field, "No results") |
+| Select Menu Items · Caption | Select Item Description (`description`) |
+| Select Menu · Button | Dropped in Sort UI 2.0 (Select Content holds only items) |
+| Input · Tags, Inline tags | Combobox with `multiple` (removable chips) |
