@@ -2955,13 +2955,12 @@ Object.assign(tests, {
     assert.match(text, /<svg [^>]*>…<\/svg>/, 'SVG contents are folded');
     await panel.getByText('SVG in full').click();
     await panel.getByText('<path', { exact: false }).first().waitFor();
-    // A click in the story (opening a menu) shows up in the panel.
+    // A click in the story shows up in the panel: the Playground's menu starts open, a click on its trigger closes it.
     await page.goto('http://localhost:6008/?path=/story/components-dropdown-menu--playground');
     await page.getByRole('tab', { name: 'HTML' }).click();
-    await panel.getByText('ds-dropdown').first().waitFor();
-    assert.match(await panel.innerText(), /aria-expanded="false"/);
-    await page.frameLocator('#storybook-preview-iframe').locator('#storybook-root button').first().click();
     await panel.getByText('aria-expanded="true"', { exact: false }).first().waitFor();
+    await page.frameLocator('#storybook-preview-iframe').locator('#storybook-root .ds-dropdown > button').click();
+    await panel.getByText('aria-expanded="false"', { exact: false }).first().waitFor();
   },
   'storybook: every component has a Docs page whose stories show their code': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-button--docs&viewMode=docs');
