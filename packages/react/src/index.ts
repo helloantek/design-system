@@ -22,6 +22,7 @@ export * from './ContextMenu';
 export * from './DatePicker';
 export * from './Collapsible';
 export * from './Dialog';
+export * from './Diff';
 export * from './Drawer';
 export * from './DropdownMenu';
 export * from './Empty';

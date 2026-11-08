@@ -1,0 +1,352 @@
+/*
+ * Diff — Sort UI 2.0 "Diff Line" (component set 1699:107) and "Diff" (1699:42634) on page 1699:2 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: a file's changes as unified or split lines, with line numbers, signs, highlighted syntax and
+ * changed words, folded unchanged lines and actions on a change. Values are Sort UI 2.0 tokens. Framework-agnostic.
+ *
+ * Markup (parts in [] are optional):
+ *   <figure class="ds-diff">
+ *     <figcaption class="ds-diff__header">
+ *       [<span class="ds-diff__icon">…svg…</span>] <span class="ds-diff__title">src/notes/sync.ts</span>
+ *       [<span class="ds-diff__stats"><span class="ds-diff__added">+5</span><span class="ds-diff__removed">−1</span></span>]
+ *     </figcaption>
+ *     <div class="ds-diff__content">                                            (or <div class="ds-diff__split"> with two
+ *       <div class="ds-diff__lines">                                             <div class="ds-diff__side"> holding lines)
+ *         <div class="ds-diff-line ds-diff-line--context | --added | --removed | --empty | --hunk">
+ *           <span class="ds-diff-line__gutter">
+ *             <span class="ds-diff-line__number ds-diff-line__number--old">18</span>
+ *             <span class="ds-diff-line__number ds-diff-line__number--new">18</span>  (one plain __number when single)
+ *             [<span class="ds-diff-line__rule"></span>]                          (added: a bar; removed: a hatched bar)
+ *           </span>
+ *           <span class="ds-diff-line__body">
+ *             [<span class="ds-diff-line__sign">+</span>]
+ *             <span class="ds-diff-line__code" style="--diff-indent: 4">…<mark class="ds-diff-word">…</mark>…</span>
+ *           </span>
+ *         </div>
+ *         <button class="ds-diff-line ds-diff-line--folded">…__icon in the gutter, <span class="…__label">…</span></button>
+ *         <div class="ds-diff-line ds-diff-line--actions">…<span class="ds-diff-line__actions">…buttons…</span></div>
+ *       </div>
+ *     </div>
+ *   </figure>
+ *   Syntax: <span class="ds-diff-token ds-diff-token--keyword | --string | --constant | --function | --variable | --tag | --comment">
+ */
+
+@layer ds.components {
+  /* Figma "Diff": card, radius 16, a 1 px border outside the box. */
+  .ds-diff {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--ds-radius-2xl);
+    background-color: var(--ds-card);
+    box-shadow: 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-card-foreground);
+  }
+
+  /* The header: the file's icon, path and counts, 8 × 12 px in, a 1 px rule below. */
+  .ds-diff__header {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-3);
+    border-bottom: var(--ds-stroke-width-1) solid var(--ds-border);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-diff__icon {
+    display: flex;
+    flex: none;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-diff__icon > svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ds-diff__title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-card-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-diff__stats {
+    display: flex;
+    flex: none;
+    gap: var(--ds-spacing-2);
+  }
+
+  .ds-diff__added {
+    color: var(--ds-palette-green-text);
+  }
+
+  .ds-diff__removed {
+    color: var(--ds-destructive-foreground);
+  }
+
+  /* The lines, 4 px from the header and the bottom; they scroll sideways together and fill the width. */
+  .ds-diff__content {
+    padding: var(--ds-spacing-1) 0;
+    overflow-x: auto;
+  }
+
+  /* The scrolling regions take keyboard focus (to scroll long lines); the ring is drawn inside the card. */
+  .ds-diff__content:focus-visible,
+  .ds-diff__side:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-diff__lines {
+    display: grid;
+    grid-template-columns: minmax(100%, max-content);
+  }
+
+  /* Split: the old lines and the new ones side by side, a 1 px rule between them. */
+  .ds-diff__split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .ds-diff__side {
+    min-width: 0;
+    overflow-x: auto;
+  }
+
+  .ds-diff__side + .ds-diff__side {
+    border-left: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  /* Figma "Diff Line": 20 px, 14/20 Geist Mono; the gutter, then the sign and the code. */
+  .ds-diff-line {
+    position: relative;
+    display: flex;
+    box-sizing: border-box;
+    min-height: var(--ds-text-sm--line-height);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ds-syntax-foreground);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-sm);
+    letter-spacing: 0;
+    line-height: var(--ds-text-sm--line-height);
+    text-align: start;
+    white-space: pre;
+  }
+
+  .ds-diff-line--added {
+    background-color: var(--ds-syntax-added);
+  }
+
+  .ds-diff-line--removed {
+    background-color: var(--ds-syntax-removed);
+  }
+
+  .ds-diff-line:is(.ds-diff-line--empty, .ds-diff-line--hunk, .ds-diff-line--folded) {
+    background-color: var(--ds-fill-1);
+  }
+
+  /* The gutter: the old and new numbers (or one), 32 px each, and a 1 px rule on the right. */
+  .ds-diff-line__gutter {
+    position: relative;
+    display: flex;
+    flex: none;
+    align-items: stretch;
+    border-right: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-diff-line__number {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    width: var(--diff-number-width, var(--ds-spacing-8));
+    padding: 0 var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-diff-line--added :is(.ds-diff-line__number, .ds-diff-line__sign) {
+    color: var(--ds-palette-green-text);
+  }
+
+  .ds-diff-line--removed :is(.ds-diff-line__number, .ds-diff-line__sign) {
+    color: var(--ds-destructive-foreground);
+  }
+
+  /* The 3 px bar on the gutter's left edge: solid for an added line, hatched for a removed one. */
+  .ds-diff-line__rule {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1));
+  }
+
+  .ds-diff-line--added .ds-diff-line__rule {
+    background-color: var(--ds-palette-green-solid);
+  }
+
+  .ds-diff-line--removed .ds-diff-line__rule {
+    background-image: repeating-linear-gradient(135deg, var(--ds-palette-red-solid) 0 var(--ds-spacing-0-5), transparent var(--ds-spacing-0-5) var(--ds-spacing-1));
+  }
+
+  /* The sign (18 px, 8 px in) and the code (8 px in); the code draws 1 px guides at each two-space indent. */
+  .ds-diff-line__body {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .ds-diff-line__sign {
+    flex: none;
+    box-sizing: border-box;
+    width: calc(var(--ds-spacing-2) + var(--ds-spacing-2-5));
+    padding-left: var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-diff-line__code {
+    flex: 1 1 auto;
+    min-height: var(--ds-text-sm--line-height);
+    padding-left: var(--ds-spacing-2);
+    background-image: repeating-linear-gradient(to right, var(--ds-border) 0 var(--ds-stroke-width-1), transparent var(--ds-stroke-width-1) 2ch);
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    background-size: calc(var(--diff-indent, 0) * 1ch) 100%;
+  }
+
+  .ds-diff-line--hunk .ds-diff-line__code {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* A changed word: the added or removed tint again, the line's full height. */
+  .ds-diff-word {
+    display: inline-block;
+    background-color: var(--ds-syntax-added-word);
+    color: inherit;
+  }
+
+  .ds-diff-line--removed .ds-diff-word {
+    background-color: var(--ds-syntax-removed-word);
+  }
+
+  /* Type=Folded: a 28 px button, the unfold icon in the gutter and a 12/16 label 10 px in. */
+  .ds-diff-line--folded {
+    width: 100%;
+    min-height: calc(var(--ds-spacing-7));
+    cursor: pointer;
+    font-family: var(--ds-font-sans);
+    transition: background-color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-diff-line--folded:hover {
+    background-color: var(--ds-control-hover);
+  }
+
+  .ds-diff-line--folded:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-diff-line--folded .ds-diff-line__number,
+  .ds-diff-line--actions .ds-diff-line__number {
+    font-family: var(--ds-font-mono);
+  }
+
+  .ds-diff-line__icon {
+    display: flex;
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+  }
+
+  .ds-diff-line__icon > svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ds-diff-line--folded .ds-diff-line__body {
+    padding-left: var(--ds-spacing-2-5);
+  }
+
+  .ds-diff-line__label {
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-2xs);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* Type=Actions: a 32 px line, the buttons lined up with the code, 4 px apart. */
+  .ds-diff-line--actions {
+    min-height: var(--ds-spacing-8);
+    white-space: normal;
+  }
+
+  .ds-diff-line--actions .ds-diff-line__body {
+    padding-left: calc(var(--ds-spacing-2) + var(--ds-spacing-2-5) + var(--ds-spacing-2));
+  }
+
+  .ds-diff-line__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    font-family: var(--ds-font-sans);
+  }
+
+  .ds-diff-line__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Figma "syntax" colours. */
+  .ds-diff-token--keyword {
+    color: var(--ds-syntax-keyword);
+  }
+
+  .ds-diff-token--string {
+    color: var(--ds-syntax-string);
+  }
+
+  .ds-diff-token--constant {
+    color: var(--ds-syntax-constant);
+  }
+
+  .ds-diff-token--function {
+    color: var(--ds-syntax-function);
+  }
+
+  .ds-diff-token--variable {
+    color: var(--ds-syntax-variable);
+  }
+
+  .ds-diff-token--tag {
+    color: var(--ds-syntax-tag);
+  }
+
+  .ds-diff-token--comment {
+    color: var(--ds-syntax-comment);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-diff-line--folded {
+      transition: none;
+    }
+  }
+}

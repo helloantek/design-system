@@ -1,0 +1,34 @@
+{
+  "$comment": "Figma layer path -> element inside .ds-diff. Figma's icon is a 16 px icon scaled to 17.3 px; the code draws 16 px (as in AI Trace), so the icon box is not compared.",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow"
+    },
+    "header": {
+      "selector": ".ds-diff__header",
+      "stroke": "border-bottom"
+    },
+    "Icon": {
+      "selector": ".ds-diff__icon",
+      "skip": [
+        "w",
+        "h"
+      ]
+    },
+    "Title": {
+      "selector": ".ds-diff__title"
+    },
+    "stats": {
+      "selector": ".ds-diff__stats"
+    },
+    "Added": {
+      "selector": ".ds-diff__added"
+    },
+    "Removed": {
+      "selector": ".ds-diff__removed"
+    },
+    "content": {
+      "selector": ".ds-diff__content"
+    }
+  }
+}
