@@ -5,7 +5,7 @@ Audit of the icons in Sort UI 2.0 and in the code, 2026-11-08.
 ## Decision
 
 - **Remix Icons** (`@remixicon/react`, the line style, `Ri…Line`) is the icon set of the library, its stories and the apps that use it.
-- **lucide** only for an icon Remix does not have (the ten in the table below). `lucide-react` is not a dependency yet; add it when the first of them is needed, with the 1.25 px stroke (`absoluteStrokeWidth`) at 16 px so it sits with the Remix icons.
+- **lucide** only for an icon Remix does not have (the ten in the table below). `lucide-react` is not a dependency of `@helloantek/ds-react`: a product that needs a lucide icon installs it. ds-css (`icon.css`) draws every lucide icon (the `lucide` class) with a 1.25 px line at any size, as Sort UI 2.0 does, so it sits with the Remix icons and the components' own glyphs; `--icon-stroke-width` changes it. Storybook uses `lucide-react` for the Playground story "Remix and lucide", which shows both sets in Button, Input, Tabs, Dropdown Menu and AI Trace.
 - **Brand logos** (131 on the Icons page: GitHub, Google, Apple Pay, Visa…) come later, from their owners' official sources (e.g. simple-icons), when a section needs them.
 
 Sort UI 2.0's Icons page (`1:2`) holds 1,668 lucide icons (stroked, 1.25 px, drawn at 17.3 px: a 16 px icon scaled by 1.08) and the 131 logos. The components and demos use 135 of the icons.
