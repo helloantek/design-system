@@ -510,7 +510,7 @@ A field that opens a list of options: the WAI-ARIA select-only combobox (arrows,
 | Select Label | `{ label, caption?, options }` (a group) | `ds-select__group-label` |
 | Select Separator | `{ type: 'separator' }` | `ds-select__separator` |
 | Select Content | the menu (popover, 8 px radius, Surface/Popover shadow) | `ds-select__menu` |
-| Checkbox · Radio | `indicator`: `check` (default) · `checkbox` · `radio` | `ds-select__check` · `ds-select__box--checkbox` · `ds-select__box--radio` |
+| Checkbox · Radio | `indicator`: `check` (default) · `checkbox` · `radio` (the Checkbox and Radio components, drawn inert: the option takes focus and clicks) | `ds-select__check` · `ds-checkbox` · `ds-radio` |
 | — | `multiple` (`value`/`defaultValue` are arrays; options toggle and the menu stays open; the trigger lists the labels) | `[aria-multiselectable]` on the menu |
 | — | `multiple tags`: each value is a `Badge` (sm, Neutral, Soft, Border, Close Icon). × removes it with the mouse, Backspace/Delete removes the last one, the menu toggles any; removals are announced. Tags that do not fit wrap onto more rows (default), or with `tagsOverflow="count"` stay on one row with a "+N" badge (its tooltip and screen-reader text name the hidden values). No buttons inside the combobox: the × is a pointer target only. | `ds-select__tags` · `--count` · `ds-select__more` · `ds-select__status` |
 | — | option `media` (20 px picture: `<Avatar size="xs" shape="square" …/>`, a flag `<svg>`); a single select shows the selected option's `media` in place of the lead icon | `ds-select__media` in the option and the trigger |
