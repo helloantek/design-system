@@ -2216,6 +2216,38 @@ Object.assign(tests, {
     await page.mouse.click(700, 380);
     assert.equal(await bar.getByRole('menuitem', { name: 'Profiles', exact: true }).getAttribute('aria-expanded'), 'false', 'a click outside closes the menu');
   },
+  'command, select, combobox: moving through a list scrolls the list, never the page': async () => {
+    // A Command far down a page: changing the selection must not scroll the window to it.
+    await page.goto('http://localhost:6008/iframe.html?id=components-command--default&viewMode=story');
+    const input = page.getByRole('combobox', { name: 'Commands' });
+    await input.waitFor();
+    await page.evaluate(() => {
+      document.body.style.paddingTop = '3000px';
+      window.scrollTo(0, 0);
+    });
+    await input.focus({ preventScroll: true });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('End');
+    await page.waitForTimeout(100);
+    assert.equal(await page.evaluate(() => window.scrollY), 0, 'the page stays where it is');
+    // In a list taller than its box, the last item is brought into view inside the list.
+    await page.setViewportSize({ width: 900, height: 600 });
+    await page.goto('http://localhost:6008/iframe.html?id=components-select--playground');
+    await page.locator('[role="combobox"]').first().focus();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('End');
+    const menu = page.getByRole('listbox').first();
+    await page.waitForTimeout(100);
+    const [top, bottom, listTop, listBottom, scrolled] = await menu.evaluate((el) => {
+      const item = el.querySelector('[data-highlighted]').getBoundingClientRect();
+      const box = el.getBoundingClientRect();
+      return [item.top, item.bottom, box.top, box.bottom, el.scrollTop];
+    });
+    assert.ok(scrolled > 0, 'the list scrolled');
+    assert.ok(top >= listTop - 1 && bottom <= listBottom + 1, 'the last option is inside the list box');
+    await page.setViewportSize({ width: 1280, height: 720 });
+  },
   'command: the search field is a combobox over a listbox; arrows move the selection (skipping disabled items, wrapping); typing filters by text and keywords, hiding empty groups and separators; Enter and clicks run items; the dialog opens on a key and closes on Escape': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-command--default&viewMode=story');
     const input = page.getByRole('combobox', { name: 'Commands' });
