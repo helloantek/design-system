@@ -13,6 +13,7 @@ import {
   type ReactNode,
   type Ref,
 } from 'react';
+import { usePlacement } from '../internal/usePlacement';
 import { Avatar } from '../Avatar';
 
 // Styles live in @helloantek/ds-css (classes ds-dropdown*); these components render the markup and the WAI-ARIA
@@ -135,6 +136,7 @@ export function DropdownMenu({ trigger, children, open: openProp, defaultOpen = 
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const placed = usePlacement(menuRef, open, 'bottom');
   // Where focus goes once the menu has opened: the first or last item (keyboard) or the menu itself (pointer).
   const pending = useRef<'first' | 'last' | 'menu' | null>(null);
   const onKeys = useMenuKeys();
@@ -212,7 +214,7 @@ export function DropdownMenu({ trigger, children, open: openProp, defaultOpen = 
           id={menuId}
           role="menu"
           tabIndex={-1}
-          className={cx('ds-dropdown__content', align === 'end' && 'ds-dropdown__content--end', className)}
+          className={cx('ds-dropdown__content', align === 'end' && 'ds-dropdown__content--end', placed === 'top' && 'ds-dropdown__content--top', className)}
           aria-labelledby={ariaLabel === undefined ? triggerId : undefined}
           aria-label={ariaLabel}
           hidden={!open}
@@ -448,6 +450,7 @@ export function DropdownMenuSub({ label, icon, inset = false, disabled = false, 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const placed = usePlacement(menuRef, open, 'right');
   const focusFirst = useRef(false);
   const onKeys = useMenuKeys();
 
@@ -516,7 +519,7 @@ export function DropdownMenuSub({ label, icon, inset = false, disabled = false, 
         id={`${id}-menu`}
         role="menu"
         tabIndex={-1}
-        className={cx('ds-dropdown__content', contentClassName)}
+        className={cx('ds-dropdown__content', placed === 'left' && 'ds-dropdown__content--left', contentClassName)}
         aria-labelledby={rest.id ?? `${id}-trigger`}
         hidden={!open}
         // Tab reaches the parent menus, which close.

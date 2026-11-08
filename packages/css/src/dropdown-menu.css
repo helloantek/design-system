@@ -68,11 +68,19 @@
     z-index: 10;
     top: calc(100% + var(--ds-spacing-1));
     left: 0;
+    /* usePlacement (React) shifts it back inside the viewport near an edge. */
+    transform: translate(var(--popup-shift-x, 0px), var(--popup-shift-y, 0px));
   }
 
   .ds-dropdown > .ds-dropdown__content--end {
     right: 0;
     left: auto;
+  }
+
+  /* Opened above the trigger when there is no room below (usePlacement). */
+  .ds-dropdown > .ds-dropdown__content--top {
+    top: auto;
+    bottom: calc(100% + var(--ds-spacing-1));
   }
 
   .ds-dropdown__content[hidden] {
@@ -92,6 +100,14 @@
     top: calc(-1 * var(--ds-spacing-1));
     /* The trigger ends 4 px inside the menu; Figma leaves 4 px between the two menus' boxes. */
     left: calc(100% + var(--ds-spacing-2));
+    /* usePlacement (React) shifts it back inside the viewport near an edge. */
+    transform: translate(var(--popup-shift-x, 0px), var(--popup-shift-y, 0px));
+  }
+
+  /* Opened on the left of its menu when there is no room on the right (usePlacement). */
+  .ds-dropdown__sub > .ds-dropdown__content--left {
+    right: calc(100% + var(--ds-spacing-2));
+    left: auto;
   }
 
   /* ── Item (Figma "Dropdown Menu Item") ───────────────────────────────── */

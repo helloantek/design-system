@@ -1,4 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode, type Ref } from 'react';
+import { usePlacement } from '../internal/usePlacement';
 import { useField } from '../Field/FieldContext';
 import { Badge } from '../Badge';
 
@@ -198,6 +199,8 @@ export function Select(props: SelectProps) {
   // so the selected option is not drawn as highlighted.
   const [highlighted, setHighlighted] = useState(-1);
   const triggerRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const placed = usePlacement(menuRef, open, 'bottom', { constrain: true });
   const hiddenRef = useRef<HTMLInputElement | null>(null);
   const typeahead = useRef({ text: '', at: 0 });
   // Tags: what was removed, announced through a live region (the combobox's own text changes silently).
@@ -518,9 +521,10 @@ export function Select(props: SelectProps) {
           </span>
         </div>
         <div
+          ref={menuRef}
           id={menuId}
           role="listbox"
-          className="ds-select__menu"
+          className={placed === 'top' ? 'ds-select__menu ds-select__menu--top' : 'ds-select__menu'}
           aria-labelledby={label !== undefined ? labelId : undefined}
           aria-label={label === undefined ? ariaLabel : undefined}
           aria-multiselectable={multiple || undefined}

@@ -127,6 +127,8 @@
     line-height: var(--ds-text-sm--line-height);
     letter-spacing: -0.005em;
     animation: ds-navigation-menu-in var(--ds-duration-150) var(--ds-ease-out);
+    /* usePlacement (React) shifts it back inside the viewport near an edge. */
+    transform: translate(var(--popup-shift-x, 0px), var(--popup-shift-y, 0px));
   }
 
   .ds-navigation-menu__content[hidden] {

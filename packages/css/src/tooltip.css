@@ -88,6 +88,17 @@
   /* In the anchor the tooltip floats 8 px from the trigger (Figma's demos), centred on it. */
   .ds-tooltip-anchor > .ds-tooltip {
     position: absolute;
+    /* usePlacement (React) shifts it back inside the viewport near an edge. */
+    transform: translate(var(--popup-shift-x, 0px), var(--popup-shift-y, 0px));
+  }
+
+  /* Shifted inside the viewport, the triangle still points at the trigger. */
+  .ds-tooltip-anchor > :is(.ds-tooltip--top, .ds-tooltip--bottom)::after {
+    left: calc(50% - var(--popup-shift-x, 0px));
+  }
+
+  .ds-tooltip-anchor > :is(.ds-tooltip--left, .ds-tooltip--right)::after {
+    top: calc(50% - var(--popup-shift-y, 0px));
   }
 
   .ds-tooltip-anchor > .ds-tooltip--top {
