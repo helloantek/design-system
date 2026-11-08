@@ -2885,6 +2885,10 @@ Object.assign(tests, {
     const post = page.getByRole('textbox', { name: 'Post' });
     const count = page.locator('.ds-textarea__count').first();
     assert.equal(await count.locator('[aria-hidden]').first().textContent(), '195', '280 − 85 characters left');
+    const ring = count.locator('.ds-progress-circle');
+    assert.equal(await ring.getAttribute('aria-hidden'), 'true', 'the ring is the Progress circle, hidden: the count is read out');
+    assert.equal(await ring.getAttribute('aria-valuenow'), '85');
+    assert.deepEqual(await ring.evaluate((el) => [el.getBoundingClientRect().width, getComputedStyle(el).getPropertyValue('--progress-circle-thickness').trim()]), [16, '15']);
     assert.match(await page.locator(`#${(await post.getAttribute('aria-describedby')).split(' ').pop()}`).textContent(), /195 of 280 characters left/, 'the count describes the textarea');
     await post.focus();
     await page.keyboard.press('End');
@@ -2892,6 +2896,7 @@ Object.assign(tests, {
     assert.equal(await count.locator('[aria-hidden]').first().textContent(), '193');
     await post.fill('x'.repeat(300));
     assert.equal((await post.inputValue()).length, 280, 'maxLength stops at the limit');
+    assert.equal(await ring.getAttribute('aria-valuenow'), '280', 'full at the limit');
     assert.equal(await count.locator('[aria-hidden]').first().textContent(), '0');
   },
   'textarea: a soft limit goes negative and marks it invalid; focus draws the ring; it grows with its text': async () => {
@@ -2899,6 +2904,8 @@ Object.assign(tests, {
     const tagline = page.getByRole('textbox', { name: 'Tagline' });
     assert.equal(await tagline.getAttribute('aria-invalid'), 'true', 'over the soft limit');
     assert.equal(await page.locator('.ds-textarea__count--over [aria-hidden]').first().textContent(), '-6');
+    const over = page.locator('.ds-textarea__count--over .ds-progress-circle__indicator').first();
+    assert.equal(await over.evaluate((el) => getComputedStyle(el).stroke), await page.evaluate(() => { const p = document.createElement('p'); p.style.color = 'var(--ds-destructive-foreground)'; document.body.append(p); const c = getComputedStyle(p).color; p.remove(); return c; }), 'over the limit the ring is red');
     await tagline.fill('Ship small.');
     assert.equal(await tagline.getAttribute('aria-invalid'), null, 'back under the limit');
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--field&viewMode=story');

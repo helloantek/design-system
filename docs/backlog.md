@@ -13,9 +13,7 @@ What is left after the Sort UI 2.0 component pages (all implemented, see [migrat
 
 Found in the code, not missing from Figma.
 
-| Item | What | Notes |
-|---|---|---|
-| Textarea character-count ring | Use `ProgressCircle` | Textarea draws its own 16 px ring (`ds-textarea__progress`) although `ProgressCircle` exists. |
+None right now.
 
 ## Not in Sort UI 2.0
 
@@ -39,3 +37,4 @@ Items from the previous backlog that Sort UI 2.0 components now cover.
 | Input · Tags, Inline tags | Combobox with `multiple` (removable chips) |
 | Popup positioning (code debt) | Popups flip and shift inside the window (README, "Popups near the window's edge") |
 | Select indicators (code debt) | `indicator="checkbox"` / `"radio"` draw the Checkbox and Radio components, inert inside the option |
+| Textarea character-count ring (code debt) | `ProgressCircle` (16 px, thickness 15), red over a soft limit |
