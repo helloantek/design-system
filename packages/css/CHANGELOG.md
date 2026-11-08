@@ -1,5 +1,12 @@
 # @helloantek/ds-css
 
+## 2.54.0
+
+### Minor Changes
+
+- 50eda0e: lucide icons sit with the Remix ones: every lucide icon (the `lucide` class) is drawn with Sort UI 2.0's 1.25 px line at any size, instead of lucide's 2 units on a 24 grid (1.33 px at 16 px). `--icon-stroke-width` on the icon or a parent changes it. Storybook: Playground → Remix and lucide.
+- c84bc8e: Keep popups inside the window. Select, Combobox, Dropdown Menu and its submenus, Menubar, Date Picker, Popover, Hover Card and Tooltip flip to the opposite side when theirs has no room (a menu at the bottom opens upwards, a submenu at the right edge opens on the left), and these and Navigation Menu shift along their side to stay 8 px from the window's edges; Select and Combobox lists get shorter and scroll when neither side has room. They measure again on scroll and resize. New CSS modifiers for the flipped sides: `ds-select__menu--top`, `ds-dropdown__content--top`, `ds-dropdown__content--left`, `ds-date-picker__panel--top`, and the `--popup-shift-x`, `--popup-shift-y` and `--popup-max-block-size` properties.
+
 ## 2.53.0
 
 ### Minor Changes
