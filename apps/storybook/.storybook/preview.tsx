@@ -5,8 +5,11 @@ import '@fontsource/geist-mono/400.css';
 import '@helloantek/ds-tokens/css/scoped/theme-1.css';
 import '@helloantek/ds-css';
 import brands from '@helloantek/ds-tokens/brands.json';
+import { withHtmlSource } from './html-source/preview';
 
 const preview: Preview = {
+  // Every component gets a Docs page: its description, props and each story with "Show code". Playground/* opts out.
+  tags: ['autodocs'],
   globalTypes: {
     brand: {
       description: 'Brand (token set from brands.json)',
@@ -19,6 +22,7 @@ const preview: Preview = {
   },
   initialGlobals: { brand: 'theme-1', scheme: 'light' },
   decorators: [
+    withHtmlSource,
     (Story, { globals }) => {
       const html = document.documentElement;
       html.setAttribute('data-ds-brand', globals.brand ?? 'theme-1');

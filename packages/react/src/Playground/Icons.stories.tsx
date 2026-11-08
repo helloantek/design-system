@@ -10,6 +10,7 @@ import { Tabs, TabsList, TabsTrigger } from '../Tabs';
 
 const meta = {
   title: 'Playground/Remix and lucide',
+  tags: ['!autodocs'],
   parameters: {
     docs: {
       description: {

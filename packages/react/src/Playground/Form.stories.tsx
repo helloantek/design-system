@@ -56,6 +56,7 @@ const timezones: SelectItem[] = [
 
 const meta = {
   title: 'Playground/Form',
+  tags: ['!autodocs'],
   parameters: {
     layout: 'padded',
     docs: {
