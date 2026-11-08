@@ -41,9 +41,10 @@
  *     [<span class="ds-select__status" aria-live="polite">Simon Alt removed</span>]   (Variant=Tags)
  *     <p class="ds-field__caption">Caption text</p>
  *   </div>
- * Select type=Checkbox / Radio Button: the check slot holds
- *     <span class="ds-select__box ds-select__box--checkbox"><svg…check…/></span> or
- *     <span class="ds-select__box ds-select__box--radio"><span class="ds-select__dot"></span></span>
+ * Select type=Checkbox / Radio Button: the check slot holds a Checkbox or a Radio (checkbox.css, radio.css) whose input
+ *     shows the option's state and is inert, out of the tab order and unnamed (the option takes focus and clicks):
+ *     <span class="ds-checkbox" aria-hidden="true"><input class="ds-checkbox__input" type="checkbox" [checked] tabindex="-1" inert><svg class="ds-checkbox__check">…</svg></span> or
+ *     <span class="ds-radio" aria-hidden="true"><input class="ds-radio__input" type="radio" [checked] tabindex="-1" inert><span class="ds-radio__dot"></span></span>
  * Type=Country Flag / Avatar: <span class="ds-select__media"><svg…flag…/> | <span class="ds-avatar …">…</span></span> before the
  *     label; a single select repeats the selected option's media in the trigger, in place of the lead icon.
  * Type=Default Large: .ds-select__option--large, no check slot; the content holds the icon, then
@@ -310,7 +311,7 @@
     color: currentColor;
   }
 
-  .ds-select__option > .ds-select__check:not(:has(.ds-select__box)) {
+  .ds-select__option > .ds-select__check:not(:has(.ds-checkbox, .ds-radio)) {
     order: 1;
   }
 
@@ -387,40 +388,9 @@
     height: 100%;
   }
 
-  /* indicator="checkbox" / "radio": Sort UI 2.0 Checkbox and Radio, 16 px. */
-  .ds-select__box {
-    box-sizing: border-box;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--ds-spacing-4);
-    height: var(--ds-spacing-4);
-    /* Figma's Checkbox radius is 5 px, between the xs (4) and sm (6) tokens. */
-    border-radius: calc(var(--ds-radius-xs) + 1px);
-    background-color: var(--ds-fill-3);
-    color: transparent;
-  }
-
-  .ds-select__box--radio {
-    border-radius: var(--ds-radius-full);
-  }
-
-  .ds-select__box > svg {
-    display: block;
-    width: 14px;
-    height: 14px;
-  }
-
-  .ds-select__dot {
-    width: var(--ds-spacing-2);
-    height: var(--ds-spacing-2);
-    border-radius: var(--ds-radius-full);
-    background-color: currentColor;
-  }
-
-  .ds-select__option[aria-selected='true'] .ds-select__box {
-    background-color: var(--ds-primary);
-    color: var(--ds-primary-foreground);
+  /* indicator="checkbox" / "radio": Sort UI 2.0 Checkbox and Radio (checkbox.css, radio.css); the option takes the clicks. */
+  .ds-select__check > :is(.ds-checkbox, .ds-radio) {
+    pointer-events: none;
   }
 
   /* An item with a description (Figma Select Item "Description"): label and description on two lines, the icon

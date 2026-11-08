@@ -105,7 +105,25 @@ const tests = {
     assert.equal(await item.getAttribute('aria-selected'), 'true');
     assert.equal(await item.getAttribute('aria-disabled'), 'true');
     assert.equal(await item.locator('.ds-select__description').textContent(), 'The quick brown fox jumps over a lazy dog.');
-    assert.equal(await item.locator('.ds-select__box--checkbox').count(), 1);
+    assert.equal(await item.locator('.ds-checkbox .ds-checkbox__input:checked').count(), 1, 'the selected option draws a checked Checkbox');
+  },
+  'select indicators: a click on the Checkbox or the Radio picks the option, and focus stays on the select': async () => {
+    await open('components-select--playground', 'multiple:!true;indicator:checkbox');
+    await combobox.click();
+    const simon = page.getByRole('option', { name: 'Simon Alt' });
+    await simon.locator('.ds-checkbox').click({ force: true }); // at the box's place; the box lets the click through to the option
+    assert.equal(await simon.getAttribute('aria-selected'), 'true');
+    assert.equal(await simon.locator('.ds-checkbox__input').isChecked(), true);
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('role')), 'combobox', 'the box never takes focus');
+    await simon.locator('.ds-checkbox').click({ force: true });
+    assert.equal(await simon.getAttribute('aria-selected'), 'false');
+    assert.equal(await simon.locator('.ds-checkbox__input').isChecked(), false);
+    await open('components-select--playground', 'indicator:radio');
+    await combobox.click();
+    await page.getByRole('option', { name: 'Emma Thompson' }).locator('.ds-radio').click({ force: true });
+    assert.equal((await state()).value, 'Emma Thompson');
+    await combobox.click();
+    assert.equal(await page.getByRole('option', { name: 'Emma Thompson' }).locator('.ds-radio__input').isChecked(), true);
   },
   'select: disabled select is not focusable and does not open': async () => {
     await open('components-select--playground', 'disabled:!true');
@@ -140,9 +158,15 @@ const tests = {
     const menus = page.getByRole('listbox');
     assert.equal(await menus.count(), 4);
     const [checkbox, radio, country, large] = [0, 1, 2, 3].map((i) => menus.nth(i));
-    assert.equal(await checkbox.locator('.ds-select__box--checkbox').count(), 7, 'every option shows a checkbox');
+    assert.equal(await checkbox.locator('.ds-checkbox').count(), 7, 'every option shows a Checkbox');
     assert.deepEqual(await checkbox.locator('[aria-selected="true"]').allTextContents(), ['Simon Alt', 'Emma Thompson']);
-    assert.equal(await radio.locator('.ds-select__box--radio').count(), 7);
+    assert.equal(await checkbox.locator('.ds-checkbox__input:checked').count(), 2, 'the Checkbox follows the selection');
+    assert.equal(await radio.locator('.ds-radio').count(), 7);
+    assert.equal(await radio.locator('.ds-radio__input:checked').count(), await radio.locator('[aria-selected="true"]').count(), 'the Radio follows the selection');
+    // The boxes are pictures: inert, out of the tab order, unnamed, inside an aria-hidden slot.
+    for (const input of await page.locator('[role="listbox"] :is(.ds-checkbox__input, .ds-radio__input)').all()) {
+      assert.deepEqual(await input.evaluate((el) => [el.inert, el.tabIndex, el.name, !!el.closest('[aria-hidden="true"]')]), [true, -1, '', true]);
+    }
     assert.equal(await country.locator('.ds-select__media svg').count(), 3);
     // Large options read as label + description; the caption is the listbox description, not an option.
     assert.equal(await large.getByRole('option').count(), 3);

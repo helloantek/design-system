@@ -49,6 +49,20 @@ interface RadioOnlyProps extends RadioBaseProps {
 
 export type RadioProps = RadioFieldProps | (RadioOnlyProps & ({ 'aria-label': string } | { 'aria-labelledby': string }));
 
+/**
+ * The radio as a picture of a state, for a control that owns the state itself (a Select option with
+ * `indicator="radio"`): the same markup and look, but the input is inert, out of the tab order and hidden from
+ * assistive technology, so it never takes focus or clicks and is not submitted.
+ */
+export function RadioMark({ checked }: { checked: boolean }) {
+  return (
+    <span className="ds-radio" aria-hidden>
+      <input className="ds-radio__input" type="radio" checked={checked} readOnly tabIndex={-1} inert />
+      <span className="ds-radio__dot" aria-hidden />
+    </span>
+  );
+}
+
 /** Figma "Radio". Inside a RadioGroup, `checked` and `name` come from the group. */
 export function Radio(props: RadioProps) {
   const { label, caption, control = 'start', card = false, className, invalid = false, value, id: idProp, onChange, 'aria-describedby': describedBy, ...rest } = props;
