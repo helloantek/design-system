@@ -14,6 +14,7 @@ import {
   type ReactNode,
 } from 'react';
 import { Input, type InputProps } from '../Input';
+import { revealInList } from '../internal/revealInList';
 
 // Styles live in @helloantek/ds-css (classes ds-command*, the search field ds-input*). A command palette: the search
 // field is a combobox that keeps focus while Arrow Up / Down (Home / End) move the selected option of the listbox
@@ -115,7 +116,7 @@ export function Command({
     if (active !== null && !optionsOf(ref.current).some((o) => o.id === active)) setActive(optionsOf(ref.current)[0]?.id ?? null);
   });
   useEffect(() => {
-    if (active) document.getElementById(active)?.scrollIntoView?.({ block: 'nearest' });
+    if (active) revealInList(document.getElementById(active));
   }, [active]);
 
   const move = (by: 'next' | 'previous' | 'first' | 'last') => {

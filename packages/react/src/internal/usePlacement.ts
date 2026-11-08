@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, type RefObject } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from 'react';
 
 // Keeps an open popup (a menu, a panel, a card, a tooltip) inside the viewport. The popup hangs from its positioned
 // wrapper with CSS (`top: calc(100% + gap)` and so on); this measures it once it is laid out, before it is painted:
@@ -25,16 +25,25 @@ export interface PlacementOptions {
 export function usePlacement(popup: RefObject<HTMLElement | null>, open: boolean, preferred: PopupSide, { flip = true, constrain = false }: PlacementOptions = {}): PopupSide {
   const [side, setSide] = useState(preferred);
   const [pass, setPass] = useState(0);
+  // The list's scroll when a measurement started; a flip re-renders mid-measurement, so it outlives one effect run.
+  const scroll = useRef<number | null>(null);
 
   // Back to the preferred side whenever the popup opens or the preference changes.
   useLayoutEffect(() => {
     if (open) setSide(preferred);
+    else scroll.current = null;
   }, [open, preferred]);
 
   useLayoutEffect(() => {
     const el = popup.current;
     const anchor = el?.offsetParent;
     if (!open || !el || !anchor) return;
+    // Measuring uncaps a list for a moment, which resets its scroll; put it back once placed (before paint).
+    scroll.current ??= el.scrollTop;
+    const restore = () => {
+      if (scroll.current !== null && el.scrollTop !== scroll.current) el.scrollTop = scroll.current;
+      scroll.current = null;
+    };
     el.style.removeProperty('--popup-shift-x');
     el.style.removeProperty('--popup-shift-y');
     el.style.removeProperty('--popup-max-block-size');
@@ -64,6 +73,7 @@ export function usePlacement(popup: RefObject<HTMLElement | null>, open: boolean
       const dy = r.bottom > vh - MARGIN ? Math.max(MARGIN - r.top, vh - MARGIN - r.bottom) : r.top < MARGIN ? MARGIN - r.top : 0;
       if (dy) el.style.setProperty('--popup-shift-y', `${Math.round(dy)}px`);
     }
+    restore();
   }, [open, side, preferred, flip, constrain, pass, popup]);
 
   // Again when the page scrolls (not the popup itself) or the window resizes while it is open.

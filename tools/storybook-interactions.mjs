@@ -2216,6 +2216,43 @@ Object.assign(tests, {
     await page.mouse.click(700, 380);
     assert.equal(await bar.getByRole('menuitem', { name: 'Profiles', exact: true }).getAttribute('aria-expanded'), 'false', 'a click outside closes the menu');
   },
+  'command, select, combobox: moving through a list scrolls the list, never the page': async () => {
+    // A Command far down a page: changing the selection must not scroll the window to it.
+    await page.goto('http://localhost:6008/iframe.html?id=components-command--default&viewMode=story');
+    const input = page.getByRole('combobox', { name: 'Commands' });
+    await input.waitFor();
+    await page.evaluate(() => {
+      document.body.style.paddingTop = '3000px';
+      window.scrollTo(0, 0);
+    });
+    await input.focus({ preventScroll: true });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('End');
+    await page.waitForTimeout(100);
+    assert.equal(await page.evaluate(() => window.scrollY), 0, 'the page stays where it is');
+    // In a list taller than its box (the capped Select near the bottom of a short window), End brings the last
+    // option into view inside the list, and the page does not move.
+    const viewport = page.viewportSize();
+    try {
+      await page.setViewportSize({ width: 900, height: 300 });
+      await page.goto('http://localhost:6008/iframe.html?id=playground-popups-near-the-edge--corners&viewMode=story');
+      await page.getByRole('combobox', { name: 'Fruit at the bottom left' }).click();
+      const before = await page.evaluate(() => window.scrollY);
+      await page.keyboard.press('End');
+      await page.waitForTimeout(100);
+      const [top, bottom, listTop, listBottom, scrolled] = await page.locator('.ds-select__menu').first().evaluate((el) => {
+        const item = el.querySelector('[data-highlighted]').getBoundingClientRect();
+        const box = el.getBoundingClientRect();
+        return [item.top, item.bottom, box.top, box.bottom, el.scrollTop];
+      });
+      assert.ok(scrolled > 0, 'the list scrolled');
+      assert.ok(top >= listTop - 1 && bottom <= listBottom + 1, `the last option is inside the list box (${top}–${bottom} in ${listTop}–${listBottom})`);
+      assert.equal(await page.evaluate(() => window.scrollY), before, 'the page stays where it is');
+    } finally {
+      await page.setViewportSize(viewport);
+    }
+  },
   'command: the search field is a combobox over a listbox; arrows move the selection (skipping disabled items, wrapping); typing filters by text and keywords, hiding empty groups and separators; Enter and clicks run items; the dialog opens on a key and closes on Escape': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-command--default&viewMode=story');
     const input = page.getByRole('combobox', { name: 'Commands' });
@@ -2965,7 +3002,10 @@ Object.assign(tests, {
   'storybook: every component has a Docs page whose stories show their code': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-button--docs&viewMode=docs');
     await page.locator('#storybook-docs button', { hasText: 'Show code' }).first().click();
-    const code = await page.locator('#storybook-docs pre').first().innerText();
+    // The highlighter fills the block after it opens; wait for the code rather than read an empty block.
+    const block = page.locator('#storybook-docs pre', { hasText: '<Button' }).first();
+    await block.waitFor();
+    const code = await block.innerText();
     assert.match(code, /<Button[\s\S]*leadingIcon=\{<Icon \/>\}/, 'the code names the components (names survive minification)');
   },
 });
