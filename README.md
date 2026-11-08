@@ -1064,7 +1064,7 @@ A native `<textarea>` drawn as the Sort UI 2.0 **Textarea**, in a **Field** for 
 | State = Disabled | `disabled` (the box at 50 %, and the label) | `:disabled` |
 | State = Invalid | `invalid`, or `error` (replaces the description) | `[aria-invalid="true"]` |
 | Field Label · Description | `label` · `caption` | `ds-field__label` · `ds-field__caption` |
-| Field Label trail add-on: count · Progress circle | `showCount` with `maxLength` (hard) or `limit` (soft; over it the count is negative and red, and the textarea is invalid). The count is announced as "195 of 280 characters left". | `ds-field__label-row` · `ds-field__addon` · `ds-textarea__count` · `ds-textarea__progress` |
+| Field Label trail add-on: count · Progress circle | `showCount` with `maxLength` (hard) or `limit` (soft; over it the count is negative and red, and the textarea is invalid). The count is announced as "195 of 280 characters left"; the ring beside it is a 16 px `ProgressCircle`, hidden from screen readers. | `ds-field__label-row` · `ds-field__addon` · `ds-textarea__count` · `ds-progress-circle ds-textarea__progress` |
 | — (ours) | `resizable`: a vertical drag handle | `ds-textarea--resize` |
 
 Hover draws the dark 1.5 px stroke of Input and Select. Other props (`rows`, `name`, `ref`…) go to the textarea.

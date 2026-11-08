@@ -1,5 +1,6 @@
-import { useId, useState, type ChangeEvent, type CSSProperties, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
+import { useId, useState, type ChangeEvent, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
 import { useField } from '../Field/FieldContext';
+import { ProgressCircle } from '../Progress';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-textarea*); this component only renders the markup.
 
@@ -73,17 +74,7 @@ export function Textarea(props: TextareaProps) {
     <span id={countId} className={['ds-field__addon', 'ds-textarea__count', over && 'ds-textarea__count--over'].filter(Boolean).join(' ')}>
       <span aria-hidden>{left}</span>
       <span className="ds-textarea__count-label">{over ? `${-left} characters over the limit of ${max}` : `${left} of ${max} characters left`}</span>
-      <svg className="ds-textarea__progress" viewBox="0 0 16 16" aria-hidden>
-        <circle className="ds-textarea__progress-track" cx="8" cy="8" r="6.8" />
-        <circle
-          className="ds-textarea__progress-indicator"
-          cx="8"
-          cy="8"
-          r="6.8"
-          pathLength={100}
-          style={{ '--textarea-progress': Math.min(100, (length / max) * 100) } as CSSProperties}
-        />
-      </svg>
+      <ProgressCircle className="ds-textarea__progress" value={Math.min(length, max)} max={max} size="var(--ds-spacing-4)" thickness={15} aria-hidden />
     </span>
   );
 
