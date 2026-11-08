@@ -4,6 +4,7 @@ import { useField } from '../Field/FieldContext';
 import { Badge } from '../Badge';
 import { CheckboxMark } from '../Checkbox/Checkbox';
 import { RadioMark } from '../Radio/Radio';
+import { revealInList } from '../internal/revealInList';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-select*); this component renders the markup and the
 // WAI-ARIA select-only combobox behaviour (https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/).
@@ -265,7 +266,7 @@ export function Select(props: SelectProps) {
 
   useEffect(() => {
     if (!open || highlighted < 0) return;
-    document.getElementById(`${id}-option-${highlighted}`)?.scrollIntoView({ block: 'nearest' });
+    revealInList(document.getElementById(`${id}-option-${highlighted}`));
   }, [open, highlighted, id]);
 
   const enabled = (i: number) => i >= 0 && i < flat.length && !flat[i].disabled;

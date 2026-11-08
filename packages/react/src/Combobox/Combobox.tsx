@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState, type InputHTMLAttributes, 
 import { usePlacement } from '../internal/usePlacement';
 import { useField } from '../Field/FieldContext';
 import type { SelectCaption, SelectGroup, SelectItem, SelectOption, SelectSeparator } from '../Select';
+import { revealInList } from '../internal/revealInList';
 
 // Styles live in @helloantek/ds-css (classes ds-field*, ds-combobox*, and ds-select* for the menu and its options);
 // this component renders the markup and the WAI-ARIA combobox with list autocomplete
@@ -177,7 +178,7 @@ export function Combobox(props: ComboboxProps) {
   const text = query ?? (!multiple ? (selected[0]?.label ?? '') : '');
 
   useEffect(() => {
-    if (open && highlighted) document.getElementById(optionId(highlighted))?.scrollIntoView({ block: 'nearest' });
+    if (open && highlighted) revealInList(document.getElementById(optionId(highlighted)));
   }, [open, highlighted]);
 
   // Results are read out after typing (the list itself changes silently).
