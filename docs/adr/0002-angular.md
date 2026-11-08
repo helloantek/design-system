@@ -1,6 +1,6 @@
 # ADR 0002: An Angular adapter on a shared behaviour core
 
-**Status:** proposed · 2026-11
+**Status:** accepted · 2026-11
 
 ## Context
 Projects in Angular need the design system. ADR 0001 planned for this: tokens (`ds-tokens`) and styles (`ds-css`) work with any markup, so Angular can load them as they are. What does not carry over is in `ds-react`: the markup with its ARIA, and the behaviour (popup placement, keyboard navigation in lists and menus, type-ahead, list scrolling, the diff, `fileIconFor`, chart scales, calendar maths).
