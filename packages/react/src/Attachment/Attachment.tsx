@@ -1,4 +1,5 @@
 import type { HTMLAttributes, HTMLAttributeAnchorTarget, ReactNode, Ref } from 'react';
+import { FileIcon, fileIconFor } from '../FileIcon';
 
 // Styles live in @helloantek/ds-css (classes ds-attachment*); these components only render the markup.
 
@@ -25,7 +26,7 @@ export interface AttachmentProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
   uploadingLabel?: ReactNode;
   /** Figma "Type label" (`card`), e.g. "PDF" or a link's host. */
   typeLabel?: ReactNode;
-  /** Figma "Icon" (`file`, `file-sm`): a file icon, 32 px (20 px in `file-sm`). */
+  /** Figma "Icon" (`file`, `file-sm`): a file icon, 32 px (20 px in `file-sm`); by default the File Icon for the title's extension. */
   icon?: ReactNode;
   /** The picture (`image`), shown once uploaded. It is decorative: the title names the file. */
   src?: string;
@@ -35,14 +36,6 @@ export interface AttachmentProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
   /** Figma "actions": ghost xs icon buttons (download, remove, retry), each with an `aria-label`. */
   actions?: ReactNode;
 }
-
-/** A plain document, used when no `icon` is given. */
-const FileIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden>
-    <path d="M6 1.5h8.3L19.5 6.6v14.4a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 21V3A1.5 1.5 0 0 1 6 1.5Z" fill="var(--ds-fill-3)" />
-    <path d="M14.3 1.5v5.1h5.2" fill="var(--ds-fill-2)" />
-  </svg>
-);
 
 /** Figma "Attachment": a file added to a message or a composer. */
 export function Attachment({ type = 'file', state = 'done', title, description, error, uploadingLabel = 'Uploading…', typeLabel, icon, src, href, target, actions, className, style, ...rest }: AttachmentProps) {
@@ -56,7 +49,7 @@ export function Attachment({ type = 'file', state = 'done', title, description, 
       style={picture ? { backgroundImage: `url("${src}")`, ...style } : style}
       aria-busy={state === 'uploading' || undefined}
     >
-      {row && <span className="ds-attachment__media">{icon ?? <FileIcon />}</span>}
+      {row && <span className="ds-attachment__media">{icon ?? <FileIcon variant={typeof title === 'string' ? fileIconFor(title) : 'file'} />}</span>}
       {type === 'card' && typeLabel !== undefined && <span className="ds-attachment__type">{typeLabel}</span>}
       <span className="ds-attachment__body">
         {href ? (

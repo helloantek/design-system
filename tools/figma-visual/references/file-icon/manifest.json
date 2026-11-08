@@ -1,0 +1,105 @@
+{
+ "$comment": "Sort UI 2.0 File Icons (1676:149282), all nine variants at 24 px (1x PNG, exportAsync with absolute bounds). renderers/file-icon.tsx renders them with FileIcon. The spec values are the icon's box and its outline (bound to control-border, 0.5 px inside), read with export-spec.js.",
+ "component": "file-icon",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "1676:149282",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "archive",
+   "nodeId": "1676:149307",
+   "props": {
+    "Variant": "Archive"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "file",
+   "nodeId": "1676:149283",
+   "props": {
+    "Variant": "File"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "document",
+   "nodeId": "1676:149425",
+   "props": {
+    "Variant": "Document"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "spreadsheet",
+   "nodeId": "1676:149287",
+   "props": {
+    "Variant": "Spreadsheet"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "presentation",
+   "nodeId": "1676:149463",
+   "props": {
+    "Variant": "Presentation"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "pdf",
+   "nodeId": "1676:149291",
+   "props": {
+    "Variant": "PDF"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "video",
+   "nodeId": "1676:149295",
+   "props": {
+    "Variant": "Video"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "music",
+   "nodeId": "1676:149299",
+   "props": {
+    "Variant": "Music"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  },
+  {
+   "slug": "image",
+   "nodeId": "1676:149702",
+   "props": {
+    "Variant": "Image"
+   },
+   "target": ".ds-file-icon",
+   "nodeW": 24,
+   "nodeH": 24
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+/*
+ * File Icon — Sort UI 2.0 component set "File Icons" (node 1676:149282) on page 1759:163672 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw: a file's type as a small illustration (Archive, File, Document, Spreadsheet, Presentation,
+ * PDF, Video, Music, Image), 24 px by default. The outline is the control-border token; the fills are Figma's
+ * illustration colours, drawn in the SVG. Framework-agnostic.
+ *
+ * Markup:
+ *   <svg class="ds-file-icon" viewBox="0 0 24 24" [style="--file-icon-size: 32px"]>
+ *     …<path class="ds-file-icon__outline" stroke-width="0.5" …/>…
+ *   </svg>
+ */
+
+@layer ds.components {
+  .ds-file-icon {
+    display: inline-block;
+    flex: none;
+    width: var(--file-icon-size, var(--ds-spacing-6));
+    height: var(--file-icon-size, var(--ds-spacing-6));
+    vertical-align: middle;
+  }
+
+  /* Figma: control-border, 0.5 px inside the page shape. */
+  .ds-file-icon__outline {
+    stroke: var(--ds-control-border);
+  }
+}

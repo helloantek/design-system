@@ -240,15 +240,33 @@ const rows = diffLines(before, after); // [{ type: 'removed', oldNumber: 3, text
 
 Long lines scroll sideways inside the card, the old and new sides each on their own.
 
+## File Icon
+
+A file's type as a small illustration: Sort UI 2.0 **File Icons** (Variant).
+
+```tsx
+<FileIcon variant="pdf" />
+<FileIcon variant={fileIconFor('pricing-model.xlsx')} size={32} title="Spreadsheet" />
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Variant = Archive · File · Document · Spreadsheet · Presentation · PDF · Video · Music · Image | `variant` (default `file`) | `ds-file-icon` |
+| — (the "Sizes" demo: 40, 32, 24, 20, 16) | `size` (default 24 px; a number is pixels) | `--file-icon-size` |
+| — | `title`: names the icon (`role="img"`); without it the icon is decorative | — |
+| — | `fileIconFor(name)`: the variant for a file name's extension, `file` when unknown | — |
+
+The outline is the control-border token (`ds-file-icon__outline`), so it follows the scheme; each icon's gradient and mask ids are unique, so the same icon can appear many times on a page. Attachment shows the File Icon for its title when it has no `icon`.
+
 ## Attachment
 
 A file added to a message or a composer: Sort UI 2.0 **Attachment** (Type, State, Title, Type label, Size, Error, Icon, actions).
 
 ```tsx
 <AttachmentGroup direction="column" aria-label="Attachments">
-  <Attachment title="acme-audit.zip" description="2.1 MB" icon={<ArchiveIcon />} actions={<Button variant="ghost" size="xs" icon={<RiDownloadLine />} aria-label="Download acme-audit.zip" />} />
-  <Attachment state="uploading" title="pricing-model.xlsx" icon={<SpreadsheetIcon />} actions={removeButton} />
-  <Attachment state="error" title="site-visit.mov" error="Over the 25 MB limit" icon={<VideoIcon />} actions={retryButton} />
+  <Attachment title="acme-audit.zip" description="2.1 MB" actions={<Button variant="ghost" size="xs" icon={<RiDownloadLine />} aria-label="Download acme-audit.zip" />} />
+  <Attachment state="uploading" title="pricing-model.xlsx" actions={removeButton} />
+  <Attachment state="error" title="site-visit.mov" error="Over the 25 MB limit" icon={<FileIcon variant="video" />} actions={retryButton} />
 </AttachmentGroup>
 <Attachment type="card" title="brand-assets.pdf" typeLabel="PDF" description="2.1 MB" />
 <Attachment type="image" title="red-forest-peak.webp" description="1.4 MB" src={picture} />
@@ -261,7 +279,7 @@ A file added to a message or a composer: Sort UI 2.0 **Attachment** (Type, State
 | State = Done · Uploading · Hover · Error | `state` `done` · `uploading` (`aria-busy`, `uploadingLabel`, default "Uploading…") · `error` (destructive border at 70 %, Figma 30 %, and message); Hover comes from the pointer: control-hover, or black at 20 % more over a picture | `--uploading` · `--error` |
 | Title · Size · Error | `title` (cut with an ellipsis) · `description` (the size, a link's address) · `error` | `ds-attachment__title` · `__description` |
 | Type label | `typeLabel` (Card), 12/16 Geist Mono | `ds-attachment__type` |
-| Icon | `icon` (File, File sm); a plain document when omitted | `ds-attachment__media` |
+| Icon | `icon` (File, File sm); by default the File Icon for the title's extension (`fileIconFor`) | `ds-attachment__media` |
 | — | `src` (Image): the picture, a background under the scrim | `style="background-image: …"` |
 | actions | `actions`: ghost xs icon buttons, each with an `aria-label`; on a card or a picture they show on hover or focus, and always when it failed | `ds-attachment__actions` |
 | Group (demo) | `<AttachmentGroup direction>`: a row that scrolls sideways (default) or a column, 8 px apart | `ds-attachment-group` · `--column` |
@@ -1692,7 +1710,8 @@ These come from the Figma files, not the code:
 - Bubble (2.0): the Destructive border is destructive at 70 % instead of Figma's 30 %, as on Attachment's Error state (design review). The component samples 13 px reactions, every demo uses 14 px; the code follows the demos. Figma counts the reactions pill's 0.5 px border in its layout (39 × 21 for two emoji); the code adds the half pixel to the padding. The demos place reactions on the bottom-end corner of start bubbles, the bottom-start corner of end bubbles and the top-start corner when a bubble's top is free; the code makes those the defaults and the `reactionsPlacement` options. Figma's "Long message" bubble draws its border outside; the code keeps it inside like the other bubbles. Figma's Default and Destructive bubbles carry Surface/Card's inset white top highlight; under the 1 px border it reads as a glow on dark cards, so the code keeps only the two soft drop shadows (black at 5 %).
 - Message (2.0): Figma's Time text in the footer is Regular while the component's text style is Medium; the code follows the demos (Regular, with the sender in Medium). The demos colour fallback avatars with palette solids; Avatar gained `--avatar-fill` and `--avatar-ink` for that instead of a new prop.
 - Message Scroller (2.0): the component is a single component with a slot, not a set; its booleans (Fade, Button end, Button start) are the props, and the eleven demos describe behaviour (anchoring, streaming, opening position, history, animation, commands, outline, scroll state) that the adapter implements. Figma shows the fade and the end button whatever the position; the code shows them only while there is more below. Figma draws no scrollbar; the code hides it too and keeps the transcript keyboard-scrollable. The sample's fallback avatars put white initials on `palette/orange-solid` (2.88:1, under the 4.5:1 AA minimum).
-- Attachment (2.0): the Error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark (design review); Bubble's Destructive border follows. Figma draws the text on a picture in `primary-foreground`, which turns dark in Dark; the code keeps it white in both schemes (the white of `alpha-white-90`, made opaque). The Card and Image squares pad two inner frames (12 12 0 12 and 12) in an unpadded square; the code pads the square by 12 px, which lands every part in the same place. A card's actions only appear in Figma's Hover and Error variants; the code also shows them on keyboard focus. The File Icons in the demos are illustrations with raw colours, not tokens, so they stay the same in Dark.
+- Attachment (2.0): the Error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark (design review); Bubble's Destructive border follows. Figma draws the text on a picture in `primary-foreground`, which turns dark in Dark; the code keeps it white in both schemes (the white of `alpha-white-90`, made opaque). The Card and Image squares pad two inner frames (12 12 0 12 and 12) in an unpadded square; the code pads the square by 12 px, which lands every part in the same place. A card's actions only appear in Figma's Hover and Error variants; the code also shows them on keyboard focus.
+- File Icons (2.0): the fills are illustration colours (radial gradients and tints with raw values), not variables, so they stay the same in Dark; only the outline is bound (control-border) and follows the scheme. The code draws Figma's SVG export unchanged apart from the outline colour.
 - Diff (2.0): an added line's bar is bound to the primitive green/600 (#00a63e), which the Sort UI 2.0 semantic variables (and so the tokens) do not include; the code uses palette green-solid (#00c950), and the removed bar's red/500 is palette red-solid. The header icon is a 16 px icon scaled to 17.3 px, drawn at 16 px as in AI Trace. In the Empty and Hunk variants the sign frame is hidden but its text layer is not; the code draws no sign. The "Folded context" demo numbers its removed line 31 after line 32; the stories keep Figma's numbers.
 - AI Trace (2.0): the line's icon and chevron are 16 px lucide icons scaled to 17.3 px (an instance scaled by 1.08, no token); the code draws them at 16 px, which puts the icon's centre on Trace Content's rule and the title on its 24 px indent, so a line is 1.3 px narrower per icon (design review; `sizeOverride` in the visual check). Figma's lines have a 10 px radius that only shows as the 4 px focus ring; the code keeps both. The code interpreter demo's lines are separate 16 px text layers 4 px apart; `TraceCode` is one block with 20 px lines, which lands the text in the same places. The Description (muted at 70 %, about 3.2:1 on white) and Pending steps (60 %, about 2.6:1) fall below 4.5:1 (axe reports them); the code follows Figma.
 - AI Chat Composer (2.0): Figma's box has an inset white top highlight; under the 1 px border it reads as a glow in Dark, so the code leaves it out, as on Bubble. Figma's trailing frame stretches over the bar's free middle (and, while dictating, wraps the waveform or status); the code's hugs its buttons, with every part in the same place. A /command in the prompt cannot take room (the textarea's text would no longer line up), so the token's 4 px sides are drawn with shadows there. The Effort slider of Figma's model menu is shown as a radio group in the stories.

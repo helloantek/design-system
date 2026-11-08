@@ -1,6 +1,6 @@
 import { RiCloseLine, RiDownloadLine, RiResetLeftLine } from '@remixicon/react';
-import { Attachment, Button, type AttachmentState, type AttachmentType } from '@helloantek/ds-react';
-import { archiveIcon as ArchiveIcon, attachmentImage } from '../../../packages/react/src/Attachment/Attachment.fixtures';
+import { Attachment, Button, FileIcon, type AttachmentState, type AttachmentType } from '@helloantek/ds-react';
+import { attachmentImage } from '../../../packages/react/src/Attachment/Attachment.fixtures';
 import type { Renderer } from './types';
 
 // Sort UI 2.0 Attachment (1683:628) with Figma's samples: 'acme-audit.pdf', '2.1 MB', 'Over the 5 MB limit', the
@@ -46,7 +46,7 @@ export const renderAttachment: Renderer = (p) => {
         error="Over the 5 MB limit"
         uploadingLabel="Uploading..."
         typeLabel="PDF"
-        icon={<ArchiveIcon />}
+        icon={<FileIcon variant="archive" />}
         src={attachmentImage}
         actions={actions}
       />

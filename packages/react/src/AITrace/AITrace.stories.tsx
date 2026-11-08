@@ -8,13 +8,10 @@ import {
   RiCheckboxCircleLine,
   RiErrorWarningLine,
   RiFileCodeLine,
-  RiFileExcel2Line,
   RiFileLine,
-  RiFilePdf2Line,
   RiFolderOpenLine,
   RiGitBranchLine,
   RiGlobalLine,
-  RiImageLine,
   RiListCheck2,
   RiPencilLine,
   RiQuillPenLine,
@@ -25,6 +22,7 @@ import {
   RiTerminalLine,
 } from '@remixicon/react';
 import { Button } from '../Button';
+import { FileIcon } from '../FileIcon';
 import { Trace, TraceCode, TraceCollapsible, TraceLine, type TraceStatus } from './AITrace';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=3030-2';
@@ -306,13 +304,13 @@ export const CodeInterpreter: StoryObj = {
 export const Files: StoryObj = {
   render: () => (
     <Trace style={width}>
-      <TraceLine icon={<RiFilePdf2Line />} description="18 pages">
+      <TraceLine icon={<FileIcon variant="pdf" />} description="18 pages">
         Read quarterly-report.pdf
       </TraceLine>
-      <TraceLine icon={<RiFileExcel2Line />} description="2,400 rows">
+      <TraceLine icon={<FileIcon variant="spreadsheet" />} description="2,400 rows">
         Read signups.csv
       </TraceLine>
-      <TraceLine status="error" icon={<RiImageLine />} description="no text found">
+      <TraceLine status="error" icon={<FileIcon variant="image" />} description="no text found">
         Couldn&apos;t read whiteboard.png
       </TraceLine>
     </Trace>

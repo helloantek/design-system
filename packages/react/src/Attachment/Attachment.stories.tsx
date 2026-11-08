@@ -5,7 +5,12 @@ import { AIChatComposer } from '../AIChatComposer';
 import { Button } from '../Button';
 import { Card, CardContent, CardHeader } from '../Card';
 import { Attachment, AttachmentGroup, type AttachmentState, type AttachmentType } from './Attachment';
-import { archiveIcon as ArchiveIcon, attachmentImage, spreadsheetIcon as SpreadsheetIcon, videoIcon as VideoIcon } from './Attachment.fixtures';
+import { FileIcon } from '../FileIcon';
+import { attachmentImage } from './Attachment.fixtures';
+
+const ArchiveIcon = () => <FileIcon variant="archive" />;
+const SpreadsheetIcon = () => <FileIcon variant="spreadsheet" />;
+const VideoIcon = () => <FileIcon variant="video" />;
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=351-2';
 
@@ -14,7 +19,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `Implements the Sort UI 2.0 **Attachment** ([open in Figma](${FIGMA_URL})): a file added to a message or a composer. \`type\` (\`file\` · \`file-sm\` · \`card\` · \`image\`) × \`state\` (\`done\` · \`uploading\` · \`error\`; Hover comes from the pointer), with a \`title\`, a \`description\` (the size, a link's address), an \`error\`, a \`typeLabel\` (Card), an \`icon\` (File) or a picture (\`src\`, Image) and \`actions\` (ghost xs icon buttons). \`href\` makes it a link; \`AttachmentGroup\` lines several up. The file icons here are Figma's File Icons samples, until that component ships.`,
+        component: `Implements the Sort UI 2.0 **Attachment** ([open in Figma](${FIGMA_URL})): a file added to a message or a composer. \`type\` (\`file\` · \`file-sm\` · \`card\` · \`image\`) × \`state\` (\`done\` · \`uploading\` · \`error\`; Hover comes from the pointer), with a \`title\`, a \`description\` (the size, a link's address), an \`error\`, a \`typeLabel\` (Card), an \`icon\` (File) or a picture (\`src\`, Image) and \`actions\` (ghost xs icon buttons). \`href\` makes it a link; \`AttachmentGroup\` lines several up. \`icon\` defaults to the File Icon for the title's extension.`,
       },
     },
   },
