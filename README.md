@@ -6,6 +6,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 |---|---|---|
 | [`@helloantek/ds-tokens`](packages/tokens) | Figma variables → CSS, JS, Swift, Kotlin for every brand | every project |
 | [`@helloantek/ds-css`](packages/css) | Component styles as plain CSS classes, built only on tokens | every web project |
+| [`@helloantek/ds-core`](packages/core) | Framework-free behaviour the adapters share: popup placement, list navigation, type-ahead ([ADR 0002](docs/adr/0002-angular.md)) | `ds-react` (and the coming `ds-angular`); installed with them |
 | [`@helloantek/ds-react`](packages/react) | React components (markup + classes) | React / Next.js |
 | [`apps/storybook`](apps/storybook) | Documentation with brand and colour-scheme switchers | design, development |
 

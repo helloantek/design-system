@@ -20,6 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@helloantek/ds-core": "^2.55.1",
     "@remixicon/react": "^4.9.0"
   },
   "peerDependencies": {

@@ -14,7 +14,7 @@ import {
   type ReactNode,
 } from 'react';
 import { Input, type InputProps } from '../Input';
-import { revealInList } from '../internal/revealInList';
+import { revealInList } from '@helloantek/ds-core';
 
 // Styles live in @helloantek/ds-css (classes ds-command*, the search field ds-input*). A command palette: the search
 // field is a combobox that keeps focus while Arrow Up / Down (Home / End) move the selected option of the listbox
