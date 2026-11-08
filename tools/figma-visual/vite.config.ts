@@ -8,6 +8,6 @@ export default defineConfig({
   root: resolve(dir, 'harness'),
   plugins: [react()],
   // Test the component sources, not a possibly stale package build.
-  resolve: { alias: { '@helloantek/ds-react': resolve(dir, '../../packages/react/src/index.ts') } },
+  resolve: { alias: { '@helloantek/ds-react': resolve(dir, '../../packages/react/src/index.ts'), '@helloantek/ds-core': resolve(dir, '../../packages/core/src/index.ts') } },
   build: { outDir: resolve(dir, 'harness-dist'), emptyOutDir: true },
 });

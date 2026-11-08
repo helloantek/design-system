@@ -6,6 +6,7 @@
     [
       "@helloantek/ds-tokens",
       "@helloantek/ds-css",
+      "@helloantek/ds-core",
       "@helloantek/ds-react"
     ]
   ],
