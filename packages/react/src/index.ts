@@ -1,4 +1,5 @@
 export * from './Accordion';
+export * from './AIChatComposer';
 export * from './Alert';
 export * from './AlertDialog';
 export * from './AspectRatio';

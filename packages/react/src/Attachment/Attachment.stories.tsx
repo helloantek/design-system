@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type CSSProperties, type ReactNode } from 'react';
-import { RiAddLine, RiArrowUpLine, RiCloseLine, RiDownloadLine, RiResetLeftLine } from '@remixicon/react';
+import { RiAddLine, RiCloseLine, RiDownloadLine, RiResetLeftLine } from '@remixicon/react';
+import { AIChatComposer } from '../AIChatComposer';
 import { Button } from '../Button';
 import { Card, CardContent, CardHeader } from '../Card';
 import { Attachment, AttachmentGroup, type AttachmentState, type AttachmentType } from './Attachment';
@@ -139,25 +140,26 @@ export const Link: StoryObj = {
   ),
 };
 
-/** Figma demo "In a composer": attachments above the prompt, removable before sending. The composer is a stand-in until AI Chat Composer ships. */
+/** Figma demo "In a composer": attachments in AI Chat Composer's header, removable before sending. */
 export const InAComposer: StoryObj = {
   render: function Render() {
     const [items, setItems] = useState(['picture', 'doc']);
     const drop = (id: string) => setItems((i) => i.filter((x) => x !== id));
+    const square = { '--attachment-width': '120px', '--attachment-height': '120px' } as CSSProperties;
     return (
-      <div style={{ display: 'grid', gap: 8, width: 'min(448px, calc(100vw - 32px))', padding: 8, boxSizing: 'border-box', borderRadius: 20, background: 'var(--ds-card)', boxShadow: '0 0 0 1px var(--ds-border), var(--ds-surface-card)', fontFamily: 'var(--ds-font-sans)' }}>
-        {items.length > 0 && (
-          <AttachmentGroup aria-label="Attachments">
-            {items.includes('picture') && <Attachment type="image" style={{ '--attachment-width': '120px', '--attachment-height': '120px' } as CSSProperties} title="red-forest-peak.webp" description="1.4 MB" src={attachmentImage} actions={remove('red-forest-peak.webp', () => drop('picture'))} />}
-            {items.includes('doc') && <Attachment type="card" style={{ '--attachment-width': '120px', '--attachment-height': '120px' } as CSSProperties} title="acme-audit.docx" typeLabel="DOCX" description="2.1 MB" actions={remove('acme-audit.docx', () => drop('doc'))} />}
-          </AttachmentGroup>
-        )}
-        <span style={{ padding: '4px 4px 0', color: 'var(--ds-muted-foreground)', fontSize: 13, lineHeight: '20px' }}>Ask about anything...</span>
-        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Button variant="ghost" size="sm" icon={<RiAddLine />} aria-label="Add an attachment" onClick={() => setItems(['picture', 'doc'])} />
-          <Button size="sm" icon={<RiArrowUpLine />} aria-label="Send" />
-        </span>
-      </div>
+      <AIChatComposer
+        style={{ width: 'min(448px, calc(100vw - 32px))' }}
+        layout="column"
+        leading={<Button variant="ghost" size="sm" icon={<RiAddLine />} aria-label="Add an attachment" onClick={() => setItems(['picture', 'doc'])} />}
+        header={
+          items.length > 0 ? (
+            <>
+              {items.includes('picture') && <Attachment type="image" style={square} title="red-forest-peak.webp" description="1.4 MB" src={attachmentImage} actions={remove('red-forest-peak.webp', () => drop('picture'))} />}
+              {items.includes('doc') && <Attachment type="card" style={square} title="acme-audit.docx" typeLabel="DOCX" description="2.1 MB" actions={remove('acme-audit.docx', () => drop('doc'))} />}
+            </>
+          ) : undefined
+        }
+      />
     );
   },
 };

@@ -1,0 +1,70 @@
+{
+ "$comment": "Sort UI 2.0 AI Chat Composer (1660:754), Layout=Column, State=Default/Recording/Transcribing: the prompt above the actions bar. Same samples as ai-chat-composer.",
+ "component": "ai-chat-composer-column",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "1660:754",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "column",
+   "nodeId": "1660:581",
+   "props": {
+    "Layout": "Column",
+    "State": "Default"
+   },
+   "target": ".ds-ai-composer",
+   "nodeW": 448,
+   "nodeH": 80
+  },
+  {
+   "slug": "column-recording",
+   "nodeId": "1660:619",
+   "props": {
+    "Layout": "Column",
+    "State": "Recording"
+   },
+   "target": ".ds-ai-composer",
+   "nodeW": 448,
+   "nodeH": 80,
+   "specOverride": {
+    "trailing": {
+     "p": [
+      6,
+      6,
+      6,
+      4
+     ]
+    }
+   },
+   "$why": "The trailing group holds only the stop (or busy) and send buttons; the waveform or status is its own grid area before it, 6 px in, so the group is 4 px in on the left instead of wrapping the waveform with 6 px (same positions as Figma)."
+  },
+  {
+   "slug": "column-transcribing",
+   "nodeId": "1660:718",
+   "props": {
+    "Layout": "Column",
+    "State": "Transcribing"
+   },
+   "target": ".ds-ai-composer",
+   "nodeW": 448,
+   "nodeH": 80,
+   "specOverride": {
+    "trailing": {
+     "p": [
+      6,
+      6,
+      6,
+      4
+     ]
+    }
+   },
+   "$why": "The trailing group holds only the stop (or busy) and send buttons; the waveform or status is its own grid area before it, 6 px in, so the group is 4 px in on the left instead of wrapping the waveform with 6 px (same positions as Figma)."
+  }
+ ]
+}

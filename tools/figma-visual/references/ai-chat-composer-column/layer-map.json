@@ -1,0 +1,39 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside .ds-ai-composer. Figma's trailing frame stretches to the leading button (and, while dictating, wraps the waveform or status); ours hugs its buttons, so its width is not compared (the body, waveform and status widths are). Column: Figma's body frame holds the text frame; both are the field (body without its padding).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "leading": {
+      "selector": ".ds-ai-composer__leading"
+    },
+    "Text": {
+      "selector": ".ds-ai-composer__input",
+      "text": "placeholder-if-empty"
+    },
+    "trailing": {
+      "selector": ".ds-ai-composer__trailing",
+      "skip": [
+        "w"
+      ]
+    },
+    "waveform": {
+      "selector": ".ds-ai-composer__waveform"
+    },
+    "status": {
+      "selector": ".ds-ai-composer__status"
+    },
+    "Text#1": {
+      "selector": ".ds-ai-composer__status"
+    },
+    "body": {
+      "selector": ".ds-ai-composer__field",
+      "skip": [
+        "p"
+      ]
+    },
+    "text": {
+      "selector": ".ds-ai-composer__field"
+    }
+  }
+}

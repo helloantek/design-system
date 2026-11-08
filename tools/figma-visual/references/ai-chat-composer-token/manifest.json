@@ -1,0 +1,23 @@
+{
+ "$comment": "Sort UI 2.0 AI Chat Composer Token (1659:433): '/Lorem-ipsum' in blue tint.",
+ "component": "ai-chat-composer-token",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "1659:433",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "token",
+   "nodeId": "1659:433",
+   "props": {},
+   "target": ".ds-ai-composer-token",
+   "nodeW": 94,
+   "nodeH": 20
+  }
+ ]
+}

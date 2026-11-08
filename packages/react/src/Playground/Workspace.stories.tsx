@@ -14,6 +14,7 @@ import {
   RiStackLine,
   RiTeamLine,
 } from '@remixicon/react';
+import { AIChatComposer } from '../AIChatComposer';
 import { Attachment } from '../Attachment';
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
@@ -40,7 +41,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message, Message Scroller and Attachment (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more, a shared file and a typing line, scrolling with a fade and a jump-to-latest button; Send a reply settles the new message near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
+          'A workspace app shell made of Sidebar (collapsible to the icon rail with the panel button, a projects group with sub pages, the workspace switcher in the footer), Breadcrumb, Command (a palette of pages, from the search item or ⌘K), Table (the members, in the card layout) and Pagination, Usage Bar (storage by project on Reports, with tooltips), Chart (Reports: weekly activity as stacked bars with a tooltip, members by role as a donut), Carousel (What’s new on Home, with indicators), Bubble, Message, Message Scroller and Attachment (a conversation on Inbox: avatars, the sender with a badge, grouped messages, reactions, a read receipt, Show more, a shared file and a typing line, scrolling with a fade and a jump-to-latest button; AI Chat Composer sends a reply, typed or dictated, which settles near the top), with Avatar, Badge, Button, Kbd and toasts, for trying the navigation components together before they are merged. Make the window narrow to see the sidebar start collapsed and open over the page. Use the toolbar to switch brand and colour scheme.',
       },
     },
   },
@@ -68,6 +69,7 @@ const replies = ['Perfect, see you Thursday.', 'Can you share the pricing number
 /** Inbox: a conversation in a Message Scroller; earlier messages sit above, and a reply settles near the top edge. */
 function InboxThread() {
   const [sent, setSent] = useState<string[]>([]);
+  const [draft, setDraft] = useState('');
   return (
     <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
       <MessageScroller aria-label="Conversation with Priya" defaultScrollPosition="end" animation="slide" anchorOffset={96} style={{ height: 380, '--message-scroller-surface': 'var(--ds-background)' } as CSSProperties}>
@@ -124,12 +126,19 @@ function InboxThread() {
           </MessageScrollerItem>
         ))}
       </MessageScroller>
-      <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <MessageTyping>Priya is typing…</MessageTyping>
-        <Button size="sm" onClick={() => setSent((l) => [...l, replies[l.length % replies.length]])}>
-          Send a reply
-        </Button>
-      </span>
+      <MessageTyping>Priya is typing…</MessageTyping>
+      <AIChatComposer
+        value={draft}
+        onValueChange={setDraft}
+        onSubmit={(text) => {
+          setSent((l) => [...l, text.trim()]);
+          setDraft('');
+        }}
+        placeholder="Reply to Priya…"
+        inputLabel="Reply to Priya"
+        leading={<Button variant="ghost" size="sm" icon={<RiAddLine />} aria-label="Attach a file" onClick={() => toast('Attachments are not part of this demo')} />}
+        onDictate={() => setDraft((d) => (d ? `${d} ` : '') + replies[sent.length % replies.length])}
+      />
     </div>
   );
 }

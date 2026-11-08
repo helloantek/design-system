@@ -2333,6 +2333,55 @@ Object.assign(tests, {
     assert.equal(await narrow.getAttribute('data-state'), 'collapsed', 'and so does Escape');
     await page.setViewportSize(viewport);
   },
+  'ai chat composer: Enter sends and clears, Shift+Enter adds a line; a wrapping prompt turns the row into a column without losing focus; /commands are tinted; the expand button grows a long prompt; dictation records, transcribes and fills the prompt': async () => {
+    const url = (id) => `http://localhost:6008/iframe.html?id=components-ai-chat-composer--${id}&viewMode=story`;
+    await page.goto(url('playground'));
+    const composer = page.locator('.ds-ai-composer');
+    const input = page.getByRole('textbox', { name: 'Message' });
+    await input.waitFor();
+    const send = page.getByRole('button', { name: 'Send' });
+    assert.ok(await send.isDisabled(), 'send is disabled while the prompt is empty');
+    await input.click();
+    await page.keyboard.type('Hello');
+    assert.ok(!(await send.isDisabled()));
+    await page.keyboard.press('Enter');
+    assert.equal(await input.inputValue(), '', 'Enter sends and the story clears the prompt');
+    await page.keyboard.type('One');
+    await page.keyboard.press('Shift+Enter');
+    await page.keyboard.type('Two');
+    assert.equal(await input.inputValue(), 'One\nTwo', 'Shift+Enter adds a line');
+    assert.ok(await composer.evaluate((el) => el.classList.contains('ds-ai-composer--column')), 'two lines make a column');
+    await page.keyboard.press('ControlOrMeta+a');
+    await page.keyboard.press('Backspace');
+    assert.ok(!(await composer.evaluate((el) => el.classList.contains('ds-ai-composer--column'))), 'an empty prompt is a row again');
+    const handle = await input.elementHandle();
+    await page.keyboard.type('Use /release-notes to draft the notes for version 4.2 of the mobile app, with the highlights first.');
+    assert.ok(await composer.evaluate((el) => el.classList.contains('ds-ai-composer--column')), 'wrapping text makes a column');
+    assert.ok(await handle.evaluate((el) => el.isConnected && document.activeElement === el), 'the same textarea keeps focus');
+    assert.equal(await composer.locator('.ds-ai-composer__backdrop mark.ds-ai-composer-token').textContent(), '/release-notes', 'the /command is tinted');
+    const [inputBox, markBox] = await Promise.all([input.boundingBox(), composer.locator('.ds-ai-composer-token').boundingBox()]);
+    assert.ok(markBox.x > inputBox.x && markBox.y >= inputBox.y - 1, 'the tint sits under the typed text');
+
+    await page.goto(url('long-text'));
+    const expand = page.getByRole('button', { name: 'Expand' });
+    await expand.waitFor();
+    const long = page.getByRole('textbox', { name: 'Message' });
+    const before = (await long.boundingBox()).height;
+    assert.ok(await long.evaluate((el) => el.scrollHeight > el.clientHeight), 'past 8 lines the prompt scrolls');
+    await expand.click();
+    await page.getByRole('button', { name: 'Collapse' }).waitFor();
+    assert.ok((await long.boundingBox()).height > before, 'expanded, the prompt grows');
+    assert.equal(await page.getByRole('button', { name: 'Collapse' }).getAttribute('aria-pressed'), 'true');
+
+    await page.goto(url('dictation'));
+    await page.getByRole('button', { name: 'Dictate' }).click();
+    await page.getByRole('button', { name: 'Stop recording' }).waitFor();
+    assert.ok(await page.locator('.ds-ai-composer__waveform i').count() > 10, 'recording shows the waveform');
+    await page.getByRole('button', { name: 'Stop recording' }).click();
+    await page.getByRole('status').filter({ hasText: 'Transcribing' }).waitFor();
+    await page.waitForFunction(() => document.querySelector('.ds-ai-composer__input')?.value.includes('vendor review'));
+    assert.equal(await page.getByRole('button', { name: 'Dictate' }).count(), 1, 'back to typing');
+  },
   'attachment: a named group of files; uploading is busy; retry and remove act on the right file; card actions show on hover or focus only; a link card opens from anywhere on it; long names are cut with an ellipsis': async () => {
     const url = (id) => `http://localhost:6008/iframe.html?id=components-attachment--${id}&viewMode=story`;
     await page.goto(url('demo'));

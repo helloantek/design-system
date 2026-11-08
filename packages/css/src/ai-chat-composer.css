@@ -1,0 +1,297 @@
+/*
+ * AI Chat Composer — Sort UI 2.0 component sets "AI Chat Composer" (node 1660:754), "AI Chat Composer Bar" (1659:561)
+ * and "AI Chat Composer Token" (1659:433) on page 1623:141714 in file 4JnqgEbdlnKgiFrfmiwEZw: the prompt box of an AI
+ * chat, one line (Row) or a text area above the actions (Column), with dictation (Recording, Transcribing), tool badges,
+ * attachments in a header and highlighted /commands. Values are Sort UI 2.0 tokens. Framework-agnostic.
+ *
+ * Markup (parts in [] are optional), one grid in both layouts so the prompt stays the same element when it switches:
+ *   <div class="ds-ai-composer [ds-ai-composer--column] [--recording | --transcribing] [--expanded]">
+ *     [<div class="ds-ai-composer__header">…Attachments…</div>]                    (Column: Figma "header")
+ *     <div class="ds-ai-composer__field">                                           (Figma "text": the prompt)
+ *       <div class="ds-ai-composer__backdrop" aria-hidden>…text with <mark class="ds-ai-composer-token">…</mark>…</div>
+ *       <textarea class="ds-ai-composer__input" rows="1"></textarea>
+ *     </div>
+ *     [<span class="ds-ai-composer__expand"><button class="ds-button …">…</button></span>]     (Column: Figma Maximize, top right)
+ *     <span class="ds-ai-composer__leading">…the + button, or cancel while dictating…</span>
+ *     [<span class="ds-ai-composer__badges">…Badges…</span>]                       (Figma Bar Type=Badges)
+ *     [<span class="ds-ai-composer__waveform"><i style="--level: .5"></i>…</span>] (Type=Recording)
+ *     [<span class="ds-ai-composer__status">Transcribing…</span>]                 (Type=Transcribing)
+ *     <span class="ds-ai-composer__trailing">…model, dictate, send…</span>
+ *   </div>
+ *   <mark class="ds-ai-composer-token">/release-notes</mark>                         (Figma "AI Chat Composer Token")
+ *
+ * Row (Figma Layout=Row): the + button, the one-line prompt and the actions on one 40 px line. Column: the header, the
+ * text area (with the maximize button) and the actions bar below. The prompt is a transparent-text textarea over a
+ * backdrop that draws the same text, so /commands can be tinted while the caret, selection and typing stay native.
+ */
+
+@layer ds.components {
+  /* Figma: popover, a 1 px field-border inside the box, radius 20 and two soft shadows (Figma's inset white top highlight
+     is left out, as on Bubble: under the border it reads as a glow in Dark). */
+  .ds-ai-composer {
+    display: grid;
+    grid-template-areas: 'leading main trailing';
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    position: relative;
+    align-items: center;
+    box-sizing: border-box;
+    min-width: 0;
+    border-radius: var(--ds-radius-3xl);
+    background-color: var(--ds-popover);
+    box-shadow:
+      inset 0 0 0 var(--ds-stroke-width-1) var(--ds-field-border),
+      0 var(--ds-spacing-1) var(--ds-spacing-4) calc(var(--ds-spacing-1) * -1) var(--ds-alpha-black-5),
+      0 0 var(--ds-spacing-2-5) 0 var(--ds-alpha-black-5);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    transition: box-shadow var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  .ds-ai-composer:has(.ds-ai-composer__input:focus-visible) {
+    box-shadow:
+      inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring),
+      0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Its buttons are round, as Figma draws them. */
+  .ds-ai-composer .ds-button {
+    border-radius: var(--ds-radius-full);
+  }
+
+  /* The model picker: a regular-weight label and a 14 px chevron (Figma: "Opus 5.5 High", 13/20 Regular). */
+  .ds-ai-composer__trailing .ds-button:not(.ds-button--icon-only) {
+    --btn-icon-size: var(--ds-spacing-3-5);
+
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  .ds-ai-composer--column {
+    grid-template-areas:
+      'header header header'
+      'field field field'
+      'leading main trailing';
+  }
+
+  /* Column: the header (attachments) 8 px in, then the text area, 10 × 12 px in. */
+  .ds-ai-composer__header {
+    display: flex;
+    grid-area: header;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-2) 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  /* Row: the one-line prompt between the + and the actions, 10 × 8 px in. */
+  .ds-ai-composer__field {
+    position: relative;
+    display: grid;
+    grid-area: main;
+    align-self: stretch;
+    min-width: 0;
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-2);
+  }
+
+  .ds-ai-composer--column .ds-ai-composer__field {
+    grid-area: field;
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-3);
+  }
+
+  /* With the maximize button the text stops 34 px earlier (Figma: a 414 px text slot beside a 34 px "expand"). */
+  .ds-ai-composer--column:has(.ds-ai-composer__expand) .ds-ai-composer__field {
+    padding-right: calc(var(--ds-spacing-3) + var(--ds-spacing-7) + var(--ds-spacing-1-5));
+  }
+
+  /* While dictating in a row, the bar shows the waveform or status in the prompt's place. */
+  .ds-ai-composer:not(.ds-ai-composer--column):is(.ds-ai-composer--recording, .ds-ai-composer--transcribing) .ds-ai-composer__field {
+    display: none;
+  }
+
+  /* Figma "expand": the maximize button 6 px from the top-right corner. */
+  .ds-ai-composer__expand {
+    position: absolute;
+    top: var(--ds-spacing-1-5);
+    right: var(--ds-spacing-1-5);
+    display: flex;
+  }
+
+  /* Figma "AI Chat Composer Bar": 40 px, the leading button 6 px in, the trailing group 6 px in with 4 px gaps. */
+  .ds-ai-composer__leading {
+    display: flex;
+    grid-area: leading;
+    align-items: center;
+    align-self: end;
+    padding: var(--ds-spacing-1-5) 0 var(--ds-spacing-1-5) var(--ds-spacing-1-5);
+  }
+
+  .ds-ai-composer__trailing {
+    display: flex;
+    grid-area: trailing;
+    align-items: center;
+    align-self: end;
+    gap: var(--ds-spacing-1);
+    padding: var(--ds-spacing-1-5);
+  }
+
+  /* Column: the actions follow the bar's free middle, so their group has no left padding (Figma). */
+  .ds-ai-composer--column .ds-ai-composer__trailing {
+    padding-left: 0;
+  }
+
+  /* The prompt: 13/20, a transparent-text textarea over the backdrop that draws the text. */
+  .ds-ai-composer__input,
+  .ds-ai-composer__backdrop {
+    grid-area: 1 / 1;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: var(--ds-text-xs);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-xs--line-height);
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
+  .ds-ai-composer__input {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: var(--ds-text-xs--line-height);
+    max-height: calc(var(--ds-text-xs--line-height) * var(--composer-max-lines, 8));
+    overflow-y: auto;
+    resize: none;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--ds-foreground);
+    outline: none;
+    scrollbar-width: thin;
+  }
+
+  .ds-ai-composer--expanded .ds-ai-composer__input {
+    --composer-max-lines: 24;
+  }
+
+  .ds-ai-composer__input::placeholder {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-ai-composer__input::selection {
+    background-color: var(--ds-alpha-ring-30);
+    color: transparent;
+  }
+
+  .ds-ai-composer__backdrop {
+    overflow: hidden;
+    color: var(--ds-foreground);
+    pointer-events: none;
+  }
+
+  /* Figma "AI Chat Composer Token": a /command in blue tint, 20 px tall, radius 4, 4 px either side. */
+  .ds-ai-composer-token {
+    display: inline-block;
+    padding: 0 var(--ds-spacing-1);
+    border-radius: var(--ds-radius-xs);
+    background-color: var(--ds-palette-blue-tint);
+    color: var(--ds-palette-blue-text);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    letter-spacing: -0.005em;
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* Inside the prompt the token cannot take room (the textarea's text would no longer line up), so its sides are drawn
+     with shadows instead of padding. */
+  .ds-ai-composer__backdrop .ds-ai-composer-token {
+    display: inline;
+    padding: 0;
+    box-shadow:
+      calc(var(--ds-spacing-1) * -1) 0 0 var(--ds-palette-blue-tint),
+      var(--ds-spacing-1) 0 0 var(--ds-palette-blue-tint);
+  }
+
+  /* Type=Badges: tool badges after the + button, 4 px apart, 8 px in. */
+  .ds-ai-composer__badges {
+    display: flex;
+    grid-area: main;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+    padding: 0 var(--ds-spacing-2);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  /* Type=Recording: 2 px bars 2–16 px tall spread across the bar, quiet ones at 30 %, voiced ones at 60 % (both at half
+     opacity, as in Figma). */
+  .ds-ai-composer__waveform {
+    display: flex;
+    grid-area: main;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+    height: var(--ds-spacing-4);
+    margin-left: var(--ds-spacing-1-5);
+    padding: 0 var(--ds-spacing-1-5);
+    overflow: hidden;
+  }
+
+  .ds-ai-composer__waveform i {
+    flex: none;
+    width: var(--ds-spacing-0-5);
+    height: calc(var(--ds-spacing-0-5) + (var(--ds-spacing-4) - var(--ds-spacing-0-5)) * var(--level, 0));
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-alpha-foreground-30);
+    opacity: 0.5;
+    transition: height var(--ds-duration-100) linear;
+  }
+
+  .ds-ai-composer__waveform i[data-voiced] {
+    background-color: var(--ds-alpha-foreground-60);
+  }
+
+  /* Type=Transcribing: a centred 12/16 muted line. */
+  .ds-ai-composer__status {
+    display: flex;
+    grid-area: main;
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 0;
+    margin-left: var(--ds-spacing-1-5);
+    padding: 0 var(--ds-spacing-1-5);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* While dictating, the waveform or status runs up to the stop and send buttons, 4 px away. */
+  .ds-ai-composer--recording .ds-ai-composer__trailing,
+  .ds-ai-composer--transcribing .ds-ai-composer__trailing {
+    padding-left: var(--ds-spacing-1);
+  }
+
+  /* The transcribing indicator in the place of the stop button: a secondary round with a spinner. */
+  .ds-ai-composer__busy {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-7);
+    height: var(--ds-spacing-7);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-fill-2);
+    color: var(--ds-foreground);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-ai-composer,
+    .ds-ai-composer__waveform i {
+      transition: none;
+    }
+  }
+}
