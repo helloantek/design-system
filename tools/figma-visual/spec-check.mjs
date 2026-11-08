@@ -79,7 +79,8 @@ export function compareInPage({ map, layers, target: targetSelector = '#target' 
         : cfg.stroke === 'after-inset-shadow' ? insetShadowColor(getComputedStyle(el, '::after').boxShadow)
         : cfg.stroke === 'outer-shadow' ? (cs.boxShadow.match(/rgba?\([^)]+\)/) || [null])[0]
         : cfg.stroke === 'outline' ? cs.outlineColor
-        : cfg.stroke === 'svg' ? cs.stroke : cs.borderTopColor;
+        : cfg.stroke === 'svg' ? cs.stroke
+        : cfg.stroke === 'color' ? cs.color : cs.borderTopColor;
       if (!got || !sameColor(got, expected.stroke)) fail('stroke', got, expected.stroke);
     }
     // Only layers exported with an opacity below 1 carry the key (specs exported before it existed have none).

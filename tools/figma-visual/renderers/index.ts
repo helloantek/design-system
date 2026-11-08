@@ -1,6 +1,7 @@
 import { renderAlert } from './alert';
 import { renderAccordion } from './accordion';
 import { renderAIChatComposer, renderAIChatComposerToken } from './ai-chat-composer';
+import { renderAITrace, renderAITraceContent } from './ai-trace';
 import { renderAlertDialog } from './alert-dialog';
 import { renderAspectRatio } from './aspect-ratio';
 import { renderAttachment } from './attachment';
@@ -63,6 +64,8 @@ export const renderers: Record<string, Renderer> = {
   'ai-chat-composer': renderAIChatComposer,
   'ai-chat-composer-column': renderAIChatComposer,
   'ai-chat-composer-token': renderAIChatComposerToken,
+  'ai-trace': renderAITrace,
+  'ai-trace-content': renderAITraceContent,
   alert: renderAlert,
   'alert-dialog': renderAlertDialog,
   'aspect-ratio': renderAspectRatio,

@@ -183,6 +183,32 @@ const [prompt, setPrompt] = useState('');
 
 Labels for the icon buttons: `sendLabel`, `dictateLabel`, `cancelRecordingLabel`, `stopRecordingLabel`, `expandLabel`, `collapseLabel`. `inputRef` reaches the textarea.
 
+## AI Trace
+
+The steps an AI agent took: Sort UI 2.0 **Trace Line** (Status, Type, State, Title, Icon, Description, Trailing icon), **Trace Content** and **Trace**.
+
+```tsx
+<Trace>
+  <TraceLine icon={<RiBrainLine />}>Thought for 8s</TraceLine>
+  <TraceLine icon={<RiGlobalLine />} description="8 results">Searched the web</TraceLine>
+  <TraceLine status="error" icon={<RiErrorWarningLine />}>Failed to start the dev server</TraceLine>
+  <TraceLine icon={<RiBookOpenLine />} trailingIcon={<RiArrowRightUpLine />} href="https://base-ui.com" target="_blank">Read the Base UI install guide</TraceLine>
+  <TraceCollapsible icon={<RiTerminalLine />} title="Ran pnpm test" description="14s" defaultOpen>
+    <TraceCode>{'Packages: +412\nDone in 8.7s'}</TraceCode>
+  </TraceCollapsible>
+</Trace>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Status = Done · Running · Error · Pending | `status`: `done` (default) · `running` (a light sweeps over the title; still with reduced motion) · `error` (destructive) · `pending` (60 %); running, failed and pending steps add a visually hidden `statusLabel` (defaults "In progress", "Failed", "Not started") | `ds-trace-line--done` · `--running` · `--error` · `--pending` |
+| Type = Line · Trigger · Trigger open | `TraceLine` (a `<div>`; `href` makes it a link, `onClick` a button) · `TraceCollapsible` (a button with `aria-expanded`, chevron right or down; `open` / `defaultOpen` / `onOpenChange`) | `ds-trace-line` · `ds-trace-collapsible` · `ds-trace-line__chevron` |
+| State = Default · Hover · Focus | from the pointer and the keyboard: the foreground colour on a link or button, the 3 px ring | — |
+| Title · Icon swap · Description text · Trailing icon swap | `children` (`title` on `TraceCollapsible`, cut with an ellipsis) · `icon` (16 px) · `description` (muted at 70 %) · `trailingIcon` | `ds-trace-line__text` · `__icon` · `__description` · `__trailing` |
+| Trace Content | the children of `TraceCollapsible`, or `TraceContent` on its own: 24 px in, with a rule under the step's icon | `ds-trace-content` · `__body` |
+| Trace | `Trace`: the lines, 8 px apart | `ds-trace` |
+| — (the demos' command output) | `TraceCode`: 12 px Geist Mono on fill-1 | `ds-trace-code` |
+
 ## Attachment
 
 A file added to a message or a composer: Sort UI 2.0 **Attachment** (Type, State, Title, Type label, Size, Error, Icon, actions).
@@ -1636,6 +1662,7 @@ These come from the Figma files, not the code:
 - Message (2.0): Figma's Time text in the footer is Regular while the component's text style is Medium; the code follows the demos (Regular, with the sender in Medium). The demos colour fallback avatars with palette solids; Avatar gained `--avatar-fill` and `--avatar-ink` for that instead of a new prop.
 - Message Scroller (2.0): the component is a single component with a slot, not a set; its booleans (Fade, Button end, Button start) are the props, and the eleven demos describe behaviour (anchoring, streaming, opening position, history, animation, commands, outline, scroll state) that the adapter implements. Figma shows the fade and the end button whatever the position; the code shows them only while there is more below. Figma draws no scrollbar; the code hides it too and keeps the transcript keyboard-scrollable. The sample's fallback avatars put white initials on `palette/orange-solid` (2.88:1, under the 4.5:1 AA minimum).
 - Attachment (2.0): the Error border is destructive at 70 % instead of Figma's 30 %, which was hard to see in Light and Dark (design review); Bubble's Destructive border follows. Figma draws the text on a picture in `primary-foreground`, which turns dark in Dark; the code keeps it white in both schemes (the white of `alpha-white-90`, made opaque). The Card and Image squares pad two inner frames (12 12 0 12 and 12) in an unpadded square; the code pads the square by 12 px, which lands every part in the same place. A card's actions only appear in Figma's Hover and Error variants; the code also shows them on keyboard focus. The File Icons in the demos are illustrations with raw colours, not tokens, so they stay the same in Dark.
+- AI Trace (2.0): the line's icon and chevron are 16 px lucide icons scaled to 17.3 px (an instance scaled by 1.08, no token); the code draws them at 16 px, which puts the icon's centre on Trace Content's rule and the title on its 24 px indent, so a line is 1.3 px narrower per icon (design review; `sizeOverride` in the visual check). Figma's lines have a 10 px radius that only shows as the 4 px focus ring; the code keeps both. The code interpreter demo's lines are separate 16 px text layers 4 px apart; `TraceCode` is one block with 20 px lines, which lands the text in the same places. The Description (muted at 70 %, about 3.2:1 on white) and Pending steps (60 %, about 2.6:1) fall below 4.5:1 (axe reports them); the code follows Figma.
 - AI Chat Composer (2.0): Figma's box has an inset white top highlight; under the 1 px border it reads as a glow in Dark, so the code leaves it out, as on Bubble. Figma's trailing frame stretches over the bar's free middle (and, while dictating, wraps the waveform or status); the code's hugs its buttons, with every part in the same place. A /command in the prompt cannot take room (the textarea's text would no longer line up), so the token's 4 px sides are drawn with shadows there. The Effort slider of Figma's model menu is shown as a radio group in the stories.
 - Card (2.0): the radius is 20 px (radius-3xl), larger than the 8 px control radius; the code follows Figma, as cards are surfaces, not controls. The "Stats" demo puts 4 px between the label and the value while the header frame has 6 px; the stories follow the component.
 - Tooltip (2.0): the "Side" demo puts left and right tooltips 14 px from the button and top and bottom ones 8 px; the code uses 8 px on every side. Left and right arrows are drawn smaller (7.2 px instead of 8 px squares); the code uses one 8 px arrow. The "Long label" demo wraps the text at 248 px although the component allows 320 px; the code wraps at 320 px.
