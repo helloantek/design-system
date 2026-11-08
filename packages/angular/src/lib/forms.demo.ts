@@ -1,4 +1,3 @@
-import type { Meta, StoryObj } from '@storybook/angular';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormField, email, form, required } from '@angular/forms/signals';
@@ -6,8 +5,8 @@ import { JsonPipe } from '@angular/common';
 import { DsCheckbox } from './checkbox/checkbox';
 import { DsInput } from './input/input';
 
-// Angular only: the same fields bound three ways. There is no React story with this id (tag "angular-only"), so the
-// parity check renders it without comparing it; tools/adapter-parity.mjs tests that the values flow both ways.
+// For the story Input → "Forms (Angular)" (not part of the package build): the same Input and Checkbox bound with
+// Signal Forms, Reactive Forms and ngModel, with the values shown under each column.
 
 @Component({
   selector: 'ds-forms-demo',
@@ -40,7 +39,7 @@ import { DsInput } from './input/input';
     </div>
   `,
 })
-class FormsDemo {
+export class FormsDemo {
   protected readonly model = signal({ email: 'ada@example.com', newsletter: true });
   protected readonly signalForm = form(this.model, (p) => {
     required(p.email);
@@ -61,17 +60,3 @@ class FormsDemo {
   }
 }
 
-const meta = {
-  title: 'Angular/Forms',
-  tags: ['angular-only', '!autodocs'],
-  parameters: {
-    docs: { description: { component: 'Input and Checkbox bound with Signal Forms (`[formField]`), Reactive Forms (`formControlName`) and `ngModel`. Type or tick, and the value under each column follows; the reactive form can be disabled.' } },
-  },
-} satisfies Meta;
-
-export default meta;
-
-/** The same Input and Checkbox bound three ways; the values show under each column. */
-export const Bindings: StoryObj = {
-  render: () => ({ moduleMetadata: { imports: [FormsDemo] }, template: '<ds-forms-demo />' }),
-};

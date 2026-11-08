@@ -5,4 +5,11 @@
     flex: 1 1 96px;
     min-width: 96px;
   }
+  /* One component tree: the toolbar's React | Angular switch (framework-switch/manager.tsx) sets data-ds-framework on
+     <html>; React shows this Storybook's tree, Angular the composed Angular Storybook's, without its section heading. */
+  #storybook-explorer-tree > [aria-label$='Angular stories'],
+  html:not([data-ds-framework='angular']) #storybook-explorer-tree > [data-title='Angular'],
+  html[data-ds-framework='angular'] #storybook-explorer-tree > div:not([data-title='Angular']) {
+    display: none;
+  }
 </style>

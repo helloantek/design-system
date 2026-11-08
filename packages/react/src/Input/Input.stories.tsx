@@ -321,3 +321,18 @@ export const InputGroupStatus: StoryObj = {
     );
   },
 };
+
+/**
+ * Angular only: Input and Checkbox bound with Signal Forms, Reactive Forms and ngModel. Switch the toolbar to Angular
+ * to see it; this stand-in keeps the story in the one component tree.
+ */
+export const FormsAngular: StoryObj = {
+  name: 'Forms (Angular)',
+  tags: ['angular-only', '!autodocs'],
+  decorators: [(Story) => <div style={{ width: 'auto' }}>{Story()}</div>],
+  render: () => (
+    <p style={{ margin: 0, maxWidth: 420, fontFamily: 'var(--ds-font-sans)', fontSize: 14, color: 'var(--ds-muted-foreground)' }}>
+      This story shows the Angular form bindings (Signal Forms, Reactive Forms, ngModel). Switch <strong>Framework</strong> in the toolbar to <strong>Angular</strong> to see it.
+    </p>
+  ),
+};

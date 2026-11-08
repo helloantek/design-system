@@ -106,7 +106,7 @@ for (const story of angularStories) {
 // Angular only: Signal Forms, Reactive Forms and ngModel move values both ways through Input and Checkbox.
 const angularTests = {
   'angular forms: [formField], formControlName and ngModel bind Input and Checkbox both ways; an invalid value shows once the field is touched; disabled follows': async () => {
-    await page.goto(`${ANGULAR}/iframe.html?id=angular-forms--bindings&viewMode=story`);
+    await page.goto(`${ANGULAR}/iframe.html?id=components-input--forms-angular&viewMode=story`);
     const value = (form) => page.locator(`[data-form="${form}"] output`).textContent().then((t) => JSON.parse(t));
     const signalEmail = page.getByRole('textbox', { name: 'Email (signal)' });
     await signalEmail.waitFor();
