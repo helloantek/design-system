@@ -8,7 +8,8 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 | [`@helloantek/ds-css`](packages/css) | Component styles as plain CSS classes, built only on tokens | every web project |
 | [`@helloantek/ds-core`](packages/core) | Framework-free behaviour the adapters share: popup placement, list navigation, type-ahead ([ADR 0002](docs/adr/0002-angular.md)) | `ds-react` (and the coming `ds-angular`); installed with them |
 | [`@helloantek/ds-react`](packages/react) | React components (markup + classes) | React / Next.js |
-| [`apps/storybook`](apps/storybook) | Documentation with brand and colour-scheme switchers | design, development |
+| [`@helloantek/ds-angular`](packages/angular) | Angular 22 components (markup + classes, the same as `ds-react`): pilot, Button and Badge so far ([ADR 0002](docs/adr/0002-angular.md)) | Angular |
+| [`apps/storybook`](apps/storybook) | Documentation with brand and colour-scheme switchers; composes the Angular Storybook ([`apps/storybook-angular`](apps/storybook-angular)) under **Angular** | design, development |
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
 
@@ -54,6 +55,30 @@ import { Telescope } from 'lucide-react';
 ```
 
 On phones, components turn off the browser's grey tap highlight (they draw their own states); `-webkit-tap-highlight-color` on your own element brings it back.
+
+### Angular
+
+Angular 22 (pilot: Button and Badge; the rest follows [ADR 0002](docs/adr/0002-angular.md)):
+
+```sh
+npm i @helloantek/ds-tokens @helloantek/ds-css @helloantek/ds-angular @fontsource/inter
+```
+
+Load the same two CSS files (in `angular.json` `styles`, or `@import` them in your global stylesheet), then import the standalone components. They sit on native elements, so the markup is the same as React's:
+
+```ts
+import { DsBadge, DsButton, DsLeadingIcon } from '@helloantek/ds-angular';
+
+@Component({
+  imports: [DsButton, DsBadge, DsLeadingIcon],
+  template: `
+    <button dsButton variant="outline"><svg dsLeadingIcon …></svg>Share</button>
+    <span dsBadge color="blue">New</span>
+  `,
+})
+```
+
+Inputs are named after the Figma properties, as in React (`variant`, `size`, `badge`, `color`, `dot`…). Icon slots are marked on the projected element: `dsLeadingIcon`, `dsTrailingIcon`, `dsIcon` (an icon-only button, named with `aria-label`), `dsImage`. A badge's Close Icon is `removable` with the `(remove)` output. Storybook: **Angular** in the sidebar.
 
 ### Other web frameworks (Vue, Svelte, Angular, plain HTML)
 

@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "jsx": "preserve",
+    "verbatimModuleSyntax": false,
+    "isolatedModules": false,
+    "useDefineForClassFields": false,
+    "resolveJsonModule": true,
+    "paths": {
+      "@helloantek/ds-angular": [
+        "../../packages/angular/src/public-api.ts"
+      ],
+      "@helloantek/ds-core": [
+        "../../packages/core/src/index.ts"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  },
+  "include": [
+    ".storybook/*.ts",
+    "src/**/*.ts",
+    "../../packages/angular/src/**/*.ts"
+  ],
+  "files": [
+    ".storybook/typings.d.ts"
+  ]
+}

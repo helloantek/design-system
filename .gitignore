@@ -5,3 +5,4 @@ tools/figma-visual/out/
 tools/figma-visual/harness-dist/
 *.log
 .DS_Store
+.angular/

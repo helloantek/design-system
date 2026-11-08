@@ -30,6 +30,10 @@ jobs:
         run: npm run test:storybook
         env:
           CHROMIUM_PATH: ${{ env.REFERENCE_CHROMIUM_PATH }}
+      - name: Angular matches React
+        run: npm run test:angular
+        env:
+          CHROMIUM_PATH: ${{ env.REFERENCE_CHROMIUM_PATH }}
       - name: Components match Figma
         run: npm run test:visual
         env:
