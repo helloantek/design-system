@@ -56,7 +56,7 @@ On phones, components turn off the browser's grey tap highlight (they draw their
 
 ### Other web frameworks (Vue, Svelte, Angular, plain HTML)
 
-Load the same two CSS files and use the classes; each component's markup is documented at the top of its CSS file:
+Load the same two CSS files and use the classes; each component's markup is documented at the top of its CSS file, and Storybook's **HTML** panel shows the markup of any story (it follows its controls) to copy:
 
 ```html
 <button class="ds-button ds-button--default ds-button--size-default">

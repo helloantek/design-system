@@ -49,6 +49,23 @@ for (const story of stories) {
   if (errors.length) failed++;
   console.log(story.id.padEnd(36), `buttons=${buttons}`, errors.length ? `ERRORS ${errors.join(' | ')}` : 'no errors', violations.length ? `axe: ${violations.join(', ')}` : 'axe: clean');
 }
+
+// Docs pages (autodocs): every component's page renders all its stories with "Show code", without errors.
+for (const docs of Object.values(entries).filter((e) => e.type === 'docs')) {
+  const errors = [];
+  page.removeAllListeners('console');
+  page.removeAllListeners('pageerror');
+  page.removeAllListeners('response');
+  page.on('console', (m) => m.type() === 'error' && !m.location().url.endsWith('/favicon.ico') && errors.push(`${m.text()} [${m.location().url}]`));
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('response', (r) => r.status() >= 400 && errors.push(`${r.status()} ${r.url()}`));
+  await page.goto(`http://localhost:6007/iframe.html?id=${docs.id}&viewMode=docs`);
+  await page.waitForSelector('#storybook-docs .sbdocs-title', { timeout: 15000 });
+  const sources = await page.locator('#storybook-docs button', { hasText: 'Show code' }).count();
+  if (errors.length) failed++;
+  console.log(docs.id.padEnd(36), `show-code=${sources}`, errors.length ? `ERRORS ${errors.join(' | ')}` : 'no errors');
+}
+
 await browser.close();
 server.close();
 process.exit(failed ? 1 : 0);
