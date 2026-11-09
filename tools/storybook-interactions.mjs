@@ -611,11 +611,11 @@ Object.assign(tests, {
     assert.equal(await page.getByRole('heading', { level: 3, name: 'Upcoming bills' }).count(), 1, 'the title is an h3 by default');
     const footer = page.locator('.ds-card__footer--muted');
     const style = await footer.evaluate((el) => ({ margin: getComputedStyle(el).marginTop, radius: getComputedStyle(el).borderBottomLeftRadius }));
-    assert.deepEqual(style, { margin: '20px', radius: '20px' });
+    assert.deepEqual(style, { margin: '20px', radius: '16px' });
     await page.goto('http://localhost:6008/iframe.html?id=components-card--with-image&viewMode=story');
     await page.waitForSelector('.ds-card__media');
     const media = await page.locator('.ds-card__media').evaluate((el) => ({ radius: getComputedStyle(el).borderTopLeftRadius, ratio: (el.getBoundingClientRect().width / el.getBoundingClientRect().height).toFixed(2) }));
-    assert.deepEqual(media, { radius: '20px', ratio: (16 / 9).toFixed(2) }, 'a 16:9 picture rounded with the card');
+    assert.deepEqual(media, { radius: '16px', ratio: (16 / 9).toFixed(2) }, 'a 16:9 picture rounded with the card');
   },
   'sonner: a toast shows in a polite live region, closes after its duration and waits while the pointer is over it': async () => {
     await page.mouse.move(0, 0);
