@@ -6,9 +6,9 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 |---|---|---|
 | [`@helloantek/ds-tokens`](packages/tokens) | Figma variables → CSS, JS, Swift, Kotlin for every brand | every project |
 | [`@helloantek/ds-css`](packages/css) | Component styles as plain CSS classes, built only on tokens | every web project |
-| [`@helloantek/ds-core`](packages/core) | Framework-free behaviour the adapters share: popup placement, list navigation, type-ahead ([ADR 0002](docs/adr/0002-angular.md)) | `ds-react` (and the coming `ds-angular`); installed with them |
+| [`@helloantek/ds-core`](packages/core) | Framework-free behaviour the adapters share: popup placement, list navigation, type-ahead ([ADR 0002](docs/adr/0002-angular.md)) | `ds-react` and `ds-angular`; installed with them |
 | [`@helloantek/ds-react`](packages/react) | React components (markup + classes) | React / Next.js |
-| [`@helloantek/ds-angular`](packages/angular) | Angular 22 components (markup + classes, the same as `ds-react`): pilot: Button, Badge, Input, Checkbox ([ADR 0002](docs/adr/0002-angular.md)) | Angular |
+| [`@helloantek/ds-angular`](packages/angular) | Angular 22 components (markup + classes, the same as `ds-react`): pilot: Button, Badge, Input, Checkbox, Tooltip, Dialog ([ADR 0002](docs/adr/0002-angular.md)) | Angular |
 | [`apps/storybook`](apps/storybook) | Documentation with brand and colour-scheme switchers; composes the Angular Storybook ([`apps/storybook-angular`](apps/storybook-angular)): the toolbar's **React / Angular** switch shows each story from either build | design, development |
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). How an Angular adapter fits in: [ADR 0002](docs/adr/0002-angular.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
@@ -58,7 +58,7 @@ On phones, components turn off the browser's grey tap highlight (they draw their
 
 ### Angular
 
-Angular 22 (pilot: Button, Badge, Input, Checkbox; the rest follows [ADR 0002](docs/adr/0002-angular.md)):
+Angular 22 (pilot: Button, Badge, Input, Checkbox, Tooltip, Dialog; the rest follows [ADR 0002](docs/adr/0002-angular.md)):
 
 ```sh
 npm i @helloantek/ds-tokens @helloantek/ds-css @helloantek/ds-angular @fontsource/inter
@@ -97,6 +97,21 @@ class Signup {
   model = signal({ email: '', news: false });
   signup = form(this.model, (p) => required(p.email));
 }
+```
+
+Overlays behave as in React. `<ds-tooltip content="…">` goes around its trigger and describes it; `<ds-dialog>` is a native modal `<dialog>`, opened by the element marked `dsDialogTrigger` (or `[(open)]`), with its actions in `<ng-container dsDialogFooter>` and `dsDialogClose` on a button that closes it:
+
+```html
+<ds-tooltip content="Search payments" [shortcut]="['⌘', 'K']"><button dsButton variant="outline">Search</button></ds-tooltip>
+
+<ds-dialog title="Edit profile" description="Make changes to your profile.">
+  <button dsButton dsDialogTrigger variant="outline">Edit profile</button>
+  <ds-input label="Name" [(value)]="name" />
+  <ng-container dsDialogFooter>
+    <button dsButton dsDialogClose variant="outline">Cancel</button>
+    <button dsButton (click)="save()">Save</button>
+  </ng-container>
+</ds-dialog>
 ```
 
 ### Other web frameworks (Vue, Svelte, Angular, plain HTML)

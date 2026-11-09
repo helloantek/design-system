@@ -10,9 +10,6 @@
     "paths": {
       "@helloantek/ds-angular": [
         "../../packages/angular/src/public-api.ts"
-      ],
-      "@helloantek/ds-core": [
-        "../../packages/core/src/index.ts"
       ]
     }
   },
