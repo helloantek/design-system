@@ -4,6 +4,7 @@ import { DsInput, DsInputAction, DsPrefix, DsSuffix, type InputSize, type InputV
 import { DsButton } from '../button/button';
 import { DsLeadingIcon, DsTrailingIcon } from '../slots/slots';
 import { remix } from '../fixtures';
+import { FormsDemo } from '../forms.demo';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=82-50';
 const variants: InputVariant[] = ['default', 'shadow', 'soft'];
@@ -164,4 +165,16 @@ export const InputGroupStatus: StoryObj = {
       </ds-input>
     </div>`,
   }),
+};
+
+/**
+ * Angular only: Input and Checkbox bound with Signal Forms (\`[formField]\`), Reactive Forms (\`formControlName\`) and
+ * \`ngModel\`; type or tick and the values follow. The React Storybook has a stand-in with this id; both are tagged
+ * "angular-only", so the parity check renders this one without comparing it and tests the bindings instead.
+ */
+export const FormsAngular: StoryObj = {
+  name: 'Forms (Angular)',
+  tags: ['angular-only', '!autodocs'],
+  decorators: [width('auto')],
+  render: () => ({ moduleMetadata: { imports: [FormsDemo] }, template: '<ds-forms-demo />' }),
 };

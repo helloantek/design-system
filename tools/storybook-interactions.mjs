@@ -2954,6 +2954,34 @@ Object.assign(tests, {
     await page.frameLocator('#storybook-preview-iframe').locator('#storybook-root .ds-dropdown > button').click();
     await panel.getByText('aria-expanded="false"', { exact: false }).first().waitFor();
   },
+  'storybook: the React | Angular switch shows the story from the chosen build and swaps the tree; the choice is remembered': async () => {
+    await page.goto('http://localhost:6008/?path=/story/components-button--playground');
+    await page.evaluate(() => localStorage.removeItem('ds-framework'));
+    await page.reload();
+    const framework = page.getByRole('group', { name: 'Framework' });
+    const tree = page.locator('#storybook-explorer-tree');
+    await framework.waitFor();
+    assert.equal(await framework.getByRole('button', { name: 'React' }).getAttribute('aria-pressed'), 'true');
+    assert.equal(await tree.getByRole('button', { name: 'Select', exact: true }).isVisible(), true, 'the React tree has every component');
+    assert.equal(await page.locator('#storybook-explorer-tree [data-title="Angular"]').isVisible(), false, 'no separate Angular section');
+    await framework.getByRole('button', { name: 'Angular' }).click();
+    await page.waitForURL(/angular_components-button--playground/);
+    const angular = page.frameLocator('#storybook-ref-angular');
+    await angular.locator('[ng-version] .ds-button').waitFor();
+    assert.equal(await tree.getByRole('button', { name: 'Select', exact: true }).filter({ visible: true }).count(), 0, 'the Angular tree has only what Angular has');
+    await tree.getByRole('button', { name: 'Badge', exact: true }).filter({ visible: true }).click();
+    await tree.locator('a[href*="components-badge--colors"]').filter({ visible: true }).click();
+    await page.waitForURL(/angular_components-badge--colors/);
+    await angular.locator('[ng-version] .ds-badge').first().waitFor();
+    await page.goto('http://localhost:6008/?path=/story/components-select--playground');
+    await framework.waitFor();
+    assert.equal(await framework.getByRole('button', { name: 'Angular' }).isDisabled(), true, 'a component Angular does not have yet');
+    await page.goto('http://localhost:6008/?path=/docs/components-checkbox--docs');
+    await page.waitForURL(/angular_components-checkbox--docs/, { timeout: 15000 });
+    await framework.getByRole('button', { name: 'React' }).click();
+    await page.waitForURL(/path=\/docs\/components-checkbox--docs/);
+    assert.equal(await page.evaluate(() => localStorage.getItem('ds-framework')), 'react');
+  },
   'storybook: every component has a Docs page whose stories show their code': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-button--docs&viewMode=docs');
     await page.locator('#storybook-docs button', { hasText: 'Show code' }).first().click();

@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 // Classic JSX: the manager provides its own React, which this file must use (not a second copy from node_modules).
 import React, { useEffect, useState } from 'react';
-import { addons, types, useChannel } from 'storybook/manager-api';
+import { addons, types, useChannel, useStorybookState } from 'storybook/manager-api';
 import { AddonPanel, SyntaxHighlighter } from 'storybook/internal/components';
 import { ADDON_ID, HTML_EVENT, PANEL_ID, REQUEST_EVENT, type HtmlPayload } from './constants';
 
@@ -11,7 +11,10 @@ function HtmlPanel() {
   const [html, setHtml] = useState<HtmlPayload | null>(null);
   const [fullSvg, setFullSvg] = useState(false);
   const emit = useChannel({ [HTML_EVENT]: (payload: HtmlPayload) => setHtml(payload) });
+  const { refId } = useStorybookState();
   useEffect(() => emit(REQUEST_EVENT), [emit]);
+  // An Angular story (the framework switch) renders in the composed Storybook, which this panel cannot read.
+  if (refId) return <p style={{ margin: 16 }}>This is the Angular build of the story: its markup is the same as React's (tools/adapter-parity.mjs checks it in CI). Switch the toolbar to React to see it here.</p>;
   if (!html) return <p style={{ margin: 16 }}>Open a story to see its HTML.</p>;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
