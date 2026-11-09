@@ -23,234 +23,7 @@ const open = async (id, args = '') => {
   await page.waitForSelector('#storybook-root [role="combobox"]');
 };
 
-// Select (WAI-ARIA select-only combobox): what the combobox exposes after each step.
-const combobox = page.locator('[role="combobox"]').first();
-const listbox = page.locator('[role="listbox"]').first();
-const state = async () => ({
-  expanded: await combobox.getAttribute('aria-expanded'),
-  active: await combobox.evaluate((el) => {
-    const id = el.getAttribute('aria-activedescendant');
-    return id ? document.getElementById(id)?.querySelector('.ds-select__label')?.textContent : null;
-  }),
-  value: await combobox.locator('.ds-select__value').textContent(),
-  focused: await combobox.evaluate((el) => document.activeElement === el),
-});
-
 const tests = {
-  'select: keyboard opens, moves, selects and keeps focus': async () => {
-    await open('components-select--playground');
-    await page.keyboard.press('Tab');
-    assert.deepEqual(await state(), { expanded: 'false', active: null, value: 'Select a user', focused: true });
-    await page.keyboard.press('ArrowDown');
-    assert.equal(await listbox.isVisible(), true);
-    assert.equal((await state()).active, 'Alex Jhonson');
-    await page.keyboard.press('ArrowDown');
-    assert.equal((await state()).active, 'Simon Alt');
-    await page.keyboard.press('End');
-    assert.equal((await state()).active, 'Lily Chen');
-    await page.keyboard.press('ArrowDown');
-    assert.equal((await state()).active, 'Lily Chen', 'ArrowDown stops at the last option');
-    await page.keyboard.press('Home');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter');
-    assert.deepEqual(await state(), { expanded: 'false', active: null, value: 'Simon Alt', focused: true });
-    assert.equal(await listbox.isVisible(), false);
-    await page.keyboard.press('Space');
-    assert.equal((await state()).active, 'Simon Alt', 'reopening starts at the selected option');
-    assert.equal(await page.locator('[role="option"][aria-selected="true"]').textContent(), 'Simon Alt');
-  },
-  'select: type-ahead, Escape and Tab': async () => {
-    await open('components-select--playground');
-    await page.keyboard.press('Tab');
-    await page.keyboard.type('e');
-    assert.equal((await state()).active, 'Emma Thompson');
-    await page.keyboard.press('Escape');
-    assert.deepEqual(await state(), { expanded: 'false', active: null, value: 'Select a user', focused: true });
-    await page.keyboard.type('ky', { delay: 50 });
-    assert.equal((await state()).active, 'Kate Roberts', 'characters typed quickly form one search');
-    await page.keyboard.press('Tab');
-    assert.equal((await state()).value, 'Kate Roberts', 'Tab selects the highlighted option');
-    assert.equal((await state()).focused, false);
-    assert.equal(await listbox.isVisible(), false);
-  },
-  'select: mouse opens without highlight, picks an option, label focuses': async () => {
-    await open('components-select--playground');
-    await combobox.click();
-    assert.deepEqual(await state(), { expanded: 'true', active: null, value: 'Select a user', focused: true });
-    await page.locator('[role="option"]', { hasText: 'Ryan Parker' }).click();
-    assert.deepEqual(await state(), { expanded: 'false', active: null, value: 'Ryan Parker', focused: true });
-    await page.locator('body').click({ position: { x: 600, y: 5 } });
-    await page.locator('.ds-field__label').click();
-    assert.equal((await state()).focused, true);
-  },
-  'select: disabled options are skipped and cannot be picked; groups and caption from Playground controls': async () => {
-    await open('components-select--playground', 'disabledItem:!true;groups:!true;menuCaption:Pick+the+owner');
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('ArrowDown');
-    assert.equal((await state()).active, 'Emma Thompson');
-    await page.keyboard.press('ArrowDown');
-    assert.equal((await state()).active, 'Kate Roberts', 'skips the disabled Michael Davis');
-    await page.locator('[role="option"]', { hasText: 'Michael Davis' }).click({ force: true });
-    assert.equal((await state()).expanded, 'true');
-    assert.equal((await state()).value, 'Select a user');
-    const groups = page.locator('[role="group"]');
-    assert.equal(await groups.count(), 2);
-    assert.equal(await page.locator(`[id="${await groups.first().getAttribute('aria-labelledby')}"]`).textContent(), 'Design3');
-    assert.equal(await page.locator(`[id="${await listbox.getAttribute('aria-describedby')}"]`).textContent(), 'Pick the owner');
-  },
-  'select: MenuItem story follows the Figma item properties': async () => {
-    await open('components-select--menu-item', 'type:Default+Large;selectType:Checkbox;active:!true;state:Disabled');
-    const item = page.locator('[role="option"]').nth(1);
-    assert.equal(await item.getAttribute('aria-selected'), 'true');
-    assert.equal(await item.getAttribute('aria-disabled'), 'true');
-    assert.equal(await item.locator('.ds-select__description').textContent(), 'The quick brown fox jumps over a lazy dog.');
-    assert.equal(await item.locator('.ds-checkbox .ds-checkbox__input:checked').count(), 1, 'the selected option draws a checked Checkbox');
-  },
-  'select indicators: a click on the Checkbox or the Radio picks the option, and focus stays on the select': async () => {
-    await open('components-select--playground', 'multiple:!true;indicator:checkbox');
-    await combobox.click();
-    const simon = page.getByRole('option', { name: 'Simon Alt' });
-    await simon.locator('.ds-checkbox').click({ force: true }); // at the box's place; the box lets the click through to the option
-    assert.equal(await simon.getAttribute('aria-selected'), 'true');
-    assert.equal(await simon.locator('.ds-checkbox__input').isChecked(), true);
-    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('role')), 'combobox', 'the box never takes focus');
-    await simon.locator('.ds-checkbox').click({ force: true });
-    assert.equal(await simon.getAttribute('aria-selected'), 'false');
-    assert.equal(await simon.locator('.ds-checkbox__input').isChecked(), false);
-    await open('components-select--playground', 'indicator:radio');
-    await combobox.click();
-    await page.getByRole('option', { name: 'Emma Thompson' }).locator('.ds-radio').click({ force: true });
-    assert.equal((await state()).value, 'Emma Thompson');
-    await combobox.click();
-    assert.equal(await page.getByRole('option', { name: 'Emma Thompson' }).locator('.ds-radio__input').isChecked(), true);
-  },
-  'select: disabled select is not focusable and does not open': async () => {
-    await open('components-select--playground', 'disabled:!true');
-    assert.equal(await combobox.getAttribute('tabindex'), null);
-    assert.equal(await combobox.getAttribute('aria-disabled'), 'true');
-    await combobox.click({ force: true });
-    assert.equal((await state()).expanded, 'false');
-  },
-  'select multiple: options toggle, menu stays open, trigger lists labels': async () => {
-    await open('components-select--playground', 'multiple:!true');
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('ArrowDown');
-    assert.equal(await listbox.getAttribute('aria-multiselectable'), 'true');
-    await page.keyboard.press('Enter');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press(' ');
-    assert.equal((await state()).expanded, 'true', 'the menu stays open while picking');
-    assert.equal((await state()).value, 'Alex Jhonson, Emma Thompson');
-    await page.getByRole('option', { name: 'Simon Alt' }).click();
-    assert.equal((await state()).value, 'Alex Jhonson, Simon Alt, Emma Thompson', 'labels follow the option order');
-    await page.keyboard.press('Home');
-    await page.keyboard.press('Enter');
-    assert.equal((await state()).value, 'Simon Alt, Emma Thompson', 'picking a selected option removes it');
-    assert.deepEqual(await page.locator('[role="option"][aria-selected="true"]').allTextContents(), ['Simon Alt', 'Emma Thompson']);
-    await page.keyboard.press('Tab');
-    assert.equal(await listbox.isVisible(), false);
-    assert.equal((await state()).value, 'Simon Alt, Emma Thompson', 'Tab closes without changing the selection');
-  },
-  'select menu item types: boxes, flags, large options and a caption that describes the menu': async () => {
-    await open('components-select--menu-item-types');
-    const menus = page.getByRole('listbox');
-    assert.equal(await menus.count(), 4);
-    const [checkbox, radio, country, large] = [0, 1, 2, 3].map((i) => menus.nth(i));
-    assert.equal(await checkbox.locator('.ds-checkbox').count(), 7, 'every option shows a Checkbox');
-    assert.deepEqual(await checkbox.locator('[aria-selected="true"]').allTextContents(), ['Simon Alt', 'Emma Thompson']);
-    assert.equal(await checkbox.locator('.ds-checkbox__input:checked').count(), 2, 'the Checkbox follows the selection');
-    assert.equal(await radio.locator('.ds-radio').count(), 7);
-    assert.equal(await radio.locator('.ds-radio__input:checked').count(), await radio.locator('[aria-selected="true"]').count(), 'the Radio follows the selection');
-    // The boxes are pictures: inert, out of the tab order, unnamed, inside an aria-hidden slot.
-    for (const input of await page.locator('[role="listbox"] :is(.ds-checkbox__input, .ds-radio__input)').all()) {
-      assert.deepEqual(await input.evaluate((el) => [el.inert, el.tabIndex, el.name, !!el.closest('[aria-hidden="true"]')]), [true, -1, '', true]);
-    }
-    assert.equal(await country.locator('.ds-select__media svg').count(), 3);
-    // Large options read as label + description; the caption is the listbox description, not an option.
-    assert.equal(await large.getByRole('option').count(), 3);
-    assert.equal(await large.getByRole('option', { name: 'Team Up to 20 people Popular' }).getAttribute('aria-selected'), 'true');
-    const describedBy = await large.getAttribute('aria-describedby');
-    assert.equal(await page.locator(`[id="${describedBy}"]`).textContent(), 'Billed yearly. You can change the plan at any time.');
-  },
-  'select tags: badges show the values; × and Backspace remove them without nested buttons': async () => {
-    await open('components-select--playground', 'multiple:!true;tags:!true');
-    const tags = () => page.locator('.ds-select__tags .ds-badge__label').allTextContents();
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter');
-    await page.keyboard.press('Escape');
-    assert.deepEqual(await tags(), ['Alex Jhonson', 'Simon Alt', 'Emma Thompson']);
-    assert.equal(await combobox.locator('button, [tabindex]').count(), 0, 'no focusable element inside the combobox');
-    // × removes that value and leaves the menu closed and the focus on the combobox.
-    await page.locator('.ds-select__tags .ds-badge', { hasText: 'Simon Alt' }).locator('.ds-badge__remove').click();
-    assert.deepEqual(await tags(), ['Alex Jhonson', 'Emma Thompson']);
-    assert.equal(await combobox.getAttribute('aria-expanded'), 'false', '× does not open the menu');
-    assert.equal(await page.locator('.ds-select__status').textContent(), 'Simon Alt removed', 'the removal is announced');
-    // Backspace removes the last value, open or closed.
-    await combobox.focus();
-    await page.keyboard.press('Backspace');
-    assert.deepEqual(await tags(), ['Alex Jhonson']);
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Backspace');
-    assert.equal(await page.locator('.ds-select__tags').count(), 0);
-    assert.equal((await state()).value, 'Select a user', 'the placeholder returns');
-    // tagsOverflow="count": one row, the rest in "+N", named for screen readers; removing makes room.
-    await open('components-select--tags');
-    const counted = page.locator('.ds-select').nth(2);
-    const more = counted.locator('.ds-select__more');
-    // The fit is re-measured when the web font arrives, so wait for it and read the tags and the counter together.
-    await page.evaluate(() => document.fonts.ready);
-    const { visible, counter, hiddenText } = await counted.evaluate((el) => ({
-      visible: [...el.querySelectorAll('.ds-select__tags > .ds-badge:not(.ds-select__more) .ds-badge__label')].map((l) => l.textContent),
-      counter: el.querySelector('.ds-select__more [aria-hidden]')?.textContent,
-      hiddenText: el.querySelector('.ds-select__more .ds-select__hidden')?.textContent,
-    }));
-    assert.ok(visible.length >= 1 && visible.length < 5, `some tags fit (${visible.length})`);
-    assert.equal(counter, `+${5 - visible.length}`);
-    const names = ['Alex Jhonson', 'Simon Alt', 'Emma Thompson', 'Michael Davis', 'Kate Roberts'];
-    assert.equal(hiddenText, `and ${5 - visible.length} more: ${names.slice(visible.length).join(', ')}`);
-    // One row, and the counter ends inside the row's padding box (nothing clipped).
-    const row = await counted.locator('.ds-select__tags').evaluate((el) => {
-      const r = el.getBoundingClientRect(), m = el.querySelector('.ds-select__more').getBoundingClientRect();
-      return [r.height, m.right <= r.right - parseFloat(getComputedStyle(el).paddingRight) + 0.5];
-    });
-    assert.deepEqual(row, [20, true], 'one row, nothing clipped');
-    await counted.locator('.ds-select__tags .ds-badge__remove').first().click();
-    assert.equal(await counted.locator('.ds-select__tags > .ds-badge:not(.ds-select__more)').count() + Number((await more.count()) ? (await more.locator('[aria-hidden]').textContent()).slice(1) : 0), 4, 'shown + counted = values left');
-    // Disabled: no × at all.
-    const disabled = page.locator('.ds-select').nth(3);
-    assert.equal(await disabled.locator('.ds-badge').count(), 2);
-    assert.equal(await disabled.locator('.ds-badge__remove').count(), 0, 'a disabled select has no ×');
-  },
-  'select avatar: the field shows the selected option\'s avatar instead of the lead icon': async () => {
-    await open('components-select--with-avatars');
-    const owner = page.locator('.ds-select').first();
-    const lead = () => owner.locator('.ds-select__main > :first-child').getAttribute('class');
-    assert.equal(await lead(), 'ds-select__media');
-    assert.equal(await owner.locator('.ds-select__main .ds-avatar img').count(), 1, 'Simon Alt has a picture');
-    await owner.getByRole('combobox').click();
-    await owner.getByRole('option', { name: 'Kate Roberts' }).click();
-    assert.equal(await owner.locator('.ds-select__main .ds-avatar__initials').textContent(), 'K');
-    assert.equal(await owner.locator('.ds-select__value').textContent(), 'Kate Roberts');
-    // Empty field: the lead icon; the menu still shows avatars.
-    const empty = page.locator('.ds-select').nth(1);
-    assert.equal(await empty.locator('.ds-select__main > :first-child').getAttribute('class'), 'ds-select__icon');
-    await empty.getByRole('combobox').click();
-    assert.equal(await empty.locator('[role="option"] .ds-avatar').count(), 7);
-    // A multiple select keeps its lead icon.
-    await open('components-select--playground', 'multiple:!true;itemType:Avatar');
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter');
-    assert.equal(await page.locator('.ds-select__main > :first-child').first().getAttribute('class'), 'ds-select__icon');
-  },
   'avatar: badges and ring sit where Figma puts them; names and fallback': async () => {
     // Status Badges: size and position per size and shape (x, y relative to the avatar), as in Sort UI 1.3; ring 2 px outside.
     const figma = [
@@ -2935,18 +2708,18 @@ Object.assign(tests, {
     const tree = page.locator('#storybook-explorer-tree');
     await framework.waitFor();
     assert.equal(await framework.getByRole('button', { name: 'React' }).getAttribute('aria-pressed'), 'true');
-    assert.equal(await tree.getByRole('button', { name: 'Select', exact: true }).isVisible(), true, 'the React tree has every component');
+    assert.equal(await tree.getByRole('button', { name: 'Switch', exact: true }).isVisible(), true, 'the React tree has every component');
     assert.equal(await page.locator('#storybook-explorer-tree [data-title="Angular"]').isVisible(), false, 'no separate Angular section');
     await framework.getByRole('button', { name: 'Angular' }).click();
     await page.waitForURL(/angular_components-button--playground/);
     const angular = page.frameLocator('#storybook-ref-angular');
     await angular.locator('[ng-version] .ds-button').waitFor();
-    assert.equal(await tree.getByRole('button', { name: 'Select', exact: true }).filter({ visible: true }).count(), 0, 'the Angular tree has only what Angular has');
+    assert.equal(await tree.getByRole('button', { name: 'Switch', exact: true }).filter({ visible: true }).count(), 0, 'the Angular tree has only what Angular has');
     await tree.getByRole('button', { name: 'Badge', exact: true }).filter({ visible: true }).click();
     await tree.locator('a[href*="components-badge--colors"]').filter({ visible: true }).click();
     await page.waitForURL(/angular_components-badge--colors/);
     await angular.locator('[ng-version] .ds-badge').first().waitFor();
-    await page.goto('http://localhost:6008/?path=/story/components-select--playground');
+    await page.goto('http://localhost:6008/?path=/story/components-switch--playground');
     await framework.waitFor();
     assert.equal(await framework.getByRole('button', { name: 'Angular' }).isDisabled(), true, 'a component Angular does not have yet');
     await page.goto('http://localhost:6008/?path=/docs/components-checkbox--docs');

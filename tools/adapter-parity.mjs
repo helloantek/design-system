@@ -103,15 +103,17 @@ for (const story of angularStories) {
   } else console.log(`ok   ${story.id.padEnd(40)} same markup as React`);
 }
 
-// Angular only: Signal Forms, Reactive Forms and ngModel move values both ways through Input and Checkbox.
+// Angular only: Signal Forms, Reactive Forms and ngModel move values both ways through Input, Checkbox and Select.
 const angularTests = {
-  'angular forms: [formField], formControlName and ngModel bind Input and Checkbox both ways; an invalid value shows once the field is touched; disabled follows': async () => {
+  'angular forms: [formField], formControlName and ngModel bind Input, Checkbox and Select both ways; an invalid value shows once the field is touched; disabled follows': async () => {
     await page.goto(`${ANGULAR}/iframe.html?id=components-input--forms-angular&viewMode=story`);
     const value = (form) => page.locator(`[data-form="${form}"] output`).textContent().then((t) => JSON.parse(t));
     const signalEmail = page.getByRole('textbox', { name: 'Email (signal)' });
     await signalEmail.waitFor();
     assert.equal(await signalEmail.inputValue(), 'ada@example.com', 'the model fills the input');
     assert.equal(await page.getByRole('checkbox', { name: 'Newsletter (signal)' }).isChecked(), true);
+    const signalRole = page.getByRole('combobox', { name: 'Role (signal)' });
+    assert.equal(await signalRole.textContent(), 'Engineer', 'the model fills the select');
     await signalEmail.fill('not an email');
     await settles(() => page.locator('[data-form="signal"]').textContent().then((t) => /Email valid: false/.test(t)), true, 'the email validator runs');
     assert.equal(await signalEmail.getAttribute('aria-invalid'), null, 'while typing, an invalid value is not flagged yet');
@@ -119,19 +121,31 @@ const angularTests = {
     await settles(() => signalEmail.getAttribute('aria-invalid'), 'true', 'leaving the field (touched) flags it');
     assert.match(await signalEmail.locator('xpath=ancestor::div[contains(@class,"ds-input ")]').getAttribute('class'), /ds-input--invalid/);
     await page.getByRole('checkbox', { name: 'Newsletter (signal)' }).click();
-    await settles(() => value('signal'), { email: 'not an email', newsletter: false }, 'typing and ticking update the model');
+    await signalRole.click();
+    await page.getByRole('option', { name: 'Researcher' }).click();
+    await settles(() => value('signal'), { email: 'not an email', role: 'researcher', newsletter: false }, 'typing, picking and ticking update the model');
     const reactiveEmail = page.getByRole('textbox', { name: 'Email (reactive)' });
     assert.equal(await reactiveEmail.inputValue(), 'grace@example.com');
     await reactiveEmail.fill('grace@hopper.dev');
     await page.getByText('Newsletter (reactive)').click();
-    await settles(() => value('reactive'), { email: 'grace@hopper.dev', newsletter: true });
+    const reactiveRole = page.getByRole('combobox', { name: 'Role (reactive)' });
+    await reactiveRole.focus();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await settles(() => value('reactive'), { email: 'grace@hopper.dev', role: 'designer', newsletter: true });
     await page.getByRole('button', { name: 'Disable the reactive form' }).click();
     await settles(() => reactiveEmail.isDisabled(), true, 'disabling the form control disables the input');
     await settles(() => page.getByRole('checkbox', { name: 'Newsletter (reactive)' }).isDisabled(), true);
+    await settles(() => reactiveRole.getAttribute('aria-disabled'), 'true', 'and the select');
     const plainEmail = page.getByRole('textbox', { name: 'Email (ngModel)' });
     await plainEmail.fill('alan@turing.dev');
     await page.getByRole('checkbox', { name: 'Newsletter (ngModel)' }).click();
-    await settles(() => value('ngmodel'), { email: 'alan@turing.dev', newsletter: false });
+    const plainRole = page.getByRole('combobox', { name: 'Role (ngModel)' });
+    await settles(() => plainRole.textContent(), 'Designer', 'ngModel fills the select');
+    await plainRole.focus();
+    await page.keyboard.type('e');
+    await page.keyboard.press('Enter');
+    await settles(() => value('ngmodel'), { email: 'alan@turing.dev', role: 'engineer', newsletter: false });
   },
 };
 for (const [name, run] of Object.entries(angularTests)) {

@@ -323,7 +323,7 @@ export const InputGroupStatus: StoryObj = {
 };
 
 /**
- * Angular only: Input and Checkbox bound with Signal Forms, Reactive Forms and ngModel. Switch the toolbar to Angular
+ * Angular only: Input, Checkbox and Select bound with Signal Forms, Reactive Forms and ngModel. Switch the toolbar to Angular
  * to see it; this stand-in keeps the story in the one component tree.
  */
 export const FormsAngular: StoryObj = {
