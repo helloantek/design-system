@@ -26,7 +26,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 
 | Stage | Patterns | Drawn |
 |---|---|---|
-| 1. Decisions and permissions (8) | Approval Card, Tool Call Card, Permission Request, Decision Card, Approval Gates, Decision Inbox, Autonomy Dial, Review Center | 3 / 8 |
+| 1. Decisions and permissions (8) | Approval Card, Tool Call Card, Permission Request, Decision Card, Approval Gates, Decision Inbox, Autonomy Dial, Review Center | 8 / 8 (in review) |
 | 2. Answers and thinking (12) | AI Answer, Cited Answer, Thinking State, Thinking Loader, Message Actions, Model Picker, Context Window, Inline Diff, Writing Assistant, Email Draft, Prompt Library, Memory Panel | 0 / 12 |
 | 3. One agent at work (10) | Agent Trail, Agent Monitor, Agent Plan, Agent Steering, Running Now, Plan vs Actual, Agent Checkpoints, Parallel Attempts, Agent Handoff, Smart Recommendation | 0 / 10 |
 | 4. Many agents (13) | Agent Inbox, Agent Fleet, Agent Tree, Agent Lanes, Agent Queue, Fan-out Grid, Delegate Board, Collaboration Stream, Agent Cursors, Conflict Radar, Agent Findings, Agent Graph, Tool Access Map | 0 / 13 |
