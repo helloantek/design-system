@@ -4,3 +4,5 @@ export { DsButton, type ButtonSize, type ButtonVariant } from './lib/button/butt
 export { DsBadge, type BadgeColor, type BadgeShape, type BadgeSize, type BadgeVariant } from './lib/badge/badge';
 export { DsCheckbox, DsCheckboxGroup } from './lib/checkbox/checkbox';
 export { DsInput, DsInputAction, DsPrefix, DsSuffix, type InputSize, type InputVariant } from './lib/input/input';
+export { DsTooltip, type TooltipSide } from './lib/tooltip/tooltip';
+export { DsDialog, DsDialogClose, DsDialogFooter, DsDialogTrigger } from './lib/dialog/dialog';

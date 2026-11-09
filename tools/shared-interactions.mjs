@@ -110,4 +110,68 @@ export const sharedTests = {
     assert.equal(await field.getAttribute('aria-invalid'), 'true');
     assert.equal(await field.isDisabled(), true);
   },
+  'tooltip: describes its trigger; Tab shows it at once, Escape hides it; hover shows it after the delay and keeps it over the tooltip': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=components-tooltip--default&viewMode=story`);
+    const button = page.getByRole('button', { name: 'Refund' });
+    await button.waitFor();
+    const tip = page.getByRole('tooltip', { includeHidden: true });
+    assert.equal(await tip.isVisible(), false, 'hidden at first');
+    await settles(async () => (await button.getAttribute('aria-describedby')) === (await tip.getAttribute('id')), true, 'the tooltip describes the button');
+    await page.keyboard.press('Tab');
+    await settles(() => tip.isVisible(), true, 'keyboard focus shows it at once');
+    assert.equal((await tip.textContent()).trim(), 'Refund this payment');
+    await page.keyboard.press('Escape');
+    await settles(() => tip.isVisible(), false, 'Escape hides it');
+    await button.blur();
+    // Start the pointer away from the button: an earlier test may have left it where the button now is.
+    await page.mouse.move(0, 0);
+    await button.hover();
+    assert.equal(await tip.isVisible(), false, 'not before the delay');
+    await tip.waitFor({ state: 'visible', timeout: 2000 });
+    const box = await tip.boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 4 });
+    await page.waitForTimeout(100);
+    assert.equal(await tip.isVisible(), true, 'it stays while the pointer is over it');
+    await page.mouse.move(0, 0);
+    await settles(() => tip.isVisible(), false, 'leaving hides it');
+    await button.click();
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(100);
+    assert.equal(await tip.isVisible(), false, 'a click does not show it');
+  },
+  'dialog: the trigger opens a named, described modal with focus inside; Escape, the Close button, a footer button and the backdrop close it; focus returns': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=components-dialog--playground&viewMode=story`);
+    const trigger = page.getByRole('button', { name: 'Open dialog' });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-haspopup'), 'dialog');
+    assert.equal(await page.getByRole('dialog').count(), 0, 'closed at first');
+    const dialog = page.getByRole('dialog', { name: 'Dialog title' });
+    const open = async () => {
+      await trigger.click();
+      await dialog.waitFor();
+    };
+    const closesWith = async (how, message) => {
+      await open();
+      await how();
+      await dialog.waitFor({ state: 'hidden' });
+      await settles(() => trigger.evaluate((el) => el === document.activeElement), true, `${message}: focus returns to the trigger`);
+    };
+    await open();
+    assert.equal(await dialog.evaluate((el) => el.matches(':modal')), true, 'a modal dialog');
+    assert.match(await dialog.evaluate((el) => document.getElementById(el.getAttribute('aria-describedby')).textContent), /what this dialog does/, 'the description describes it');
+    assert.equal(await dialog.evaluate((el) => el.contains(document.activeElement)), true, 'focus moves inside');
+    assert.equal(await dialog.evaluate((el) => el.offsetWidth), 448, 'Figma width');
+    await page.keyboard.press('Escape');
+    await dialog.waitFor({ state: 'hidden' });
+    await settles(() => trigger.evaluate((el) => el === document.activeElement), true, 'Escape: focus returns to the trigger');
+    await closesWith(() => dialog.getByRole('button', { name: 'Close' }).click(), 'Close');
+    await closesWith(() => dialog.getByRole('button', { name: 'Cancel' }).click(), 'Cancel');
+    await closesWith(() => page.mouse.click(5, 5), 'the backdrop');
+    await open();
+    await dialog.getByText('Dialog content').click();
+    await page.waitForTimeout(100);
+    assert.equal(await dialog.isVisible(), true, 'a click inside keeps it open');
+    await page.keyboard.press('Escape');
+    await dialog.waitFor({ state: 'hidden' });
+  },
 };
