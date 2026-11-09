@@ -9,57 +9,38 @@ What is left after the Sort UI 2.0 component pages (all implemented, see [migrat
 | Brand logos (Icons page `1:2`) | The 131 logos (GitHub, Google, Apple Pay, Visa…) | Later, from their owners' official sources (e.g. simple-icons), when a section needs them. The icon set itself is decided: Remix Icons, lucide only where Remix has none ([icons.md](icons.md)). |
 | Marketing sections | Navigation Bar (with Logo), Hero, Features, Social Proof, About, Content, Pricing, Stats, CTA, FAQ, Footer | Eleven pages of page sections built from the components. To be scoped first: library components or Playground compositions. |
 
-## Compared with affectUI (2026-11-09)
+## Patterns: everything affectUI has (2026-11-09)
 
-[affectUI](https://www.affectui.com/components) lists 90 React components for AI products and SaaS. Below, each of them is sorted against what we have. Its Pro items are paid, and the free ones have a license of their own, so we copy neither its code nor its look. What we take from it is the list of jobs a product needs done. We design each one in Sort UI 2.0 terms (tokens, `ds-css`, a Figma spec from design per [playbook.md](playbook.md)) and build it for React and Angular (ADR 0002).
+[affectUI](https://www.affectui.com/components) lists 90 React components for AI products and SaaS. We want a counterpart for every one of them. We copy neither its code nor its look; its Pro items are paid, and the free ones have a license of their own. What we take is the job each one does, and we build that our own way.
 
-**We have it (12):** Button, Checkbox, Combobox, Command Menu (Command), OTP Input (Input OTP), Select, Switch, Text Area (Textarea), Text Field (Input), Toaster (Sonner), Chat Composer (AI Chat Composer), Segmented Control (Toggle Group, Tabs).
+**How each one is made**
+1. **Behaviour.** A short spec of our own: states, keyboard, accessibility. It is written from affectUI's public description and nothing else.
+2. **Figma.** Claude drafts it on the Sort UI 2.0 file's **Patterns** page (`6084:1290`). The draft uses instances of our components, our variables and text styles, and Remix icons ([icons.md](icons.md)). Tomek approves it or edits it in place, and his edits set the rules for the next drafts.
+3. **Code.** Each approved pattern becomes a `Patterns/*` story in React and Angular. Its Figma frames are the references for the visual check, and the interaction tests cover its keyboard and states.
 
-**Phase 1: extend what we have (16).** Each is a variant or a demo of an existing component, so no new package API is needed.
+All patterns are drawn first, stage by stage, and coded afterwards in the same stages. A pattern is done when [definition-of-done.md](definition-of-done.md) holds.
 
-| affectUI | Ours | What is missing |
+**We have it already (12):** Button, Checkbox, Combobox, Command Menu (Command), OTP Input (Input OTP), Select, Switch, Text Area (Textarea), Text Field (Input), Toaster (Sonner), Chat Composer (AI Chat Composer), Segmented Control (Toggle Group, Tabs).
+
+**The other 78, in 8 stages:**
+
+| Stage | Patterns | Drawn |
 |---|---|---|
-| Agent Trail | AI Trace | A live timer on the running step, an "approval needed" step, a step counter (3/5) in the header |
-| Usage Meter | Usage Bar | A credits demo by category, with a near-the-limit state |
-| KPI Chart, Breakdown Chart, Compact Breakdown | Chart + Card | Demos: a metric card with a line chart; a stacked bar with a linked table; a total with ranked rows |
-| Data Table | Table | Cell and range selection, editing in place, copy and paste (a big job: scope it first) |
-| Date Range Picker | Date Picker | Presets and a comparison period |
-| Inline Diff | Diff | Prose with per-word accept and reject |
-| Dropzone | Attachment | A drop area that turns into Attachment rows with progress |
-| Notification Stack | Sonner | A stack of persistent notices |
-| Thinking Loader | Spinner | A label that cycles through phases |
-| Tag Input | Combobox `multiple` | Pasting a list, flagging duplicates |
-| Message Actions | Message | An actions bar (copy, regenerate, feedback) |
-| Filter Menu | Dropdown Menu + Badge | A Playground composition: grouped filters with removable chips |
-| Profile Menu | Dropdown Menu + Avatar | A Playground composition |
-| Comment Thread | Message, Bubble | A thread with replies (Playground) |
+| 1. Decisions and permissions (8) | Approval Card, Tool Call Card, Permission Request, Decision Card, Approval Gates, Decision Inbox, Autonomy Dial, Review Center | 3 / 8 |
+| 2. Answers and thinking (12) | AI Answer, Cited Answer, Thinking State, Thinking Loader, Message Actions, Model Picker, Context Window, Inline Diff, Writing Assistant, Email Draft, Prompt Library, Memory Panel | 0 / 12 |
+| 3. One agent at work (10) | Agent Trail, Agent Monitor, Agent Plan, Agent Steering, Running Now, Plan vs Actual, Agent Checkpoints, Parallel Attempts, Agent Handoff, Smart Recommendation | 0 / 10 |
+| 4. Many agents (13) | Agent Inbox, Agent Fleet, Agent Tree, Agent Lanes, Agent Queue, Fan-out Grid, Delegate Board, Collaboration Stream, Agent Cursors, Conflict Radar, Agent Findings, Agent Graph, Tool Access Map | 0 / 13 |
+| 5. Runs, costs and causes (11) | Trace Waterfall, Cost Waterfall, Context Map, Fallback Chain, Judge Bracket, Root Cause Tree, Decision Tree, Agent Ledger, Agent Recap, Away Summary, Scheduled Runs | 0 / 11 |
+| 6. Data and SaaS (9) | KPI Chart, Breakdown Chart, Compact Breakdown, Change Summary, Usage Meter, Experiment Card, Data Table, Billing Schedule, Project Card | 0 / 9 |
+| 7. Forms and onboarding (10) | Stepper Form, Progress Tracker, Setup Guide, Tips Panel, Date Range Picker, Dropzone, Tag Input, Filter Menu, Integration Picker, Integration Settings | 0 / 10 |
+| 8. People and messages (5) | Comment Thread, Comments Panel, Notification Stack, Reaction Bar, Profile Menu | 0 / 5 |
 
-**Phase 2: new general components (6).** Not tied to AI; worth having in the library. Ask design for a Sort UI 2.0 spec first.
-
-| Component | Covers |
-|---|---|
-| `Stepper` | Stepper Form: numbered steps, done and current, inline validation |
-| `Checklist` | Progress Tracker, Setup Guide, Tips Panel: tasks with a progress bar, collapsible groups, done state |
-| `Stat` | Change Summary: a metric with its trend (value, delta, colour) |
-| `ReactionBar` | Reaction Bar: like, comment and share counts in one pill |
-
-**Phase 3: AI building blocks (11).** The pieces that recur across agent UIs. Each is small and composes from what we have (Card, Badge, Button, AI Trace, Diff).
-
-| Component | Covers |
-|---|---|
-| `ToolCall` | Tool Call Card: one call with status and a timer, folding open to arguments and result |
-| `ApprovalRequest` | Approval Card, Permission Request: what the agent wants to do, its risk, Approve or Deny, then folds to one line |
-| `Thinking` | Thinking State: a timer, sources searched, steps appearing one by one (on AI Trace) |
-| `Citation` | AI Answer, Cited Answer: inline citation chips that preview their source, and source cards |
-| `ModelPicker` | Model Picker: a Select with each model's speed, quality and cost |
-| `ContextMeter` | Context Window: what fills the context, on Usage Bar |
-| `DecisionCard` | Decision Card: numbered options, one recommended, plus a free answer |
-| `AgentPlan` | Agent Plan: a step list to review (reorder, edit, remove) before the agent runs it |
-| `TaskStatus` | Running Now: a header pill with running tasks and the ones that need you |
-
-**Phase 4: agent patterns (45).** Whole screens and dashboards: Agent Inbox, Agent Tree, Agent Lanes, Agent Fleet, Agent Graph, Agent Queue, Agent Ledger, Agent Recap, Trace Waterfall, Cost Waterfall, Context Map, Conflict Radar, Judge Bracket, Parallel Attempts, Fan-out Grid, Fallback Chain, Root Cause Tree, Decision Tree, Delegate Board, Scheduled Runs, Review Center, Approval Gates, Collaboration Stream, and the rest of the list: Agent Checkpoints, Agent Cursors, Agent Findings, Agent Handoff, Agent Monitor, Agent Steering, Autonomy Dial, Away Summary, Comments Panel, Decision Inbox, Experiment Card, Memory Panel, Plan vs Actual, Prompt Library, Smart Recommendation, Tool Access Map, Writing Assistant, Email Draft, Billing Schedule, Integration Picker, Integration Settings, Project Card.
-
-These are products rather than components. Build each one as a `Playground/*` composition of phases 1–3 when a product needs it, and promote a part to the library only when a second product needs it too.
+**Drafting rules so far** (from Tomek's reviews):
+- Remix icons, not the Sort UI / lucide set. A running step shows the Spinner (default size, 17 px, the size of the icons).
+- Toggle Group: Variant=Default with Spacing=2, not the joined Outline group.
+- Layout frames around a card do not clip, or they cut off the card's outside border and shadow.
+- Cards use `colors/border` (`--ds-border`), the Sort UI 2.0 name of 1.3's `border/default`.
+- Inside a Card slot, put side-by-side content in a frame of its own: Figma does not lay out a slot's children again after they change.
 
 ## Code debt
 
