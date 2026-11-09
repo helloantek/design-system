@@ -6,3 +6,4 @@ export { DsCheckbox, DsCheckboxGroup } from './lib/checkbox/checkbox';
 export { DsInput, DsInputAction, DsPrefix, DsSuffix, type InputSize, type InputVariant } from './lib/input/input';
 export { DsTooltip, type TooltipSide } from './lib/tooltip/tooltip';
 export { DsDialog, DsDialogClose, DsDialogFooter, DsDialogTrigger } from './lib/dialog/dialog';
+export { DsSelect, type SelectCaption, type SelectGroup, type SelectIndicator, type SelectItem, type SelectOption, type SelectSeparator, type SelectSize, type SelectVariant } from './lib/select/select';

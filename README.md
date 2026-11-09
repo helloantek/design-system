@@ -8,7 +8,7 @@ One UI kit, many brands, any platform. Components are designed in Figma, impleme
 | [`@helloantek/ds-css`](packages/css) | Component styles as plain CSS classes, built only on tokens | every web project |
 | [`@helloantek/ds-core`](packages/core) | Framework-free behaviour the adapters share: popup placement, list navigation, type-ahead ([ADR 0002](docs/adr/0002-angular.md)) | `ds-react` and `ds-angular`; installed with them |
 | [`@helloantek/ds-react`](packages/react) | React components (markup + classes) | React / Next.js |
-| [`@helloantek/ds-angular`](packages/angular) | Angular 22 components (markup + classes, the same as `ds-react`): pilot: Button, Badge, Input, Checkbox, Tooltip, Dialog ([ADR 0002](docs/adr/0002-angular.md)) | Angular |
+| [`@helloantek/ds-angular`](packages/angular) | Angular 22 components (markup + classes, the same as `ds-react`): pilot: Button, Badge, Input, Checkbox, Select, Tooltip, Dialog ([ADR 0002](docs/adr/0002-angular.md)) | Angular |
 | [`apps/storybook`](apps/storybook) | Documentation with brand and colour-scheme switchers; composes the Angular Storybook ([`apps/storybook-angular`](apps/storybook-angular)): the toolbar's **React / Angular** switch shows each story from either build | design, development |
 
 Why it is split this way: [ADR 0001](docs/adr/0001-layered-packages.md). How an Angular adapter fits in: [ADR 0002](docs/adr/0002-angular.md). It is based on the [Button pilot](docs/pilot/2026-10-button/REPORT.md).
@@ -58,7 +58,7 @@ On phones, components turn off the browser's grey tap highlight (they draw their
 
 ### Angular
 
-Angular 22 (pilot: Button, Badge, Input, Checkbox, Tooltip, Dialog; the rest follows [ADR 0002](docs/adr/0002-angular.md)):
+Angular 22 (pilot: Button, Badge, Input, Checkbox, Select, Tooltip, Dialog; the rest follows [ADR 0002](docs/adr/0002-angular.md)):
 
 ```sh
 npm i @helloantek/ds-tokens @helloantek/ds-css @helloantek/ds-angular @fontsource/inter
@@ -80,7 +80,7 @@ import { DsBadge, DsButton, DsLeadingIcon } from '@helloantek/ds-angular';
 
 Inputs are named after the Figma properties, as in React (`variant`, `size`, `badge`, `color`, `dot`…). Icon slots are marked on the projected element: `dsLeadingIcon`, `dsTrailingIcon`, `dsIcon` (an icon-only button, named with `aria-label`), `dsImage`. A badge's Close Icon is `removable` with the `(remove)` output. Storybook: switch **Framework** in the toolbar to **Angular**.
 
-Fields work with every Angular form API: `<ds-input>` and `<ds-checkbox>` take Signal Forms (`[formField]`), Reactive Forms (`formControlName`, `[formControl]`) and `ngModel`, or plain two-way binding (`[(value)]`, `[(checked)]`). A form's disabled state, and with Signal Forms its `invalid`, `required` and `name`, reach the native input. With Signal Forms an invalid value is flagged once the user leaves the field (`touched`); an `error` message, or `invalid` set by hand, shows at once. `<ds-input>` and `<ds-checkbox>` render no box of their own (`display: contents`); the T-slot button is `<button dsInputAction>`, a group of checkboxes `<fieldset dsCheckboxGroup label="…">`.
+Fields work with every Angular form API: `<ds-input>`, `<ds-checkbox>` and `<ds-select>` take Signal Forms (`[formField]`), Reactive Forms (`formControlName`, `[formControl]`) and `ngModel`, or plain two-way binding (`[(value)]`, `[(checked)]`). A form's disabled state, and with Signal Forms its `invalid`, `required` and `name`, reach the native input. With Signal Forms an invalid value is flagged once the user leaves the field (`touched`); an `error` message, or `invalid` set by hand, shows at once. `<ds-input>`, `<ds-checkbox>` and `<ds-select>` render no box of their own (`display: contents`); the T-slot button is `<button dsInputAction>`, a group of checkboxes `<fieldset dsCheckboxGroup label="…">`.
 
 ```ts
 import { DsCheckbox, DsInput } from '@helloantek/ds-angular';
@@ -97,6 +97,14 @@ class Signup {
   model = signal({ email: '', news: false });
   signup = form(this.model, (p) => required(p.email));
 }
+```
+
+`<ds-select>` takes its options as data, as React's Select does (groups, separators, captions, descriptions, badges, disabled options); an option's `icon` or `media` is an `<ng-template>` that gets the option as context. Its value is a string or `null`, or a list with `multiple`:
+
+```html
+<ng-template #globe><svg …></svg></ng-template>
+<ds-select label="Region" placeholder="Select a region" [options]="[{ value: 'eu', label: 'Europe', icon: globe }, { value: 'us', label: 'North America', icon: globe }]" [(value)]="region" />
+<ds-select label="Reviewers" [options]="people" multiple tags [formField]="form.reviewers" />
 ```
 
 Overlays behave as in React. `<ds-tooltip content="…">` goes around its trigger and describes it; `<ds-dialog>` is a native modal `<dialog>`, opened by the element marked `dsDialogTrigger` (or `[(open)]`), with its actions in `<ng-container dsDialogFooter>` and `dsDialogClose` on a button that closes it:

@@ -168,7 +168,7 @@ export const InputGroupStatus: StoryObj = {
 };
 
 /**
- * Angular only: Input and Checkbox bound with Signal Forms (\`[formField]\`), Reactive Forms (\`formControlName\`) and
+ * Angular only: Input, Checkbox and Select bound with Signal Forms (\`[formField]\`), Reactive Forms (\`formControlName\`) and
  * \`ngModel\`; type or tick and the values follow. The React Storybook has a stand-in with this id; both are tagged
  * "angular-only", so the parity check renders this one without comparing it and tests the bindings instead.
  */
