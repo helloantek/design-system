@@ -1,6 +1,6 @@
 {
   "name": "@helloantek/ds-angular",
-  "version": "2.56.0",
+  "version": "2.57.0",
   "description": "Angular components for @helloantek/ds. Styles come from @helloantek/ds-css.",
   "type": "module",
   "files": [
@@ -29,7 +29,7 @@
     "@helloantek/ds-css": "^2.0.0"
   },
   "dependencies": {
-    "@helloantek/ds-core": "^2.56.0",
+    "@helloantek/ds-core": "^2.57.0",
     "tslib": "^2.9.1"
   },
   "devDependencies": {

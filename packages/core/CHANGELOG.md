@@ -1,5 +1,7 @@
 # @helloantek/ds-core
 
+## 2.57.0
+
 ## 2.56.0
 
 ### Minor Changes
