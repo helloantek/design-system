@@ -42,7 +42,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Cards use `colors/border` (`--ds-border`), the Sort UI 2.0 name of 1.3's `border/default`.
 - Inside a Card slot, put side-by-side content in a frame of its own: Figma does not lay out a slot's children again after they change.
 - A popover floats: it is out of the card's flow, hugs its content, hangs under the thing it belongs to and uses `Surface/Popover`; it never becomes a full-width bar inside the card.
-- A keyboard shortcut on a button is the button's trailing icon (Remix, or lucide where Remix has none, e.g. `corner-down-left` for Enter), not a Kbd placed next to it.
+- A keyboard shortcut is part of its button: a Kbd (Size=sm) in the button's trailing icon slot, Variant=Inverted on a Default (dark) button. Never a Kbd or a key legend next to the buttons.
 
 ## Code debt
 
