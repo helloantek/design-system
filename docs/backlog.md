@@ -28,7 +28,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 |---|---|---|
 | 1. Decisions and permissions (8) | Approval Card, Tool Call Card, Permission Request, Decision Card, Approval Gates, Decision Inbox, Autonomy Dial, Review Center | 8 / 8 (in review) |
 | 2. Answers and thinking (12) | AI Answer, Cited Answer, Thinking State, Thinking Loader, Message Actions, Model Picker, Context Window, Inline Diff, Writing Assistant, Email Draft, Prompt Library, Memory Panel | 12 / 12 (in review) |
-| 3. One agent at work (10) | Agent Trail, Agent Monitor, Agent Plan, Agent Steering, Running Now, Plan vs Actual, Agent Checkpoints, Parallel Attempts, Agent Handoff, Smart Recommendation | 10 / 10 (in review) |
+| 3. One agent at work (10) | Agent Trail, Agent Monitor, Agent Plan, Agent Steering, Running Now, Plan vs Actual, Agent Checkpoints, Parallel Attempts, Agent Handoff, Smart Recommendation | 10 / 10 (redrawn, in review) |
 | 4. Many agents (13) | Agent Inbox, Agent Fleet, Agent Tree, Agent Lanes, Agent Queue, Fan-out Grid, Delegate Board, Collaboration Stream, Agent Cursors, Conflict Radar, Agent Findings, Agent Graph, Tool Access Map | 0 / 13 |
 | 5. Runs, costs and causes (11) | Trace Waterfall, Cost Waterfall, Context Map, Fallback Chain, Judge Bracket, Root Cause Tree, Decision Tree, Agent Ledger, Agent Recap, Away Summary, Scheduled Runs | 0 / 11 |
 | 6. Data and SaaS (9) | KPI Chart, Breakdown Chart, Compact Breakdown, Change Summary, Usage Meter, Experiment Card, Data Table, Billing Schedule, Project Card | 0 / 9 |
@@ -43,6 +43,10 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Inside a Card slot, put side-by-side content in a frame of its own: Figma does not lay out a slot's children again after they change.
 - A popover floats: it is out of the card's flow, hugs its content, hangs under the thing it belongs to and uses `Surface/Popover`; it never becomes a full-width bar inside the card.
 - A keyboard shortcut is part of its button: a Kbd (Size=sm) in the button's trailing icon slot, Variant=Inverted on a Default (dark) button. Never a Kbd or a key legend next to the buttons.
+- Compact scale: a one-line header (14 px medium title, its meta on the right), rows of 28 to 34 px, 13 to 14 px text, cards 380 to 640 px wide. Times, counts and costs sit right-aligned.
+- Status colours are the Badge palette tokens (`colors/palette/*`): running blue, needs you amber, done green, failed red, paused muted. Running shows the Spinner in blue, needs you a dashed amber ring, done a green check, failed a red cross.
+- Tools show their logo from Remix (GitHub, Slack, Google Drive…); an agent with no logo gets a letter or a robot tile.
+- Each pattern is drawn in all its states: at work, needs you, failed, done, and folded or empty.
 
 ## Code debt
 
