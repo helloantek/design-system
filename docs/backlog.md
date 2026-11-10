@@ -48,6 +48,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Tools show their logo from Remix (GitHub, Slack, Google Drive…); an agent with no logo gets a letter or a robot tile.
 - Each pattern is drawn in all its states: at work, needs you, failed, done, and folded or empty. One state per card: a card shows one idea, not several at once.
 - Use an icon where the job needs one, not a hand-drawn chart: progress is Remix `progress-1-line` … `progress-8-line`. Figma's Remix library is 2.5; the icons the code's Remix 4.9 adds (progress, the Claude, Gemini, Notion and Figma logos, sparkling, arrow-up-down…) are local components in the frame "Remix 4.9 icons" on the Patterns page.
+- Time bars (Plan vs Actual): the planned ghost is dashed with 2 px corners; the actual bar rounds only its start, and the part over plan follows after a 2 px gap, rounding only its end.
 - Follow the original's structure where it carries the job (Agent Handoff: agents on top, a handoff column between each pair, linked by lines); only the look and the content are ours.
 
 ## Code debt
