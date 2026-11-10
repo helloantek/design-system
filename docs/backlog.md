@@ -46,7 +46,9 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Compact scale: a one-line header (14 px medium title, its meta on the right), rows of 28 to 34 px, 13 to 14 px text, cards 380 to 640 px wide. Times, counts and costs sit right-aligned.
 - Status colours are the Badge palette tokens (`colors/palette/*`): running blue, needs you amber, done green, failed red, paused muted. Running shows the Spinner in blue, needs you a dashed amber ring, done a green check, failed a red cross.
 - Tools show their logo from Remix (GitHub, Slack, Google Drive…); an agent with no logo gets a letter or a robot tile.
-- Each pattern is drawn in all its states: at work, needs you, failed, done, and folded or empty.
+- Each pattern is drawn in all its states: at work, needs you, failed, done, and folded or empty. One state per card: a card shows one idea, not several at once.
+- Use an icon where the job needs one, not a hand-drawn chart: progress is Remix `progress-1-line` … `progress-8-line`. Figma's Remix library is 2.5; the icons the code's Remix 4.9 adds (progress, the Claude, Gemini, Notion and Figma logos, sparkling, arrow-up-down…) are local components in the frame "Remix 4.9 icons" on the Patterns page.
+- Follow the original's structure where it carries the job (Agent Handoff: agents on top, a handoff column between each pair, linked by lines); only the look and the content are ours.
 
 ## Code debt
 
