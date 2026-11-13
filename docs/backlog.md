@@ -26,7 +26,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 
 | Stage | Patterns | Drawn |
 |---|---|---|
-| 1. Decisions and permissions (8) | Approval Card, Tool Call Card, Permission Request, Decision Card, Approval Gates, Decision Inbox, Autonomy Dial, Review Center | 8 / 8 (in review) |
+| 1. Decisions and permissions (8) | Approval Card, Tool Call Card, Permission Request, Decision Card, Approval Gates, Decision Inbox, Autonomy Dial, Review Center | 8 / 8 (redrawn, in review) |
 | 2. Answers and thinking (12) | AI Answer, Cited Answer, Thinking State, Thinking Loader, Message Actions, Model Picker, Context Window, Inline Diff, Writing Assistant, Email Draft, Prompt Library, Memory Panel | 12 / 12 (in review) |
 | 3. One agent at work (10) | Agent Trail, Agent Monitor, Agent Plan, Agent Steering, Running Now, Plan vs Actual, Agent Checkpoints, Parallel Attempts, Agent Handoff, Smart Recommendation | 10 / 10 (redrawn, in review) |
 | 4. Many agents (13) | Agent Inbox, Agent Fleet, Agent Tree, Agent Lanes, Agent Queue, Fan-out Grid, Delegate Board, Collaboration Stream, Agent Cursors, Conflict Radar, Agent Findings, Agent Graph, Tool Access Map | 0 / 13 |
@@ -49,6 +49,8 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Each pattern is drawn in all its states: at work, needs you, failed, done, and folded or empty. One state per card: a card shows one idea, not several at once.
 - Use an icon where the job needs one, not a hand-drawn chart: progress is Remix `progress-1-line` … `progress-8-line`. Figma's Remix library is 2.5; the icons the code's Remix 4.9 adds (progress, the Claude, Gemini, Notion and Figma logos, sparkling, arrow-up-down…) are local components in the frame "Remix 4.9 icons" on the Patterns page.
 - Time bars (Plan vs Actual): the planned ghost is dashed with 2 px corners; the actual bar rounds only its start, and the part over plan follows after a 2 px gap, rounding only its end.
+- A pattern that lives in a conversation is drawn there too: an approval under the agent's message, a question above the chat composer (the AI Chat Composer component), a tool call after the user's message.
+- On the light Destructive button the shortcut is the Default Kbd, not the Inverted one.
 - Follow the original's structure where it carries the job (Agent Handoff: agents on top, a handoff column between each pair, linked by lines); only the look and the content are ours.
 
 ## Code debt
