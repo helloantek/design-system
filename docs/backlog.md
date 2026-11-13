@@ -43,14 +43,16 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Inside a Card slot, put side-by-side content in a frame of its own: Figma does not lay out a slot's children again after they change.
 - A popover floats: it is out of the card's flow, hugs its content, hangs under the thing it belongs to and uses `Surface/Popover`; it never becomes a full-width bar inside the card.
 - A keyboard shortcut is part of its button: a Kbd (Size=sm) in the button's trailing icon slot, Variant=Inverted on a Default (dark) button. Never a Kbd or a key legend next to the buttons.
+- A key that is a symbol is an icon, not text: Kbd Type=Icon with the Remix icon (↵ `corner-down-left`, ⌘ `command`, ⌫ `delete-back-2`); ⌘↵ is the Icon type with its modifier icon on (the Kbd hugs both). ⌘Z is Type=Text with the ⌘ icon and the letter. Letters, digits and Esc stay text.
 - Compact scale: a one-line header (14 px medium title, its meta on the right), rows of 28 to 34 px, 13 to 14 px text, cards 380 to 640 px wide. Times, counts and costs sit right-aligned.
 - Status colours are the Badge palette tokens (`colors/palette/*`): running blue, needs you amber, done green, failed red, paused muted. Running shows the Spinner in blue, needs you a dashed amber ring; done is a solid green circle (`colors/palette/green-text`) with a check in `colors/background`, failed a solid red one (`colors/palette/red-text`) with a cross.
 - Tools show their logo from Remix (GitHub, Slack, Google Drive…); an agent with no logo gets a letter or a robot tile.
 - Each pattern is drawn in all its states: at work, needs you, failed, done, and folded or empty. One state per card: a card shows one idea, not several at once.
-- Use an icon where the job needs one, not a hand-drawn chart: progress is Remix `progress-1-line` … `progress-8-line`. Figma's Remix library is 2.5; the icons the code's Remix 4.9 adds (progress, the Claude, Gemini, Notion and Figma logos, sparkling, arrow-up-down…) are local components in the frame "Remix 4.9 icons" on the Patterns page.
+- Use an icon where the job needs one, not a hand-drawn chart: progress is Remix `progress-1` … `progress-8` (line). Icons the code's Remix 4.9 has that the old Remix 2.5 library lacks (progress, the Claude, Gemini, Notion and Figma logos, sparkling, arrow-up-down, command…) come from the "Remix Icon Set v4.91" library.
 - Time bars (Plan vs Actual): the planned ghost is dashed with 2 px corners; the actual bar rounds only its start, and the part over plan follows after a 2 px gap, rounding only its end.
 - A pattern that lives in a conversation is drawn there too: an approval under the agent's message, a question above the chat composer (the AI Chat Composer component), a tool call after the user's message.
 - On the light Destructive button the shortcut is the Default Kbd, not the Inverted one.
+- Highlighted words (a cited sentence, a suggested edit) carry a continuous tint behind the words, not a pill per phrase: blue for a citation, red struck for removed words, green for added ones, the stronger tint for the one in focus.
 - Follow the original's structure where it carries the job (Agent Handoff: agents on top, a handoff column between each pair, linked by lines); only the look and the content are ours.
 
 ## Code debt
