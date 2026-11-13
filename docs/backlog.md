@@ -54,6 +54,12 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - On the light Destructive button the shortcut is the Default Kbd, not the Inverted one.
 - Highlighted words (a cited sentence, a suggested edit) carry a continuous tint behind the words, not a pill per phrase: blue for a citation, red struck for removed words, green for added ones, the stronger tint for the one in focus.
 - Follow the original's structure where it carries the job (Agent Handoff: agents on top, a handoff column between each pair, linked by lines); only the look and the content are ours.
+- Radii follow the size of the thing: small elements inside a card (rows, slots, chips, tiles of 20 to 40 px) use `radius/sm` or `radius/md`; `radius/lg` and up are for cards and panels. Small elements with a large radius look like pills.
+- A value over time is a line chart (line with a light area under it, the latest point marked), not bars.
+- Colours that sort things into kinds (context parts, categories) never reuse a status colour: use the other palette tints (violet, teal, pink, cyan…) and keep amber for needs you or a warning.
+- Connectors leave and reach their nodes horizontally, with enough room between columns that they read as a fan, not a vertical bundle.
+- Cards side by side that show options of the same kind have the same height.
+- Selection handles sit on the corners of a square selection frame, even when the selected thing has rounded corners.
 
 ## Code debt
 
