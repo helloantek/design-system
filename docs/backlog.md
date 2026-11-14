@@ -64,6 +64,8 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Connectors share one look across patterns: 1.5 px, rounded elbows (corner radius 8), leaving and entering nodes horizontally, never across a label. A connector with nothing to signal is plain border grey. Every green that means done or confirmed is the same green as the confirmations (green text), never the stronger green solid.
 - A node at work keeps its normal tile (card fill, grey border) and shows a soft pulse around it (two faint rings of the running blue), not a blue or tinted tile and no strong glow. Needs you (amber dashed) and failed (red) still colour the tile.
 - Text meets WCAG AA contrast: 4.5:1 (3:1 from 18 px). White text on a colour sits on the darker text shade of that colour (cursor labels, order numbers), a highlight behind words uses the light tint, and no text is smaller than 10 px.
+- Spacing and radius come only from the tokens and are bound to the variables (spacing/*, radius/*). The sections of a card (header, body, footer) share one inset: 16 px left and right, a header or footer 12 px top and bottom. A box inside another never has a larger radius than its parent minus its inset; a rounded box with a filled edge clips its content. Equal things in a row have equal heights.
+- Use the library components wherever one exists, never a drawn copy: Badge for chips, labels and counts (cursor labels too), Select for pickers, Usage Bar for split bars, Table Row and Table Cell for tables.
 - Text never overlaps its neighbour or leaves its card or tooltip: a long label wraps, or ends in an ellipsis inside a box of fixed width. A highlighted span on a chart (a pause, a limit) starts exactly where the line changes.
 
 ## Code debt
