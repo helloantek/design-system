@@ -1,5 +1,11 @@
 # @helloantek/ds-react
 
+## 2.58.0
+
+### Patch Changes
+
+- @helloantek/ds-core@2.58.0
+
 ## 2.57.0
 
 ### Patch Changes
