@@ -31,7 +31,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 | 3. One agent at work (10) | Agent Trail, Agent Monitor, Agent Plan, Agent Steering, Running Now, Plan vs Actual, Agent Checkpoints, Parallel Attempts, Agent Handoff, Smart Recommendation | 10 / 10 (accepted) |
 | 4. Many agents (13) | Agent Inbox, Agent Fleet, Agent Tree, Agent Lanes, Agent Queue, Fan-out Grid, Delegate Board, Collaboration Stream, Agent Cursors, Conflict Radar, Agent Findings, Agent Graph, Tool Access Map | 13 / 13 (accepted) |
 | 5. Runs, costs and causes (11) | Trace Waterfall, Cost Waterfall, Context Map, Fallback Chain, Judge Bracket, Root Cause Tree, Decision Tree, Agent Ledger, Agent Recap, Away Summary, Scheduled Runs | 11 / 11 (accepted) |
-| 6. Data and SaaS (9) | KPI Chart, Breakdown Chart, Compact Breakdown, Change Summary, Usage Meter, Experiment Card, Data Table, Billing Schedule, Project Card | 9 / 9 (drawn, in review) |
+| 6. Data and SaaS (9) | KPI Chart, Breakdown Chart, Compact Breakdown, Change Summary, Usage Meter, Experiment Card, Data Table, Billing Schedule, Project Card | 9 / 9 (accepted) |
 | 7. Forms and onboarding (10) | Stepper Form, Progress Tracker, Setup Guide, Tips Panel, Date Range Picker, Dropzone, Tag Input, Filter Menu, Integration Picker, Integration Settings | 0 / 10 |
 | 8. People and messages (5) | Comment Thread, Comments Panel, Notification Stack, Reaction Bar, Profile Menu | 0 / 5 |
 
@@ -63,6 +63,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Every connector takes the colour of the indicator on the node it leads to (a busy agent, a tool being called, a failed call, the agent's pick in violet), in the same shade as that node's border, never a lighter tint. A lit path (the way to a root cause, a winner, a chosen branch) colours its connectors and its nodes alike: the line from the node up to its parent takes the node's border colour (blue checking or chosen, red root cause, green winner), the rest stays grey and dashed. When content grows, the nodes are laid out again so nothing overlaps.
 - Connectors share one look across patterns: 1.5 px, rounded elbows (corner radius 8), leaving and entering nodes horizontally, never across a label. A connector with nothing to signal is plain border grey. Every green that means done or confirmed is the same green as the confirmations (green text), never the stronger green solid.
 - A node at work keeps its normal tile (card fill, grey border) and shows a soft pulse around it (two faint rings of the running blue), not a blue or tinted tile and no strong glow. Needs you (amber dashed) and failed (red) still colour the tile.
+- Text meets WCAG AA contrast: 4.5:1 (3:1 from 18 px). White text on a colour sits on the darker text shade of that colour (cursor labels, order numbers), a highlight behind words uses the light tint, and no text is smaller than 10 px.
 - Text never overlaps its neighbour or leaves its card or tooltip: a long label wraps, or ends in an ellipsis inside a box of fixed width. A highlighted span on a chart (a pause, a limit) starts exactly where the line changes.
 
 ## Code debt
