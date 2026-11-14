@@ -26,11 +26,11 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 
 | Stage | Patterns | Drawn |
 |---|---|---|
-| 1. Decisions and permissions (8) | Approval Card, Tool Call Card, Permission Request, Decision Card, Approval Gates, Decision Inbox, Autonomy Dial, Review Center | 8 / 8 (redrawn, in review) |
-| 2. Answers and thinking (12) | AI Answer, Cited Answer, Thinking State, Thinking Loader, Message Actions, Model Picker, Context Window, Inline Diff, Writing Assistant, Email Draft, Prompt Library, Memory Panel | 12 / 12 (redrawn, in review) |
-| 3. One agent at work (10) | Agent Trail, Agent Monitor, Agent Plan, Agent Steering, Running Now, Plan vs Actual, Agent Checkpoints, Parallel Attempts, Agent Handoff, Smart Recommendation | 10 / 10 (redrawn, in review) |
-| 4. Many agents (13) | Agent Inbox, Agent Fleet, Agent Tree, Agent Lanes, Agent Queue, Fan-out Grid, Delegate Board, Collaboration Stream, Agent Cursors, Conflict Radar, Agent Findings, Agent Graph, Tool Access Map | 13 / 13 (drawn, in review) |
-| 5. Runs, costs and causes (11) | Trace Waterfall, Cost Waterfall, Context Map, Fallback Chain, Judge Bracket, Root Cause Tree, Decision Tree, Agent Ledger, Agent Recap, Away Summary, Scheduled Runs | 11 / 11 (drawn, in review) |
+| 1. Decisions and permissions (8) | Approval Card, Tool Call Card, Permission Request, Decision Card, Approval Gates, Decision Inbox, Autonomy Dial, Review Center | 8 / 8 (accepted) |
+| 2. Answers and thinking (12) | AI Answer, Cited Answer, Thinking State, Thinking Loader, Message Actions, Model Picker, Context Window, Inline Diff, Writing Assistant, Email Draft, Prompt Library, Memory Panel | 12 / 12 (accepted) |
+| 3. One agent at work (10) | Agent Trail, Agent Monitor, Agent Plan, Agent Steering, Running Now, Plan vs Actual, Agent Checkpoints, Parallel Attempts, Agent Handoff, Smart Recommendation | 10 / 10 (accepted) |
+| 4. Many agents (13) | Agent Inbox, Agent Fleet, Agent Tree, Agent Lanes, Agent Queue, Fan-out Grid, Delegate Board, Collaboration Stream, Agent Cursors, Conflict Radar, Agent Findings, Agent Graph, Tool Access Map | 13 / 13 (accepted) |
+| 5. Runs, costs and causes (11) | Trace Waterfall, Cost Waterfall, Context Map, Fallback Chain, Judge Bracket, Root Cause Tree, Decision Tree, Agent Ledger, Agent Recap, Away Summary, Scheduled Runs | 11 / 11 (accepted) |
 | 6. Data and SaaS (9) | KPI Chart, Breakdown Chart, Compact Breakdown, Change Summary, Usage Meter, Experiment Card, Data Table, Billing Schedule, Project Card | 0 / 9 |
 | 7. Forms and onboarding (10) | Stepper Form, Progress Tracker, Setup Guide, Tips Panel, Date Range Picker, Dropzone, Tag Input, Filter Menu, Integration Picker, Integration Settings | 0 / 10 |
 | 8. People and messages (5) | Comment Thread, Comments Panel, Notification Stack, Reaction Bar, Profile Menu | 0 / 5 |
