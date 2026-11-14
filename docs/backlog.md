@@ -60,6 +60,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Connectors leave and reach their nodes horizontally, with enough room between columns that they read as a fan, not a vertical bundle.
 - Cards side by side that show options of the same kind have the same height.
 - Selection handles sit on the corners of a square selection frame, even when the selected thing has rounded corners.
+- A lit path (the way to a root cause, a winner, a chosen branch) colours its connectors and its nodes alike: the line from the node up to its parent takes the node's border colour (blue checking or chosen, red root cause, green winner), the rest stays grey and dashed. When content grows, the nodes are laid out again so nothing overlaps.
 - Text never overlaps its neighbour or leaves its card or tooltip: a long label wraps, or ends in an ellipsis inside a box of fixed width. A highlighted span on a chart (a pause, a limit) starts exactly where the line changes.
 
 ## Code debt
