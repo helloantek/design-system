@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-vtgMY1y5.js";import{p as t}from"./iframe-Diau3x_I.js";function useField(){return(0,n.useContext)(r)}var n,r;function init_FieldContext(){return(init_FieldContext=e((()=>{n=t(),r=(0,n.createContext)(null)})))()}export{init_FieldContext as n,useField as r,r as t};

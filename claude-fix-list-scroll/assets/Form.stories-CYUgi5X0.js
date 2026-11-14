@@ -1,0 +1,122 @@
+import{n as e}from"./rolldown-runtime-vtgMY1y5.js";import{n as t,p as n}from"./iframe-hNUR_eGY.js";import{Ct as r,I as i,Lt as a,R as o,i as s}from"./react-1mLXTT6G.js";import{n as c,t as l}from"./Button-Dp7j3ZOj.js";import{a as u,i as d,n as f,o as p,t as m}from"./Field-B9uJPtXf.js";import{i as h,t as g}from"./Input-BLTwMHBp.js";import{i as _,t as v}from"./Checkbox-DaiYGTHP.js";import{r as y,t as ee}from"./Switch-DdNv6FDf.js";import{n as b,t as x}from"./Alert-Cpdeax3W.js";import{i as te,n as S,o as C,r as w,t as T}from"./Card-C55L-eku.js";import{n as E,t as D}from"./Combobox-YvNUKjdn.js";import{n as O,t as ne}from"./DatePicker-CKMqC8HZ.js";import{i as k,n as A,t as j}from"./Radio-Dw10o1-8.js";import{n as M,t as N}from"./Select-Cn8epdX0.js";import{n as P,t as F}from"./Textarea-BXPYTyk-.js";import{n as I,t as L}from"./InputOTP-Dxl308VW.js";import{n as R,t as z}from"./Tooltip-cxSLc2va.js";import{n as B,t as V}from"./Slider-PY2dsmGo.js";import{i as H,n as U,r as W}from"./Sonner-Bp_vN8vy.js";var G,K,q,J,Y,X,Z,Q,$;function init_Form_stories(){return(init_Form_stories=e((()=>{G=n(),r(),b(),c(),C(),_(),E(),O(),p(),h(),I(),k(),M(),B(),W(),y(),P(),R(),K=t(),q=[{value:`designer`,label:`Designer`},{value:`engineer`,label:`Engineer`},{value:`pm`,label:`Product manager`}],J=[{value:`web`,label:`Web`},{value:`ios`,label:`iOS`},{value:`android`,label:`Android`},{value:`design`,label:`Design`}],Y=[{label:`Plans`,options:[{value:`free`,label:`Free`,caption:`€0`},{value:`pro`,label:`Pro`,caption:`€12`,badge:`Popular`},{value:`enterprise`,label:`Enterprise`,caption:`Contact us`,disabled:!0}]},{type:`separator`},{value:`trial`,label:`Start a 14-day trial`}],X=[[`lisbon`,`(GMT+0) Lisbon`],[`warsaw`,`(GMT+1) Warsaw`],[`new-york`,`(GMT-5) New York`],[`tokyo`,`(GMT+9) Tokyo`]].map(([e,t])=>({value:e,label:t})),Z={title:`Playground/Form`,tags:[`!autodocs`],parameters:{layout:`padded`,docs:{description:{component:`A sign-up form in a Card, made of Input, Input OTP, Date Picker, Select, Combobox, Textarea, Radio, Switch, Slider, Checkbox, Field (Field, Field Group, Field Set, Field Separator), Tooltip, Alert, Button and a toast, for trying components together before they are merged. Submit to see the validation and the submitted form data. Use the toolbar to switch brand and colour scheme.`}}}},Q={args:{variant:`default`,size:`lg`,disabled:!1},argTypes:{variant:{control:`inline-radio`,options:[`default`,`shadow`,`soft`]},size:{control:`inline-radio`,options:[`xl`,`lg`,`default`],description:`Figma Size, shared by Input, Select, Combobox and Button`}},render:function Render({variant:e,size:t,disabled:n}){let[r,c]=(0,G.useState)({}),[p,h]=(0,G.useState)(null),[_,y]=(0,G.useState)(15),[b,C]=(0,G.useState)(``),[E,O]=(0,G.useState)(0),k={variant:e,size:t,disabled:n},onSubmit=e=>{e.preventDefault();let t=new FormData(e.currentTarget),n={...Object.fromEntries(t),teams:t.getAll(`teams`)},r={};String(n.name??``).trim()||(r.name=`Enter your name`),/^\S+@\S+\.\S+$/.test(String(n.email??``))||(r.email=`Enter a valid email address`),n.role||(r.role=`Choose a role`),n.terms||(r.terms=`Accept the terms to continue`),c(r);let i=!Object.keys(r).length;h(i?n:null),i&&H.success(`Account created`,{description:`Welcome, ${n.name}`})},M=Object.keys(r).length;return(0,K.jsxs)(T,{as:`section`,"aria-label":`Create an account`,style:{width:420},children:[(0,K.jsx)(te,{title:`Create an account`,description:`It takes a minute; you can change everything later.`,action:(0,K.jsx)(z,{content:`All fields except Name, Email, Role and the terms are optional`,children:(0,K.jsx)(l,{variant:`ghost`,size:`sm`,icon:(0,K.jsx)(o,{}),"aria-label":`Help`})})}),(0,K.jsx)(S,{children:(0,K.jsx)(`form`,{id:`sign-up`,onSubmit,noValidate:!0,children:(0,K.jsxs)(f,{children:[M>0&&(0,K.jsx)(x,{variant:`destructive`,title:`Fix ${M} ${M===1?`field`:`fields`} to continue`}),(0,K.jsx)(g,{...k,name:`name`,label:`Name`,placeholder:`Jane Doe`,leadIcon:(0,K.jsx)(i,{}),error:r.name}),(0,K.jsx)(g,{...k,name:`email`,type:`email`,label:`Email`,placeholder:`mail@domain.com`,leadIcon:(0,K.jsx)(s,{}),caption:`We never share it`,error:r.email}),(0,K.jsx)(N,{...k,name:`role`,label:`Role`,placeholder:`Select a role`,options:q,error:r.role}),(0,K.jsx)(N,{...k,name:`teams`,label:`Teams`,placeholder:`Select teams`,options:J,multiple:!0,caption:`Pick all that apply`}),(0,K.jsx)(m,{label:`Timezone`,description:`Reminders follow it`,disabled:n,children:(0,K.jsx)(D,{variant:e,size:t,name:`timezone`,placeholder:`Search timezones`,options:X,leadIcon:(0,K.jsx)(a,{})})}),(0,K.jsx)(m,{label:`Start date`,description:`When your account opens`,disabled:n,children:(0,K.jsx)(ne,{name:`start`,placeholder:`Pick a start date`},E)}),(0,K.jsx)(d,{children:`Subscription`}),(0,K.jsx)(m,{label:`Invite code`,description:`Optional: 6 digits from a teammate's invite`,disabled:n,children:(0,K.jsx)(L,{name:`invite`,groups:2,value:b,onValueChange:C})}),(0,K.jsx)(N,{...k,name:`plan`,label:`Plan`,placeholder:`Select a plan`,options:Y,defaultValue:`free`,caption:`You can change it later`}),(0,K.jsxs)(A,{name:`billing`,label:`Billing`,defaultValue:`monthly`,columns:2,disabled:n,children:[(0,K.jsx)(j,{value:`monthly`,label:`Monthly`}),(0,K.jsx)(j,{value:`yearly`,label:`Yearly`,caption:`2 months free`})]}),(0,K.jsx)(F,{variant:e,disabled:n,name:`bio`,label:`About you`,placeholder:`What do you work on?`,showCount:!0,limit:160}),(0,K.jsxs)(u,{legend:`Notifications`,description:`You can change these any time.`,children:[(0,K.jsx)(ee,{name:`updates`,label:`Product updates`,caption:`One email a month`,disabled:n}),(0,K.jsx)(V,{name:`reminder`,label:`Remind me before events`,valueText:`${_} min`,value:_,onValueChange:y,min:5,max:60,step:5,disabled:n})]}),(0,K.jsx)(v,{name:`terms`,label:`I accept the terms of service`,error:r.terms,disabled:n})]})})}),(0,K.jsxs)(w,{children:[(0,K.jsx)(l,{type:`reset`,form:`sign-up`,variant:`ghost`,size:t,disabled:n,onClick:()=>{c({}),h(null),y(15),C(``),O(e=>e+1)},children:`Reset`}),(0,K.jsx)(l,{type:`submit`,form:`sign-up`,size:t,disabled:n,children:`Create account`})]}),p&&(0,K.jsx)(S,{children:(0,K.jsx)(`pre`,{"data-testid":`submitted`,style:{margin:0,padding:12,borderRadius:4,background:`var(--ds-fill-1)`,color:`var(--ds-foreground)`,fontSize:12},children:JSON.stringify(p,null,2)})}),(0,K.jsx)(U,{})]})}},$=[`SignUp`],Q.parameters={...Q.parameters,docs:{...Q.parameters?.docs,source:{originalSource:`{
+  args: {
+    variant: 'default',
+    size: 'lg',
+    disabled: false
+  },
+  argTypes: {
+    variant: {
+      control: 'inline-radio',
+      options: ['default', 'shadow', 'soft']
+    },
+    size: {
+      control: 'inline-radio',
+      options: ['xl', 'lg', 'default'],
+      description: 'Figma Size, shared by Input, Select, Combobox and Button'
+    }
+  },
+  render: function Render({
+    variant,
+    size,
+    disabled
+  }) {
+    const [errors, setErrors] = useState<Errors>({});
+    const [submitted, setSubmitted] = useState<Record<string, FormDataEntryValue | FormDataEntryValue[]> | null>(null);
+    const [reminder, setReminder] = useState(15);
+    const [invite, setInvite] = useState('');
+    // Remounts the uncontrolled Date Picker on Reset.
+    const [formKey, setFormKey] = useState(0);
+    const field = {
+      variant,
+      size,
+      disabled
+    };
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const form = new FormData(event.currentTarget);
+      // A multiple Select submits one entry per value.
+      const data: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {
+        ...Object.fromEntries(form),
+        teams: form.getAll('teams')
+      };
+      const next: Errors = {};
+      if (!String(data.name ?? '').trim()) next.name = 'Enter your name';
+      if (!/^\\S+@\\S+\\.\\S+$/.test(String(data.email ?? ''))) next.email = 'Enter a valid email address';
+      if (!data.role) next.role = 'Choose a role';
+      if (!data.terms) next.terms = 'Accept the terms to continue';
+      setErrors(next);
+      const ok = !Object.keys(next).length;
+      setSubmitted(ok ? data : null);
+      if (ok) toast.success('Account created', {
+        description: \`Welcome, \${data.name}\`
+      });
+    };
+    const errorCount = Object.keys(errors).length;
+    return <Card as="section" aria-label="Create an account" style={{
+      width: 420
+    }}>
+        <CardHeader title="Create an account" description="It takes a minute; you can change everything later." action={<Tooltip content="All fields except Name, Email, Role and the terms are optional">
+              <Button variant="ghost" size="sm" icon={<RiQuestionLine />} aria-label="Help" />
+            </Tooltip>} />
+        <CardContent>
+          <form id="sign-up" onSubmit={onSubmit} noValidate>
+            <FieldGroup>
+            {errorCount > 0 && <Alert variant="destructive" title={\`Fix \${errorCount} \${errorCount === 1 ? 'field' : 'fields'} to continue\`} />}
+            <Input {...field} name="name" label="Name" placeholder="Jane Doe" leadIcon={<RiUser3Line />} error={errors.name} />
+            <Input {...field} name="email" type="email" label="Email" placeholder="mail@domain.com" leadIcon={<RiAtLine />} caption="We never share it" error={errors.email} />
+            <Select {...field} name="role" label="Role" placeholder="Select a role" options={roles} error={errors.role} />
+            <Select {...field} name="teams" label="Teams" placeholder="Select teams" options={teams} multiple caption="Pick all that apply" />
+            <Field label="Timezone" description="Reminders follow it" disabled={disabled}>
+              <Combobox variant={variant} size={size} name="timezone" placeholder="Search timezones" options={timezones} leadIcon={<RiSearchLine />} />
+            </Field>
+            <Field label="Start date" description="When your account opens" disabled={disabled}>
+              <DatePicker key={formKey} name="start" placeholder="Pick a start date" />
+            </Field>
+            <FieldSeparator>Subscription</FieldSeparator>
+            <Field label="Invite code" description="Optional: 6 digits from a teammate's invite" disabled={disabled}>
+              <InputOTP name="invite" groups={2} value={invite} onValueChange={setInvite} />
+            </Field>
+            <Select {...field} name="plan" label="Plan" placeholder="Select a plan" options={plans} defaultValue="free" caption="You can change it later" />
+            <RadioGroup name="billing" label="Billing" defaultValue="monthly" columns={2} disabled={disabled}>
+              <Radio value="monthly" label="Monthly" />
+              <Radio value="yearly" label="Yearly" caption="2 months free" />
+            </RadioGroup>
+            <Textarea variant={variant} disabled={disabled} name="bio" label="About you" placeholder="What do you work on?" showCount limit={160} />
+            <FieldSet legend="Notifications" description="You can change these any time.">
+              <Switch name="updates" label="Product updates" caption="One email a month" disabled={disabled} />
+              <Slider name="reminder" label="Remind me before events" valueText={\`\${reminder} min\`} value={reminder} onValueChange={setReminder} min={5} max={60} step={5} disabled={disabled} />
+            </FieldSet>
+            <Checkbox name="terms" label="I accept the terms of service" error={errors.terms} disabled={disabled} />
+            </FieldGroup>
+          </form>
+        </CardContent>
+        <CardFooter>
+          <Button type="reset" form="sign-up" variant="ghost" size={size} disabled={disabled} onClick={() => {
+          setErrors({});
+          setSubmitted(null);
+          setReminder(15);
+          setInvite('');
+          setFormKey(k => k + 1);
+        }}>
+            Reset
+          </Button>
+          <Button type="submit" form="sign-up" size={size} disabled={disabled}>
+            Create account
+          </Button>
+        </CardFooter>
+        {submitted && <CardContent>
+            <pre data-testid="submitted" style={{
+          margin: 0,
+          padding: 12,
+          borderRadius: 4,
+          background: 'var(--ds-fill-1)',
+          color: 'var(--ds-foreground)',
+          fontSize: 12
+        }}>
+              {JSON.stringify(submitted, null, 2)}
+            </pre>
+          </CardContent>}
+        <Toaster />
+      </Card>;
+  }
+}`,...Q.parameters?.docs?.source}}}})))()}init_Form_stories();export{Q as SignUp,$ as __namedExportsOrder,Z as default};
