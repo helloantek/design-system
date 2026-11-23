@@ -1,0 +1,75 @@
+{
+ "$comment": "Sort UI 2.0 pattern Approval Card (6090:1725): the card in chat, high risk with a preview and countdown, approving, and the three decided lines (1x PNG, get_screenshot, with the card's shadow). renderers/approval-card.tsx renders them 420 px wide.",
+ "component": "approval-card",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6090:1725",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "in-chat",
+   "nodeId": "6229:4220",
+   "props": {
+    "State": "Pending"
+   },
+   "target": "#target .ds-approval-card",
+   "nodeW": 420,
+   "nodeH": 220
+  },
+  {
+   "slug": "high-risk",
+   "nodeId": "6229:4273",
+   "props": {
+    "State": "High risk"
+   },
+   "target": "#target .ds-approval-card",
+   "nodeW": 420,
+   "nodeH": 262
+  },
+  {
+   "slug": "approving",
+   "nodeId": "6229:4359",
+   "props": {
+    "State": "Approving"
+   },
+   "target": "#target .ds-approval-card",
+   "nodeW": 420,
+   "nodeH": 220
+  },
+  {
+   "slug": "approved",
+   "nodeId": "6229:4423",
+   "props": {
+    "State": "Approved"
+   },
+   "target": "#target .ds-approval-card",
+   "nodeW": 420,
+   "nodeH": 60
+  },
+  {
+   "slug": "denied",
+   "nodeId": "6229:4434",
+   "props": {
+    "State": "Denied"
+   },
+   "target": "#target .ds-approval-card",
+   "nodeW": 420,
+   "nodeH": 60
+  },
+  {
+   "slug": "expired",
+   "nodeId": "6229:4445",
+   "props": {
+    "State": "Expired"
+   },
+   "target": "#target .ds-approval-card",
+   "nodeW": 420,
+   "nodeH": 60
+  }
+ ]
+}

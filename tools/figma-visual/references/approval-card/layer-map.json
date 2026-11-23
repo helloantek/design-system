@@ -1,0 +1,100 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-approval-card).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-approval-card__header"
+    },
+    "Tile": {
+      "selector": ".ds-approval-card__icon",
+      "stroke": "inset-shadow"
+    },
+    "Header/Text/TEXT": {
+      "selector": ".ds-approval-card__header .ds-approval-card__title"
+    },
+    "Header/Text/TEXT#1": {
+      "selector": ".ds-approval-card__header .ds-approval-card__description"
+    },
+    "Body": {
+      "selector": ".ds-approval-card__body",
+      "skip": [
+        "h",
+        "p"
+      ],
+      "$why": "Figma draws the rule above the body and the footer as a separate 1 px Separator; the code draws it as the part's top border, so the part is 1 px taller (the card's size is compared). With a preview, Figma pads the body 8 px and wraps the text in an 8 px frame (Summary) so the text sits 16 px in and the preview 8 px; the code pads the body 16 px and pulls the preview out 8 px."
+    },
+    "Summary": {
+      "selector": ".ds-approval-card__summary",
+      "skip": [
+        "w",
+        "p"
+      ],
+      "$why": "Figma's Summary frame adds the 8 px the body lacks (see Body); in code the text is the body's own 16 px in."
+    },
+    "Preview": {
+      "selector": ".ds-approval-card__preview",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma stacks the lines 2 px apart inside 8 px padding; the code's <pre> uses a 2 px taller line and 1 px less padding, which puts every line in the same place (the size is compared)."
+    },
+    "Preview/TEXT": {
+      "selector": ".ds-approval-card__preview",
+      "skip": [
+        "lh"
+      ],
+      "$why": "See Preview: the line is 18 px so the 2 px between Figma's lines is part of it."
+    },
+    "Details": {
+      "selector": ".ds-approval-card__details",
+      "skip": [
+        "w",
+        "g"
+      ],
+      "$why": "Figma's Details frame hugs its rows; the code's grid fills the body so long values wrap. The 6 px between rows is the grid's row gap (and 12 px its column gap), which the gap check cannot read as one number."
+    },
+    "Details/TEXT": {
+      "selector": ".ds-approval-card__details dt"
+    },
+    "Details/TEXT#1": {
+      "selector": ".ds-approval-card__details dd"
+    },
+    "Footer": {
+      "selector": ".ds-approval-card__footer",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above the body and the footer as a separate 1 px Separator; the code draws it as the part's top border, so the part is 1 px taller (the card's size is compared)."
+    },
+    "Countdown": {
+      "selector": ".ds-approval-card__countdown"
+    },
+    "Countdown/TEXT": {
+      "selector": ".ds-approval-card__countdown"
+    },
+    "Always allow/TEXT": {
+      "selector": ".ds-approval-card__always .ds-field__label"
+    },
+    "Decided": {
+      "selector": ".ds-approval-card__decided"
+    },
+    "Decided/Text/TEXT": {
+      "selector": ".ds-approval-card__decided .ds-approval-card__title"
+    },
+    "Decided/Text/TEXT#1": {
+      "selector": ".ds-approval-card__decided .ds-approval-card__description"
+    },
+    "Status done": {
+      "selector": ".ds-approval-card__status"
+    },
+    "Status fail": {
+      "selector": ".ds-approval-card__status"
+    },
+    "Status expired": {
+      "selector": ".ds-approval-card__status"
+    }
+  }
+}

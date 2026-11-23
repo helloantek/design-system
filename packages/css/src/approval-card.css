@@ -1,0 +1,259 @@
+/*
+ * Approval Card — the Sort UI 2.0 pattern "Approval Card" (node 6090:1725 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): an agent asks before it acts. What it will do and who for (header), the details (body),
+ * then Deny (Esc) or Approve (↵) and "Always allow this action" (footer). Once decided, it folds to one line.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <article class="ds-approval-card" aria-labelledby="t">
+ *     <div class="ds-approval-card__header">
+ *       [<span class="ds-approval-card__icon" aria-hidden="true"><svg…/></span>]
+ *       <div class="ds-approval-card__heading">
+ *         <h3 class="ds-approval-card__title" id="t">Send the October newsletter</h3>
+ *         [<p class="ds-approval-card__description">Newsletter · Marketing agent</p>]
+ *       </div>
+ *       [<span class="ds-badge ds-badge--sm ds-badge--amber ds-badge--tint">…Medium risk…</span>]
+ *     </div>
+ *     [<div class="ds-approval-card__body">
+ *        [<dl class="ds-approval-card__details"><div><dt>Subject</dt><dd>…</dd></div>…</dl>]
+ *        [<p class="ds-approval-card__summary">…</p>]
+ *        [<pre class="ds-approval-card__preview">…</pre>]                (8 px from the card's edge)
+ *      </div>]
+ *     <div class="ds-approval-card__footer">
+ *       [<div class="ds-field ds-field--horizontal ds-approval-card__always">…Checkbox "Always allow this action"…</div>]
+ *       [<span class="ds-approval-card__countdown"><svg…/> Denies itself in 0:45</span>]
+ *       <div class="ds-approval-card__actions"><button class="ds-button …">Deny</button><button …>Approve</button></div>
+ *     </div>
+ *   </article>
+ *
+ *   Decided (one line):
+ *   <article class="ds-approval-card ds-approval-card--decided" aria-labelledby="t">
+ *     <div class="ds-approval-card__decided">
+ *       <span class="ds-approval-card__status ds-approval-card__status--approved" aria-hidden="true"><svg…/></span>
+ *                                                                        (--approved · --denied · --expired)
+ *       <div class="ds-approval-card__heading"><p class="ds-approval-card__title" id="t">Approved · …</p>
+ *         [<p class="ds-approval-card__description">By you at 9:02</p>]</div>
+ *       [<button class="ds-button ds-button--ghost ds-button--size-xs">Undo</button>]
+ *     </div>
+ *   </article>
+ */
+
+@layer ds.components {
+  /* The card: 12 px corners, an inside border and the Surface/Card shadow. */
+  .ds-approval-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Header: the icon tile 8 px from the edge, the title and description, the risk badge at the end. */
+  .ds-approval-card__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4) var(--ds-spacing-3) var(--ds-spacing-2);
+  }
+
+  /* Without an icon the title keeps the section's 16 px. */
+  .ds-approval-card__header:not(:has(> .ds-approval-card__icon)) {
+    padding-left: var(--ds-spacing-4);
+  }
+
+  /* Figma "Tile": 28 px, 6 px corners, an inside border and a 16 px icon in the text colour. */
+  .ds-approval-card__icon {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-7);
+    height: var(--ds-spacing-7);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-foreground);
+  }
+
+  .ds-approval-card__icon > svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .ds-approval-card__heading {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-approval-card__title {
+    margin: 0;
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-approval-card__description {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-approval-card__header > .ds-badge {
+    flex: none;
+  }
+
+  /* Body and footer sit under a 1 px rule. Body: 16 px sides, 12 px between its blocks. */
+  .ds-approval-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-approval-card__summary {
+    margin: 0;
+    color: var(--ds-foreground);
+  }
+
+  /* Details: a muted name column (64 px) and the value, 6 px between rows. */
+  .ds-approval-card__details {
+    display: grid;
+    grid-template-columns: var(--ds-spacing-16) minmax(0, 1fr);
+    gap: var(--ds-spacing-1-5) var(--ds-spacing-3);
+    margin: 0;
+  }
+
+  .ds-approval-card__details > div {
+    display: contents;
+  }
+
+  .ds-approval-card__details dt {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-approval-card__details dd {
+    margin: 0;
+    color: var(--ds-foreground);
+    overflow-wrap: anywhere;
+  }
+
+  /* Preview: what changes, in Mono xs on the muted fill, 8 px from the card's edge. Figma stacks the lines 2 px
+     apart inside 8 px padding; a 2 px taller line with 1 px less padding puts every line in the same place. */
+  .ds-approval-card__preview {
+    box-sizing: border-box;
+    margin: 0 calc(var(--ds-spacing-2) * -1);
+    padding: calc(var(--ds-spacing-2) - var(--ds-spacing-0-5) / 2) var(--ds-spacing-2-5);
+    overflow-x: auto;
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-2xs);
+    line-height: calc(var(--ds-text-2xs--line-height) + var(--ds-spacing-0-5));
+    letter-spacing: 0;
+    white-space: pre;
+  }
+
+  /* Footer: "Always allow" or the countdown at the start, the buttons 8 px from the edge at the end. */
+  .ds-approval-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-3) var(--ds-spacing-2) var(--ds-spacing-3) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  /* "Always allow this action": a Checkbox field whose label is muted and regular, as in Figma. */
+  .ds-approval-card__always {
+    flex: 0 1 auto;
+  }
+
+  .ds-approval-card__always .ds-field__label {
+    color: var(--ds-muted-foreground);
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  .ds-approval-card__countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-palette-amber-text);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-approval-card__countdown > svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  .ds-approval-card__actions {
+    display: flex;
+    gap: var(--ds-spacing-2);
+    margin-left: auto;
+  }
+
+  /* Decided: one line, 10 px around it and 16 px at the sides. */
+  .ds-approval-card__decided {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-4);
+  }
+
+  /* The outcome: a 16 px circle, green with a check, red with a cross, or muted with a clock (denied by itself). */
+  .ds-approval-card__status {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    border-radius: var(--ds-radius-full);
+    color: var(--ds-background);
+  }
+
+  .ds-approval-card__status > svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+  }
+
+  .ds-approval-card__status--approved {
+    background-color: var(--ds-palette-green-text);
+  }
+
+  .ds-approval-card__status--denied {
+    background-color: var(--ds-palette-red-text);
+  }
+
+  .ds-approval-card__status--expired {
+    background-color: var(--ds-muted);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-approval-card__status--expired > svg {
+    width: 11px;
+    height: 11px;
+  }
+}

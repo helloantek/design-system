@@ -211,6 +211,40 @@ Sort UI 2.0 ([Figma `40:2125`](https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwE
 
 Changed from 1.3: variants `primary` → `default`, `soft`/`dashed`/`ghost-muted` are gone (closest: `secondary`, `outline`, `ghost`); sizes `lg`/`md`/`sm`/`xs`/`2xs` → `xl`/`lg`/`default`/`sm`/`xs`; `shape` (one radius now), `loading` (no Figma state; use a Spinner next to the label once it exists) and the Press state are gone; `leadIcon`/`tailIcon` → `leadingIcon`/`trailingIcon`.
 
+## Approval Card
+
+A pattern from the Sort UI 2.0 **Patterns** page: an agent asks before it acts (**Approval Card**, node `6090:1725`).
+
+```tsx
+<ApprovalCard
+  icon={<RiMailLine />}
+  title="Send the October newsletter"
+  description="Newsletter · Marketing agent"
+  risk="medium"
+  state={state}                      /* pending · approving · approved · denied · expired */
+  alwaysAllow={allow}
+  onAlwaysAllowChange={setAllow}
+  onApprove={approve}
+  onDeny={() => setState('denied')}
+  outcome="By you at 9:02 · sending to 412 people"
+  onUndo={() => setState('pending')}
+>
+  <ApprovalCardDetails items={[['Subject', 'What’s new in October'], ['Sends', 'Today, 9:00']]} />
+</ApprovalCard>
+```
+
+| Figma | React prop | CSS class |
+|---|---|---|
+| Header: Tile, title, description | `icon`, `title`, `description` | `ds-approval-card__header` · `__icon` · `__title` · `__description` |
+| Risk badge (Low / Medium / High risk) | `risk`: `low` (green) · `medium` (amber) · `high` (red), a Tint Badge; `riskLabel` | `ds-badge--tint` |
+| Body | children: `ApprovalCardDetails` (name–value rows), `ApprovalCardSummary`, `ApprovalCardPreview` (Mono, 8 px from the edge) or your own | `ds-approval-card__body` · `__details` · `__summary` · `__preview` |
+| Always allow this action | `alwaysAllow` + `onAlwaysAllowChange` (shown when given) | `ds-approval-card__always` |
+| Countdown ("Denies itself in 0:45") | `countdown` (replaces "Always allow"; the app counts and sets `state="expired"`) | `ds-approval-card__countdown` (`role="timer"`) |
+| Deny (Esc) · Approve (↵) | `onDeny` · `onApprove`; Esc and Enter work anywhere in the card (Enter not on buttons, links or text fields); `aria-keyshortcuts` on both | Button + Kbd |
+| Approving | `state="approving"`: the card is `aria-busy`, Approve holds a spinner, clicks and keys are ignored | — |
+| Decided: approved, denied, denied by itself | `state` `approved` · `denied` · `expired`: one line (`role="status"`) with `outcome` and an optional Undo (`onUndo`) | `ds-approval-card--decided` · `__status--approved` · `--denied` · `--expired` |
+| Texts | `labels` (approve, approving, deny, alwaysAllow, undo, approved, denied, expired) for other languages | — |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -1796,6 +1830,7 @@ These come from the Figma files, not the code:
 - Marker (2.0): the "Loading" demo's spinner is a Spinner instance in `foreground`, while the other icons are muted; the code draws it with `loading`. The Border variant's rule is a centred 1 px line on the bottom edge (half outside the box); the code draws it inside.
 - Separator (2.0): the line is a centred 1 px stroke on a 0 px frame, so it takes no space in Figma's layouts (the "Separator" demo puts 16 px between the intro and the line and 16 px after it, 32 px in all); the code's line is 1 px in the layout, so the same gaps add up to 33 px. The "Vertical" demo gives each line a fixed height (20 px between the metadata, 16 px between the icon buttons); the code stretches an upright line to its row and takes `height` for a shorter one.
 - Spinner (2.0): Variant=Default Size=default is 17.3 px (a Lucide 16 px icon in its 17.3 px frame), while Gradient default is 16 px; the code draws both at 16 px. Figma's Default keeps a 1.25 px stroke and Gradient a 1.5 px one at every size; the code follows. The "In buttons" demo shows the spinner in disabled buttons; Button has no loading state, so the stories pass `leadingIcon={<Spinner decorative />}` with `disabled`.
+- Approval Card (2.0 pattern): with a preview, Figma's body was 8 px in on both sides, so the text sat 8 px from the edge while other bodies use 16 px; the summary now has its own 8 px frame (16 px in, the preview stays 8 px). The approving card does not fade Deny, Approve or "Always allow"; the code keeps them as drawn and ignores input until the state changes.
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.
