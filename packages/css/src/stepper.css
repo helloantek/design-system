@@ -104,9 +104,10 @@
     color: var(--ds-muted-foreground);
   }
 
+  /* Error: the destructive circle with the cross in primary-foreground (white in Light). */
   .ds-stepper__item--error .ds-stepper__indicator {
     background: var(--ds-destructive);
-    color: var(--ds-destructive-foreground);
+    color: var(--ds-primary-foreground);
   }
 
   /* The line to the next step: 1 px, filling the rest of the track; primary once the step is complete. */
