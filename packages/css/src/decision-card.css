@@ -1,0 +1,304 @@
+/*
+ * Decision Card — the Sort UI 2.0 pattern "Decision Card" (node 6111:1606 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): an agent's question, asked right above the chat composer. Numbered answers with one
+ * Recommended (Approve / Decline for an approval), preview tiles for a pick, and a last row for your own words; a
+ * click or the answer's number answers. Several questions share one card with a pager; Later folds it to one line.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-decision" aria-labelledby="q">
+ *     <div class="ds-decision__header">
+ *       <span class="ds-decision__status"><span class="ds-decision__ring"></span>Needs you</span>
+ *       <span class="ds-decision__context">Onboarding</span>
+ *       [<div class="ds-decision__pager">…‹ button, "1 of 2", › button…</div>]
+ *       […Later button…]
+ *     </div>
+ *     <h3 class="ds-decision__question" id="q">Which plan should the new team start on?</h3>
+ *     [<dl class="ds-decision__details"><div><dt>To</dt><dd>…</dd></div>…</dl>]
+ *     [<div class="ds-decision__tiles">
+ *        <button class="ds-decision__tile [ds-decision__tile--active]"><span class="ds-decision__preview">…</span>
+ *          <span class="ds-decision__caption"><kbd class="ds-kbd ds-kbd--sm">1</kbd> Photo, team at work</span></button>…
+ *      </div>]
+ *     <div class="ds-decision__answers" role="group" aria-labelledby="q">
+ *       <button class="ds-decision__option [ds-decision__option--active]">
+ *         <kbd class="ds-kbd ds-kbd--sm">1</kbd>
+ *         <span class="ds-decision__text"><span class="ds-decision__label">Starter</span>
+ *           [<span class="ds-decision__description">Free, up to 3 people</span>]</span>
+ *         [<span class="ds-badge … ds-badge--tint">Recommended</span>]
+ *       </button>
+ *       …
+ *       [<div class="ds-decision__other"><kbd …>4</kbd> …Input… […Send button…]</div>]
+ *     </div>
+ *   </section>
+ *
+ *   Later (one line): <section class="ds-decision ds-decision--later"><div class="ds-decision__later">
+ *     <span class="ds-decision__ring"></span><span class="ds-decision__title">2 questions waiting</span>
+ *     <span class="ds-decision__peek">Which plan…</span> …Answer button… </div></section>
+ */
+
+@layer ds.components {
+  .ds-decision {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-decision:focus {
+    outline: none;
+  }
+
+  /* Header: "Needs you" in amber, the context, the pager and Later, 8 px apart. */
+  .ds-decision__header {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-4) var(--ds-spacing-1);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-decision__status {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-palette-amber-text);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  /* Needs you: a 10 px amber-tint dot with a dashed 1.5 px amber ring. */
+  .ds-decision__ring {
+    box-sizing: border-box;
+    flex: none;
+    width: var(--ds-spacing-2-5);
+    height: var(--ds-spacing-2-5);
+    border: var(--ds-stroke-width-3) dashed var(--ds-palette-amber-solid);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-palette-amber-tint);
+  }
+
+  .ds-decision__context {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-decision__context::before {
+    content: '·';
+    margin-right: var(--ds-spacing-2);
+  }
+
+  .ds-decision__pager {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-spacing-0-5);
+  }
+
+  .ds-decision__question {
+    margin: 0;
+    padding: var(--ds-spacing-0-5) var(--ds-spacing-4) var(--ds-spacing-2);
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  /* Details: what goes out, one line each (cut with an ellipsis), the name in a 52 px muted column. */
+  .ds-decision__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    margin: 0;
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-2);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-decision__details > div {
+    display: flex;
+    gap: var(--ds-spacing-2-5);
+    min-width: 0;
+  }
+
+  .ds-decision__details dt {
+    flex: none;
+    width: 52px;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-decision__details dd {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--ds-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Answers: rows 2 px apart, 6 px from the card's sides. */
+  .ds-decision__answers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    padding: 0 var(--ds-spacing-1-5) var(--ds-spacing-2);
+  }
+
+  /* An answer: its number, the label (and description), Recommended at the end; the active one on the muted fill. */
+  .ds-decision__option {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    width: 100%;
+    margin: 0;
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ds-decision__option--active {
+    background-color: var(--ds-muted);
+  }
+
+  .ds-decision__option:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-decision__text {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-decision__description {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-decision__option > .ds-badge {
+    flex: none;
+  }
+
+  /* Your own words: the last number, a field 8 px from the card's edge, and Send once there is text. */
+  .ds-decision__other {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-0-5) var(--ds-spacing-1-5) var(--ds-spacing-2);
+  }
+
+  .ds-decision__other > .ds-field {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* A pick: preview tiles with their numbers, 8 px apart; the active one in blue. */
+  .ds-decision__tiles {
+    display: flex;
+    gap: var(--ds-spacing-2);
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-2);
+  }
+
+  .ds-decision__tile {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ds-decision__tile:focus-visible {
+    outline: none;
+  }
+
+  .ds-decision__preview {
+    box-sizing: border-box;
+    display: block;
+    height: 84px;
+    overflow: hidden;
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+  }
+
+  .ds-decision__preview > :is(img, svg, video) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ds-decision__tile--active > .ds-decision__preview {
+    background-color: var(--ds-palette-blue-tint);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-3) var(--ds-palette-blue-solid);
+  }
+
+  .ds-decision__tile:focus-visible > .ds-decision__preview {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-3) var(--ds-palette-blue-solid), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-decision__caption {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* Later: one line – the ring, how many wait, the question cut short, and Answer (8 px from the edge). */
+  .ds-decision__later {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-4);
+  }
+
+  .ds-decision__title {
+    flex: none;
+    margin: 0;
+    color: var(--ds-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-decision__peek {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-muted-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

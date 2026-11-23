@@ -1,0 +1,111 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-decision).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-decision__header"
+    },
+    "Needs you": {
+      "selector": ".ds-decision__status"
+    },
+    "Needs you/TEXT": {
+      "selector": ".ds-decision__status"
+    },
+    "Pager": {
+      "selector": ".ds-decision__pager",
+      "skip": [
+        "w"
+      ],
+      "$why": "The pager hugs \"1 of 2\", whose width follows the font (Figma's Inter draws \"1\" 7 px wide at 13 px, the web font 5.33 px); the height and the 2 px gap are compared."
+    },
+    "Question": {
+      "selector": ".ds-decision__question",
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma's Question is an auto-layout frame around one text; the code's heading is a block, so it has no gap."
+    },
+    "Question/TEXT": {
+      "selector": ".ds-decision__question"
+    },
+    "Fields": {
+      "selector": ".ds-decision__details"
+    },
+    "To": {
+      "selector": ".ds-decision__details > div"
+    },
+    "To/TEXT": {
+      "selector": ".ds-decision__details dt"
+    },
+    "To/TEXT#1": {
+      "selector": ".ds-decision__details dd"
+    },
+    "Answers": {
+      "selector": ".ds-decision__answers"
+    },
+    "Option 1": {
+      "selector": ".ds-decision__answers > .ds-decision__option:nth-child(1)"
+    },
+    "Option 2": {
+      "selector": ".ds-decision__answers > .ds-decision__option:nth-child(2)"
+    },
+    "Option 1/Text": {
+      "selector": ".ds-decision__text"
+    },
+    "Option 1/Text/TEXT": {
+      "selector": ".ds-decision__label"
+    },
+    "Option 1/Text/TEXT#1": {
+      "selector": ".ds-decision__description"
+    },
+    "Your own words": {
+      "selector": ".ds-decision__other"
+    },
+    "Tiles": {
+      "selector": ".ds-decision__tiles"
+    },
+    "Tile 1": {
+      "selector": ".ds-decision__tile",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma draws the tiles 140 px wide, each hugging its caption; in code the three share the row (flex), so they are about 144 px and follow the card's width."
+    },
+    "Tile 1/Rectangle": {
+      "selector": ".ds-decision__preview",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma draws the tiles 140 px wide, each hugging its caption; in code the three share the row (flex), so they are about 144 px and follow the card's width."
+    },
+    "Tile 2/Rectangle": {
+      "selector": ".ds-decision__tile--active .ds-decision__preview",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma draws the tiles 140 px wide, each hugging its caption; in code the three share the row (flex), so they are about 144 px and follow the card's width."
+    },
+    "Caption": {
+      "selector": ".ds-decision__caption",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma draws the tiles 140 px wide, each hugging its caption; in code the three share the row (flex), so they are about 144 px and follow the card's width."
+    },
+    "Caption/TEXT": {
+      "selector": ".ds-decision__caption .ds-kbd"
+    },
+    "Folded": {
+      "selector": ".ds-decision__later"
+    },
+    "Folded/TEXT": {
+      "selector": ".ds-decision__title"
+    },
+    "Folded/TEXT#1": {
+      "selector": ".ds-decision__peek"
+    }
+  }
+}
