@@ -168,8 +168,9 @@
     color: var(--ds-muted-foreground);
   }
 
+  /* Error text uses the darker destructive text colour (4.5:1 on the page and card), as every other error text does. */
   .ds-stepper__item--error .ds-stepper__label {
-    color: var(--ds-destructive);
+    color: var(--ds-destructive-foreground);
   }
 
   /* Read by screen readers only. */
@@ -228,7 +229,7 @@
   }
 
   .ds-stepper__item--error .ds-stepper__mark {
-    color: var(--ds-destructive);
+    color: var(--ds-destructive-foreground);
   }
 
   .ds-stepper--bar .ds-stepper__label {
