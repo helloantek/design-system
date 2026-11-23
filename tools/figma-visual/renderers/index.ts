@@ -5,6 +5,7 @@ import { renderAITrace, renderAITraceContent } from './ai-trace';
 import { renderAlertDialog } from './alert-dialog';
 import { renderAspectRatio } from './aspect-ratio';
 import { renderApprovalCard } from './approval-card';
+import { renderApprovalGates } from './approval-gates';
 import { renderAttachment } from './attachment';
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
@@ -78,6 +79,7 @@ export const renderers: Record<string, Renderer> = {
   'alert-dialog': renderAlertDialog,
   'aspect-ratio': renderAspectRatio,
   'approval-card': renderApprovalCard,
+  'approval-gates': renderApprovalGates,
   attachment: renderAttachment,
   'attachment-card': renderAttachment,
   avatar: renderAvatar,

@@ -4,6 +4,7 @@ export * from './AITrace';
 export * from './Alert';
 export * from './AlertDialog';
 export * from './ApprovalCard';
+export * from './ApprovalGates';
 export * from './AspectRatio';
 export * from './Attachment';
 export * from './Avatar';

@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 pattern Approval Gates (6112:1728): the run waits (a gate on top, two behind, two decided), Change it first (the arguments as a field), Rejected (the run stopped, the newest decision open) and All decided (1x PNG, get_screenshot). renderers/approval-gates.tsx renders them 540 px wide.",
+ "component": "approval-gates",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6112:1728",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "waiting",
+   "nodeId": "6271:4499",
+   "props": {
+    "State": "Waiting"
+   },
+   "target": "#target > .ds-gates",
+   "nodeW": 540,
+   "nodeH": 512
+  },
+  {
+   "slug": "change-it",
+   "nodeId": "6271:4582",
+   "props": {
+    "State": "Change it"
+   },
+   "target": "#target > .ds-gates",
+   "nodeW": 540,
+   "nodeH": 392
+  },
+  {
+   "slug": "rejected",
+   "nodeId": "6271:4677",
+   "props": {
+    "State": "Rejected"
+   },
+   "target": "#target > .ds-gates",
+   "nodeW": 540,
+   "nodeH": 455
+  },
+  {
+   "slug": "all-decided",
+   "nodeId": "6271:4721",
+   "props": {
+    "State": "All decided"
+   },
+   "target": "#target > .ds-gates",
+   "nodeW": 540,
+   "nodeH": 187
+  }
+ ]
+}

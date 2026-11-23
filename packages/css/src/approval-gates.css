@@ -1,0 +1,515 @@
+/*
+ * Approval Gates — the Sort UI 2.0 pattern "Approval Gates" (node 6112:1728 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): the approvals of one agent run as a stack. A summary of what waits on you, what is decided
+ * and where the run is; the gate to decide now on top (who asks, exactly what and why, the arguments it will run
+ * with), with the next ones peeking out under it; approve, reject or change it first. Decided gates drop into a list;
+ * a rejected gate stops the run. Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-gates" aria-labelledby="t">
+ *     <div class="ds-gates__summary">
+ *       <div class="ds-gates__head"><svg…lock…/><h3 class="ds-gates__title" id="t">Approvals</h3>
+ *         <span class="ds-gates__run">Launch the new pricing page</span><span class="ds-badge …">Waiting on you</span></div>
+ *       <dl class="ds-gates__stats"><div><dt>Waiting on you</dt><dd class="ds-gates__waiting">3</dd></div>…</dl>
+ *     </div>
+ *     <div class="ds-gates__stack">
+ *       <article class="ds-gate [ds-gate--editing]" aria-labelledby="g">
+ *         <div class="ds-gate__who"><span class="ds-gate__mark">…</span><div><p class="ds-gate__agent">Release agent</p>
+ *           <p class="ds-gate__meta">Step 4 of 7 · …</p></div>[…risk badge…]</div>
+ *         <div class="ds-gate__what"><div class="ds-gate__lead"><h4 class="ds-gate__title" id="g">Publish 2.4.0 to npm</h4>
+ *           <p class="ds-gate__why"><strong>Why</strong> …</p></div>
+ *           <pre class="ds-gate__args">…</pre>  (editing: <textarea class="ds-gate__args ds-gate__args--edit">)</div>
+ *         <div class="ds-gate__actions">[<span class="ds-gate__edited">Edited: …</span>] …buttons…</div>
+ *       </article>
+ *       <span class="ds-gates__behind"></span>…                                  (one per gate waiting behind, up to 2)
+ *     </div>
+ *     [<div class="ds-gates__stopped" role="status">…</div>]
+ *     [<div class="ds-gates__done" role="status">…</div>]
+ *     [<div class="ds-gates__decided"><h4 class="ds-gates__heading">Decided</h4><ul>
+ *        <li class="ds-gates__item [ds-gates__item--open]"><button class="ds-gates__row" aria-expanded="…">
+ *          <span class="ds-gates__status ds-gates__status--approved">…</span><span class="ds-gates__name">Tag v2.4.0</span>
+ *          <span class="ds-gates__by">Release agent</span><span class="ds-gates__outcome">Approved</span>
+ *          <span class="ds-gates__time">12:01</span>…chevron…</button>
+ *          [<p class="ds-gates__reason">…</p>]</li></ul></div>]
+ *   </section>
+ */
+
+@layer ds.components {
+  .ds-gates {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-4);
+    min-width: 0;
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Cards: 12 px corners, an inside border and the Surface/Card shadow. */
+  .ds-gates__summary,
+  .ds-gate,
+  .ds-gates__done {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+  }
+
+  /* ── Summary ─────────────────────────────────────────────────────────── */
+
+  .ds-gates__head {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-4);
+  }
+
+  .ds-gates__head > svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    fill: var(--ds-muted-foreground);
+  }
+
+  .ds-gates__title {
+    flex: none;
+    margin: 0;
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-gates__run {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-muted-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-gates__head > .ds-badge {
+    flex: none;
+  }
+
+  /* Three figures under a rule, 14 px either side of a 1 px divider. */
+  .ds-gates__stats {
+    display: flex;
+    margin: 0;
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-gates__stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+    padding: 0 var(--ds-spacing-3-5);
+  }
+
+  .ds-gates__stats > div:first-child {
+    padding-left: 0;
+  }
+
+  .ds-gates__stats > div + div {
+    border-left: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-gates__stats dt {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    text-transform: uppercase;
+  }
+
+  .ds-gates__stats dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ds-gates__waiting:not(.ds-gates__waiting--none) {
+    color: var(--ds-palette-amber-text);
+  }
+
+  .ds-gates__stopped-at {
+    color: var(--ds-palette-red-text);
+  }
+
+  /* ── The gate ────────────────────────────────────────────────────────── */
+
+  .ds-gates__stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ds-gates__stack > .ds-gate {
+    align-self: stretch;
+  }
+
+  .ds-gate:focus {
+    outline: none;
+  }
+
+  /* The next gates peek out 8 px each, 16 px narrower per step and fainter. */
+  .ds-gates__behind {
+    box-sizing: border-box;
+    width: calc(100% - var(--ds-spacing-8));
+    height: var(--ds-spacing-2);
+    border-radius: 0 0 var(--ds-radius-xl) var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    opacity: 0.75;
+  }
+
+  .ds-gates__behind + .ds-gates__behind {
+    width: calc(100% - var(--ds-spacing-16));
+    opacity: 0.5;
+  }
+
+  /* Who asks: the agent's tile 8 px from the edge, its name and where it is, the risk at the end. */
+  .ds-gate__who {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4) var(--ds-spacing-3) var(--ds-spacing-2);
+  }
+
+  .ds-gate__mark {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-7);
+    height: var(--ds-spacing-7);
+    border-radius: var(--ds-radius-sm);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-foreground);
+  }
+
+  .ds-gate__mark > svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .ds-gate__who > div {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-gate__agent,
+  .ds-gate__meta,
+  .ds-gate__title,
+  .ds-gate__why {
+    margin: 0;
+  }
+
+  .ds-gate__agent {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-gate__meta {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-gate__who > .ds-badge {
+    flex: none;
+  }
+
+  /* What and why, 16 px in; the arguments 8 px from the edge. */
+  .ds-gate__what {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-0-5) var(--ds-spacing-2) var(--ds-spacing-3);
+  }
+
+  .ds-gate__lead {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2-5);
+    padding: 0 var(--ds-spacing-2);
+  }
+
+  .ds-gate__title {
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-gate__why {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-gate__why > strong {
+    margin-right: var(--ds-spacing-1-5);
+    color: var(--ds-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  /* The arguments: Mono xs on the muted fill. Figma stacks the lines 2 px apart inside 8 px padding; a 2 px taller
+     line with 1 px less padding puts every line in the same place. */
+  .ds-gate__args {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: calc(var(--ds-spacing-2) - var(--ds-spacing-0-5) / 2) var(--ds-spacing-2-5);
+    overflow-x: auto;
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-2xs);
+    line-height: calc(var(--ds-text-2xs--line-height) + var(--ds-spacing-0-5));
+    letter-spacing: 0;
+    white-space: pre;
+  }
+
+  /* Change it: the arguments become a field – the card colour with a 1.5 px input border, the ring when focused. */
+  .ds-gate__args--edit {
+    resize: none;
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-3) var(--ds-input);
+    field-sizing: content;
+  }
+
+  .ds-gate__args--edit:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-3) var(--ds-ring), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Actions under a rule, 8 px from the edge at the end; what was edited at the start. */
+  .ds-gate__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-gate__edited {
+    flex: 1 1 0;
+    min-width: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    overflow-wrap: anywhere;
+  }
+
+  /* ── Stopped, all decided ────────────────────────────────────────────── */
+
+  /* The run stopped: a muted panel, the cross, what stopped it. */
+  .ds-gates__stopped {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-6) var(--ds-spacing-4);
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-muted);
+    text-align: center;
+  }
+
+  .ds-gates__stopped > p {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-gates__stopped > p:first-of-type {
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-gates__done {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+  }
+
+  .ds-gates__done > div {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-gates__done p {
+    margin: 0;
+  }
+
+  .ds-gates__done p:first-child {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-gates__done p + p {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* Outcomes: a circle, green with a check or red with a cross (14 px in rows, 16 in the done card, 20 stopped). */
+  .ds-gates__status {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+    border-radius: var(--ds-radius-full);
+    color: var(--ds-background);
+  }
+
+  .ds-gates__status > svg {
+    width: 11px;
+    height: 11px;
+    fill: currentColor;
+  }
+
+  .ds-gates__status--approved {
+    background-color: var(--ds-palette-green-text);
+  }
+
+  .ds-gates__status--rejected,
+  .ds-gates__status--stopped {
+    background-color: var(--ds-palette-red-text);
+  }
+
+  .ds-gates__done > .ds-gates__status {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-gates__done > .ds-gates__status > svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .ds-gates__stopped > .ds-gates__status {
+    width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+  }
+
+  .ds-gates__stopped > .ds-gates__status > svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* ── Decided ─────────────────────────────────────────────────────────── */
+
+  .ds-gates__decided {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  .ds-gates__heading {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    text-transform: uppercase;
+  }
+
+  .ds-gates__decided > ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A decided gate: a small card with one line that opens to the reason. */
+  .ds-gates__item {
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+  }
+
+  .ds-gates__row {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    width: 100%;
+    margin: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-2-5) var(--ds-spacing-2) var(--ds-spacing-3);
+    border: 0;
+    border-radius: inherit;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+  }
+
+  button.ds-gates__row {
+    cursor: pointer;
+  }
+
+  .ds-gates__row:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-gates__name {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-gates__by,
+  .ds-gates__outcome,
+  .ds-gates__time {
+    flex: none;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-gates__outcome--bad {
+    color: var(--ds-palette-red-text);
+  }
+
+  .ds-gates__row > svg {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    fill: var(--ds-muted-foreground);
+  }
+
+  /* The reason lines up with the gate's name: the row's 12 px, the 14 px status and the 8 px gap. */
+  .ds-gates__reason {
+    margin: 0;
+    padding: 0 var(--ds-spacing-3) var(--ds-spacing-2-5) calc(var(--ds-spacing-3) + var(--ds-spacing-3-5) + var(--ds-spacing-2));
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+}
