@@ -8,13 +8,15 @@ const FIGMA_URL = 'https://www.figma.com/design/4tiBR2hKd4yvQehtKhM9OY?node-id=3
 
 const colors: BadgeColor[] = ['neutral', 'red', 'orange', 'lime', 'green', 'cyan', 'blue', 'violet', 'fuchsia', 'pink'];
 const variants: BadgeVariant[] = ['soft', 'strong'];
+const tintColors: BadgeColor[] = ['neutral', 'red', 'orange', 'amber', 'lime', 'green', 'teal', 'cyan', 'blue', 'violet', 'fuchsia', 'pink'];
+const TINT_FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=55-129';
 
 const meta = {
   title: 'Components/Badge',
   parameters: {
     docs: {
       description: {
-        component: `Implements the Figma component set **Badge** ([open in Figma](${FIGMA_URL})): every Variant (Default, Icon, Image, Dot), Size, Color, Shape, Border and Style, and the Close Icon. Figma "Style" → \`variant\` (Soft, Strong), "Variant" → \`icon\` · \`image\` · \`dot\`, "Close Icon" → \`onRemove\` (a button named "Remove <label>"). Border only changes Soft badges.`,
+        component: `Implements the Figma component set **Badge** ([open in Figma](${FIGMA_URL})): every Variant (Default, Icon, Image, Dot), Size, Color, Shape, Border and Style, and the Close Icon. Figma "Style" → \`variant\` (Soft, Strong), "Variant" → \`icon\` · \`image\` · \`dot\`, "Close Icon" → \`onRemove\` (a button named "Remove <label>"). Border only changes Soft badges. \`variant="tint"\` is Sort UI 2.0 Badge Type=Tint ([open in Figma](${TINT_FIGMA_URL})): the palette tint with its text colour, in every colour including \`amber\` and \`teal\` (Tint only); neutral is 2.0's Secondary.`,
       },
     },
   },
@@ -37,9 +39,9 @@ export const Playground: StoryObj<PlaygroundArgs> = {
   args: { label: 'Label', variant: 'soft', size: 'sm', color: 'neutral', shape: 'rounded', border: true, lead: 'none', closeIcon: false },
   argTypes: {
     label: { name: '↩ Label' },
-    variant: { name: 'Style', control: 'inline-radio', options: variants },
+    variant: { name: 'Style', control: 'inline-radio', options: [...variants, 'tint'], description: 'tint: Sort UI 2.0 Type=Tint (also amber and teal)' },
     size: { name: 'Size', control: 'inline-radio', options: ['sm', 'lg'] },
-    color: { name: 'Color', control: 'select', options: colors },
+    color: { name: 'Color', control: 'select', options: tintColors, description: 'amber and teal: Tint only' },
     shape: { name: 'Shape', control: 'inline-radio', options: ['rounded', 'pill'] },
     border: { name: 'Border', description: 'Soft badges only' },
     lead: { name: 'Variant', control: 'inline-radio', options: ['none', 'icon', 'dot', 'image'], description: 'Figma Variant: Default (none), Icon, Dot, Image' },
@@ -95,6 +97,35 @@ export const Colors: StoryObj = {
           <span>{title}</span>
           {colors.map((c) => (
             <Badge key={c} color={c} {...props}>
+              Label
+            </Badge>
+          ))}
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+/** Sort UI 2.0 Type=Tint in every colour, both sizes (sm = 2.0 default, lg = 2.0 lg), with a pill and the Close Icon. */
+export const Tint: StoryObj = {
+  render: () => (
+    <div style={grid(12)}>
+      <span />
+      {tintColors.map((c) => (
+        <span key={c}>{c}</span>
+      ))}
+      {(
+        [
+          ['sm', { size: 'sm' }],
+          ['lg', { size: 'lg' }],
+          ['Pill', { shape: 'pill' }],
+          ['Close Icon', { onRemove: () => {} }],
+        ] as const
+      ).map(([title, props]) => (
+        <div key={title} style={{ display: 'contents' }}>
+          <span>{title}</span>
+          {tintColors.map((c) => (
+            <Badge key={c} variant="tint" color={c} {...props}>
               Label
             </Badge>
           ))}

@@ -401,8 +401,9 @@ A short label: status, category, count or a removable value. Covers every Figma 
 | Figma property | React prop | CSS class |
 |---|---|---|
 | Style (Soft, Srong) | `variant`: `soft` · `strong` | `ds-badge--soft` · `ds-badge--strong` |
+| Sort UI 2.0 Badge Type=Tint (and Variant=Secondary for neutral) | `variant="tint"`: the palette tint with its text colour (`--ds-palette-<color>-tint` / `-text`), 8 px to the text (lg 10 px) as in 2.0; neutral is 2.0's Secondary (`fill-2`, `foreground`) | `ds-badge--tint` |
 | Size | `size`: `sm` · `lg` | `ds-badge--<size>` |
-| Color | `color`: `neutral` · `red` · `orange` · `lime` · `green` · `cyan` · `blue` · `violet` · `fuchsia` · `pink` | `ds-badge--<color>` |
+| Color | `color`: `neutral` · `red` · `orange` · `lime` · `green` · `cyan` · `blue` · `violet` · `fuchsia` · `pink`, plus `amber` · `teal` with Tint only | `ds-badge--<color>` |
 | Shape | `shape`: `rounded` · `pill` | `ds-badge--pill` |
 | Border | `border` (Soft badges only) | `ds-badge--border` |
 | Variant = Icon / Dot / Image | `icon` · `dot` · `image` | `ds-badge__lead` · `ds-badge__dot` · `ds-badge__image` |

@@ -7,6 +7,7 @@ import { renderAspectRatio } from './aspect-ratio';
 import { renderAttachment } from './attachment';
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
+import { renderBadgeTint } from './badge-tint';
 import { renderBreadcrumb } from './breadcrumb';
 import { renderButton } from './button';
 import { renderButtonGroup, renderButtonGroupItem } from './button-group';
@@ -77,6 +78,7 @@ export const renderers: Record<string, Renderer> = {
   avatar: renderAvatar,
   'avatar-group': renderAvatarGroup,
   badge: renderBadge,
+  'badge-tint': renderBadgeTint,
   breadcrumb: renderBreadcrumb,
   button: renderButton,
   'button-group': renderButtonGroup,
