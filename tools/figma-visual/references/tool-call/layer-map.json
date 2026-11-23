@@ -1,0 +1,78 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-tool-call or .ds-tool-call-group). In a group, the call paths are the first row's.",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Tool call": {
+      "selector": ".ds-tool-call__trigger"
+    },
+    "Tool call/TEXT": {
+      "selector": ".ds-tool-call__name"
+    },
+    "Tool call/TEXT#1": {
+      "selector": ".ds-tool-call__summary"
+    },
+    "Tool call/TEXT#2": {
+      "selector": ".ds-tool-call__time"
+    },
+    "Details": {
+      "selector": ".ds-tool-call__details",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above the details as a separate 1 px Separator; the code draws it as the details' top border, so they are 1 px taller (the card's size is compared)."
+    },
+    "Label": {
+      "selector": ".ds-tool-call__label"
+    },
+    "Label/TEXT": {
+      "selector": ".ds-tool-call__label > h4"
+    },
+    "Code": {
+      "selector": ".ds-tool-call__code",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma stacks code lines 2 px apart inside 8 px padding; the code's <pre> uses a 2 px taller line and 1 px less padding, which puts every line in the same place (the box's size is compared)."
+    },
+    "Code/TEXT": {
+      "selector": ".ds-tool-call__code",
+      "skip": [
+        "lh"
+      ],
+      "$why": "Figma stacks code lines 2 px apart inside 8 px padding; the code's <pre> uses a 2 px taller line and 1 px less padding, which puts every line in the same place (the box's size is compared)."
+    },
+    "Waiting": {
+      "selector": ".ds-tool-call__waiting",
+      "skip": [
+        "w",
+        "h",
+        "p"
+      ],
+      "$why": "Figma puts a Waiting row inside the Code box; in code the box itself is the waiting row (its gap is compared, the box's place and size come from the card's size)."
+    },
+    "Actions": {
+      "selector": ".ds-tool-call__actions"
+    },
+    "Header": {
+      "selector": ".ds-tool-call-group__trigger"
+    },
+    "Header/TEXT": {
+      "selector": ".ds-tool-call-group__title"
+    },
+    "Header/TEXT#1": {
+      "selector": ".ds-tool-call-group__meta"
+    },
+    "Calls": {
+      "selector": ".ds-tool-call-group__calls"
+    },
+    "Status done": {
+      "selector": ".ds-tool-call__status--done"
+    },
+    "Status fail": {
+      "selector": ".ds-tool-call__status--error"
+    }
+  }
+}

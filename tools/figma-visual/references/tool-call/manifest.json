@@ -1,0 +1,75 @@
+{
+ "$comment": "Sort UI 2.0 pattern Tool Call Card (6102:1367): a running call (closed and open), a finished one open, a failed one, a group of four and the folded group (1x PNG, get_screenshot, with the card's shadow). renderers/tool-call.tsx renders them 460 px wide.",
+ "component": "tool-call",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6102:1367",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "running",
+   "nodeId": "6267:4272",
+   "props": {
+    "State": "Running"
+   },
+   "target": "#target > .ds-tool-call",
+   "nodeW": 460,
+   "nodeH": 36
+  },
+  {
+   "slug": "running-open",
+   "nodeId": "6267:4313",
+   "props": {
+    "State": "Running open"
+   },
+   "target": "#target > .ds-tool-call",
+   "nodeW": 460,
+   "nodeH": 245
+  },
+  {
+   "slug": "done-open",
+   "nodeId": "6267:4363",
+   "props": {
+    "State": "Done open"
+   },
+   "target": "#target > .ds-tool-call",
+   "nodeW": 460,
+   "nodeH": 213
+  },
+  {
+   "slug": "failed",
+   "nodeId": "6267:4417",
+   "props": {
+    "State": "Failed"
+   },
+   "target": "#target > .ds-tool-call",
+   "nodeW": 460,
+   "nodeH": 171
+  },
+  {
+   "slug": "group",
+   "nodeId": "6267:4422",
+   "props": {
+    "State": "Group"
+   },
+   "target": "#target > .ds-tool-call-group",
+   "nodeW": 460,
+   "nodeH": 194
+  },
+  {
+   "slug": "folded",
+   "nodeId": "6267:4504",
+   "props": {
+    "State": "Folded"
+   },
+   "target": "#target > .ds-tool-call-group",
+   "nodeW": 460,
+   "nodeH": 40
+  }
+ ]
+}
