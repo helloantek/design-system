@@ -1,0 +1,374 @@
+/*
+ * Tool Call — the Sort UI 2.0 pattern "Tool Call Card" (node 6102:1367 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): an agent's tool call in one line (the tool, what it does, its status and time) that opens
+ * to the arguments and the result, each with Copy; an error opens with Retry. Several calls of one turn sit in a group
+ * that sums them up and folds to one line. Values are Sort UI 2.0 tokens. Framework-agnostic.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-tool-call [ds-tool-call--error] [ds-tool-call--open]">       (in a group: no card, a row)
+ *     <button class="ds-tool-call__trigger" aria-expanded="true" aria-controls="d">
+ *       <span class="ds-tool-call__icon" aria-hidden="true"><svg…/></span>
+ *       <code class="ds-tool-call__name">search_web</code>
+ *       <span class="ds-tool-call__summary">Searching the web for “CRM pricing…”</span>
+ *       <span class="ds-tool-call__status ds-tool-call__status--done">…</span>   (--running: a Spinner; --done; --error)
+ *       <span class="ds-tool-call__time">1.4 s</span>
+ *       <span class="ds-tool-call__chevron" aria-hidden="true"><svg…/></span>
+ *     </button>
+ *     <div class="ds-tool-call__details" id="d">
+ *       <div class="ds-tool-call__section" role="group" aria-labelledby="…">
+ *         <div class="ds-tool-call__label"><h4>Arguments</h4>[…Copy button…]</div>
+ *         <pre class="ds-tool-call__code [ds-tool-call__code--error]">…</pre>
+ *       </div>
+ *       [<div class="ds-tool-call__actions">…Retry, Copy error…</div>]
+ *     </div>
+ *   </div>
+ *
+ *   <div class="ds-tool-call-group [ds-tool-call-group--open] [ds-tool-call-group--running]">
+ *     <button class="ds-tool-call-group__trigger" aria-expanded="true">
+ *       [<span class="ds-tool-call__status ds-tool-call__status--done">…</span>]   (folded)
+ *       <span class="ds-tool-call-group__title">4 tool calls</span> <span class="ds-tool-call-group__meta">· 2.4 s · 1 failed</span>
+ *       <span class="ds-tool-call__chevron">…</span>
+ *     </button>
+ *     <div class="ds-tool-call-group__calls">…ToolCall rows…</div>
+ *   </div>
+ *   Running (--running): the trigger is a plain muted line ("Using tools… · 0.9 s") and the calls are cards under it.
+ */
+
+@layer ds.components {
+  /* ── Tool Call ──────────────────────────────────────────────────────── */
+
+  /* The card: 12 px corners, an inside border and the Surface/Card shadow. */
+  .ds-tool-call {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* The line: icon, name (Mono xs), what it does (cut with an ellipsis), status, time and the chevron, 8 px apart. */
+  .ds-tool-call__trigger {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    width: 100%;
+    min-height: var(--ds-spacing-9);
+    margin: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-4);
+    border: 0;
+    border-radius: inherit;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ds-tool-call--open > .ds-tool-call__trigger {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .ds-tool-call__trigger:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-tool-call__icon,
+  .ds-tool-call__chevron {
+    display: inline-flex;
+    flex: none;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-tool-call__icon > svg,
+  .ds-tool-call__chevron > svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .ds-tool-call__name {
+    flex: none;
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+    letter-spacing: 0;
+  }
+
+  .ds-tool-call__summary {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-muted-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-tool-call__time {
+    flex: none;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Status: a Spinner while running; then a 14 px circle, green with a check or red with a cross. */
+  .ds-tool-call__status {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--ds-background);
+  }
+
+  .ds-tool-call__status--done,
+  .ds-tool-call__status--error {
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+    border-radius: var(--ds-radius-full);
+  }
+
+  .ds-tool-call__status--done {
+    background-color: var(--ds-palette-green-text);
+  }
+
+  .ds-tool-call__status--error {
+    background-color: var(--ds-palette-red-text);
+  }
+
+  .ds-tool-call__status > svg {
+    width: 11px;
+    height: 11px;
+    fill: currentColor;
+  }
+
+  /* A failed call: its icon and name in the palette's red text. */
+  .ds-tool-call--error .ds-tool-call__icon,
+  .ds-tool-call--error .ds-tool-call__name {
+    color: var(--ds-palette-red-text);
+  }
+
+  /* Details under a 1 px rule: the sections 12 px apart. */
+  .ds-tool-call__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-4) var(--ds-spacing-3);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-tool-call__details[hidden] {
+    display: none;
+  }
+
+  .ds-tool-call__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+  }
+
+  /* The section's name in small capitals (xs Medium, muted) and its Copy button at the end. */
+  .ds-tool-call__label {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    min-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-tool-call__label > :first-child {
+    flex: 1 1 0;
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    text-transform: uppercase;
+  }
+
+  /* Code: Mono xs on the muted fill, 6 px corners. Figma stacks the lines 2 px apart inside 8 px padding; a 2 px
+     taller line with 1 px less padding puts every line in the same place. */
+  .ds-tool-call__code {
+    box-sizing: border-box;
+    margin: 0;
+    padding: calc(var(--ds-spacing-2) - var(--ds-spacing-0-5) / 2) var(--ds-spacing-2-5);
+    overflow-x: auto;
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+    color: var(--ds-foreground);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-text-2xs);
+    line-height: calc(var(--ds-text-2xs--line-height) + var(--ds-spacing-0-5));
+    letter-spacing: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .ds-tool-call__code--error {
+    background-color: var(--ds-palette-red-tint);
+    color: var(--ds-palette-red-text);
+  }
+
+  /* Waiting for the result: a small Spinner and muted text. */
+  .ds-tool-call__waiting {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-tool-call__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  /* ── Tool Call Group ────────────────────────────────────────────────── */
+
+  .ds-tool-call-group {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Header: the count (Medium) and the sum-up in muted text, 6 px apart; 12 px around (10 px folded). */
+  .ds-tool-call-group__trigger {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    width: 100%;
+    margin: 0;
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-4);
+    border: 0;
+    border-radius: inherit;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ds-tool-call-group--open > .ds-tool-call-group__trigger {
+    padding-block: var(--ds-spacing-3);
+  }
+
+  .ds-tool-call-group__trigger:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-tool-call-group__title {
+    color: var(--ds-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-tool-call-group__meta {
+    flex: 1 1 0;
+    min-width: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  /* The calls: rows 4 px from the card's sides, 6 px above its bottom. */
+  .ds-tool-call-group__calls {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--ds-spacing-1) var(--ds-spacing-1-5);
+  }
+
+  .ds-tool-call-group__calls[hidden] {
+    display: none;
+  }
+
+  /* A call in a group is a row, not a card: 12 px in, 8 px from the chevron's side; it opens under itself. */
+  .ds-tool-call-group__calls > .ds-tool-call {
+    border-radius: var(--ds-radius-sm);
+    background: none;
+    box-shadow: none;
+  }
+
+  .ds-tool-call-group__calls > .ds-tool-call > .ds-tool-call__trigger {
+    padding: var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-3);
+  }
+
+  .ds-tool-call-group__calls > .ds-tool-call > .ds-tool-call__trigger:hover {
+    background-color: var(--ds-fill-1);
+  }
+
+  .ds-tool-call-group__calls > .ds-tool-call > .ds-tool-call__details {
+    padding-inline: var(--ds-spacing-3) var(--ds-spacing-2);
+    border-top: 0;
+  }
+
+  /* Running: a plain muted line with the current tool's 14 px icon, and the calls as cards 10 px under it. */
+  .ds-tool-call-group--running {
+    gap: var(--ds-spacing-2-5);
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .ds-tool-call-group--running > .ds-tool-call-group__trigger {
+    width: auto;
+    align-self: flex-start;
+    padding: 0;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-tool-call-group--running .ds-tool-call-group__title {
+    color: var(--ds-muted-foreground);
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  .ds-tool-call-group--running .ds-tool-call-group__meta {
+    flex: none;
+  }
+
+  .ds-tool-call-group--running > .ds-tool-call-group__trigger .ds-tool-call__icon > svg,
+  .ds-tool-call-group--running > .ds-tool-call-group__trigger .ds-tool-call__chevron > svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .ds-tool-call-group--running > .ds-tool-call-group__calls {
+    gap: var(--ds-spacing-2);
+    padding: 0;
+  }
+
+  .ds-tool-call-group--running > .ds-tool-call-group__calls > .ds-tool-call {
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+  }
+
+  .ds-tool-call-group--running > .ds-tool-call-group__calls > .ds-tool-call > .ds-tool-call__trigger {
+    padding: var(--ds-spacing-2) var(--ds-spacing-4);
+  }
+
+  .ds-tool-call-group--running > .ds-tool-call-group__calls > .ds-tool-call > .ds-tool-call__details {
+    padding-inline: var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+}

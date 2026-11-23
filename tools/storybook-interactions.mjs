@@ -2647,6 +2647,32 @@ Object.assign(tests, {
     await page.getByRole('article', { name: 'Delete 3 stale branches' }).getByRole('button', { name: /Deny/ }).click();
     assert.match(await page.getByRole('status').textContent(), /Denied · Delete 3 stale branches/);
   },
+  'tool call: the line is a button that opens the arguments and result (aria-expanded); a failed call starts open with Retry; a group folds to one line and opens to its calls': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--done-open&viewMode=story');
+    const trigger = page.getByRole('button', { name: /query_deals/ });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.equal(await page.getByRole('heading', { name: 'Arguments' }).isVisible(), true);
+    assert.equal(await page.getByRole('button', { name: 'Copy arguments' }).count(), 1, 'each section has a named Copy button');
+    await trigger.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'false', 'Enter closes it');
+    assert.equal(await page.getByRole('heading', { name: 'Arguments' }).isVisible(), false);
+    await page.keyboard.press('Space');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true', 'Space opens it');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--failed&viewMode=story');
+    await page.getByRole('button', { name: 'Retry' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: /send_email/ }).getAttribute('aria-expanded'), 'true', 'a failed call starts open');
+    assert.equal(await page.getByRole('img', { name: 'failed' }).count(), 1, 'the status is named');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--folded&viewMode=story');
+    const group = page.getByRole('button', { name: /Used 4 tools/ });
+    await group.waitFor();
+    assert.equal(await group.getAttribute('aria-expanded'), 'false');
+    assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), false, 'folded: the calls are hidden');
+    await group.click();
+    assert.match(await page.getByRole('button', { name: /4 tool calls/ }).textContent(), /4 tool calls/, 'open: the header counts the calls');
+    assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), true);
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });
