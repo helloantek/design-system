@@ -2618,6 +2618,32 @@ Object.assign(tests, {
     await page.waitForSelector('.ds-alert');
     assert.deepEqual(await page.locator('.ds-alert').evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height)), [48, 48]);
   },
+  'tool call: the line is a button that opens the arguments and result (aria-expanded); a failed call starts open with Retry; a group folds to one line and opens to its calls': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--done-open&viewMode=story');
+    const trigger = page.getByRole('button', { name: /query_deals/ });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.equal(await page.getByRole('heading', { name: 'Arguments' }).isVisible(), true);
+    assert.equal(await page.getByRole('button', { name: 'Copy arguments' }).count(), 1, 'each section has a named Copy button');
+    await trigger.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'false', 'Enter closes it');
+    assert.equal(await page.getByRole('heading', { name: 'Arguments' }).isVisible(), false);
+    await page.keyboard.press('Space');
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true', 'Space opens it');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--failed&viewMode=story');
+    await page.getByRole('button', { name: 'Retry' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: /send_email/ }).getAttribute('aria-expanded'), 'true', 'a failed call starts open');
+    assert.equal(await page.getByRole('img', { name: 'failed' }).count(), 1, 'the status is named');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--folded&viewMode=story');
+    const group = page.getByRole('button', { name: /Used 4 tools/ });
+    await group.waitFor();
+    assert.equal(await group.getAttribute('aria-expanded'), 'false');
+    assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), false, 'folded: the calls are hidden');
+    await group.click();
+    assert.match(await page.getByRole('button', { name: /4 tool calls/ }).textContent(), /4 tool calls/, 'open: the header counts the calls');
+    assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), true);
+  },
   'approval card: a named card; Enter approves and Esc denies from inside it; approving is busy and ignores input; the outcome is one status line; Undo brings the card back': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-approval-card--in-chat&viewMode=story');
     const card = page.getByRole('article', { name: 'Send the October newsletter' });
@@ -2646,32 +2672,6 @@ Object.assign(tests, {
     assert.match(await timer.textContent(), /Denies itself in 0:4\d/, 'the countdown is a timer');
     await page.getByRole('article', { name: 'Delete 3 stale branches' }).getByRole('button', { name: /Deny/ }).click();
     assert.match(await page.getByRole('status').textContent(), /Denied · Delete 3 stale branches/);
-  },
-  'tool call: the line is a button that opens the arguments and result (aria-expanded); a failed call starts open with Retry; a group folds to one line and opens to its calls': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--done-open&viewMode=story');
-    const trigger = page.getByRole('button', { name: /query_deals/ });
-    await trigger.waitFor();
-    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
-    assert.equal(await page.getByRole('heading', { name: 'Arguments' }).isVisible(), true);
-    assert.equal(await page.getByRole('button', { name: 'Copy arguments' }).count(), 1, 'each section has a named Copy button');
-    await trigger.focus();
-    await page.keyboard.press('Enter');
-    assert.equal(await trigger.getAttribute('aria-expanded'), 'false', 'Enter closes it');
-    assert.equal(await page.getByRole('heading', { name: 'Arguments' }).isVisible(), false);
-    await page.keyboard.press('Space');
-    assert.equal(await trigger.getAttribute('aria-expanded'), 'true', 'Space opens it');
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--failed&viewMode=story');
-    await page.getByRole('button', { name: 'Retry' }).waitFor();
-    assert.equal(await page.getByRole('button', { name: /send_email/ }).getAttribute('aria-expanded'), 'true', 'a failed call starts open');
-    assert.equal(await page.getByRole('img', { name: 'failed' }).count(), 1, 'the status is named');
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-tool-call-card--folded&viewMode=story');
-    const group = page.getByRole('button', { name: /Used 4 tools/ });
-    await group.waitFor();
-    assert.equal(await group.getAttribute('aria-expanded'), 'false');
-    assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), false, 'folded: the calls are hidden');
-    await group.click();
-    assert.match(await page.getByRole('button', { name: /4 tool calls/ }).textContent(), /4 tool calls/, 'open: the header counts the calls');
-    assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), true);
   },
   'permission request: a named card; the duration is a toggle group and names the Allow button; a destructive right allows only once; Esc denies, Enter allows; the answer is one status line with Revoke': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-permission-request--request&viewMode=story');
