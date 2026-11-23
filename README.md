@@ -1045,6 +1045,35 @@ Page links with Previous and Next: the Sort UI 2.0 **Pagination** and **Paginati
 
 It is a `nav` landmark (named "Pagination" unless you pass `aria-label`) holding a list of buttons, or links with `getHref`. Each page link is named "Page 3" (`labels.page`); the current one has `aria-current="page"`. Previous / Next (and First / Last) are disabled on the first / last page; disabled links lose their `href`. Ellipses are `aria-hidden`. The pages shown are the first and last (`boundaryCount`), the current one with `siblingCount` on each side, and an ellipsis for each gap; a gap of one page shows that page instead (page 2 of 12 → 1 2 3 … 12). `paginationRange(page, pageCount, siblingCount, boundaryCount)` is exported for custom layouts. The "Previous and next" and "Rows per page" demos are layouts made of Button and Select (see the stories).
 
+## Permission Request
+
+A pattern from the Sort UI 2.0 **Patterns** page: an agent asks for one specific right (**Permission Request**, node `6108:1474`).
+
+```tsx
+<PermissionRequest
+  agent="Support agent" action="read #billing"
+  tool="Slack · Acme workspace" toolIcon={<RiSlackFill />}
+  reason="To answer Ana Silva’s question about a double charge, it needs to see what billing said last week."
+  state={state} duration={duration}
+  onAllow={(d) => allow(d)} onDeny={deny} onRevoke={revoke}
+  outcome="Support agent · 52 min left"
+>
+  <PermissionRequestScope can={['Read messages in #billing']} cannot={['Post, edit or delete messages']} />
+</PermissionRequest>
+```
+
+| Figma | React prop | CSS class |
+|---|---|---|
+| Header: agent tile, "Agent wants to action", tool | `agent`, `action`, `icon` (a robot by default), `tool`, `toolIcon` (12 px) | `ds-permission__header` · `__icon` · `__title` · `__tool` |
+| Why | `reason` (muted, a 2 px rule at its start) | `ds-permission__reason` |
+| It can · It cannot | `PermissionRequestScope` (`can`, `cannot`: lists with green checks and muted crosses) | `ds-permission__section` · `__list` · `__item--can` · `--cannot` |
+| Files | `PermissionRequestFiles` (`files` with name and size, `total`: the count badge and "N more") | `ds-permission__section--files` · `__file` · `__size` · `__more` |
+| For how long: Just once · 1 hour · Always | a Toggle Group (sm, 4 px apart); `durations`, `duration` / `defaultDuration` / `onDurationChange`; the Allow button says it ("Allow for 1 hour") | `ds-permission__duration` |
+| Destructive | `destructive`: a red Tint badge, only "Just once", a note, and a destructive Allow | `ds-permission--destructive` |
+| Deny (Esc) · Allow (↵) | `onDeny`, `onAllow(duration)`; Esc and Enter work anywhere in the card (Enter not on buttons, links or fields) | `ds-permission__footer` |
+| Answered: allowed, denied, expired | `state` `allowed` · `denied` · `expired`: one status line (`outcomeTitle` or "Allowed for 1 hour · read #billing", `outcome`) with Revoke (outlined, `onRevoke`), Change (`onChange`) or Ask again (`onAskAgain`) | `ds-permission--answered` · `__answered` · `__status--allowed` · `--denied` · `--expired` |
+| Texts | `labels` (and on the scope and files), for other languages | — |
+
 ## Popover
 
 A small non-modal panel that opens from a button, with a title, a description and any content: Sort UI 2.0 **Popover** (header, content, Actions).
@@ -1855,6 +1884,7 @@ These come from the Figma files, not the code:
 - Spinner (2.0): Variant=Default Size=default is 17.3 px (a Lucide 16 px icon in its 17.3 px frame), while Gradient default is 16 px; the code draws both at 16 px. Figma's Default keeps a 1.25 px stroke and Gradient a 1.5 px one at every size; the code follows. The "In buttons" demo shows the spinner in disabled buttons; Button has no loading state, so the stories pass `leadingIcon={<Spinner decorative />}` with `disabled`.
 - Tool Call Card (2.0 pattern): the call shown in chat had 6 px corners while every other card (open, failed, the group) has 12 px; it is 12 px now in Figma too.
 - Approval Card (2.0 pattern): with a preview, Figma's body was 8 px in on both sides, so the text sat 8 px from the edge while other bodies use 16 px; the summary now has its own 8 px frame (16 px in, the preview stays 8 px). The approving card does not fade Deny, Approve or "Always allow"; the code keeps them as drawn and ignores input until the state changes. Recipients' avatars are solid `secondary` with a 1 px inside ring in the page colour, 6 px over each other (Avatar Group draws `fill-2` with a 2 px outside ring and 8 px); the card styles its own group that way.
+- Permission Request (2.0 pattern): "Expired" drew its clock in a muted circle; it is the plain 16 px muted clock now, as in Approval Card. Answered lines put a ghost action 16 px from the edge and an outlined one (Revoke) 8 px; the code follows.
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.

@@ -1,0 +1,65 @@
+{
+ "$comment": "Sort UI 2.0 pattern Permission Request (6108:1474): the request, the destructive one and three answered lines (1x PNG, get_screenshot, with the card's shadow). renderers/permission-request.tsx renders them 440 px wide.",
+ "component": "permission-request",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6108:1474",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "request",
+   "nodeId": "6269:4246",
+   "props": {
+    "State": "Request"
+   },
+   "target": "#target > .ds-permission",
+   "nodeW": 440,
+   "nodeH": 418
+  },
+  {
+   "slug": "destructive",
+   "nodeId": "6269:4351",
+   "props": {
+    "State": "Destructive"
+   },
+   "target": "#target > .ds-permission",
+   "nodeW": 440,
+   "nodeH": 420
+  },
+  {
+   "slug": "allowed",
+   "nodeId": "6269:4479",
+   "props": {
+    "State": "Allowed"
+   },
+   "target": "#target > .ds-permission",
+   "nodeW": 440,
+   "nodeH": 60
+  },
+  {
+   "slug": "denied",
+   "nodeId": "6269:4519",
+   "props": {
+    "State": "Denied"
+   },
+   "target": "#target > .ds-permission",
+   "nodeW": 440,
+   "nodeH": 60
+  },
+  {
+   "slug": "expired",
+   "nodeId": "6269:4539",
+   "props": {
+    "State": "Expired"
+   },
+   "target": "#target > .ds-permission",
+   "nodeW": 440,
+   "nodeH": 60
+  }
+ ]
+}
