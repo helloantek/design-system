@@ -13,6 +13,11 @@
  *      (or <span class="ds-badge__remove" aria-hidden="true"> inside another control, e.g. Select tags)
  *   </span>
  * Figma "Style" Soft / Srong (sic) = --soft / --strong.
+ *
+ * Tint (--tint) is Sort UI 2.0 Badge (node 55:129 in file 4JnqgEbdlnKgiFrfmiwEZw) Type=Tint: the palette's tint
+ * background with its text colour (colors/palette/<color>-tint and -text). Its sizes match: sm is 2.0 Size=default
+ * (20 px high, 8 px to the text each side), lg is Size=lg (24 px, 10 px). Neutral is 2.0 Variant=Secondary (fill-2, foreground).
+ * Amber and teal exist only in Tint.
  */
 
 @layer ds.components {
@@ -67,6 +72,14 @@
     --badge-dot: var(--ds-icon-white-default);
   }
 
+  /* Sort UI 2.0 Type=Tint: palette tint background, palette text colour for the label, icon and dot. */
+  .ds-badge--tint {
+    --badge-bg: var(--badge-tint-bg);
+    --badge-fg: var(--badge-tint-fg);
+    --badge-icon: var(--badge-tint-fg);
+    --badge-dot: var(--badge-tint-fg);
+  }
+
   /* Figma Border: only Soft badges get a stroke. */
   .ds-badge--soft.ds-badge--border {
     --badge-stroke: var(--ds-border-default);
@@ -78,6 +91,8 @@
     --badge-soft-fg: var(--ds-text-subtle);
     --badge-soft-icon: var(--ds-icon-default-muted);
     --badge-accent: var(--ds-bg-basic-gray-accent);
+    --badge-tint-bg: var(--ds-fill-2);
+    --badge-tint-fg: var(--ds-foreground);
   }
 
   .ds-badge--neutral.ds-badge--border {
@@ -97,54 +112,83 @@
     --badge-soft-bg: var(--ds-bg-badge-red);
     --badge-soft-fg: var(--ds-bg-basic-red-strong);
     --badge-accent: var(--ds-bg-basic-red-accent);
+    --badge-tint-bg: var(--ds-palette-red-tint);
+    --badge-tint-fg: var(--ds-palette-red-text);
   }
 
   .ds-badge--orange {
     --badge-soft-bg: var(--ds-bg-badge-orange);
     --badge-soft-fg: var(--ds-bg-basic-orange-strong);
     --badge-accent: var(--ds-bg-basic-orange-accent);
+    --badge-tint-bg: var(--ds-palette-orange-tint);
+    --badge-tint-fg: var(--ds-palette-orange-text);
   }
 
   .ds-badge--lime {
     --badge-soft-bg: var(--ds-bg-badge-lime);
     --badge-soft-fg: var(--ds-bg-basic-lime-strong);
     --badge-accent: var(--ds-bg-basic-lime-accent);
+    --badge-tint-bg: var(--ds-palette-lime-tint);
+    --badge-tint-fg: var(--ds-palette-lime-text);
   }
 
   .ds-badge--green {
     --badge-soft-bg: var(--ds-bg-badge-green);
     --badge-soft-fg: var(--ds-bg-basic-green-strong);
     --badge-accent: var(--ds-bg-basic-green-accent);
+    --badge-tint-bg: var(--ds-palette-green-tint);
+    --badge-tint-fg: var(--ds-palette-green-text);
   }
 
   .ds-badge--cyan {
     --badge-soft-bg: var(--ds-bg-badge-cyan);
     --badge-soft-fg: var(--ds-bg-basic-cyan-strong);
     --badge-accent: var(--ds-bg-basic-cyan-accent);
+    --badge-tint-bg: var(--ds-palette-cyan-tint);
+    --badge-tint-fg: var(--ds-palette-cyan-text);
   }
 
   .ds-badge--blue {
     --badge-soft-bg: var(--ds-bg-badge-blue);
     --badge-soft-fg: var(--ds-bg-basic-blue-strong);
     --badge-accent: var(--ds-bg-basic-blue-accent);
+    --badge-tint-bg: var(--ds-palette-blue-tint);
+    --badge-tint-fg: var(--ds-palette-blue-text);
   }
 
   .ds-badge--violet {
     --badge-soft-bg: var(--ds-bg-badge-violet);
     --badge-soft-fg: var(--ds-bg-basic-violet-strong);
     --badge-accent: var(--ds-bg-basic-violet-accent);
+    --badge-tint-bg: var(--ds-palette-violet-tint);
+    --badge-tint-fg: var(--ds-palette-violet-text);
   }
 
   .ds-badge--fuchsia {
     --badge-soft-bg: var(--ds-bg-badge-fuchsia);
     --badge-soft-fg: var(--ds-bg-basic-fuchsia-strong);
     --badge-accent: var(--ds-bg-basic-fuchsia-accent);
+    --badge-tint-bg: var(--ds-palette-fuchsia-tint);
+    --badge-tint-fg: var(--ds-palette-fuchsia-text);
   }
 
   .ds-badge--pink {
     --badge-soft-bg: var(--ds-bg-badge-pink);
     --badge-soft-fg: var(--ds-bg-basic-pink-strong);
     --badge-accent: var(--ds-bg-basic-pink-accent);
+    --badge-tint-bg: var(--ds-palette-pink-tint);
+    --badge-tint-fg: var(--ds-palette-pink-text);
+  }
+
+  /* Tint only. */
+  .ds-badge--amber {
+    --badge-tint-bg: var(--ds-palette-amber-tint);
+    --badge-tint-fg: var(--ds-palette-amber-text);
+  }
+
+  .ds-badge--teal {
+    --badge-tint-bg: var(--ds-palette-teal-tint);
+    --badge-tint-fg: var(--ds-palette-teal-text);
   }
 
   /* ── Parts ──────────────────────────────────────────────────────────── */
@@ -172,6 +216,16 @@
 
   .ds-badge__lead + .ds-badge__label {
     padding-left: var(--ds-spacing-0-5);
+  }
+
+  /* Tint: Sort UI 2.0 pads the badge 6 px (lg 8 px) and its label 2 px each side, so the label takes 6 px here
+     (2 + 6 = 8, lg 4 + 6 = 10). After an icon, 2.0's 2 px gap and the label's 2 px make 4 px. */
+  .ds-badge--tint .ds-badge__label {
+    padding: 0 var(--ds-spacing-1-5);
+  }
+
+  .ds-badge--tint .ds-badge__lead + .ds-badge__label {
+    padding-left: var(--ds-spacing-1);
   }
 
   .ds-badge__lead--image + .ds-badge__label {

@@ -7,6 +7,7 @@ import { badgeImage, userIcon } from '../fixtures';
 const FIGMA_URL = 'https://www.figma.com/design/4tiBR2hKd4yvQehtKhM9OY?node-id=3994-37188';
 const colors: BadgeColor[] = ['neutral', 'red', 'orange', 'lime', 'green', 'cyan', 'blue', 'violet', 'fuchsia', 'pink'];
 const variants: BadgeVariant[] = ['soft', 'strong'];
+const tintColors: BadgeColor[] = ['neutral', 'red', 'orange', 'amber', 'lime', 'green', 'teal', 'cyan', 'blue', 'violet', 'fuchsia', 'pink'];
 const grid = (columns: number) =>
   `display: grid; grid-template-columns: 140px repeat(${columns}, auto); gap: 12px; place-items: center start; font-family: var(--ds-font-sans); font-size: 12px; color: var(--ds-muted-foreground)`;
 const icon = userIcon('dsIcon');
@@ -32,9 +33,9 @@ export const Playground: StoryObj<PlaygroundArgs> = {
   args: { label: 'Label', variant: 'soft', size: 'sm', color: 'neutral', shape: 'rounded', border: true, lead: 'none', closeIcon: false },
   argTypes: {
     label: { name: '↩ Label' },
-    variant: { name: 'Style', control: 'inline-radio', options: variants },
+    variant: { name: 'Style', control: 'inline-radio', options: [...variants, 'tint'], description: 'tint: Sort UI 2.0 Type=Tint (also amber and teal)' },
     size: { name: 'Size', control: 'inline-radio', options: ['sm', 'lg'] },
-    color: { name: 'Color', control: 'select', options: colors },
+    color: { name: 'Color', control: 'select', options: tintColors, description: 'amber and teal: Tint only' },
     shape: { name: 'Shape', control: 'inline-radio', options: ['rounded', 'pill'] },
     border: { name: 'Border', description: 'Soft badges only' },
     lead: { name: 'Variant', control: 'inline-radio', options: ['none', 'icon', 'dot', 'image'], description: 'Figma Variant: Default (none), Icon, Dot, Image' },
@@ -72,6 +73,33 @@ export const Colors: StoryObj = {
           <span>{{ row.title }}</span>
           @for (c of colors; track c) {
             <span dsBadge [color]="c" [variant]="row.variant" [border]="row.border" [shape]="row.shape" [removable]="row.removable">Label</span>
+          }
+        </div>
+      }
+    </div>`,
+  }),
+};
+
+/** Sort UI 2.0 Type=Tint in every colour, both sizes (sm = 2.0 default, lg = 2.0 lg), with a pill and the Close Icon. */
+export const Tint: StoryObj = {
+  render: () => ({
+    props: {
+      tintColors,
+      rows: [
+        { title: 'sm', size: 'sm', shape: 'rounded', removable: false },
+        { title: 'lg', size: 'lg', shape: 'rounded', removable: false },
+        { title: 'Pill', size: 'sm', shape: 'pill', removable: false },
+        { title: 'Close Icon', size: 'sm', shape: 'rounded', removable: true },
+      ],
+    },
+    template: `<div style="${grid(12)}">
+      <span></span>
+      @for (c of tintColors; track c) { <span>{{ c }}</span> }
+      @for (row of rows; track row.title) {
+        <div style="display: contents">
+          <span>{{ row.title }}</span>
+          @for (c of tintColors; track c) {
+            <span dsBadge variant="tint" [color]="c" [size]="row.size" [shape]="row.shape" [removable]="row.removable">Label</span>
           }
         </div>
       }

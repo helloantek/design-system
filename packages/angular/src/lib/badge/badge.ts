@@ -5,11 +5,11 @@ import { DsIcon, DsImage } from '../slots/slots';
 // Badge does.
 
 /** Figma "Style" property (Figma spells it "Srong"). */
-export type BadgeVariant = 'soft' | 'strong';
+export type BadgeVariant = 'soft' | 'strong' | 'tint';
 /** Figma "Size" property. */
 export type BadgeSize = 'sm' | 'lg';
 /** Figma "Color" property. */
-export type BadgeColor = 'neutral' | 'red' | 'orange' | 'lime' | 'green' | 'cyan' | 'blue' | 'violet' | 'fuchsia' | 'pink';
+export type BadgeColor = 'neutral' | 'red' | 'orange' | 'amber' | 'lime' | 'green' | 'teal' | 'cyan' | 'blue' | 'violet' | 'fuchsia' | 'pink';
 /** Figma "Shape" property. */
 export type BadgeShape = 'rounded' | 'pill';
 
