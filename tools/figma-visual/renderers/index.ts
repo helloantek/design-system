@@ -59,6 +59,7 @@ import { renderSwitch } from './switch';
 import { renderTabsList, renderTabsTrigger } from './tabs';
 import { renderTextarea } from './textarea';
 import { renderToggle } from './toggle';
+import { renderToolCall } from './tool-call';
 import { renderToggleGroup } from './toggle-group';
 import { renderTooltip } from './tooltip';
 import type { Renderer } from './types';
@@ -150,6 +151,7 @@ export const renderers: Record<string, Renderer> = {
   textarea: renderTextarea,
   toggle: renderToggle,
   'toggle-group': renderToggleGroup,
+  'tool-call': renderToolCall,
   tooltip: renderTooltip,
   'usage-bar': renderUsageBar,
 };

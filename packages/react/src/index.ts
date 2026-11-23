@@ -57,5 +57,6 @@ export * from './Tabs';
 export * from './Textarea';
 export * from './Toggle';
 export * from './ToggleGroup';
+export * from './ToolCall';
 export * from './Tooltip';
 export * from './UsageBar';

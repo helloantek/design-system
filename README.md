@@ -1497,6 +1497,29 @@ Toggles in a group, one or several on: Sort UI 2.0 **Toggle Group** (Spacing, Or
 
 A joined group (Spacing 0) is a pill, or a 16 px rounded box when vertical; a joined Outline group has one border and 1 px dividers. The group is a named `role="group"` of `<button aria-pressed>`s with one Tab stop (the pressed item, or the first): the arrow keys along the orientation, Home and End move between the items, skipping disabled ones. In a single group, pressing the pressed item turns it off; ignore an empty value in `onValueChange` to keep one always on.
 
+## Tool Call
+
+A pattern from the Sort UI 2.0 **Patterns** page: an agent's tool calls (**Tool Call Card**, node `6102:1367`).
+
+```tsx
+<ToolCall icon={<RiDatabase2Line />} name="query_deals" summary="12 open deals · €184k" duration="0.6 s"
+  args={'{ "stage": "open" }'} result="12 deals, total €184,200" />
+
+<ToolCallGroup duration="2.4 s" failed={1}>
+  <ToolCall … />
+  <ToolCall icon={<RiMailLine />} name="send_email" summary="SMTP timeout" status="error" error="Error: connect ETIMEDOUT" onRetry={retry} />
+</ToolCallGroup>
+```
+
+| Figma | React prop | CSS class |
+|---|---|---|
+| Tool call line: icon, name, what it does, status, time, chevron | `icon`, `name` (Mono), `summary` (cut with an ellipsis), `status` (`running`: a Spinner · `done`: green check · `error`: red cross, the icon and name in red; named for screen readers), `duration` | `ds-tool-call__trigger` (a button with `aria-expanded`) · `__icon` · `__name` · `__summary` · `__status--running` · `--done` · `--error` · `__time` |
+| Open: Arguments, Result (each with Copy) | `args`, `result` (strings; Copy writes them to the clipboard and says "Copied"); while running without a result, "Waiting for the result…"; `open` / `defaultOpen` / `onOpenChange` | `ds-tool-call__details` · `__section` · `__label` · `__code` · `__waiting` |
+| Failed: Error, Retry, Copy error | `error` (red box), `onRetry`; a failed call starts open | `ds-tool-call--error` · `__code--error` · `__actions` |
+| Group: "4 tool calls · 2.4 s · 1 failed" | `ToolCallGroup` with `ToolCall` children (rows, not cards), `duration`, `failed`; open shows the count, folded "Used 4 tools" with a check (a cross if any failed) | `ds-tool-call-group` · `--open` · `__trigger` · `__title` · `__meta` · `__calls` |
+| In chat: "Using tools… · 0.9 s" | `status="running"` (starts open): a plain muted line with the current tool's `icon`, the calls as cards under it | `ds-tool-call-group--running` |
+| Texts | `labels` on both, for other languages | — |
+
 ## Tooltip
 
 Short help for a control: the WAI-ARIA tooltip. It describes its trigger (`aria-describedby`), shows on hover after `delay` ms (500 by default) or at once on keyboard focus, stays while the pointer moves onto it, and hides on Escape, blur or when the pointer leaves. A click does not show it. Sort UI 2.0 **Tooltip** (Side, Leading slot, Trailing slot) with **Kbd** Variant=Inverted, Size=sm for shortcuts.
@@ -1830,6 +1853,7 @@ These come from the Figma files, not the code:
 - Marker (2.0): the "Loading" demo's spinner is a Spinner instance in `foreground`, while the other icons are muted; the code draws it with `loading`. The Border variant's rule is a centred 1 px line on the bottom edge (half outside the box); the code draws it inside.
 - Separator (2.0): the line is a centred 1 px stroke on a 0 px frame, so it takes no space in Figma's layouts (the "Separator" demo puts 16 px between the intro and the line and 16 px after it, 32 px in all); the code's line is 1 px in the layout, so the same gaps add up to 33 px. The "Vertical" demo gives each line a fixed height (20 px between the metadata, 16 px between the icon buttons); the code stretches an upright line to its row and takes `height` for a shorter one.
 - Spinner (2.0): Variant=Default Size=default is 17.3 px (a Lucide 16 px icon in its 17.3 px frame), while Gradient default is 16 px; the code draws both at 16 px. Figma's Default keeps a 1.25 px stroke and Gradient a 1.5 px one at every size; the code follows. The "In buttons" demo shows the spinner in disabled buttons; Button has no loading state, so the stories pass `leadingIcon={<Spinner decorative />}` with `disabled`.
+- Tool Call Card (2.0 pattern): the call shown in chat had 6 px corners while every other card (open, failed, the group) has 12 px; it is 12 px now in Figma too.
 - Approval Card (2.0 pattern): with a preview, Figma's body was 8 px in on both sides, so the text sat 8 px from the edge while other bodies use 16 px; the summary now has its own 8 px frame (16 px in, the preview stays 8 px). The approving card does not fade Deny, Approve or "Always allow"; the code keeps them as drawn and ignores input until the state changes. Recipients' avatars are solid `secondary` with a 1 px inside ring in the page colour, 6 px over each other (Avatar Group draws `fill-2` with a 2 px outside ring and 8 px); the card styles its own group that way.
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
