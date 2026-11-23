@@ -1,0 +1,195 @@
+{
+ "component": "stepper",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "$comment": "Sort UI 2.0 Stepper Item (6715:1360) every State in Horizontal and Vertical Indicator and in Bar, with Show line on, and Stepper (6715:1565) with 3 steps in each layout (1x PNG, get_screenshot). renderers/stepper.tsx renders them on Figma's canvas colour.",
+ "componentSet": "6715:1360",
+ "entries": [
+  {
+   "slug": "indicator-horizontal-upcoming",
+   "nodeId": "6715:1292",
+   "props": {
+    "State": "Upcoming",
+    "Orientation": "Horizontal",
+    "Style": "Indicator"
+   },
+   "nodeW": 160,
+   "nodeH": 74,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "indicator-horizontal-current",
+   "nodeId": "6715:1300",
+   "props": {
+    "State": "Current",
+    "Orientation": "Horizontal",
+    "Style": "Indicator"
+   },
+   "nodeW": 160,
+   "nodeH": 74,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "indicator-horizontal-complete",
+   "nodeId": "6715:1308",
+   "props": {
+    "State": "Complete",
+    "Orientation": "Horizontal",
+    "Style": "Indicator"
+   },
+   "nodeW": 160,
+   "nodeH": 74,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "indicator-horizontal-error",
+   "nodeId": "6715:1317",
+   "props": {
+    "State": "Error",
+    "Orientation": "Horizontal",
+    "Style": "Indicator"
+   },
+   "nodeW": 160,
+   "nodeH": 74,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "indicator-vertical-upcoming",
+   "nodeId": "6715:1326",
+   "props": {
+    "State": "Upcoming",
+    "Orientation": "Vertical",
+    "Style": "Indicator"
+   },
+   "nodeW": 240,
+   "nodeH": 60,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "indicator-vertical-current",
+   "nodeId": "6715:1334",
+   "props": {
+    "State": "Current",
+    "Orientation": "Vertical",
+    "Style": "Indicator"
+   },
+   "nodeW": 240,
+   "nodeH": 60,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "indicator-vertical-complete",
+   "nodeId": "6715:1342",
+   "props": {
+    "State": "Complete",
+    "Orientation": "Vertical",
+    "Style": "Indicator"
+   },
+   "nodeW": 240,
+   "nodeH": 60,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "indicator-vertical-error",
+   "nodeId": "6715:1351",
+   "props": {
+    "State": "Error",
+    "Orientation": "Vertical",
+    "Style": "Indicator"
+   },
+   "nodeW": 240,
+   "nodeH": 60,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "bar-upcoming",
+   "nodeId": "6716:1648",
+   "props": {
+    "State": "Upcoming",
+    "Orientation": "Horizontal",
+    "Style": "Bar"
+   },
+   "nodeW": 160,
+   "nodeH": 52,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "bar-current",
+   "nodeId": "6716:1654",
+   "props": {
+    "State": "Current",
+    "Orientation": "Horizontal",
+    "Style": "Bar"
+   },
+   "nodeW": 160,
+   "nodeH": 52,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "bar-complete",
+   "nodeId": "6716:1660",
+   "props": {
+    "State": "Complete",
+    "Orientation": "Horizontal",
+    "Style": "Bar"
+   },
+   "nodeW": 160,
+   "nodeH": 52,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "bar-error",
+   "nodeId": "6716:1667",
+   "props": {
+    "State": "Error",
+    "Orientation": "Horizontal",
+    "Style": "Bar"
+   },
+   "nodeW": 160,
+   "nodeH": 52,
+   "target": "#target .ds-stepper__item"
+  },
+  {
+   "slug": "stepper-horizontal-3",
+   "nodeId": "6715:1361",
+   "props": {
+    "Orientation": "Horizontal",
+    "Steps": "3",
+    "Style": "Indicator"
+   },
+   "nodeW": 450,
+   "nodeH": 74,
+   "target": "#target > .ds-stepper"
+  },
+  {
+   "slug": "stepper-vertical-3",
+   "nodeId": "6715:1463",
+   "props": {
+    "Orientation": "Vertical",
+    "Steps": "3",
+    "Style": "Indicator"
+   },
+   "nodeW": 280,
+   "nodeH": 180,
+   "target": "#target > .ds-stepper"
+  },
+  {
+   "slug": "stepper-bar-3",
+   "nodeId": "6716:1674",
+   "props": {
+    "Orientation": "Horizontal",
+    "Steps": "3",
+    "Style": "Bar"
+   },
+   "nodeW": 450,
+   "nodeH": 52,
+   "target": "#target > .ds-stepper"
+  }
+ ]
+}

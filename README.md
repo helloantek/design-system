@@ -1292,6 +1292,36 @@ A turning indicator for work in progress: Sort UI 2.0 **Spinner** (Variant, Size
 
 It turns once a second (the gradient the other way, so its dark end leads); with reduced motion it turns three times slower instead of stopping, so it still reads as in progress.
 
+## Stepper
+
+The steps of a flow in order: Sort UI 2.0 **Stepper**, **Stepper Item** and **Stepper Indicator** (ported from Sort UI 1.3).
+
+```tsx
+<Stepper aria-label="Create a workspace" current={1} steps={[
+  { label: 'Account', caption: 'Email and password' },
+  { label: 'Workspace', caption: 'Name and address' },
+  { label: 'Team', caption: 'Invite people' },
+]} />
+
+<Stepper aria-label="Import" variant="bar">
+  <StepperItem state="complete" label="Upload" caption="contacts.csv" />
+  <StepperItem state="error" label="Check columns" caption="2 columns have no name" />
+  <StepperItem label="Import" />
+</Stepper>
+```
+
+| Figma property | React prop | CSS class |
+|---|---|---|
+| Stepper Orientation = Horizontal · Vertical | `orientation`: `horizontal` (steps share the width, 8 px apart) · `vertical` (stacked, the lines join them) | `ds-stepper` · `ds-stepper--vertical` |
+| Style = Indicator · Bar | `variant`: `indicator` (a 24 px marker and a line to the next step) · `bar` (a 2 px bar on top, the number and the label in small capitals; horizontal only) | `ds-stepper--bar` |
+| Steps = 3 · 4 · 5 | `steps` (label, caption, `error`) with `current` (0-based; earlier steps are complete), or `StepperItem` children | `ds-stepper__item` |
+| Stepper Item State = Upcoming · Current · Complete · Error | `state` on `StepperItem`; the current step has `aria-current="step"`, complete and error steps add "completed" / "error" for screen readers (`statusLabel`) | `ds-stepper__item--upcoming` · `--current` · `--complete` · `--error` |
+| Label · Caption (Show caption) | `label` · `caption` | `ds-stepper__label` · `ds-stepper__caption` |
+| Number | `number` (defaults to the step's place); Complete shows a check, Error a cross | `ds-stepper__indicator` · `ds-stepper__mark` |
+| Show line | `showLine` (default: every step but the last) | `ds-stepper__line` · `ds-stepper__item--line` · `--no-line` |
+
+It is an ordered list and shows where someone is; it does not move between steps itself: a form drives `current` (see the "In a form" story).
+
 ## Switch
 
 A setting that takes effect at once: a native checkbox with `role="switch"`, drawn as the Sort UI 2.0 **Switch**, with **Field** Orientation=Horizontal for labels (the switch at the end, as in every demo) and the choice card for `card`. Space and a click on the label toggle it. Use a Checkbox for choices sent with a form.
@@ -1765,6 +1795,7 @@ These come from the Figma files, not the code:
 - Marker (2.0): the "Loading" demo's spinner is a Spinner instance in `foreground`, while the other icons are muted; the code draws it with `loading`. The Border variant's rule is a centred 1 px line on the bottom edge (half outside the box); the code draws it inside.
 - Separator (2.0): the line is a centred 1 px stroke on a 0 px frame, so it takes no space in Figma's layouts (the "Separator" demo puts 16 px between the intro and the line and 16 px after it, 32 px in all); the code's line is 1 px in the layout, so the same gaps add up to 33 px. The "Vertical" demo gives each line a fixed height (20 px between the metadata, 16 px between the icon buttons); the code stretches an upright line to its row and takes `height` for a shorter one.
 - Spinner (2.0): Variant=Default Size=default is 17.3 px (a Lucide 16 px icon in its 17.3 px frame), while Gradient default is 16 px; the code draws both at 16 px. Figma's Default keeps a 1.25 px stroke and Gradient a 1.5 px one at every size; the code follows. The "In buttons" demo shows the spinner in disabled buttons; Button has no loading state, so the stories pass `leadingIcon={<Spinner decorative />}` with `disabled`.
+- Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.
 - Empty (2.0): the icon is a 17.3 px Lucide frame (a 16 px icon) in the 32 px tile; the code draws 16 px icons. The "No results" demo's search field spans the content (336 px), which the code does for any Field inside an Empty.

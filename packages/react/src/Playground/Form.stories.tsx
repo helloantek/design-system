@@ -14,6 +14,7 @@ import { Radio, RadioGroup } from '../Radio';
 import { Select, type SelectItem } from '../Select';
 import { Slider } from '../Slider';
 import { Toaster, toast } from '../Sonner';
+import { Stepper } from '../Stepper';
 import { Switch } from '../Switch';
 import { Textarea } from '../Textarea';
 import { Tooltip } from '../Tooltip';
@@ -119,6 +120,12 @@ export const SignUp: StoryObj<Args> = {
         <CardContent>
           <form id="sign-up" onSubmit={onSubmit} noValidate>
             <FieldGroup>
+            <Stepper
+              aria-label="Sign-up steps"
+              variant="bar"
+              current={submitted ? 3 : 0}
+              steps={[{ label: 'Account', error: errorCount > 0 }, { label: 'Subscription' }, { label: 'Done' }]}
+            />
             {errorCount > 0 && <Alert variant="destructive" title={`Fix ${errorCount} ${errorCount === 1 ? 'field' : 'fields'} to continue`} />}
             <Input {...field} name="name" label="Name" placeholder="Jane Doe" leadIcon={<RiUser3Line />} error={errors.name} />
             <Input {...field} name="email" type="email" label="Email" placeholder="mail@domain.com" leadIcon={<RiAtLine />} caption="We never share it" error={errors.email} />
