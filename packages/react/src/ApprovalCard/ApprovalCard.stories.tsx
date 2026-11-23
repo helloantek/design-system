@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { RiGitBranchLine, RiMailLine, RiSparkling2Fill } from '@remixicon/react';
 import { useEffect, useState, type CSSProperties } from 'react';
-import { Avatar, AvatarGroup } from '../Avatar';
+import { Avatar } from '../Avatar';
 import { Bubble } from '../Bubble';
-import { ApprovalCard, ApprovalCardDetails, ApprovalCardPreview, ApprovalCardSummary, type ApprovalCardRisk, type ApprovalCardState } from './ApprovalCard';
+import { ApprovalCard, ApprovalCardDetails, ApprovalCardPreview, ApprovalCardRecipients, ApprovalCardSummary, type ApprovalCardRisk, type ApprovalCardState } from './ApprovalCard';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=6090-1725';
 
@@ -12,7 +12,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component: `The Sort UI 2.0 pattern **Approval Card** ([open in Figma](${FIGMA_URL})): an agent asks before it acts. The header says what it will do and for whom, with a risk badge; the body holds the details (\`ApprovalCardDetails\`, \`ApprovalCardSummary\`, \`ApprovalCardPreview\`); the footer has "Always allow this action" (or a countdown) and Deny / Approve. Esc denies and Enter approves while focus is in the card. \`state\`: \`pending\`, \`approving\` (the button holds a spinner), then \`approved\`, \`denied\` or \`expired\`, which fold it to one line with an optional Undo.
+        component: `The Sort UI 2.0 pattern **Approval Card** ([open in Figma](${FIGMA_URL})): an agent asks before it acts. The header says what it will do and for whom, with a risk badge; the body holds the details (\`ApprovalCardRecipients\`, \`ApprovalCardDetails\`, \`ApprovalCardSummary\`, \`ApprovalCardPreview\`); the footer has "Always allow this action" (or a countdown) and Deny / Approve. Esc denies and Enter approves while focus is in the card. \`state\`: \`pending\`, \`approving\` (the button holds a spinner), then \`approved\`, \`denied\` or \`expired\`, which fold it to one line with an optional Undo.
 
 **When to use:** an agent is about to take one action with an effect outside the chat (sending, paying, deleting, deploying) and needs a yes or no first.
 **When not to use:** the agent needs a lasting right rather than one action (use Permission Request), asks an open question (use Decision Card), or the action is harmless and reversible: just do it and offer Undo.`,
@@ -24,22 +24,12 @@ const meta = {
 export default meta;
 
 const WIDTH: CSSProperties = { width: 'min(420px, calc(100vw - 32px))' };
-const recipients: CSSProperties = { display: 'flex', alignItems: 'center', gap: 8 };
-const muted: CSSProperties = { color: 'var(--ds-muted-foreground)' };
 
 /** The newsletter's body: who gets it, then the subject and when it goes out. */
 function Newsletter() {
   return (
     <>
-      <div style={recipients}>
-        <AvatarGroup size="xs">
-          {['A', 'J', 'M', 'T'].map((i) => (
-            <Avatar key={i} initials={i} name={i} />
-          ))}
-        </AvatarGroup>
-        <span>Ana, Jonas, Mia, Tomás</span>
-        <span style={muted}>+408 more</span>
-      </div>
+      <ApprovalCardRecipients people={[{ name: 'Ana' }, { name: 'Jonas' }, { name: 'Mia' }, { name: 'Tomás' }]} total={412} />
       <ApprovalCardDetails
         items={[
           ['Subject', 'What’s new in October'],

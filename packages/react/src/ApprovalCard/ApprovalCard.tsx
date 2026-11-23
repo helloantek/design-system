@@ -1,5 +1,6 @@
 import { RiArrowGoBackLine, RiCheckLine, RiCloseLine, RiCornerDownLeftLine, RiTimeLine } from '@remixicon/react';
 import { useId, type HTMLAttributes, type KeyboardEvent, type ReactNode, type Ref } from 'react';
+import { Avatar, AvatarGroup } from '../Avatar';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
@@ -196,4 +197,30 @@ export function ApprovalCardSummary({ className, ...rest }: HTMLAttributes<HTMLP
 /** What will change, in a monospace box (a command, files, a diff). */
 export function ApprovalCardPreview({ className, ...rest }: HTMLAttributes<HTMLPreElement>) {
   return <pre {...rest} className={['ds-approval-card__preview', className].filter(Boolean).join(' ')} />;
+}
+
+export interface ApprovalCardRecipientsProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+  /** The first people, by name (up to four get an avatar); `src` for a picture, otherwise the first letter. */
+  people: { name: string; src?: string }[];
+  /** Everyone the action reaches; the rest show as "+N more". */
+  total?: number;
+  /** The "+N more" text, for other languages. */
+  moreLabel?: (count: number) => ReactNode;
+}
+
+/** Who the action reaches: overlapping avatars, the first names and "+N more". */
+export function ApprovalCardRecipients({ people, total, moreLabel = (n) => `+${n} more`, className, ...rest }: ApprovalCardRecipientsProps) {
+  const more = (total ?? people.length) - people.length;
+  return (
+    <div {...rest} className={['ds-approval-card__recipients', className].filter(Boolean).join(' ')}>
+      <AvatarGroup size="xs" aria-hidden>
+        {people.slice(0, 4).map((p) => (
+          <Avatar key={p.name} name={p.name} src={p.src} initials={p.name.charAt(0)} />
+        ))}
+      </AvatarGroup>
+      <span>{people.map((p) => p.name).join(', ')}</span>
+      {more > 0 && <span className="ds-approval-card__more">{moreLabel(more)}</span>}
+    </div>
+  );
 }

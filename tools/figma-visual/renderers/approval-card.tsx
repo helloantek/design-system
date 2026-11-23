@@ -1,5 +1,5 @@
 import { RiGitBranchLine, RiMailLine } from '@remixicon/react';
-import { ApprovalCard, ApprovalCardDetails, ApprovalCardPreview, ApprovalCardSummary, Avatar, AvatarGroup, type ApprovalCardState } from '@helloantek/ds-react';
+import { ApprovalCard, ApprovalCardDetails, ApprovalCardPreview, ApprovalCardRecipients, ApprovalCardSummary, type ApprovalCardState } from '@helloantek/ds-react';
 import type { Renderer } from './types';
 
 // Maps the Sort UI 2.0 pattern "Approval Card" (6090:1725) to code with its sample content, 420 px wide.
@@ -20,15 +20,7 @@ export const renderApprovalCard: Renderer = (p) => {
   } else {
     card = (
       <ApprovalCard icon={<RiMailLine />} title="Send the October newsletter" description="Newsletter · Marketing agent" risk="medium" state={state === 'approving' ? 'approving' : 'pending'} alwaysAllow={false} onApprove={() => {}} onDeny={() => {}}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <AvatarGroup size="xs">
-            {['A', 'J', 'M', 'T'].map((i) => (
-              <Avatar key={i} initials={i} name={i} />
-            ))}
-          </AvatarGroup>
-          <span>Ana, Jonas, Mia, Tomás</span>
-          <span style={{ color: 'var(--ds-muted-foreground)' }}>+408 more</span>
-        </div>
+        <ApprovalCardRecipients people={[{ name: 'Ana' }, { name: 'Jonas' }, { name: 'Mia' }, { name: 'Tomás' }]} total={412} />
         <ApprovalCardDetails
           items={[
             ['Subject', 'What’s new in October'],

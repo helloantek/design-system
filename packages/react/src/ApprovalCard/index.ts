@@ -1,2 +1,2 @@
-export { ApprovalCard, ApprovalCardDetails, ApprovalCardPreview, ApprovalCardSummary } from './ApprovalCard';
-export type { ApprovalCardDetailsProps, ApprovalCardProps, ApprovalCardRisk, ApprovalCardState } from './ApprovalCard';
+export { ApprovalCard, ApprovalCardDetails, ApprovalCardPreview, ApprovalCardRecipients, ApprovalCardSummary } from './ApprovalCard';
+export type { ApprovalCardDetailsProps, ApprovalCardProps, ApprovalCardRecipientsProps, ApprovalCardRisk, ApprovalCardState } from './ApprovalCard';

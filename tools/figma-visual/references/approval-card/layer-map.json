@@ -95,6 +95,13 @@
     },
     "Status expired": {
       "selector": ".ds-approval-card__status"
+    },
+    "Avatar": {
+      "selector": ".ds-approval-card__recipients .ds-avatar__image",
+      "stroke": "inset-shadow"
+    },
+    "Recipients/TEXT#1": {
+      "selector": ".ds-approval-card__more"
     }
   }
 }

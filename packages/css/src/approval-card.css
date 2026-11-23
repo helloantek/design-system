@@ -15,6 +15,8 @@
  *       [<span class="ds-badge ds-badge--sm ds-badge--amber ds-badge--tint">…Medium risk…</span>]
  *     </div>
  *     [<div class="ds-approval-card__body">
+ *        [<div class="ds-approval-card__recipients"><span class="ds-avatar-group">…Avatars…</span>
+ *          <span>Ana, Jonas, Mia, Tomás</span><span class="ds-approval-card__more">+408 more</span></div>]
  *        [<dl class="ds-approval-card__details"><div><dt>Subject</dt><dd>…</dd></div>…</dl>]
  *        [<p class="ds-approval-card__summary">…</p>]
  *        [<pre class="ds-approval-card__preview">…</pre>]                (8 px from the card's edge)
@@ -132,6 +134,35 @@
     color: var(--ds-foreground);
   }
 
+  /* Recipients: overlapping 20 px avatars (6 px over each other, a solid secondary fill and a 1 px inside ring in the
+     page colour), the first names, then "+N more" in muted text. */
+  .ds-approval-card__recipients {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+  }
+
+  .ds-approval-card__recipients .ds-avatar {
+    --avatar-fill: var(--ds-secondary);
+  }
+
+  .ds-approval-card__recipients .ds-avatar-group > * + * {
+    margin-left: calc(-1 * var(--ds-spacing-1-5));
+  }
+
+  .ds-approval-card__recipients .ds-avatar--ring::before {
+    display: none;
+  }
+
+  .ds-approval-card__recipients .ds-avatar__image {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-background);
+  }
+
+  .ds-approval-card__more {
+    color: var(--ds-muted-foreground);
+  }
+
   /* Details: a muted name column (64 px) and the value, 6 px between rows. */
   .ds-approval-card__details {
     display: grid;
@@ -221,7 +252,7 @@
     padding: var(--ds-spacing-2-5) var(--ds-spacing-4);
   }
 
-  /* The outcome: a 16 px circle, green with a check, red with a cross, or muted with a clock (denied by itself). */
+  /* The outcome: a 16 px circle, green with a check or red with a cross, or a muted clock (denied by itself). */
   .ds-approval-card__status {
     display: inline-flex;
     flex: none;
@@ -247,13 +278,13 @@
     background-color: var(--ds-palette-red-text);
   }
 
+  /* Denied by itself: only a 16 px clock in muted text, no circle. */
   .ds-approval-card__status--expired {
-    background-color: var(--ds-muted);
     color: var(--ds-muted-foreground);
   }
 
   .ds-approval-card__status--expired > svg {
-    width: 11px;
-    height: 11px;
+    width: 16px;
+    height: 16px;
   }
 }
