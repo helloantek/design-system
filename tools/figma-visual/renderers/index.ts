@@ -18,6 +18,7 @@ import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './check
 import { renderCombobox } from './combobox';
 import { renderContextMenu } from './context-menu';
 import { renderDatePicker } from './date-picker';
+import { renderDecisionCard } from './decision-card';
 import { renderCollapsible } from './collapsible';
 import { renderDialog } from './dialog';
 import { renderDiff, renderDiffLine } from './diff';
@@ -98,6 +99,7 @@ export const renderers: Record<string, Renderer> = {
   command: renderCommand,
   'context-menu': renderContextMenu,
   'date-picker': renderDatePicker,
+  'decision-card': renderDecisionCard,
   collapsible: renderCollapsible,
   dialog: renderDialog,
   diff: renderDiff,

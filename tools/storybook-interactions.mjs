@@ -2697,6 +2697,33 @@ Object.assign(tests, {
     assert.equal(await destructive.getByRole('button', { name: /Allow once/ }).count(), 1);
     assert.equal(await destructive.getByRole('list', { name: 'Files' }).getByRole('listitem').count(), 3);
   },
+  'decision card: the question names its answers; a number key or a click answers; the last row sends your own words with Enter; Later folds it to one line and Answer opens it; the pager moves between questions': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-decision-card--approval&viewMode=story');
+    const card = page.getByRole('region', { name: 'Send the weekly update to Northwind?' });
+    await card.waitFor();
+    const answers = card.getByRole('group', { name: 'Send the weekly update to Northwind?' });
+    assert.equal(await answers.getByRole('button', { name: /Approve/ }).getAttribute('aria-keyshortcuts'), '1');
+    await card.getByText('Dana Reyes, Northwind').click();
+    await page.keyboard.press('1');
+    assert.match(await page.getByRole('status').textContent(), /Approved – sending the weekly update now/, 'the number answers');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-decision-card--options&viewMode=story');
+    const options = page.getByRole('region', { name: 'Which plan should the new team start on?' });
+    await options.waitFor();
+    await options.getByRole('button', { name: /Next question/ }).click();
+    await page.getByRole('heading', { name: 'Who should own billing?' }).waitFor();
+    await page.getByRole('button', { name: /Previous question/ }).click();
+    const other = page.getByRole('textbox', { name: 'Something else' });
+    await other.fill('Team, but billed yearly');
+    assert.equal(await options.getByRole('button', { name: /Send/ }).count(), 1, 'Send shows once there is text');
+    await page.keyboard.press('2');
+    assert.equal(await other.inputValue(), 'Team, but billed yearly2', 'numbers type in the field, they do not answer');
+    await other.fill('Team, but billed yearly');
+    await other.press('Enter');
+    assert.match(await page.getByText(/^Answered:/).textContent(), /Team, but billed yearly/);
+    await page.getByRole('button', { name: 'Later' }).click();
+    await page.getByRole('button', { name: 'Answer' }).click();
+    assert.equal(await page.getByRole('heading', { name: 'Which plan should the new team start on?' }).isVisible(), true, 'Answer opens the card again');
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });

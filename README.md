@@ -1733,6 +1733,36 @@ A date (or range) field that opens a Calendar: the Sort UI 2.0 **Date Picker** d
 
 The trigger is a button with `aria-haspopup="dialog"`, named by the Field's label and the date ("Review due Mar 27, 2026"). Opening it shows the Calendar panel 4 px below in a non-modal dialog and moves focus to the selected (or today's) day; picking a date, or a range's second date, closes it and returns focus to the trigger, as does Escape; a click or focus outside closes it too. With `input`, typed text is read on Enter or blur (`Date.parse`, with YYYY-MM-DD as a local day; `parse` replaces it), written back in `format`, and dropped when it is not a date or not allowed; Alt+Down opens the calendar.
 
+## Decision Card
+
+A pattern from the Sort UI 2.0 **Patterns** page: an agent's question, asked right above the chat composer (**Decision Card**, node `6111:1606`).
+
+```tsx
+<DecisionCard
+  context="Onboarding"
+  question="Which plan should the new team start on?"
+  options={[
+    { label: 'Starter', description: 'Free, up to 3 people' },
+    { label: 'Team', description: '€12 per person a month, with SSO', recommended: true },
+    { label: 'Enterprise', description: 'Talk to sales first' },
+  ]}
+  page={1} pageCount={2} onPageChange={setPage}
+  onLater={() => setFolded(true)} folded={folded} onOpen={() => setFolded(false)}
+  onAnswer={(answer) => send(answer)}   /* { index } or { text } */
+/>
+```
+
+| Figma | React prop | CSS class |
+|---|---|---|
+| Header: Needs you · context, pager, Later | `context`; `page`, `pageCount`, `onPageChange` (‹ › go round the ends); `onLater` | `ds-decision__header` · `__status` · `__ring` · `__context` · `__pager` |
+| Question | `question` (names the answers' group) | `ds-decision__question` |
+| An approval: what goes out | `details` (name–value rows, one line each) with `options` Approve / Decline | `ds-decision__details` |
+| Numbered answers, one Recommended | `options` (`label`, `description`, `recommended`: a green Tint badge; the card starts on it); a click or the number answers | `ds-decision__answers` · `__option` · `--active` |
+| A pick: preview tiles | `tiles` (`label`, `preview`, `recommended`), numbered before the options; the active one in blue | `ds-decision__tiles` · `__tile` · `--active` · `__preview` · `__caption` |
+| Your own words | the last row (`allowOther`, `otherPlaceholder`, `defaultOtherText`); Send (↵) shows once there is text; numbers type there instead of answering | `ds-decision__other` |
+| Later: one line | `folded` with `pageCount` ("2 questions waiting"), the question cut short and Answer (`onOpen`) | `ds-decision--later` · `__later` · `__title` · `__peek` |
+| Texts | `labels`, for other languages | — |
+
 ## Dialog
 
 A modal window with a header, any content and a footer of actions: Sort UI 2.0 **Dialog** (header, content, footer, Close button).
@@ -1885,6 +1915,7 @@ These come from the Figma files, not the code:
 - Tool Call Card (2.0 pattern): the call shown in chat had 6 px corners while every other card (open, failed, the group) has 12 px; it is 12 px now in Figma too.
 - Approval Card (2.0 pattern): with a preview, Figma's body was 8 px in on both sides, so the text sat 8 px from the edge while other bodies use 16 px; the summary now has its own 8 px frame (16 px in, the preview stays 8 px). The approving card does not fade Deny, Approve or "Always allow"; the code keeps them as drawn and ignores input until the state changes. Recipients' avatars are solid `secondary` with a 1 px inside ring in the page colour, 6 px over each other (Avatar Group draws `fill-2` with a 2 px outside ring and 8 px); the card styles its own group that way.
 - Permission Request (2.0 pattern): "Expired" drew its clock in a muted circle; it is the plain 16 px muted clock now, as in Approval Card. Answered lines put a ghost action 16 px from the edge and an outlined one (Revoke) 8 px; the code follows.
+- Decision Card (2.0 pattern): the answer rows were 6, 8 or 10 px round and 6 or 8 px from the card's sides; they are 6 px round and 6 px in now (the last row's field 8 px from the edge), and the Later line's ring is dashed like the header's. A Kbd with a `label` (↵ "Enter") drew its icon at 24 px; it is 12 px now, as without a label.
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.

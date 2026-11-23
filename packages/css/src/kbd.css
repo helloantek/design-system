@@ -48,8 +48,10 @@
     color: var(--ds-background);
   }
 
-  /* Figma "Icon": an icon instead of (or with) the key text, in the key colour. */
-  .ds-kbd > svg {
+  /* Figma "Icon": an icon instead of (or with) the key text, in the key colour; also inside the wrapper that
+     hides a labelled symbol (`label`) from screen readers. */
+  .ds-kbd > svg,
+  .ds-kbd > [aria-hidden] > svg {
     display: block;
     flex-shrink: 0;
     width: var(--ds-spacing-3);

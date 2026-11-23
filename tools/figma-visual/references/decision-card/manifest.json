@@ -1,0 +1,65 @@
+{
+ "$comment": "Sort UI 2.0 pattern Decision Card (6111:1606): an approval, numbered options, a pick with tiles, your own words (the field focused) and the folded Later line, without the composer under them (1x PNG, get_screenshot, with the card's shadow). renderers/decision-card.tsx renders them 480 px wide.",
+ "component": "decision-card",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6111:1606",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "approval",
+   "nodeId": "6270:4326",
+   "props": {
+    "State": "Approval"
+   },
+   "target": "#target > .ds-decision",
+   "nodeW": 480,
+   "nodeH": 264
+  },
+  {
+   "slug": "options",
+   "nodeId": "6270:4425",
+   "props": {
+    "State": "Options"
+   },
+   "target": "#target > .ds-decision",
+   "nodeW": 480,
+   "nodeH": 282
+  },
+  {
+   "slug": "pick",
+   "nodeId": "6270:4504",
+   "props": {
+    "State": "Pick"
+   },
+   "target": "#target > .ds-decision",
+   "nodeW": 480,
+   "nodeH": 238
+  },
+  {
+   "slug": "own-words",
+   "nodeId": "6270:4616",
+   "props": {
+    "State": "Own words"
+   },
+   "target": "#target > .ds-decision",
+   "nodeW": 480,
+   "nodeH": 282
+  },
+  {
+   "slug": "later",
+   "nodeId": "6270:4678",
+   "props": {
+    "State": "Later"
+   },
+   "target": "#target > .ds-decision",
+   "nodeW": 480,
+   "nodeH": 40
+  }
+ ]
+}
