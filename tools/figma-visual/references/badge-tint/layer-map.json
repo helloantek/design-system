@@ -1,0 +1,15 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-badge).",
+  "layers": {
+    "root": {
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma pads the badge 6 px (lg 8 px) and its Label frame 2 px; the code pads the badge 2 px (lg 4 px, its 1.3 padding, also top and bottom) and the label 6 px, so the text sits as far from the edge (the size check covers it) but the badge's own padding and gap read differently."
+    },
+    "TEXT": {
+      "selector": ".ds-badge__label"
+    }
+  }
+}

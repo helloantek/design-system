@@ -2644,6 +2644,35 @@ Object.assign(tests, {
     assert.match(await page.getByRole('button', { name: /4 tool calls/ }).textContent(), /4 tool calls/, 'open: the header counts the calls');
     assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), true);
   },
+  'approval card: a named card; Enter approves and Esc denies from inside it; approving is busy and ignores input; the outcome is one status line; Undo brings the card back': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-approval-card--in-chat&viewMode=story');
+    const card = page.getByRole('article', { name: 'Send the October newsletter' });
+    await card.waitFor();
+    assert.equal(await card.getByRole('button', { name: /Deny/ }).getAttribute('aria-keyshortcuts'), 'Escape');
+    assert.equal(await card.getByRole('button', { name: /Approve/ }).getAttribute('aria-keyshortcuts'), 'Enter');
+    const always = card.getByRole('checkbox', { name: 'Always allow this action' });
+    await card.getByText('Always allow this action').click();
+    assert.equal(await always.isChecked(), true, 'the label toggles "Always allow"');
+    await always.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await card.getAttribute('aria-busy'), 'true', 'Enter in the card approves; the card is busy');
+    assert.match(await card.getByRole('button', { name: /Approving/ }).textContent(), /Approving/);
+    await page.keyboard.press('Escape');
+    assert.equal(await card.getAttribute('aria-busy'), 'true', 'Esc does nothing while approving');
+    const status = page.getByRole('status');
+    await status.waitFor();
+    assert.match(await status.textContent(), /Approved · Send the October newsletter/);
+    await page.getByRole('button', { name: 'Undo' }).click();
+    await card.getByRole('button', { name: /Approve/ }).focus();
+    await page.keyboard.press('Escape');
+    assert.match(await page.getByRole('status').textContent(), /Denied · Send the October newsletter/, 'Esc denies');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-approval-card--high-risk&viewMode=story');
+    const timer = page.getByRole('timer');
+    await timer.waitFor();
+    assert.match(await timer.textContent(), /Denies itself in 0:4\d/, 'the countdown is a timer');
+    await page.getByRole('article', { name: 'Delete 3 stale branches' }).getByRole('button', { name: /Deny/ }).click();
+    assert.match(await page.getByRole('status').textContent(), /Denied · Delete 3 stale branches/);
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });

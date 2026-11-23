@@ -4,9 +4,11 @@ import { renderAIChatComposer, renderAIChatComposerToken } from './ai-chat-compo
 import { renderAITrace, renderAITraceContent } from './ai-trace';
 import { renderAlertDialog } from './alert-dialog';
 import { renderAspectRatio } from './aspect-ratio';
+import { renderApprovalCard } from './approval-card';
 import { renderAttachment } from './attachment';
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
+import { renderBadgeTint } from './badge-tint';
 import { renderBreadcrumb } from './breadcrumb';
 import { renderButton } from './button';
 import { renderButtonGroup, renderButtonGroupItem } from './button-group';
@@ -73,11 +75,13 @@ export const renderers: Record<string, Renderer> = {
   alert: renderAlert,
   'alert-dialog': renderAlertDialog,
   'aspect-ratio': renderAspectRatio,
+  'approval-card': renderApprovalCard,
   attachment: renderAttachment,
   'attachment-card': renderAttachment,
   avatar: renderAvatar,
   'avatar-group': renderAvatarGroup,
   badge: renderBadge,
+  'badge-tint': renderBadgeTint,
   breadcrumb: renderBreadcrumb,
   button: renderButton,
   'button-group': renderButtonGroup,

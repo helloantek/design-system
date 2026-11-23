@@ -1,0 +1,99 @@
+{
+ "$comment": "Sort UI 2.0 Badge (55:129) Type=Tint in five colours and both sizes, and Variant=Secondary (code: neutral tint); the library draws them as pills. renderers/badge-tint.tsx renders Badge variant=\"tint\" shape=\"pill\" with the label \"Badge\".",
+ "component": "badge-tint",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "55:129",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "amber",
+   "nodeId": "2101:23773",
+   "props": {
+    "Variant": "Amber",
+    "Size": "default",
+    "Type": "Tint"
+   },
+   "target": ".ds-badge",
+   "nodeW": 53,
+   "nodeH": 20
+  },
+  {
+   "slug": "red",
+   "nodeId": "2101:23763",
+   "props": {
+    "Variant": "Red",
+    "Size": "default",
+    "Type": "Tint"
+   },
+   "target": ".ds-badge",
+   "nodeW": 53,
+   "nodeH": 20
+  },
+  {
+   "slug": "green",
+   "nodeId": "2101:23713",
+   "props": {
+    "Variant": "Green",
+    "Size": "default",
+    "Type": "Tint"
+   },
+   "target": ".ds-badge",
+   "nodeW": 53,
+   "nodeH": 20
+  },
+  {
+   "slug": "blue",
+   "nodeId": "2101:23703",
+   "props": {
+    "Variant": "Blue",
+    "Size": "default",
+    "Type": "Tint"
+   },
+   "target": ".ds-badge",
+   "nodeW": 53,
+   "nodeH": 20
+  },
+  {
+   "slug": "teal-lg",
+   "nodeId": "2101:23222",
+   "props": {
+    "Variant": "Teal",
+    "Size": "lg",
+    "Type": "Tint"
+   },
+   "target": ".ds-badge",
+   "nodeW": 57,
+   "nodeH": 24
+  },
+  {
+   "slug": "violet-lg",
+   "nodeId": "2101:23214",
+   "props": {
+    "Variant": "Violet",
+    "Size": "lg",
+    "Type": "Tint"
+   },
+   "target": ".ds-badge",
+   "nodeW": 57,
+   "nodeH": 24
+  },
+  {
+   "slug": "neutral",
+   "nodeId": "74:1664",
+   "props": {
+    "Variant": "Secondary",
+    "Size": "default",
+    "Type": "Default"
+   },
+   "target": ".ds-badge",
+   "nodeW": 53,
+   "nodeH": 20
+  }
+ ]
+}

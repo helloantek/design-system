@@ -3,12 +3,12 @@ import { RiCloseFill } from '@remixicon/react';
 
 // Styles live in @helloantek/ds-css (classes ds-badge*); this component only renders the markup.
 
-/** Figma "Style" property (Figma spells it "Srong"). */
-export type BadgeVariant = 'soft' | 'strong';
+/** Figma "Style" property (Figma spells it "Srong"), plus Sort UI 2.0 Type=Tint. */
+export type BadgeVariant = 'soft' | 'strong' | 'tint';
 /** Figma "Size" property. */
 export type BadgeSize = 'sm' | 'lg';
-/** Figma "Color" property. */
-export type BadgeColor = 'neutral' | 'red' | 'orange' | 'lime' | 'green' | 'cyan' | 'blue' | 'violet' | 'fuchsia' | 'pink';
+/** Figma "Color" property. `amber` and `teal` exist only with `variant="tint"` (Sort UI 2.0 palette). */
+export type BadgeColor = 'neutral' | 'red' | 'orange' | 'amber' | 'lime' | 'green' | 'teal' | 'cyan' | 'blue' | 'violet' | 'fuchsia' | 'pink';
 /** Figma "Shape" property. */
 export type BadgeShape = 'rounded' | 'pill';
 
@@ -16,6 +16,7 @@ export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color
   ref?: Ref<HTMLSpanElement>;
   /** Figma "↩ Label". */
   children: ReactNode;
+  /** Figma "Style": `soft` · `strong`; `tint` is Sort UI 2.0 Type=Tint (palette tint and text colours). */
   variant?: BadgeVariant;
   size?: BadgeSize;
   color?: BadgeColor;
