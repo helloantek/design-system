@@ -1,0 +1,242 @@
+/*
+ * Stepper — Sort UI 2.0 component sets "Stepper" (node 6715:1565), "Stepper Item" (6715:1360) and "Stepper Indicator"
+ * (6714:1301) on page 6714:1290 in file 4JnqgEbdlnKgiFrfmiwEZw, ported from Sort UI 1.3: the steps of a flow in
+ * order, each Upcoming, Current, Complete or Error. Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with
+ * these classes works.
+ *
+ * Markup (classes and parts in [] are optional):
+ *   <ol class="ds-stepper [ds-stepper--vertical] [ds-stepper--bar]" aria-label="Checkout">
+ *     <li class="ds-stepper__item ds-stepper__item--complete">              (--upcoming · --current · --complete · --error)
+ *       <span class="ds-stepper__track">                                   (Figma "Track", or "Rail" when vertical)
+ *         <span class="ds-stepper__indicator" aria-hidden="true">1</span>  (a check or a cross icon when done / failed)
+ *         <span class="ds-stepper__line"></span>
+ *       </span>
+ *       <span class="ds-stepper__text">
+ *         <span class="ds-stepper__label">Account</span>
+ *         [<span class="ds-stepper__caption">Email and password</span>]
+ *         [<span class="ds-stepper__status">, completed</span>]            (read by screen readers only)
+ *       </span>
+ *     </li>
+ *   </ol>
+ *   The current step also gets aria-current="step". The last step hides its line (Figma "Show line"):
+ *   .ds-stepper__item--line keeps it, .ds-stepper__item--no-line hides it anywhere.
+ *
+ *   Style=Bar (.ds-stepper--bar): each item is
+ *     <li class="ds-stepper__item ds-stepper__item--current">
+ *       <span class="ds-stepper__bar"></span>
+ *       <span class="ds-stepper__row"><span class="ds-stepper__mark" aria-hidden="true">2</span>
+ *         <span class="ds-stepper__text">…label, caption, status…</span></span>
+ *     </li>
+ */
+
+@layer ds.components {
+  /* Figma "Stepper": Horizontal items share the width 8 px apart; Vertical items stack with no gap (the lines join them). */
+  .ds-stepper {
+    display: flex;
+    gap: var(--ds-spacing-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--ds-font-sans);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-stepper--vertical {
+    flex-direction: column;
+    gap: var(--ds-spacing-0);
+  }
+
+  /* Figma "Stepper Item", Horizontal: the track on top, the text 8 px under it. */
+  .ds-stepper__item {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  /* Vertical: the rail (marker and line) beside the text, 12 px apart. */
+  .ds-stepper--vertical > .ds-stepper__item {
+    flex: none;
+    flex-direction: row;
+    gap: var(--ds-spacing-3);
+  }
+
+  .ds-stepper__track {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+  }
+
+  .ds-stepper--vertical .ds-stepper__track {
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+  }
+
+  /* Figma "Stepper Indicator": a 24 px circle with the number (xs Medium), a check or a cross (14 px). */
+  .ds-stepper__indicator {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-6);
+    height: var(--ds-spacing-6);
+    border-radius: var(--ds-radius-full);
+    background: var(--ds-primary);
+    color: var(--ds-primary-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-stepper__indicator svg,
+  .ds-stepper__mark svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  /* Upcoming: the card colour with an inside 1 px border and the number in muted text. */
+  .ds-stepper__item--upcoming .ds-stepper__indicator {
+    background: var(--ds-card);
+    box-shadow: inset 0 0 0 1px var(--ds-border);
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Error: the destructive circle with the cross in primary-foreground (white in Light). */
+  .ds-stepper__item--error .ds-stepper__indicator {
+    background: var(--ds-destructive);
+    color: var(--ds-primary-foreground);
+  }
+
+  /* The line to the next step: 1 px, filling the rest of the track; primary once the step is complete. */
+  .ds-stepper__line {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    height: 1px;
+    background: var(--ds-border);
+  }
+
+  .ds-stepper--vertical .ds-stepper__line {
+    width: 1px;
+    height: auto;
+  }
+
+  .ds-stepper__item--complete .ds-stepper__line {
+    background: var(--ds-primary);
+  }
+
+  /* Figma "Show line": off for the last step unless asked for (--line), or off anywhere (--no-line). */
+  .ds-stepper__item:last-child:not(.ds-stepper__item--line) .ds-stepper__line,
+  .ds-stepper__item--no-line .ds-stepper__line {
+    visibility: hidden;
+  }
+
+  /* Label (sm Medium) and caption (xs Regular, muted) 2 px apart. */
+  .ds-stepper__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  /* Vertical: the text grows beside the rail, 2 px down to line up with the marker and 16 px above the next step. */
+  .ds-stepper--vertical .ds-stepper__text {
+    flex: 1 1 0;
+    padding-top: var(--ds-spacing-0-5);
+    padding-bottom: var(--ds-spacing-4);
+  }
+
+  .ds-stepper__label {
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-stepper__caption {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-xs--line-height);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-stepper__item--upcoming .ds-stepper__label {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Error text uses the darker destructive text colour (4.5:1 on the page and card), as every other error text does. */
+  .ds-stepper__item--error .ds-stepper__label {
+    color: var(--ds-destructive-foreground);
+  }
+
+  /* Read by screen readers only. */
+  .ds-stepper__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Style=Bar: a 2 px bar on top that fills as you go, then the number and the label in small capitals. */
+  .ds-stepper__bar {
+    height: var(--ds-spacing-0-5);
+    border-radius: calc(var(--ds-spacing-0-5) / 2);
+    background: var(--ds-border);
+  }
+
+  .ds-stepper__item--current .ds-stepper__bar,
+  .ds-stepper__item--complete .ds-stepper__bar {
+    background: var(--ds-primary);
+  }
+
+  .ds-stepper__item--error .ds-stepper__bar {
+    background: var(--ds-destructive);
+  }
+
+  .ds-stepper__row {
+    display: flex;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+  }
+
+  .ds-stepper__row > .ds-stepper__text {
+    flex: 1 1 0;
+  }
+
+  /* Figma "Mark": the number (xs Medium) or a 14 px icon, centred on the label's 20 px line. */
+  .ds-stepper__mark {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    height: var(--ds-text-xs--line-height);
+    color: var(--ds-primary);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-stepper__item--upcoming .ds-stepper__mark {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-stepper__item--error .ds-stepper__mark {
+    color: var(--ds-destructive-foreground);
+  }
+
+  .ds-stepper--bar .ds-stepper__label {
+    font-size: var(--ds-text-xs);
+    letter-spacing: 0.04em;
+    line-height: var(--ds-text-xs--line-height);
+    text-transform: uppercase;
+  }
+}

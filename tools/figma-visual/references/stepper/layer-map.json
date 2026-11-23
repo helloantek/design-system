@@ -1,0 +1,51 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (the step for Stepper Item entries, the list for Stepper entries) and how to read it. In the Stepper entries each other path is the first step's layer.",
+  "layers": {
+    "root": {},
+    "Track": {
+      "selector": ".ds-stepper__track"
+    },
+    "Rail": {
+      "selector": ".ds-stepper__track"
+    },
+    "Indicator": {
+      "selector": ".ds-stepper__indicator",
+      "stroke": "inset-shadow"
+    },
+    "Indicator/TEXT": {
+      "selector": ".ds-stepper__indicator"
+    },
+    "Line": {
+      "selector": ".ds-stepper__line"
+    },
+    "Text": {
+      "selector": ".ds-stepper__text",
+      "skip": [
+        "w"
+      ],
+      "$why": "The Mark hugs one digit, and digit widths differ between Figma's Inter and the web font (\"1\" at 13 px is 7 px in Figma, 5.33 px in Inter 4), so the Mark's and the text's widths follow the font, not the layout."
+    },
+    "Label": {
+      "selector": ".ds-stepper__label"
+    },
+    "Caption": {
+      "selector": ".ds-stepper__caption"
+    },
+    "Bar": {
+      "selector": ".ds-stepper__bar"
+    },
+    "Label row": {
+      "selector": ".ds-stepper__row"
+    },
+    "Mark": {
+      "selector": ".ds-stepper__mark",
+      "skip": [
+        "w"
+      ],
+      "$why": "The Mark hugs one digit, and digit widths differ between Figma's Inter and the web font (\"1\" at 13 px is 7 px in Figma, 5.33 px in Inter 4), so the Mark's and the text's widths follow the font, not the layout."
+    },
+    "Mark/TEXT": {
+      "selector": ".ds-stepper__mark"
+    }
+  }
+}

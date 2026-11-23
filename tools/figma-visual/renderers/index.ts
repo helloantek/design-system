@@ -52,6 +52,7 @@ import { renderSheet } from './sheet';
 import { renderSlider, renderSliderThumb, renderSliderVariants } from './slider';
 import { renderSonner } from './sonner';
 import { renderSpinner } from './spinner';
+import { renderStepper } from './stepper';
 import { renderSwitch } from './switch';
 import { renderTabsList, renderTabsTrigger } from './tabs';
 import { renderTextarea } from './textarea';
@@ -136,6 +137,7 @@ export const renderers: Record<string, Renderer> = {
   'slider-variants': renderSliderVariants,
   sonner: renderSonner,
   spinner: renderSpinner,
+  stepper: renderStepper,
   'status-badge': renderStatusBadge,
   switch: renderSwitch,
   table: renderTable,
