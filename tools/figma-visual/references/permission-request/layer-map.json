@@ -1,0 +1,129 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-permission).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-permission__header"
+    },
+    "Agent": {
+      "selector": ".ds-permission__icon",
+      "stroke": "inset-shadow"
+    },
+    "Tool": {
+      "selector": ".ds-permission__header .ds-permission__tool",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma's frame hugs its content; in code it fills the card so long lines wrap."
+    },
+    "Tool/TEXT": {
+      "selector": ".ds-permission__header .ds-permission__tool"
+    },
+    "Body": {
+      "selector": ".ds-permission__reason",
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma's Body is an auto-layout frame with one child, so its gap means nothing; the code's blockquote is a block."
+    },
+    "Why/TEXT": {
+      "selector": ".ds-permission__reason > p"
+    },
+    "Scope": {
+      "selector": ".ds-permission__section",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above the section as a separate 1 px Separator; the code draws it as the section's top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "It can": {
+      "selector": ".ds-permission__list",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma's frame hugs its content; in code it fills the card so long lines wrap."
+    },
+    "It can/TEXT": {
+      "selector": ".ds-permission__list .ds-permission__heading"
+    },
+    "Item": {
+      "selector": ".ds-permission__item",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma's frame hugs its content; in code it fills the card so long lines wrap."
+    },
+    "Item/TEXT": {
+      "selector": ".ds-permission__item"
+    },
+    "It cannot/Item/TEXT": {
+      "selector": ".ds-permission__item--cannot"
+    },
+    "Files": {
+      "selector": ".ds-permission__section--files",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above the section as a separate 1 px Separator; the code draws it as the section's top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "File": {
+      "selector": ".ds-permission__file"
+    },
+    "File/TEXT": {
+      "selector": ".ds-permission__file > span:first-of-type"
+    },
+    "File/TEXT#1": {
+      "selector": ".ds-permission__size"
+    },
+    "Duration": {
+      "selector": ".ds-permission__duration",
+      "skip": [
+        "h",
+        "g"
+      ],
+      "$why": "Figma draws the rule above the section as a separate 1 px Separator; the code draws it as the section's top border, so it is 1 px taller (the card's size is compared). Figma's Duration holds one frame (For how long) whose 6 px gap the code puts on the section itself."
+    },
+    "For how long": {
+      "selector": ".ds-permission__duration",
+      "skip": [
+        "w",
+        "h",
+        "p"
+      ],
+      "$why": "Figma's inner frame; in code the section itself stacks the heading, the options and the note 6 px apart (that gap is compared)."
+    },
+    "For how long/TEXT": {
+      "selector": ".ds-permission__duration > .ds-permission__heading"
+    },
+    "Options": {
+      "selector": ".ds-toggle-group",
+      "skip": [
+        "w"
+      ],
+      "$why": "The group hugs three text labels, whose widths follow the font (Figma's Inter and the web font differ by about a pixel over the three); the height and the 4 px gap are compared."
+    },
+    "Footer": {
+      "selector": ".ds-permission__footer"
+    },
+    "Answered": {
+      "selector": ".ds-permission__answered"
+    },
+    "Answered/Text/TEXT": {
+      "selector": ".ds-permission__answered .ds-permission__title"
+    },
+    "Answered/Text/TEXT#1": {
+      "selector": ".ds-permission__answered .ds-permission__tool"
+    },
+    "Status done": {
+      "selector": ".ds-permission__status"
+    },
+    "Status fail": {
+      "selector": ".ds-permission__status"
+    },
+    "Status expired": {
+      "selector": ".ds-permission__status"
+    }
+  }
+}

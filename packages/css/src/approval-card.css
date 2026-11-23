@@ -41,6 +41,11 @@
  */
 
 @layer ds.components {
+  /* The card takes focus on a click (tabindex="-1") so Esc and Enter answer it; it draws no ring for that. */
+  .ds-approval-card:focus {
+    outline: none;
+  }
+
   /* The card: 12 px corners, an inside border and the Surface/Card shadow. */
   .ds-approval-card {
     box-sizing: border-box;

@@ -2673,6 +2673,30 @@ Object.assign(tests, {
     assert.match(await page.getByRole('button', { name: /4 tool calls/ }).textContent(), /4 tool calls/, 'open: the header counts the calls');
     assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), true);
   },
+  'permission request: a named card; the duration is a toggle group and names the Allow button; a destructive right allows only once; Esc denies, Enter allows; the answer is one status line with Revoke': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-permission-request--request&viewMode=story');
+    const card = page.getByRole('article', { name: 'Support agent wants to read #billing' });
+    await card.waitFor();
+    const group = card.getByRole('group', { name: 'For how long' });
+    assert.equal(await group.getByRole('button', { name: '1 hour' }).getAttribute('aria-pressed'), 'true', '1 hour by default');
+    await group.getByRole('button', { name: 'Always' }).click();
+    assert.equal(await card.getByRole('button', { name: /Allow always/ }).count(), 1, 'the button follows the duration');
+    assert.equal(await card.getByRole('list', { name: 'It can', exact: true }).getByRole('listitem').count(), 2);
+    await card.getByText('To answer Ana Silva').click();
+    await page.keyboard.press('Enter');
+    const status = page.getByRole('status');
+    assert.match(await status.textContent(), /Allowed always · read #billing/, 'Enter allows with the chosen duration');
+    await page.getByRole('button', { name: 'Revoke' }).click();
+    await page.getByRole('article', { name: 'Support agent wants to read #billing' }).getByRole('button', { name: /Deny/ }).focus();
+    await page.keyboard.press('Escape');
+    assert.match(await page.getByRole('status').textContent(), /Denied · read #billing/, 'Esc denies');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-permission-request--destructive&viewMode=story');
+    const destructive = page.getByRole('article', { name: 'Ops agent wants to delete 14 files' });
+    await destructive.waitFor();
+    assert.equal(await destructive.getByRole('button', { name: '1 hour' }).isDisabled(), true, 'only once for a destructive right');
+    assert.equal(await destructive.getByRole('button', { name: /Allow once/ }).count(), 1);
+    assert.equal(await destructive.getByRole('list', { name: 'Files' }).getByRole('listitem').count(), 3);
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });

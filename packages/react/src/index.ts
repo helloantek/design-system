@@ -40,6 +40,7 @@ export * from './Message';
 export * from './MessageScroller';
 export * from './NavigationMenu';
 export * from './Pagination';
+export * from './PermissionRequest';
 export * from './Popover';
 export * from './Progress';
 export * from './Radio';

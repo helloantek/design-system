@@ -115,7 +115,7 @@ export function ApprovalCard({
   };
 
   return (
-    <article {...rest} aria-labelledby={titleId} aria-busy={busy || undefined} onKeyDown={handleKeyDown} className={['ds-approval-card', className].filter(Boolean).join(' ')}>
+    <article {...rest} aria-labelledby={titleId} aria-busy={busy || undefined} tabIndex={-1} onKeyDown={handleKeyDown} className={['ds-approval-card', className].filter(Boolean).join(' ')}>
       <div className="ds-approval-card__header">
         {icon && (
           <span className="ds-approval-card__icon" aria-hidden>

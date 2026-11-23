@@ -1,0 +1,328 @@
+/*
+ * Permission Request — the Sort UI 2.0 pattern "Permission Request" (node 6108:1474 on the Patterns page 6084:1290
+ * in file 4JnqgEbdlnKgiFrfmiwEZw): an agent asks for one specific right – who wants to do what, on which tool, and
+ * why; what it can and cannot do; for how long. A destructive right is allowed once at most. Once answered it folds
+ * to one line. Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <article class="ds-permission [ds-permission--destructive]" aria-labelledby="t">
+ *     <div class="ds-permission__header">
+ *       <span class="ds-permission__icon" aria-hidden="true"><svg…/></span>
+ *       <div class="ds-permission__who">
+ *         <h3 class="ds-permission__title" id="t"><strong>Support agent</strong> wants to <strong>read #billing</strong></h3>
+ *         [<p class="ds-permission__tool"><svg…/> Slack · Acme workspace</p>]
+ *       </div>
+ *       [<span class="ds-badge ds-badge--red ds-badge--tint">Destructive</span>]
+ *     </div>
+ *     [<blockquote class="ds-permission__reason">To answer …</blockquote>]
+ *     [<div class="ds-permission__section">                                     (under a 1 px rule)
+ *        <div class="ds-permission__list"><p class="ds-permission__heading">It can</p>
+ *          <ul><li class="ds-permission__item ds-permission__item--can"><svg…/> Read messages</li>…</ul></div>
+ *        …It cannot (ds-permission__item--cannot)…
+ *        or Files: <p class="ds-permission__heading">Files <span class="ds-badge …">14</span></p>
+ *          <ul><li class="ds-permission__file"><svg…/><span>name</span><span class="ds-permission__size">84 KB</span></li></ul>
+ *          <p class="ds-permission__more">11 more</p>
+ *      </div>]
+ *     <div class="ds-permission__duration">                                      (under a 1 px rule)
+ *       <p class="ds-permission__heading" id="d">For how long</p> …Toggle Group (aria-labelledby="d")…
+ *       [<p class="ds-permission__note">A destructive action is allowed once at most.</p>]
+ *     </div>
+ *     <div class="ds-permission__footer">…Deny (Esc), Allow (↵)…</div>
+ *   </article>
+ *
+ *   Answered (one line):
+ *   <article class="ds-permission ds-permission--answered">
+ *     <div class="ds-permission__answered" role="status">
+ *       <span class="ds-permission__status ds-permission__status--allowed">…</span>  (--allowed · --denied · --expired)
+ *       <div class="ds-permission__who"><p class="ds-permission__title">Allowed for 1 hour · read #billing</p>
+ *         <p class="ds-permission__tool">Support agent · 52 min left</p></div>
+ *       [<button class="ds-button …">Revoke</button>]
+ *     </div>
+ *   </article>
+ */
+
+@layer ds.components {
+  /* The card takes focus on a click (tabindex="-1") so Esc and Enter answer it; it draws no ring for that. */
+  .ds-permission:focus {
+    outline: none;
+  }
+
+  .ds-permission {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* Header: the agent's tile 8 px from the edge, who wants what and on which tool, a badge at the end. */
+  .ds-permission__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4) var(--ds-spacing-3) var(--ds-spacing-2);
+  }
+
+  .ds-permission__icon {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-7);
+    height: var(--ds-spacing-7);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-foreground);
+  }
+
+  .ds-permission__icon > svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .ds-permission__who {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  /* "Support agent wants to read #billing": the agent and the right in Medium, the verb in muted text. */
+  .ds-permission__title {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-permission__title > strong,
+  .ds-permission--answered .ds-permission__title {
+    color: var(--ds-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  /* The tool: a 12 px logo and its name, muted xs. */
+  .ds-permission__tool {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-permission__tool > svg {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    fill: var(--ds-foreground);
+  }
+
+  .ds-permission__header > .ds-badge {
+    flex: none;
+  }
+
+  /* Why: the agent's reason, muted, with a 2 px rule at its start, right under the header. */
+  .ds-permission__reason {
+    margin: 0;
+    padding: var(--ds-spacing-0-5) var(--ds-spacing-4) var(--ds-spacing-3-5);
+  }
+
+  .ds-permission__reason > p {
+    margin: 0;
+    padding-left: var(--ds-spacing-2-5);
+    border-left: var(--ds-spacing-0-5) solid var(--ds-border);
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Sections under a 1 px rule: what it can and cannot do, or the files. */
+  .ds-permission__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-permission__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+  }
+
+  .ds-permission__list > ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-permission__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* A right: a 14 px check in green (it can) or a cross in muted text (it cannot, the text muted too). */
+  .ds-permission__item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    color: var(--ds-foreground);
+  }
+
+  .ds-permission__item > svg,
+  .ds-permission__file > svg {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  .ds-permission__item--can > svg {
+    color: var(--ds-palette-green-text);
+  }
+
+  .ds-permission__item--cannot {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Files: the files section packs its rows 6 px apart. */
+  .ds-permission__section--files {
+    gap: var(--ds-spacing-1-5);
+  }
+
+  .ds-permission__files {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-permission__file {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    color: var(--ds-foreground);
+  }
+
+  .ds-permission__file > svg {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-permission__file > span:first-of-type {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-permission__size,
+  .ds-permission__more,
+  .ds-permission__note {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-permission__size {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* For how long: the heading, the Toggle Group 6 px under it and the note; 4 px above the footer. */
+  .ds-permission__duration {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4) var(--ds-spacing-1);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  /* Footer: Deny and Allow at the end, 8 px from the edge. */
+  .ds-permission__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-3) var(--ds-spacing-2) var(--ds-spacing-3) var(--ds-spacing-4);
+  }
+
+  /* Answered: one line, 10 px around it and 16 px at the sides (8 px at the end when the action has a border). */
+  .ds-permission__answered {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-4);
+  }
+
+  .ds-permission__answered > .ds-permission__who {
+    gap: 0;
+  }
+
+  .ds-permission__answered:has(> .ds-button--outline) {
+    padding-right: var(--ds-spacing-2);
+  }
+
+  /* The outcome: a 16 px circle, green with a check or red with a cross, or a muted clock (expired). */
+  .ds-permission__status {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    border-radius: var(--ds-radius-full);
+    color: var(--ds-background);
+  }
+
+  .ds-permission__status > svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+  }
+
+  .ds-permission__status--allowed {
+    background-color: var(--ds-palette-green-text);
+  }
+
+  .ds-permission__status--denied {
+    background-color: var(--ds-palette-red-text);
+  }
+
+  .ds-permission__status--expired {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-permission__status--expired > svg {
+    width: 16px;
+    height: 16px;
+  }
+}
