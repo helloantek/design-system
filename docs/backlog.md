@@ -42,6 +42,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 - Cards use `colors/border` (`--ds-border`), the Sort UI 2.0 name of 1.3's `border/default`.
 - Inside a Card slot, put side-by-side content in a frame of its own: Figma does not lay out a slot's children again after they change.
 - A popover floats: it is out of the card's flow, hugs its content, hangs under the thing it belongs to and uses `Surface/Popover`; it never becomes a full-width bar inside the card.
+- A badge about a message (its role, like Assistant, or its command, like /edit) sits in the author row, right after the name, never on a line of its own.
 - A keyboard shortcut is part of its button: a Kbd (Size=sm) in the button's trailing icon slot, Variant=Inverted on a Default (dark) button. Never a Kbd or a key legend next to the buttons.
 - A key that is a symbol is an icon, not text: Kbd Type=Icon with the Remix icon (↵ `corner-down-left`, ⌘ `command`, ⌫ `delete-back-2`). A shortcut of two keys is a Kbd Group (Size=16) with one Kbd per key in its slot: ⌘ ↵, Ctrl ↵, ⌘ Z. Letters, digits and Esc stay text.
 - Compact scale: a one-line header (14 px medium title, its meta on the right), rows of 28 to 34 px, 13 to 14 px text, cards 380 to 640 px wide. Times, counts and costs sit right-aligned.
