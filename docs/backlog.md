@@ -33,7 +33,7 @@ All patterns are drawn first, stage by stage, and coded afterwards in the same s
 | 5. Runs, costs and causes (11) | Trace Waterfall, Cost Waterfall, Context Map, Fallback Chain, Judge Bracket, Root Cause Tree, Decision Tree, Agent Ledger, Agent Recap, Away Summary, Scheduled Runs | 11 / 11 (accepted) |
 | 6. Data and SaaS (9) | KPI Chart, Breakdown Chart, Compact Breakdown, Change Summary, Usage Meter, Experiment Card, Data Table, Billing Schedule, Project Card | 9 / 9 (accepted) |
 | 7. Forms and onboarding (10) | Stepper Form, Progress Tracker, Setup Guide, Tips Panel, Date Range Picker, Dropzone, Tag Input, Filter Menu, Integration Picker, Integration Settings | 10 / 10 (accepted) |
-| 8. People and messages (5) | Comment Thread, Comments Panel, Notification Stack, Reaction Bar, Profile Menu | 0 / 5 |
+| 8. People and messages (5) | Comment Thread, Comments Panel, Notification Stack, Reaction Bar, Profile Menu | 5 / 5 (for review) |
 
 **Drafting rules so far** (from Tomek's reviews):
 - Remix icons (the "Remix Icon Set v4.91" library), not the Sort UI / lucide set. A running step shows the Spinner (default size, 17 px, the size of the icons).
