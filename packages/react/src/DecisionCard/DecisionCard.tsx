@@ -114,13 +114,15 @@ export function DecisionCard({
 
   if (folded) {
     return (
-      <section {...rest} aria-labelledby={`${id}-title`} className={['ds-decision', 'ds-decision--later', className].filter(Boolean).join(' ')}>
+      <section {...rest} aria-labelledby={`${id}-title ${id}-peek`} className={['ds-decision', 'ds-decision--later', className].filter(Boolean).join(' ')}>
         <div className="ds-decision__later">
           <span className="ds-decision__ring" aria-hidden />
           <p className="ds-decision__title" id={`${id}-title`}>
             {t.waiting(pageCount)}
           </p>
-          <span className="ds-decision__peek">{question}</span>
+          <span className="ds-decision__peek" id={`${id}-peek`}>
+            {question}
+          </span>
           <Button variant="outline" size="xs" onClick={onOpen}>
             {t.answer}
           </Button>
