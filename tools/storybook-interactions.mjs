@@ -2775,6 +2775,41 @@ Object.assign(tests, {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-decision-inbox--nothing-open&viewMode=story');
     await page.getByRole('status').filter({ hasText: 'Nothing needs you' }).waitFor();
   },
+  'review center: a named queue and the item in focus; R asks why and a number rejects; Z undoes; a mouse Reject focuses the first reason and Esc returns to Reject; A approves; a click in the queue shows that item': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-review-center--reviewing&viewMode=story');
+    const center = page.getByRole('region', { name: 'Review center' });
+    await center.waitFor();
+    const queue = center.getByRole('list', { name: 'Queue' });
+    assert.equal(await queue.getByRole('listitem').count(), 6);
+    assert.equal(await queue.getByRole('button', { name: /Pay INV-2207/ }).getAttribute('aria-current'), 'true');
+    assert.equal(await center.getByRole('progressbar').getAttribute('aria-valuenow'), '26');
+    const item = center.getByRole('article', { name: 'Pay INV-2207 from Acme Logistics' });
+    assert.equal(await item.getByRole('button', { name: /Approve/ }).getAttribute('aria-keyshortcuts'), 'A');
+    await item.getByText('Amount and line items').click();
+    await page.keyboard.press('r');
+    const reasons = item.getByRole('group', { name: 'Why?' });
+    await reasons.waitFor();
+    assert.equal(await reasons.getByRole('button', { name: /Too risky/ }).getAttribute('aria-keyshortcuts'), '2');
+    await page.keyboard.press('2');
+    await center.getByRole('status').filter({ hasText: 'Rejected (Too risky) · Pay INV-2207 from Acme Logistics' }).waitFor();
+    assert.equal(await queue.getByRole('listitem').count(), 5, 'the decided item leaves the queue');
+    await page.keyboard.press('z');
+    await item.waitFor();
+    assert.equal(await queue.getByRole('listitem').count(), 6, 'Z undoes the last decision');
+    await item.getByRole('button', { name: /Reject/ }).click();
+    await reasons.waitFor();
+    assert.match(await page.evaluate(() => document.activeElement?.textContent ?? ''), /^Incorrect/, 'the first reason takes the focus');
+    await page.keyboard.press('Escape');
+    assert.equal(await reasons.count(), 0, 'Esc cancels');
+    assert.match(await page.evaluate(() => document.activeElement?.textContent ?? ''), /^Reject/, 'focus returns to Reject');
+    await page.keyboard.press('a');
+    await center.getByRole('status').filter({ hasText: 'Approved · Pay INV-2207 from Acme Logistics' }).waitFor();
+    await queue.getByRole('button', { name: /Refund order #4821/ }).click();
+    await center.getByRole('article', { name: 'Refund order #4821' }).waitFor();
+    assert.equal(await queue.getByRole('button', { name: /Refund order #4821/ }).getAttribute('aria-current'), 'true');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-review-center--all-reviewed&viewMode=story');
+    await page.getByRole('status').filter({ hasText: 'Nothing left to review' }).waitFor();
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });

@@ -1,0 +1,222 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-review).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Top bar": {
+      "selector": ".ds-review__bar"
+    },
+    "Top bar/TEXT": {
+      "selector": ".ds-review__title"
+    },
+    "Progress": {
+      "selector": ".ds-review__progress"
+    },
+    "Progress/Rectangle": {
+      "selector": ".ds-review__progress > span"
+    },
+    "Top bar/TEXT#1": {
+      "selector": ".ds-review__count"
+    },
+    "Top bar/TEXT#2": {
+      "selector": ".ds-review__last > span"
+    },
+    "Main": {
+      "selector": ".ds-review__main",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above it as a separate 1 px Separator; the code draws it as a top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "Queue": {
+      "selector": ".ds-review__queue",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma draws the rule between the queue and the item as a separate 1 px Separator; the code draws it as the queue's right border, so the queue is 1 px wider."
+    },
+    "Tabs": {
+      "selector": ".ds-review__filters",
+      "skip": [
+        "w"
+      ],
+      "$why": "The code's queue holds the 1 px rule on its right (see Queue)."
+    },
+    "All": {
+      "selector": ".ds-review__filter:first-child",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "All/TEXT": {
+      "selector": ".ds-review__filter:first-child"
+    },
+    "All/TEXT#1": {
+      "selector": ".ds-review__filter:first-child > span"
+    },
+    "High risk": {
+      "selector": ".ds-review__filter:nth-child(2)",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "High risk/TEXT": {
+      "selector": ".ds-review__filter:nth-child(2)"
+    },
+    "Items": {
+      "selector": ".ds-review__items",
+      "skip": [
+        "w"
+      ],
+      "$why": "The code's queue holds the 1 px rule on its right (see Queue)."
+    },
+    "Item": {
+      "selector": ".ds-review__entry[aria-current]",
+      "stroke": "inset-shadow"
+    },
+    "Item#1": {
+      "selector": ".ds-review__items > li:nth-child(2) .ds-review__entry"
+    },
+    "Items/Mark": {
+      "selector": ".ds-review__entry[aria-current] .ds-review__mark",
+      "stroke": "inset-shadow"
+    },
+    "Item/Text": {
+      "selector": ".ds-review__entry[aria-current] .ds-review__entry-text",
+      "skip": [
+        "w"
+      ],
+      "$why": "The text fills what the time leaves, and the time's width follows the font."
+    },
+    "Item/TEXT": {
+      "selector": ".ds-review__entry[aria-current] .ds-review__entry-title"
+    },
+    "Item/TEXT#1": {
+      "selector": ".ds-review__entry[aria-current] .ds-review__entry-meta"
+    },
+    "Item/TEXT#2": {
+      "selector": ".ds-review__entry[aria-current] .ds-review__time"
+    },
+    "Item#1/TEXT": {
+      "selector": ".ds-review__items > li:nth-child(2) .ds-review__entry-title"
+    },
+    "Detail": {
+      "selector": ".ds-review__detail"
+    },
+    "Detail/Item": {
+      "selector": ".ds-review__body",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma pushes the actions down with a Spacer under a hugging 276 px frame; the code lets the body take that space."
+    },
+    "Who": {
+      "selector": ".ds-review__who",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "Detail/Mark": {
+      "selector": ".ds-review__who > .ds-review__mark",
+      "stroke": "inset-shadow"
+    },
+    "Name": {
+      "selector": ".ds-review__agent",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "Detail/Item/TEXT": {
+      "selector": ".ds-review__agent"
+    },
+    "Detail/Item/TEXT#2": {
+      "selector": ".ds-review__model"
+    },
+    "Detail/Item/TEXT#3": {
+      "selector": ".ds-review__heading"
+    },
+    "Fields": {
+      "selector": ".ds-review__fields",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "Amount": {
+      "selector": ".ds-review__fields > div:first-child",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "Amount/TEXT": {
+      "selector": ".ds-review__fields > div:first-child dt"
+    },
+    "Amount/TEXT#1": {
+      "selector": ".ds-review__fields > div:first-child dd"
+    },
+    "Attachments": {
+      "selector": ".ds-review__attachments",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "INV-2207.pdf": {
+      "selector": ".ds-review__attachments > li:first-child",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "INV-2207.pdf/TEXT": {
+      "selector": ".ds-review__attachments > li:first-child"
+    },
+    "Actions": {
+      "selector": ".ds-review__actions",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above it as a separate 1 px Separator; the code draws it as a top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "Reject reasons": {
+      "selector": ".ds-review__actions--reasons",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above it as a separate 1 px Separator; the code draws it as a top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "Reject reasons/TEXT": {
+      "selector": ".ds-review__actions--reasons > span"
+    },
+    "Done": {
+      "selector": ".ds-review__done"
+    },
+    "Done/Status done": {
+      "selector": ".ds-review__status",
+      "skip": [
+        "fill"
+      ],
+      "$why": "Figma draws the circle as an Ellipse inside a plain 16 px frame; the code draws it as the frame's own green background."
+    },
+    "Done/Text": {
+      "selector": ".ds-review__done > div",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma hugs the two lines (a width that follows the font); the code lets the text take the row."
+    },
+    "Done/TEXT": {
+      "selector": ".ds-review__done > div > p:first-child"
+    },
+    "Done/TEXT#1": {
+      "selector": ".ds-review__done > div > p + p"
+    }
+  }
+}

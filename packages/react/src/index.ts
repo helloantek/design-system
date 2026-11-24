@@ -46,6 +46,7 @@ export * from './Pagination';
 export * from './PermissionRequest';
 export * from './Popover';
 export * from './Progress';
+export * from './ReviewCenter';
 export * from './Radio';
 export * from './Select';
 export * from './Separator';
