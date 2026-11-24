@@ -274,6 +274,30 @@ A pattern from the Sort UI 2.0 **Patterns** page: the approvals of one agent run
 | All decided | `ApprovalGatesDone` (`title`, `description`; a status) | `ds-gates__done` |
 | Decided list | `ApprovalGatesDecided` with `ApprovalGatesDecidedItem` (`title`, `outcome` approved · rejected · stopped, `outcomeLabel`, `agent`, `time`, `reason`: the row opens to it) | `ds-gates__decided` · `__item` · `__row` · `__reason` |
 
+## Decision Inbox
+
+A pattern from the Sort UI 2.0 **Patterns** page: the open decisions that wait on you, each with two quick answers (**Decision Inbox**, node `6114:1780`).
+
+```tsx
+<DecisionInbox count={3}>
+  <DecisionInboxAnswered title="Sent · €48 to Ana Silva" description="Support agent goes on with the ticket"
+    onUndo={undo} dismissAfter={5000} onDismiss={remove} />
+  <DecisionInboxItem question="Roll out the new onboarding to everyone?"
+    context="Test won with +8% activation · 2 weeks of data · Growth agent"
+    answers={[{ label: 'Roll out', onSelect: rollOut }, { label: 'Keep testing', onSelect: keep }]} />
+</DecisionInbox>
+<DecisionInbox count={3} folded meta="· oldest 2 h ago" onOpen={open} />
+<DecisionInbox count={0} emptyDescription="3 decided today · the agents go on by themselves" />
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| Header: amber alert, "3 need your input" | `DecisionInbox`: `count` (names the region); `labels` | `ds-inbox` · `__header` · `__title` |
+| A decision: what to decide, why now · the agent, two answers | `DecisionInboxItem`: `question` (names the row and its answers), `context`, `answers` (the first is the filled one, the rest outline; `onSelect`) | `ds-inbox__item` · `__text` · `__question` · `__context` · `__answers` |
+| Just answered: confirms in place with Undo, then folds away | `DecisionInboxAnswered`: `title`, `description` (a status), `onUndo`; focus moves to Undo when the answer was chosen in the inbox; `dismissAfter` / `onDismiss` fold it away (paused while hovered or focused) | `ds-inbox__item--answered` · `__answered` · `__done` |
+| Folded: one line in a sidebar | `folded`, `meta`, `onOpen` (the line is one button) | `ds-inbox--folded` · `__fold` · `__meta` |
+| Nothing open | `count={0}`, `emptyDescription` (a status) | `ds-inbox__empty` |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -1946,6 +1970,7 @@ These come from the Figma files, not the code:
 - Permission Request (2.0 pattern): "Expired" drew its clock in a muted circle; it is the plain 16 px muted clock now, as in Approval Card. Answered lines put a ghost action 16 px from the edge and an outlined one (Revoke) 8 px; the code follows.
 - Decision Card (2.0 pattern): the answer rows were 6, 8 or 10 px round and 6 or 8 px from the card's sides; they are 6 px round and 6 px in now (the last row's field 8 px from the edge), and the Later line's ring is dashed like the header's. A Kbd with a `label` (↵ "Enter") drew its icon at 24 px; it is 12 px now, as without a label.
 - Approval Gates (2.0 pattern): the gate's title and Why sat 8 px from the edge (the arguments box too); the text is 16 px in now and the box 8 px. The expanded decided gate had 12 px corners and 16 px padding while the others had 6 px and 12/10 px; all are 6 px with 12/10 px now, the reason lined up with the name.
+- Decision Inbox (2.0): the answer buttons were set to radius 6 over the Button's 8 and the just-answered row had 10 px top and bottom where the empty row has 12; both were fixed in Figma (the library Button radius, 12 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.
