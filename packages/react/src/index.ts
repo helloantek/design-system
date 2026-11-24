@@ -24,6 +24,7 @@ export * from './ContextMenu';
 export * from './DatePicker';
 export * from './Collapsible';
 export * from './DecisionCard';
+export * from './DecisionInbox';
 export * from './Dialog';
 export * from './Diff';
 export * from './Drawer';

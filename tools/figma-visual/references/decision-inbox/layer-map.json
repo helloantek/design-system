@@ -1,0 +1,96 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-inbox).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-inbox__header"
+    },
+    "Header/TEXT": {
+      "selector": ".ds-inbox__title"
+    },
+    "Decision": {
+      "selector": ".ds-inbox__item:not(.ds-inbox__item--answered)",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above it as a separate 1 px Separator; the code draws it as a top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "Decision/Text": {
+      "selector": ".ds-inbox__item:not(.ds-inbox__item--answered) .ds-inbox__text"
+    },
+    "Decision/TEXT": {
+      "selector": ".ds-inbox__item:not(.ds-inbox__item--answered) .ds-inbox__question"
+    },
+    "Decision/TEXT#1": {
+      "selector": ".ds-inbox__item:not(.ds-inbox__item--answered) .ds-inbox__context"
+    },
+    "Decision/Answers": {
+      "selector": ".ds-inbox__item:not(.ds-inbox__item--answered) .ds-inbox__answers",
+      "skip": [
+        "w"
+      ],
+      "$why": "The row hugs two buttons whose widths follow the font; the gap and height are compared."
+    },
+    "Answered": {
+      "selector": ".ds-inbox__item--answered",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above it as a separate 1 px Separator; the code draws it as a top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "Answered/Status done": {
+      "selector": ".ds-inbox__item--answered .ds-inbox__done",
+      "skip": [
+        "fill"
+      ],
+      "$why": "Figma draws the circle as an Ellipse inside a plain 16 px frame; the code draws it as the frame's own green background."
+    },
+    "Answered/Text": {
+      "selector": ".ds-inbox__item--answered .ds-inbox__text",
+      "skip": [
+        "w"
+      ],
+      "$why": "The text fills what Undo leaves, and Undo's width follows the font."
+    },
+    "Answered/TEXT": {
+      "selector": ".ds-inbox__item--answered .ds-inbox__question"
+    },
+    "Answered/TEXT#1": {
+      "selector": ".ds-inbox__item--answered .ds-inbox__context"
+    },
+    "Folded": {
+      "selector": ".ds-inbox__fold"
+    },
+    "Folded/TEXT": {
+      "selector": ".ds-inbox__title"
+    },
+    "Folded/TEXT#1": {
+      "selector": ".ds-inbox__meta"
+    },
+    "Empty": {
+      "selector": ".ds-inbox__empty"
+    },
+    "Empty/Status done": {
+      "selector": ".ds-inbox__done",
+      "skip": [
+        "fill"
+      ],
+      "$why": "Figma draws the circle as an Ellipse inside a plain 16 px frame; the code draws it as the frame's own green background."
+    },
+    "Empty/Text": {
+      "selector": ".ds-inbox__empty .ds-inbox__text",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma hugs the two lines (305 px, a width that follows the font); the code lets the text take the row."
+    },
+    "Empty/TEXT": {
+      "selector": ".ds-inbox__empty .ds-inbox__question"
+    },
+    "Empty/TEXT#1": {
+      "selector": ".ds-inbox__empty .ds-inbox__context"
+    }
+  }
+}

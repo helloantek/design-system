@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 pattern Decision Inbox (6114:1780): open (three decisions), just answered (Undo in place), folded (one line) and nothing open (1x PNG, get_screenshot). renderers/decision-inbox.tsx renders them 420 px wide.",
+ "component": "decision-inbox",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6114:1780",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "open",
+   "nodeId": "6272:4499",
+   "props": {
+    "State": "Open"
+   },
+   "target": "#target > .ds-inbox",
+   "nodeW": 420,
+   "nodeH": 341
+  },
+  {
+   "slug": "answered",
+   "nodeId": "6272:4577",
+   "props": {
+    "State": "Just answered"
+   },
+   "target": "#target > .ds-inbox",
+   "nodeW": 420,
+   "nodeH": 307
+  },
+  {
+   "slug": "folded",
+   "nodeId": "6272:4599",
+   "props": {
+    "State": "Folded"
+   },
+   "target": "#target > .ds-inbox",
+   "nodeW": 420,
+   "nodeH": 40
+  },
+  {
+   "slug": "empty",
+   "nodeId": "6272:4588",
+   "props": {
+    "State": "Nothing open"
+   },
+   "target": "#target > .ds-inbox",
+   "nodeW": 420,
+   "nodeH": 64
+  }
+ ]
+}

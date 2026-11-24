@@ -1,0 +1,217 @@
+/*
+ * Decision Inbox — the Sort UI 2.0 pattern "Decision Inbox" (node 6114:1780 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): the open decisions that wait on you, each with two quick answers – what to decide, why now
+ * and the agent that asks. An answered one confirms in place with Undo, then folds away; with nothing open it says so;
+ * it folds to one line in a sidebar. Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-inbox" aria-labelledby="t">
+ *     <div class="ds-inbox__header"><svg…alert…/><h3 class="ds-inbox__title" id="t">3 need your input</h3></div>
+ *     <ul class="ds-inbox__list">
+ *       <li class="ds-inbox__item" aria-labelledby="q">
+ *         <div class="ds-inbox__text"><p class="ds-inbox__question" id="q">Send the refund…?</p>
+ *           <p class="ds-inbox__context">Over the €40 limit… · Support agent</p></div>
+ *         <div class="ds-inbox__answers"><button class="ds-button …">Send</button><button class="ds-button …">Hold</button></div>
+ *       </li>
+ *       <li class="ds-inbox__item ds-inbox__item--answered"><div role="status" class="ds-inbox__answered">
+ *         <span class="ds-inbox__done"><svg…check…/></span><div class="ds-inbox__text">…</div></div>
+ *         <button class="ds-button ds-button--variant-ghost …">Undo</button></li>
+ *     </ul>
+ *   </section>
+ *   Nothing open:  <section class="ds-inbox"><div class="ds-inbox__empty" role="status"><span class="ds-inbox__done">…</span>
+ *                    <div class="ds-inbox__text">…</div></div></section>
+ *   Folded:        <section class="ds-inbox ds-inbox--folded"><button class="ds-inbox__fold"><svg…/>
+ *                    <span class="ds-inbox__title">3 need your input</span><span class="ds-inbox__meta">· oldest 2 h ago</span>
+ *                    <svg…arrow…/></button></section>
+ */
+@layer ds.components {
+  /* The card: 12 px corners, an inside border and the Surface/Card shadow. */
+  .ds-inbox {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-inbox p {
+    margin: 0;
+  }
+
+  /* An amber alert before the count of open decisions. */
+  .ds-inbox__header {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+  }
+
+  .ds-inbox__header > svg,
+  .ds-inbox__fold > svg:first-child {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    fill: var(--ds-palette-amber-solid);
+  }
+
+  .ds-inbox__title {
+    flex: none;
+    margin: 0;
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  /* ── Decisions ───────────────────────────────────────────────────────── */
+
+  .ds-inbox__list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Each row under a rule: the question and why, then the two answers. */
+  .ds-inbox__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-inbox__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+    align-self: stretch;
+  }
+
+  .ds-inbox__question {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-inbox__context {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-inbox__answers {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  /* Just answered: a muted row that confirms what happened, with Undo. */
+  .ds-inbox__item--answered {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    background-color: var(--ds-muted);
+  }
+
+  .ds-inbox__answered,
+  .ds-inbox__empty {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    min-width: 0;
+  }
+
+  .ds-inbox__answered .ds-inbox__text,
+  .ds-inbox__empty .ds-inbox__text {
+    flex: 1 1 0;
+    gap: 0;
+  }
+
+  .ds-inbox__answered .ds-inbox__question {
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  .ds-inbox__item--answered > .ds-button {
+    flex: none;
+  }
+
+  /* Nothing open: the same green check, on its own. */
+  .ds-inbox__empty {
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+  }
+
+  /* A 16 px green circle with a 12 px check. */
+  .ds-inbox__done {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-palette-green-text);
+    color: var(--ds-background);
+  }
+
+  .ds-inbox__done > svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+  }
+
+  /* ── Folded: one line in a sidebar ───────────────────────────────────── */
+
+  .ds-inbox__fold {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    width: 100%;
+    margin: 0;
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-4);
+    border: 0;
+    border-radius: inherit;
+    outline: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .ds-inbox__fold:hover {
+    background-color: var(--ds-accent);
+  }
+
+  .ds-inbox--folded:has(.ds-inbox__fold:focus-visible) {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring), var(--ds-surface-card), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-inbox__meta {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-muted-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-inbox__fold > svg:last-child {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    fill: var(--ds-muted-foreground);
+  }
+}

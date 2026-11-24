@@ -2749,6 +2749,32 @@ Object.assign(tests, {
     await page.getByText('The run stopped').waitFor();
     assert.equal(await page.getByRole('status').filter({ hasText: 'The run stopped' }).count(), 1, 'the stopped run is a status');
   },
+  'decision inbox: a named list of decisions; an answer confirms in place with focus on Undo; Undo brings it back; the row folds away; the folded line opens it': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-decision-inbox--open&viewMode=story');
+    const inbox = page.getByRole('region', { name: '3 need your input' });
+    await inbox.waitFor();
+    assert.equal(await inbox.getByRole('listitem').count(), 3);
+    const refund = inbox.getByRole('listitem', { name: 'Send the refund of €48 to Ana Silva?' });
+    await refund.getByRole('group', { name: 'Send the refund of €48 to Ana Silva?' }).getByRole('button', { name: 'Send' }).focus();
+    await page.keyboard.press('Enter');
+    const done = page.getByRole('status').filter({ hasText: 'Sent · €48 to Ana Silva' });
+    await done.waitFor();
+    assert.equal(await page.getByRole('region', { name: '2 need your input' }).count(), 1, 'the count goes down');
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Undo', 'focus moves to Undo, not to the page');
+    await page.keyboard.press('Enter');
+    assert.equal(await page.getByRole('listitem', { name: 'Send the refund of €48 to Ana Silva?' }).count(), 1, 'Undo brings the decision back');
+    await page.getByRole('listitem', { name: 'Renew Figma for the design team?' }).getByRole('button', { name: 'Renew' }).click();
+    await page.mouse.move(0, 0);
+    await page.locator('body').click({ position: { x: 2, y: 2 } });
+    await page.getByText('Renewed · Figma, 12 seats').waitFor({ state: 'detached', timeout: 8000 });
+    assert.equal(await page.getByRole('region', { name: '2 need your input' }).getByRole('listitem').count(), 2, 'the answered row folds away');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-decision-inbox--folded&viewMode=story');
+    const line = page.getByRole('button', { name: /3 need your input.*oldest 2 h ago/ });
+    await line.click();
+    await page.getByRole('region', { name: '3 need your input' }).getByRole('listitem').first().waitFor();
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-decision-inbox--nothing-open&viewMode=story');
+    await page.getByRole('status').filter({ hasText: 'Nothing needs you' }).waitFor();
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });
