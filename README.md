@@ -245,6 +245,35 @@ A pattern from the Sort UI 2.0 **Patterns** page: an agent asks before it acts (
 | Decided: approved, denied, denied by itself | `state` `approved` · `denied` · `expired`: one line (`role="status"`) with a green check, a red cross or a muted clock, the `outcome` and an optional Undo (`onUndo`) | `ds-approval-card--decided` · `__status--approved` · `--denied` · `--expired` |
 | Texts | `labels` (approve, approving, deny, alwaysAllow, undo, approved, denied, expired) for other languages | — |
 
+## Approval Gates
+
+A pattern from the Sort UI 2.0 **Patterns** page: the approvals of one agent run as a stack (**Approval Gates**, node `6112:1728`).
+
+```tsx
+<ApprovalGates run="Launch the new pricing page" waiting={3} decided={2} total={5} progress="Paused at step 4">
+  <ApprovalGate
+    agent="Release agent" agentIcon={<RiClaudeFill />} meta="Step 4 of 7 · asks because it cannot be undone"
+    risk={<Badge variant="tint" color="amber">Medium risk</Badge>}
+    title="Publish 2.4.0 to npm" why="All tests passed and the changelog is ready."
+    args={'npm publish --tag latest\npackage: @acme/ui@2.4.0'} behind={2}
+    onApprove={approve} onReject={reject} onApproveWithChanges={(args) => approve(args)}
+  />
+  <ApprovalGatesDecided>
+    <ApprovalGatesDecidedItem title="Tag v2.4.0" outcome="approved" agent="Release agent" time="12:01" reason="…" />
+  </ApprovalGatesDecided>
+</ApprovalGates>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| Summary: Approvals · the run, status badge; Waiting on you · Decided · Run | `ApprovalGates`: `run`, `status` (`waiting` amber · `stopped` red · `running` blue), `waiting` (amber while above 0), `decided` / `total`, `progress` (red when stopped); `labels` | `ds-gates` · `__summary` · `__head` · `__stats` |
+| The gate: who asks, what and why, the arguments | `ApprovalGate`: `agent`, `agentIcon`, `meta`, `risk`, `title`, `why`, `args` (Mono); `behind` (up to 2 strips peek out under it) | `ds-gate` · `__who` · `__what` · `__args` · `ds-gates__behind` |
+| Change it · Reject (R) · Approve (A) | `onApproveWithChanges` (shows Change it), `onReject`, `onApprove`; A and R work anywhere in the gate (not while typing) | `ds-gate__actions` |
+| Change it first: the arguments as a field, "Edited: --tag latest → next", Cancel (Esc), Approve with changes (↵) | the field opens on Change it (or `defaultEditing`, `defaultDraft`); the edit is described from the first words that differ; Enter approves, Shift+Enter adds a line | `ds-gate--editing` · `__args--edit` · `__edited` |
+| Rejected: the run stopped | `ApprovalGatesStopped` (`title`, `description`; a status) | `ds-gates__stopped` |
+| All decided | `ApprovalGatesDone` (`title`, `description`; a status) | `ds-gates__done` |
+| Decided list | `ApprovalGatesDecided` with `ApprovalGatesDecidedItem` (`title`, `outcome` approved · rejected · stopped, `outcomeLabel`, `agent`, `time`, `reason`: the row opens to it) | `ds-gates__decided` · `__item` · `__row` · `__reason` |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -1916,6 +1945,7 @@ These come from the Figma files, not the code:
 - Approval Card (2.0 pattern): with a preview, Figma's body was 8 px in on both sides, so the text sat 8 px from the edge while other bodies use 16 px; the summary now has its own 8 px frame (16 px in, the preview stays 8 px). The approving card does not fade Deny, Approve or "Always allow"; the code keeps them as drawn and ignores input until the state changes. Recipients' avatars are solid `secondary` with a 1 px inside ring in the page colour, 6 px over each other (Avatar Group draws `fill-2` with a 2 px outside ring and 8 px); the card styles its own group that way.
 - Permission Request (2.0 pattern): "Expired" drew its clock in a muted circle; it is the plain 16 px muted clock now, as in Approval Card. Answered lines put a ghost action 16 px from the edge and an outlined one (Revoke) 8 px; the code follows.
 - Decision Card (2.0 pattern): the answer rows were 6, 8 or 10 px round and 6 or 8 px from the card's sides; they are 6 px round and 6 px in now (the last row's field 8 px from the edge), and the Later line's ring is dashed like the header's. A Kbd with a `label` (↵ "Enter") drew its icon at 24 px; it is 12 px now, as without a label.
+- Approval Gates (2.0 pattern): the gate's title and Why sat 8 px from the edge (the arguments box too); the text is 16 px in now and the box 8 px. The expanded decided gate had 12 px corners and 16 px padding while the others had 6 px and 12/10 px; all are 6 px with 12/10 px now, the reason lined up with the name.
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.

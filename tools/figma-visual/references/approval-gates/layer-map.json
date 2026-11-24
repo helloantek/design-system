@@ -1,0 +1,183 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-gates).",
+  "layers": {
+    "root": {},
+    "Summary": {
+      "selector": ".ds-gates__summary",
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-gates__head"
+    },
+    "Header/TEXT": {
+      "selector": ".ds-gates__title"
+    },
+    "Header/TEXT#1": {
+      "selector": ".ds-gates__run"
+    },
+    "Stats": {
+      "selector": ".ds-gates__stats",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above it as a separate 1 px Separator; the code draws it as a top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "WAITING ON YOU": {
+      "selector": ".ds-gates__stats > div:first-child",
+      "skip": [
+        "w"
+      ],
+      "$why": "The column hugs its words, whose widths follow the font; the padding and gap are compared."
+    },
+    "WAITING ON YOU/TEXT": {
+      "selector": ".ds-gates__stats > div:first-child dt"
+    },
+    "WAITING ON YOU/TEXT#1": {
+      "selector": ".ds-gates__stats > div:first-child dd"
+    },
+    "RUN": {
+      "selector": ".ds-gates__stats > div:last-child",
+      "skip": [
+        "w"
+      ],
+      "$why": "The column hugs its words, whose widths follow the font; the padding and gap are compared."
+    },
+    "RUN/TEXT#1": {
+      "selector": ".ds-gates__stats > div:last-child dd"
+    },
+    "Gate": {
+      "selector": ".ds-gate",
+      "stroke": "inset-shadow"
+    },
+    "Who": {
+      "selector": ".ds-gate__who"
+    },
+    "Mark": {
+      "selector": ".ds-gate__mark",
+      "stroke": "inset-shadow"
+    },
+    "Who/Text/TEXT": {
+      "selector": ".ds-gate__agent"
+    },
+    "Who/Text/TEXT#1": {
+      "selector": ".ds-gate__meta"
+    },
+    "What": {
+      "selector": ".ds-gate__what"
+    },
+    "Lead": {
+      "selector": ".ds-gate__lead"
+    },
+    "Lead/TEXT": {
+      "selector": ".ds-gate__title"
+    },
+    "Arguments": {
+      "selector": ".ds-gate__args",
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma stacks the lines 2 px apart inside 8 px padding; the code's <pre> uses a 2 px taller line and 1 px less padding, which puts every line in the same place (the box's size is compared)."
+    },
+    "Arguments/TEXT": {
+      "selector": ".ds-gate__args",
+      "skip": [
+        "lh"
+      ],
+      "$why": "Figma stacks the lines 2 px apart inside 8 px padding; the code's <pre> uses a 2 px taller line and 1 px less padding, which puts every line in the same place (the box's size is compared)."
+    },
+    "Actions": {
+      "selector": ".ds-gate__actions",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above it as a separate 1 px Separator; the code draws it as a top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "Behind 1": {
+      "selector": ".ds-gates__behind",
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma's strip is an empty auto-layout frame; the code draws it as a plain span."
+    },
+    "Behind 2": {
+      "selector": ".ds-gates__behind + .ds-gates__behind",
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma's strip is an empty auto-layout frame; the code draws it as a plain span."
+    },
+    "Decided": {
+      "selector": ".ds-gates__decided"
+    },
+    "Decided/TEXT": {
+      "selector": ".ds-gates__heading"
+    },
+    "Decided gate": {
+      "selector": ".ds-gates__item",
+      "stroke": "inset-shadow"
+    },
+    "Row": {
+      "selector": ".ds-gates__row"
+    },
+    "Row/TEXT": {
+      "selector": ".ds-gates__name"
+    },
+    "Row/TEXT#1": {
+      "selector": ".ds-gates__by"
+    },
+    "Row/TEXT#2": {
+      "selector": ".ds-gates__outcome"
+    },
+    "Reason": {
+      "selector": ".ds-gates__reason",
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma's Reason is an auto-layout frame around one text; the code's paragraph has no gap."
+    },
+    "Reason/TEXT": {
+      "selector": ".ds-gates__reason"
+    },
+    "Run stopped": {
+      "selector": ".ds-gates__stopped",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma wraps the message in a Message frame with the padding; the code's panel carries it itself (compared on Message)."
+    },
+    "Message": {
+      "selector": ".ds-gates__stopped"
+    },
+    "Message/TEXT": {
+      "selector": ".ds-gates__stopped > p:first-of-type"
+    },
+    "Message/TEXT#1": {
+      "selector": ".ds-gates__stopped > p:last-of-type"
+    },
+    "All decided": {
+      "selector": ".ds-gates__done",
+      "stroke": "inset-shadow",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma wraps the line in a Done frame with the padding; the code's card carries it itself (compared on Done)."
+    },
+    "Done": {
+      "selector": ".ds-gates__done"
+    },
+    "Done/Text/TEXT": {
+      "selector": ".ds-gates__done p:first-child"
+    },
+    "Done/Text/TEXT#1": {
+      "selector": ".ds-gates__done p + p"
+    }
+  }
+}
