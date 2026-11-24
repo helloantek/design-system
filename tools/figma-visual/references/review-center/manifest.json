@@ -1,0 +1,45 @@
+{
+ "$comment": "Sort UI 2.0 pattern Review Center (6116:2050): reviewing (the queue and the invoice to decide), reject (pick why with 1–4) and all reviewed (1x PNG, get_screenshot). renderers/review-center.tsx renders them 860 and 420 px wide.",
+ "component": "review-center",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6116:2050",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "reviewing",
+   "nodeId": "6276:4498",
+   "props": {
+    "State": "Reviewing"
+   },
+   "target": "#target > .ds-review",
+   "nodeW": 860,
+   "nodeH": 445
+  },
+  {
+   "slug": "reject",
+   "nodeId": "6276:4720",
+   "props": {
+    "State": "Reject"
+   },
+   "target": "#target > .ds-review",
+   "nodeW": 860,
+   "nodeH": 445
+  },
+  {
+   "slug": "all-reviewed",
+   "nodeId": "6276:4857",
+   "props": {
+    "State": "All reviewed"
+   },
+   "target": "#target > .ds-review",
+   "nodeW": 420,
+   "nodeH": 64
+  }
+ ]
+}

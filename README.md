@@ -298,6 +298,44 @@ A pattern from the Sort UI 2.0 **Patterns** page: the open decisions that wait o
 | Folded: one line in a sidebar | `folded`, `meta`, `onOpen` (the line is one button) | `ds-inbox--folded` · `__fold` · `__meta` |
 | Nothing open | `count={0}`, `emptyDescription` (a status) | `ds-inbox__empty` |
 
+## Review Center
+
+A pattern from the Sort UI 2.0 **Patterns** page: one place to review what the agents want to do (**Review Center**, node `6116:2050`).
+
+```tsx
+<ReviewCenter
+  reviewed={26} total={33} meta="oldest 14m"
+  lastDecision="Approved with edits · Split customers.name" onUndo={undo}
+  filters={[{ label: 'All', count: 7 }, { label: 'High risk', count: 1 }, { label: 'Unsure', count: 3 }]}
+  filter={filter} onFilterChange={setFilter}
+  queue={items.map((item) => (
+    <ReviewCenterQueueItem key={item.id} icon={item.icon} title={item.title} meta={item.meta} time={item.time}
+      selected={item.id === current.id} onClick={() => show(item.id)} />
+  ))}
+>
+  <ReviewCenterItem
+    agent="Finance agent" agentIcon={<RiGeminiFill />} model="Gemini Pro" risk={<Badge variant="tint" color="red">High risk</Badge>}
+    title="Pay INV-2207 from Acme Logistics" why="Amount and line items match PO-118. …"
+    fields={[{ label: 'Amount', value: '$12,480.00' }, { label: 'IBAN', value: 'DE89 •••• 3000', changed: true, note: 'New since the last payment' }]}
+    attachments={[{ label: 'INV-2207.pdf', href: '/files/inv-2207.pdf' }]}
+    reasons={['Incorrect', 'Too risky', 'Not allowed', 'Other…']}
+    onApprove={approve} onReject={(reason) => reject(reason)} onEdit={edit} onSkip={skip}
+  />
+</ReviewCenter>
+<ReviewCenterDone description="29 approved · 3 rejected · 1 skipped" onUndo={undo} />
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| Top bar: Review center, progress, "26 of 33 reviewed · oldest 14m", the last decision, Undo (Z) | `ReviewCenter`: `reviewed` / `total` (a progressbar), `meta`, `lastDecision` (a status), `onUndo`; `labels` | `ds-review` · `__bar` · `__progress` · `__count` · `__last` |
+| Queue: All · High risk · Unsure, the proposals | `filters` (`aria-pressed` buttons), `filter`, `onFilterChange`; `queue` of `ReviewCenterQueueItem` (`icon`, `title`, `meta`, `time`, `selected` → `aria-current`) | `ds-review__queue` · `__filters` · `__filter` · `__items` · `__entry` · `__mark` |
+| The item: who asks, title, Why, fields (the unusual one amber), attachments | `ReviewCenterItem`: `agent`, `agentIcon`, `model`, `risk`, `title`, `why`, `fields` (`changed`, `note`), `attachments` (`icon`, `href`) | `ds-review__detail` · `__who` · `__heading` · `__why` · `__fields` · `__field--changed` · `__attachments` |
+| Skip (S) · Reject (R) · Edit (E) · Approve (A) | `onSkip`, `onReject`, `onEdit`, `onApprove` (each shows with its handler); a key named by a button presses it from anywhere in the center, not while typing | `ds-review__actions` |
+| Reject: Why? 1–4, Cancel (Esc) | `reasons` (Reject asks first, `onReject(index)`), `defaultRejecting`; focus goes to the first reason, and back to Reject on Cancel | `ds-review__actions--reasons` |
+| All reviewed | `ReviewCenterDone` (`title`, `description`: a status; `onUndo`, Z) | `ds-review--done` · `__done` · `__status` |
+
+Narrower than 640 px, the queue goes above the item.
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -1971,6 +2009,7 @@ These come from the Figma files, not the code:
 - Decision Card (2.0 pattern): the answer rows were 6, 8 or 10 px round and 6 or 8 px from the card's sides; they are 6 px round and 6 px in now (the last row's field 8 px from the edge), and the Later line's ring is dashed like the header's. A Kbd with a `label` (↵ "Enter") drew its icon at 24 px; it is 12 px now, as without a label.
 - Approval Gates (2.0 pattern): the gate's title and Why sat 8 px from the edge (the arguments box too); the text is 16 px in now and the box 8 px. The expanded decided gate had 12 px corners and 16 px padding while the others had 6 px and 12/10 px; all are 6 px with 12/10 px now, the reason lined up with the name.
 - Decision Inbox (2.0): the answer buttons were set to radius 6 over the Button's 8 and the just-answered row had 10 px top and bottom where the empty row has 12; both were fixed in Figma (the library Button radius, 12 px).
+- Review Center (2.0): the queue rows other than the first had no left padding and radius 10 (the first: 10 px, radius 6); the action buttons were set to radius 6 over the Button's 8; the top bar lost 4 px when Undo went; the action rows had 12 px under them and 10 above, and the reasons 12 px on the right; the all-reviewed check was 20 px where the other patterns' is 16. All were fixed in Figma (10 px and radius 6, the library radius, a 44 px bar, 10 px above and below with the buttons 8 px from the edge, a 16 px check with 12 px padding).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.

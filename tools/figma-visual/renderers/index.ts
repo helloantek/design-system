@@ -7,6 +7,7 @@ import { renderAspectRatio } from './aspect-ratio';
 import { renderApprovalCard } from './approval-card';
 import { renderApprovalGates } from './approval-gates';
 import { renderDecisionInbox } from './decision-inbox';
+import { renderReviewCenter } from './review-center';
 import { renderAttachment } from './attachment';
 import { renderAvatar, renderAvatarGroup, renderStatusBadge } from './avatar';
 import { renderBadge } from './badge';
@@ -82,6 +83,7 @@ export const renderers: Record<string, Renderer> = {
   'approval-card': renderApprovalCard,
   'approval-gates': renderApprovalGates,
   'decision-inbox': renderDecisionInbox,
+  'review-center': renderReviewCenter,
   attachment: renderAttachment,
   'attachment-card': renderAttachment,
   avatar: renderAvatar,
