@@ -2,4 +2,4 @@
 '@helloantek/ds-angular': patch
 ---
 
-Input: a value typed and set back to what it was before (e.g. cleared right after Send) without a render in between no longer stays in the field; the native input now always follows `value`.
+Input: the native input now always follows `value`, also when a value is typed and set back before a render. Decision Card clears its last row after Send even when the text was typed and sent at once (it stayed in the field).

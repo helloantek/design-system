@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, booleanAttribute, computed, inject, input, linkedSignal, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, booleanAttribute, computed, inject, input, linkedSignal, output, signal, viewChild } from '@angular/core';
 import { DsBadge } from '../badge/badge';
 import { DsButton } from '../button/button';
 import { DsInput } from '../input/input';
@@ -206,12 +206,15 @@ export class DsDecisionCard {
     return recommended >= 0 ? recommended : null;
   });
   protected readonly text = signal('');
+  private readonly otherInput = viewChild(DsInput);
 
   protected send() {
     const value = this.text().trim();
     if (!value) return;
     this.answer.emit({ text: value });
     this.text.set('');
+    // [(value)] passes '' down only if the card rendered the typed text first; typed and sent at once, it did not.
+    this.otherInput()?.value.set('');
   }
 
   // A number answers while focus is in the card (but not while typing in the last row).
