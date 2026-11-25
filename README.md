@@ -360,6 +360,30 @@ A pattern from the Sort UI 2.0 **Patterns** page: how much one agent may do on i
 | An action: tool, label, Risky / Destructive, lock | `label`, `icon`, `risk` (`risky` amber, `destructive` red), `locked` (the reason: a focusable lock with a Tooltip; the label is muted) | `ds-autonomy__action` · `__action--locked` · `__lock` |
 | `labels` | every text, for other languages | |
 
+## Thinking State
+
+A pattern from the Sort UI 2.0 **Patterns** page: the AI at work, step by step, right where the answer will appear (**Thinking State**, node `6127:2219`).
+
+```tsx
+<ThinkingState>
+  <ThinkingStep icon={<RiSparkling2Fill aria-hidden />} label="Thought about the question" time="2 s" />
+  <ThinkingStep icon={<RiGlobalLine aria-hidden />} label="Searched 6 sources" time="4 s">
+    <ThinkingSources sources={[{ label: 'Notion – Refund policy', icon: <RiNotionFill aria-hidden />, href: url }]} more={3} />
+    <ThinkingNote>Couldn’t open GitHub – went on without it</ThinkingNote>
+  </ThinkingStep>
+  <ThinkingStep status="running" label="Writing the answer" time="0:01" />
+</ThinkingState>
+<ThinkingState status="done" title="Thought for 14 s" summary="6 sources · 4 steps">…</ThinkingState>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The steps, as they happen | `ThinkingState` (`status="working"`, default): an ordered list named "Steps", read out as it grows (`aria-live="polite"`) | `ds-thinking-state` · `__steps` |
+| A step: icon, words, time; running with a spinner in blue | `ThinkingStep`: `icon`, `label`, `detail` ("3 matches"), `time`, `status="running"` | `ds-thinking-step` · `__line` · `__label` · `__detail` · `__time` · `ds-thinking-step--running` |
+| Sources as chips with their logos, "+3 more" | `ThinkingSources`: `sources` (`label`, `icon`, `href` → a link), `more`; `labels` | `ds-thinking-state__sources` · `__source` |
+| A source it could not reach, in amber | `ThinkingNote` | `ds-thinking-state__note` |
+| Done: "Thought for 14 s · 6 sources · 4 steps", opens to the steps | `status="done"`, `title`, `summary`, `open` / `defaultOpen` / `onOpenChange` (a button with `aria-expanded`) | `ds-thinking-state--done` · `__head` · `__title` · `__meta` |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2035,6 +2059,7 @@ These come from the Figma files, not the code:
 - Decision Inbox (2.0): the answer buttons were set to radius 6 over the Button's 8 and the just-answered row had 10 px top and bottom where the empty row has 12; both were fixed in Figma (the library Button radius, 12 px).
 - Review Center (2.0): the queue rows other than the first had no left padding and radius 10 (the first: 10 px, radius 6); the action buttons were set to radius 6 over the Button's 8; the top bar lost 4 px when Undo went; the action rows had 12 px under them and 10 above, and the reasons 12 px on the right; the all-reviewed check was 20 px where the other patterns' is 16. All were fixed in Figma (10 px and radius 6, the library radius, a 44 px bar, 10 px above and below with the buttons 8 px from the edge, a 16 px check with 12 px padding).
 - Autonomy Dial (2.0): the lock's reason was a hand-drawn two-line frame (radius 6, 8 × 10 px padding, 13 px text) instead of the library Tooltip; it is the Tooltip now (Side=left), as the code shows it.
+- Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.

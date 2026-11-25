@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 pattern Thinking State (6127:2219): searching, reading and writing (with a source it could not reach), done folded to one line, and opened again (1x PNG, get_screenshot). renderers/thinking-state.tsx renders them 480 px wide.",
+ "component": "thinking-state",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6127:2219",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "searching",
+   "nodeId": "6284:4563",
+   "props": {
+    "State": "Searching"
+   },
+   "target": "#target > .ds-thinking-state",
+   "nodeW": 480,
+   "nodeH": 110
+  },
+  {
+   "slug": "reading",
+   "nodeId": "6284:4627",
+   "props": {
+    "State": "Reading"
+   },
+   "target": "#target > .ds-thinking-state",
+   "nodeW": 480,
+   "nodeH": 196
+  },
+  {
+   "slug": "folded",
+   "nodeId": "6284:4631",
+   "props": {
+    "State": "Folded"
+   },
+   "target": "#target .ds-thinking-state__head",
+   "nodeW": 295,
+   "nodeH": 20
+  },
+  {
+   "slug": "opened",
+   "nodeId": "6284:4642",
+   "props": {
+    "State": "Opened"
+   },
+   "target": "#target > .ds-thinking-state",
+   "nodeW": 480,
+   "nodeH": 200
+  }
+ ]
+}
