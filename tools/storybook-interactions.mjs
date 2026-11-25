@@ -2691,6 +2691,28 @@ Object.assign(tests, {
     await page.getByRole('status').filter({ hasText: 'Stopped after 48 s' }).waitFor();
     assert.equal(await page.getByRole('button', { name: 'Stop' }).count(), 0, 'stopped, Stop goes');
   },
+  'thinking state: the steps are a list that is announced as it grows; the running one has a spinner; sources are links; done folds to a button that opens the steps': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-state--reading-and-writing&viewMode=story');
+    const steps = page.getByRole('list', { name: 'Steps' });
+    await steps.waitFor();
+    assert.equal(await steps.getAttribute('aria-live'), 'polite', 'new steps are read out');
+    assert.equal(await steps.locator(':scope > li').count(), 4);
+    assert.equal(await page.locator('.ds-thinking-step--running .ds-spinner').getAttribute('aria-hidden'), 'true');
+    const sources = page.getByRole('list', { name: 'Sources' });
+    assert.equal(await sources.getByRole('link').count(), 3, 'each source is a link');
+    assert.equal(await sources.getByRole('listitem').last().textContent(), '+3 more');
+    assert.match(await page.locator('.ds-thinking-state__note').textContent(), /Couldn’t open GitHub/);
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-state--done&viewMode=story');
+    const head = page.getByRole('button', { name: /Thought for 14 s · 6 sources · 4 steps/ });
+    await head.waitFor();
+    assert.equal(await head.getAttribute('aria-expanded'), 'false');
+    assert.equal(await page.getByRole('list', { name: 'Steps' }).isVisible(), false, 'folded: the steps are hidden');
+    await head.click();
+    assert.equal(await head.getAttribute('aria-expanded'), 'true');
+    assert.equal(await page.getByRole('list', { name: 'Steps' }).locator(':scope > li').count(), 4, 'opened: every step');
+    await page.keyboard.press('Enter');
+    assert.equal(await head.getAttribute('aria-expanded'), 'false', 'Enter folds it again');
+  },
   'message actions: a named group; Copy turns into Copied; Regenerate adds a version to switch between; thumbs are pressed toggles, down asks what was wrong in a Popover; Read aloud is pressed while it reads': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-message-actions--in-a-message&viewMode=story');
     const bar = page.getByRole('group', { name: 'Message actions' });

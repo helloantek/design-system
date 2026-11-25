@@ -66,6 +66,7 @@
 @import './tabs.css';
 @import './textarea.css';
 @import './thinking-loader.css';
+@import './thinking-state.css';
 @import './toggle.css';
 @import './toggle-group.css';
 @import './tool-call.css';

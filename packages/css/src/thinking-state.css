@@ -1,0 +1,210 @@
+/*
+ * Thinking State — the Sort UI 2.0 pattern "Thinking State" (node 6127:2219 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): the AI at work, step by step, right where the answer will appear. Each step with its icon
+ * and a live time, the sources it searched as chips with their logos, a source it could not reach in amber. When the
+ * answer starts it folds into "Thought for 14 s · 6 sources", which opens back into the steps.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-thinking-state [ds-thinking-state--done] [ds-thinking-state--open]">
+ *     [<button class="ds-thinking-state__head" aria-expanded="…" aria-controls="s"><svg…check…/>
+ *        <span class="ds-thinking-state__title">Thought for 14 s</span><span class="ds-thinking-state__meta">· 6 sources · 4 steps</span>
+ *        <svg…chevron…/></button>]
+ *     <ol class="ds-thinking-state__steps" id="s" [hidden]>
+ *       <li class="ds-thinking-step [ds-thinking-step--running]">
+ *         <div class="ds-thinking-step__line"><svg…/> or <span class="ds-spinner">…</span>
+ *           <span class="ds-thinking-step__label">Searched 6 sources</span>[<span class="ds-thinking-step__detail">3 matches</span>]
+ *           <span class="ds-thinking-step__time">4 s</span></div>
+ *         [<ul class="ds-thinking-state__sources"><li><a class="ds-thinking-state__source" href="…"><svg…/>Notion – Refund policy</a></li>…</ul>]
+ *         [<p class="ds-thinking-state__note"><svg…alert…/>Couldn’t open GitHub – went on without it</p>]
+ *       </li>
+ *     </ol>
+ *   </div>
+ */
+@layer ds.components {
+  .ds-thinking-state {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2-5);
+    min-width: 0;
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-thinking-state svg {
+    flex: none;
+    fill: currentColor;
+  }
+
+  /* Done: one line that opens to the steps. */
+  .ds-thinking-state__head {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: var(--ds-spacing-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    background: none;
+    color: var(--ds-muted-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .ds-thinking-state__head:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-thinking-state__head > svg:first-child {
+    width: 16px;
+    height: 16px;
+    color: var(--ds-palette-green-text);
+  }
+
+  .ds-thinking-state__head > svg:last-child {
+    width: 14px;
+    height: 14px;
+  }
+
+  .ds-thinking-state__title {
+    color: var(--ds-foreground);
+  }
+
+  .ds-thinking-state__head:hover .ds-thinking-state__title {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ds-thinking-state__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-thinking-state__steps[hidden] {
+    display: none;
+  }
+
+  /* Opened again, the steps sit under the head's words. */
+  .ds-thinking-state--done .ds-thinking-state__steps {
+    padding-left: var(--ds-spacing-6);
+  }
+
+  .ds-thinking-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    min-width: 0;
+  }
+
+  /* One line: the icon, what it did, the time at the end. */
+  .ds-thinking-step__line {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  .ds-thinking-step__line > svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ds-thinking-step__line > .ds-spinner {
+    flex: none;
+    color: var(--ds-palette-blue-solid);
+  }
+
+  .ds-thinking-step__label,
+  .ds-thinking-step__detail {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-thinking-step__detail {
+    flex: none;
+  }
+
+  .ds-thinking-step__time {
+    flex: none;
+    margin-left: auto;
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The step at work is in the text colour. */
+  .ds-thinking-step--running .ds-thinking-step__label {
+    color: var(--ds-foreground);
+  }
+
+  /* The sources as chips under the step's words, wrapping 6 px apart. */
+  .ds-thinking-state__sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding: 0 0 0 var(--ds-spacing-6);
+    list-style: none;
+  }
+
+  .ds-thinking-state__source {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    max-width: 100%;
+    padding: var(--ds-spacing-0-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  a.ds-thinking-state__source:hover {
+    background-color: var(--ds-accent);
+  }
+
+  a.ds-thinking-state__source:focus-visible {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-thinking-state__source > svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* A source it could not reach, in amber. */
+  .ds-thinking-state__note {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding-left: var(--ds-spacing-6);
+    color: var(--ds-palette-amber-text);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-thinking-state__note > svg {
+    width: 12px;
+    height: 12px;
+    color: var(--ds-palette-amber-solid);
+  }
+}

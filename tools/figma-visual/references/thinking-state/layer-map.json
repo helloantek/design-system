@@ -1,0 +1,66 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-thinking-state, or its head for the folded line).",
+  "layers": {
+    "root": {
+      "skip": [
+        "w"
+      ],
+      "$why": "The folded line hugs its words (font widths); the others are 480 px wide in the renderer and compared by the size gate."
+    },
+    "Step": {
+      "selector": ".ds-thinking-step:nth-child(1)"
+    },
+    "Step#1": {
+      "selector": ".ds-thinking-step:nth-child(2)"
+    },
+    "Line": {
+      "selector": ".ds-thinking-step__line"
+    },
+    "Line/TEXT": {
+      "selector": ".ds-thinking-step__label"
+    },
+    "Line/TEXT#1": {
+      "selector": ".ds-thinking-step__time"
+    },
+    "Sources": {
+      "selector": ".ds-thinking-state__sources"
+    },
+    "Source": {
+      "selector": ".ds-thinking-state__source",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding, gap and height are compared.",
+      "stroke": "inset-shadow"
+    },
+    "Source/TEXT": {
+      "selector": ".ds-thinking-state__source"
+    },
+    "Note": {
+      "selector": ".ds-thinking-state__note",
+      "skip": [
+        "w"
+      ],
+      "$why": "Figma hugs the note (font widths); the code lets it take the row."
+    },
+    "Note/TEXT": {
+      "selector": ".ds-thinking-state__note"
+    },
+    "Head": {
+      "selector": ".ds-thinking-state__head",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding, gap and height are compared."
+    },
+    "Head/TEXT": {
+      "selector": ".ds-thinking-state__title"
+    },
+    "Head/TEXT#1": {
+      "selector": ".ds-thinking-state__meta"
+    },
+    "Thinking State": {
+      "selector": ".ds-thinking-state__steps"
+    }
+  }
+}

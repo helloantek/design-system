@@ -63,6 +63,7 @@ export * from './Table';
 export * from './Tabs';
 export * from './Textarea';
 export * from './ThinkingLoader';
+export * from './ThinkingState';
 export * from './Toggle';
 export * from './ToggleGroup';
 export * from './ToolCall';
