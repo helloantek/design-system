@@ -181,6 +181,38 @@ export const Later: StoryObj = {
   ),
 };
 
+/** The card on its own (no composer): two questions with the pager, numbers answer, Later folds it and Answer opens it. */
+export const Questions: StoryObj = {
+  render: function Render() {
+    const questions = [
+      { context: 'Onboarding', question: 'Which plan should the new team start on?', options: plans },
+      { context: 'Onboarding', question: 'Who should own billing?', options: [{ label: 'Ana Silva', recommended: true }, { label: 'Jonas Weber' }] },
+    ];
+    const [page, setPage] = useState(1);
+    const [folded, setFolded] = useState(false);
+    const [answer, setAnswer] = useState('');
+    const q = questions[page - 1];
+    return (
+      <div style={WIDTH}>
+        <DecisionCard
+          key={page}
+          {...q}
+          page={page}
+          pageCount={questions.length}
+          onPageChange={setPage}
+          folded={folded}
+          onLater={() => setFolded(true)}
+          onOpen={() => setFolded(false)}
+          onAnswer={(a) => setAnswer(describe(a, q.options.map((o) => String(o.label))))}
+        />
+        <p role="status" style={{ margin: 0, color: 'var(--ds-muted-foreground)' }}>
+          {answer && `Answered: ${answer}`}
+        </p>
+      </div>
+    );
+  },
+};
+
 /** Light and Dark, driven only by tokens. */
 export const Themes: StoryObj = {
   parameters: { layout: 'fullscreen' },
