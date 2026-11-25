@@ -101,23 +101,20 @@ export const Failed: StoryObj = {
   ),
 };
 
-function Calls() {
-  return (
-    <>
-      <ToolCall icon={<RiGlobalLine />} name="search_web" summary="5 pricing pages" duration="0.9 s" args={ARGS} result="5 pages" />
-      <ToolCall icon={<RiDatabase2Line />} name="query_deals" summary="12 open deals · €184k" duration="0.6 s" args={'{ "stage": "open" }'} result="12 deals, total €184,200" />
-      <ToolCall icon={<RiNotionFill />} name="read_page" summary="CRM shortlist" duration="0.4 s" args={'{ "page": "CRM shortlist" }'} result="5 tools, 3 notes" />
-      <ToolCall icon={<RiMailLine />} name="send_email" summary="SMTP timeout" status="error" duration="0.5 s" defaultOpen={false} error={'Error: connect ETIMEDOUT\nsmtp.example.com:587'} onRetry={() => {}} />
-    </>
-  );
-}
+// The calls as an array: ToolCallGroup counts its direct children, so they are not wrapped in a component of their own.
+const calls = [
+  <ToolCall key="search" icon={<RiGlobalLine />} name="search_web" summary="5 pricing pages" duration="0.9 s" args={ARGS} result="5 pages" />,
+  <ToolCall key="deals" icon={<RiDatabase2Line />} name="query_deals" summary="12 open deals · €184k" duration="0.6 s" args={'{ "stage": "open" }'} result="12 deals, total €184,200" />,
+  <ToolCall key="page" icon={<RiNotionFill />} name="read_page" summary="CRM shortlist" duration="0.4 s" args={'{ "page": "CRM shortlist" }'} result="5 tools, 3 notes" />,
+  <ToolCall key="email" icon={<RiMailLine />} name="send_email" summary="SMTP timeout" status="error" duration="0.5 s" defaultOpen={false} error={'Error: connect ETIMEDOUT\nsmtp.example.com:587'} onRetry={() => {}} />,
+];
 
 /** Figma "A group": one turn's calls, summed up in the header; each row opens under itself. */
 export const Group: StoryObj = {
   render: () => (
     <div style={WIDTH}>
       <ToolCallGroup defaultOpen duration="2.4 s" failed={1}>
-        <Calls />
+        {calls}
       </ToolCallGroup>
     </div>
   ),
@@ -147,7 +144,7 @@ export const Themes: StoryObj = {
           <ToolCall defaultOpen icon={<RiDatabase2Line />} name="query_deals" summary="12 open deals · €184k" duration="0.6 s" args={'{ "stage": "open" }'} result="12 deals, total €184,200" />
           <ToolCall icon={<RiMailLine />} name="send_email" summary="SMTP timeout" status="error" duration="1.3 s" error="Error: connect ETIMEDOUT" onRetry={() => {}} />
           <ToolCallGroup defaultOpen duration="2.4 s" failed={1}>
-            <Calls />
+            {calls}
           </ToolCallGroup>
         </div>
       ))}

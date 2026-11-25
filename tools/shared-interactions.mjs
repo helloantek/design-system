@@ -208,6 +208,80 @@ export const sharedTests = {
     await page.keyboard.press('Escape');
     await dialog.waitFor({ state: 'hidden' });
   },
+  'approval card: a named card; Esc denies and folds it to a status line with Undo, which brings it back; Enter approves; the approving card is busy': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-approval-card--high-risk&viewMode=story`);
+    const card = page.getByRole('article', { name: 'Delete 3 stale branches' });
+    await card.waitFor();
+    assert.equal(await card.getByRole('button', { name: /Deny/ }).getAttribute('aria-keyshortcuts'), 'Escape');
+    assert.equal(await card.getByRole('timer').textContent(), 'Denies itself in 0:45');
+    await card.getByText('All three were merged').click();
+    await page.keyboard.press('Escape');
+    const line = page.getByRole('status').filter({ hasText: 'Denied · Delete 3 stale branches' });
+    await line.waitFor();
+    await line.getByRole('button', { name: 'Undo' }).click();
+    await card.getByRole('timer').waitFor();
+    await card.getByText('All three were merged').click();
+    await page.keyboard.press('Enter');
+    await page.getByRole('status').filter({ hasText: 'Approved · Delete 3 stale branches' }).waitFor();
+    await page.goto(`${base}/iframe.html?id=patterns-approval-card--approving&viewMode=story`);
+    const busy = page.getByRole('article', { name: 'Send the October newsletter' });
+    await busy.waitFor();
+    assert.equal(await busy.getAttribute('aria-busy'), 'true');
+    assert.equal(await busy.locator('.ds-approval-card__recipients [aria-hidden="true"] .ds-avatar').count(), 4, 'four avatars, hidden from screen readers');
+  },
+  'tool call: the line is a button that opens the arguments and result (aria-expanded); a failed call starts open with Retry; a group folds to one line and opens to its calls': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-tool-call-card--done-open&viewMode=story`);
+    const trigger = page.getByRole('button', { name: /query_deals/ });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+    assert.equal(await page.getByRole('heading', { name: 'Arguments' }).isVisible(), true);
+    assert.equal(await page.getByRole('button', { name: 'Copy arguments' }).count(), 1, 'each section has a named Copy button');
+    await trigger.focus();
+    await page.keyboard.press('Enter');
+    await settles(() => trigger.getAttribute('aria-expanded'), 'false', 'Enter closes it');
+    assert.equal(await page.getByRole('heading', { name: 'Arguments' }).isVisible(), false);
+    await page.keyboard.press('Space');
+    await settles(() => trigger.getAttribute('aria-expanded'), 'true', 'Space opens it');
+    await page.goto(`${base}/iframe.html?id=patterns-tool-call-card--failed&viewMode=story`);
+    await page.getByRole('button', { name: 'Retry' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: /send_email/ }).getAttribute('aria-expanded'), 'true', 'a failed call starts open');
+    assert.equal(await page.getByRole('img', { name: 'failed' }).count(), 1, 'the status is named');
+    await page.goto(`${base}/iframe.html?id=patterns-tool-call-card--folded&viewMode=story`);
+    const group = page.getByRole('button', { name: /Used 4 tools/ });
+    await group.waitFor();
+    assert.equal(await group.getAttribute('aria-expanded'), 'false');
+    assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), false, 'folded: the calls are hidden');
+    await group.click();
+    await page.getByRole('button', { name: /4 tool calls/ }).waitFor();
+    assert.equal(await page.getByRole('button', { name: /search_web/ }).isVisible(), true);
+    await page.goto(`${base}/iframe.html?id=patterns-tool-call-card--group&viewMode=story`);
+    await page.getByRole('button', { name: /4 tool calls · 2.4 s · 1 failed/ }).waitFor();
+  },
+  'permission request: a named card; the duration is a toggle group and names the Allow button; pressing the chosen duration keeps it; a destructive right allows only once; Esc denies, Enter allows; the answer is one status line with Revoke': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-permission-request--request&viewMode=story`);
+    const card = page.getByRole('article', { name: 'Support agent wants to read #billing' });
+    await card.waitFor();
+    const group = card.getByRole('group', { name: 'For how long' });
+    assert.equal(await group.getByRole('button', { name: '1 hour' }).getAttribute('aria-pressed'), 'true', '1 hour by default');
+    await group.getByRole('button', { name: 'Always' }).click();
+    await card.getByRole('button', { name: /Allow always/ }).waitFor();
+    await group.getByRole('button', { name: 'Always' }).click();
+    await settles(() => group.getByRole('button', { name: 'Always' }).getAttribute('aria-pressed'), 'true', 'pressing the chosen duration keeps it');
+    assert.equal(await card.getByRole('list', { name: 'It can', exact: true }).getByRole('listitem').count(), 2);
+    await card.getByText('To answer Ana Silva').click();
+    await page.keyboard.press('Enter');
+    await page.getByRole('status').filter({ hasText: 'Allowed always · read #billing' }).waitFor();
+    await page.getByRole('button', { name: 'Revoke' }).click();
+    await page.getByRole('article', { name: 'Support agent wants to read #billing' }).getByRole('button', { name: /Deny/ }).focus();
+    await page.keyboard.press('Escape');
+    await page.getByRole('status').filter({ hasText: 'Denied · read #billing' }).waitFor();
+    await page.goto(`${base}/iframe.html?id=patterns-permission-request--destructive&viewMode=story`);
+    const destructive = page.getByRole('article', { name: 'Ops agent wants to delete 14 files' });
+    await destructive.waitFor();
+    assert.equal(await destructive.getByRole('button', { name: '1 hour' }).isDisabled(), true, 'only once for a destructive right');
+    assert.equal(await destructive.getByRole('button', { name: /Allow once/ }).count(), 1);
+    assert.equal(await destructive.getByRole('list', { name: 'Files' }).getByRole('listitem').count(), 3);
+  },
   'select: keyboard opens, moves, selects and keeps focus': async (page, base) => {
     const { open, combobox, listbox, state, press, type, tick } = selectHelpers(page, base);
     await open('components-select--playground');

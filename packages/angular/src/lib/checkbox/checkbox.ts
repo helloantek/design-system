@@ -33,6 +33,7 @@ import { uniqueId } from '../internal/ids';
     '[attr.error]': 'null',
     '[attr.control]': 'null',
     '[attr.card]': 'null',
+    '[attr.fieldClass]': 'null',
     '[attr.invalid]': 'null',
     '[attr.touched]': 'null',
     '[attr.disabled]': 'null',
@@ -64,7 +65,7 @@ import { uniqueId } from '../internal/ids';
       </span>
     </ng-template>
     @if (label() !== undefined) {
-      <div class="ds-field ds-field--horizontal" [class.ds-field--control-end]="control() === 'end'" [class.ds-field--card]="card()">
+      <div class="ds-field ds-field--horizontal" [class.ds-field--control-end]="control() === 'end'" [class.ds-field--card]="card()" [class]="fieldClass() ?? ''">
         <span class="ds-field__control"><ng-container [ngTemplateOutlet]="box" /></span>
         <div class="ds-field__content">
           <label class="ds-field__label" [for]="inputId()">{{ label() }}</label>
@@ -93,6 +94,8 @@ export class DsCheckbox implements FormCheckboxControl, ControlValueAccessor {
   readonly control = input<'start' | 'end'>('start');
   /** Figma's "Choice cards" demo: the field in a bordered card, filled when checked; a click anywhere toggles it. */
   readonly card = input(false, { transform: booleanAttribute });
+  /** Extra classes on the field (the element React's Checkbox puts `className` on), e.g. a pattern's own class. */
+  readonly fieldClass = input<string>();
   /** Figma State=Invalid without a message. */
   readonly invalid = input(false, { transform: booleanAttribute });
   /**
