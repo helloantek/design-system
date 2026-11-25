@@ -113,14 +113,9 @@ export function MessageActions({
     setAsking(next === 'down' && reasons.length > 0);
   };
 
-  const copy = async () => {
-    if (copyText !== undefined) {
-      try {
-        await navigator.clipboard?.writeText(copyText);
-      } catch {
-        // The clipboard can be refused (no permission, an insecure page); onCopy still runs.
-      }
-    }
+  const copy = () => {
+    // The check shows at once: the clipboard can answer late, never (no permission yet) or with a refusal.
+    if (copyText !== undefined) navigator.clipboard?.writeText(copyText).catch(() => {});
     onCopy?.();
     setCopied(true);
     clearTimeout(timer.current);
