@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 pattern Thinking Loader (6126:2130): thinking (Reading 4 files…), done, taking long with Stop, and stopped (1x PNG, get_screenshot). renderers/thinking-loader.tsx renders them.",
+ "component": "thinking-loader",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6126:2130",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "thinking",
+   "nodeId": "6282:4540",
+   "props": {
+    "State": "Thinking"
+   },
+   "target": "#target > .ds-thinking",
+   "nodeW": 137,
+   "nodeH": 28
+  },
+  {
+   "slug": "done",
+   "nodeId": "6282:4567",
+   "props": {
+    "State": "Done"
+   },
+   "target": "#target > .ds-thinking",
+   "nodeW": 138,
+   "nodeH": 28
+  },
+  {
+   "slug": "slow",
+   "nodeId": "6282:4572",
+   "props": {
+    "State": "Slow"
+   },
+   "target": "#target > .ds-thinking",
+   "nodeW": 271,
+   "nodeH": 32
+  },
+  {
+   "slug": "stopped",
+   "nodeId": "6282:4579",
+   "props": {
+    "State": "Stopped"
+   },
+   "target": "#target > .ds-thinking",
+   "nodeW": 152,
+   "nodeH": 28
+  }
+ ]
+}

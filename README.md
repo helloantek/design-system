@@ -360,6 +360,24 @@ A pattern from the Sort UI 2.0 **Patterns** page: how much one agent may do on i
 | An action: tool, label, Risky / Destructive, lock | `label`, `icon`, `risk` (`risky` amber, `destructive` red), `locked` (the reason: a focusable lock with a Tooltip; the label is muted) | `ds-autonomy__action` · `__action--locked` · `__lock` |
 | `labels` | every text, for other languages | |
 
+## Thinking Loader
+
+A pattern from the Sort UI 2.0 **Patterns** page: the small pill an AI reply shows before its first word (**Thinking Loader**, node `6126:2130`).
+
+```tsx
+<ThinkingLoader>Reading 4 files…</ThinkingLoader>
+<ThinkingLoader status="done">Thought for 10 s</ThinkingLoader>
+<ThinkingLoader status="slow" elapsed="0:48" onStop={stop} />
+<ThinkingLoader status="stopped">Stopped after 52 s</ThinkingLoader>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The pill: spinner in the running blue, what it is doing | `ThinkingLoader` (`status="thinking"`, default); `children` is read out as it changes (`role="status"`) | `ds-thinking` · `__label` |
+| Done: a green check, "Thought for 10 s" | `status="done"` | `ds-thinking--done` |
+| Taking long: "Taking longer than usual · 0:48", Stop | `status="slow"`, `elapsed`, `onStop` (a Secondary xs Button); `labels` | `ds-thinking--slow` · `__time` |
+| Stopped: a clock, "Stopped after 52 s" | `status="stopped"` | `ds-thinking--stopped` |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2035,6 +2053,7 @@ These come from the Figma files, not the code:
 - Decision Inbox (2.0): the answer buttons were set to radius 6 over the Button's 8 and the just-answered row had 10 px top and bottom where the empty row has 12; both were fixed in Figma (the library Button radius, 12 px).
 - Review Center (2.0): the queue rows other than the first had no left padding and radius 10 (the first: 10 px, radius 6); the action buttons were set to radius 6 over the Button's 8; the top bar lost 4 px when Undo went; the action rows had 12 px under them and 10 above, and the reasons 12 px on the right; the all-reviewed check was 20 px where the other patterns' is 16. All were fixed in Figma (10 px and radius 6, the library radius, a 44 px bar, 10 px above and below with the buttons 8 px from the edge, a 16 px check with 12 px padding).
 - Autonomy Dial (2.0): the lock's reason was a hand-drawn two-line frame (radius 6, 8 × 10 px padding, 13 px text) instead of the library Tooltip; it is the Tooltip now (Side=left), as the code shows it.
+- Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
 - Field (2.0): State=Invalid shows the description and the error together; `Field` does too, while Input, Select, Combobox and Textarea's own `error` replaces their `caption` (unchanged). State=Disabled fades the label and the control to 50 % but not the description. The Field Label's label-addon Badge is Badge Variant=Outline (control fill, border), which the code draws with Badge `shape="pill" border`. The "Orientation" demo's "Responsive" field is not a Figma variant; the code offers it as `orientation="responsive"`.

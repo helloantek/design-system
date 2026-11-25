@@ -1,0 +1,28 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-thinking).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "The pill hugs its words, whose widths follow the font; padding, gap and height are compared."
+    },
+    "TEXT": {
+      "selector": ".ds-thinking__label"
+    },
+    "TEXT#1": {
+      "selector": ".ds-thinking__time"
+    },
+    "Spinner": {
+      "selector": ".ds-spinner"
+    },
+    "Button": {
+      "selector": ".ds-button",
+      "skip": [
+        "w"
+      ],
+      "$why": "The library Button hugs its label, whose width follows the font."
+    }
+  }
+}
