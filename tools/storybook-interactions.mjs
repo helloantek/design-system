@@ -2713,6 +2713,54 @@ Object.assign(tests, {
     await page.keyboard.press('Enter');
     assert.equal(await head.getAttribute('aria-expanded'), 'false', 'Enter folds it again');
   },
+  'message actions: a named group; Copy turns into Copied; Regenerate adds a version to switch between; thumbs are pressed toggles, down asks what was wrong in a Popover; Read aloud is pressed while it reads': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-message-actions--in-a-message&viewMode=story');
+    const bar = page.getByRole('group', { name: 'Message actions' });
+    await bar.waitFor();
+    await bar.getByRole('button', { name: 'Copy' }).click();
+    await bar.getByRole('button', { name: 'Copied' }).waitFor();
+    assert.equal(await bar.getByRole('status').textContent(), 'Copied', 'Copied is read out');
+    await bar.getByRole('button', { name: 'Copy' }).waitFor({ timeout: 4000 });
+    assert.equal(await bar.getByRole('group', { name: /^Version/ }).count(), 0, 'one version: no ‹ 1 / 1 ›');
+    await bar.getByRole('button', { name: 'Regenerate' }).click();
+    const versions = bar.getByRole('group', { name: 'Version 2 of 2' });
+    await versions.waitFor();
+    assert.equal(await versions.getByRole('button', { name: 'Next version' }).isDisabled(), true);
+    await versions.getByRole('button', { name: 'Previous version' }).click();
+    await bar.getByRole('group', { name: 'Version 1 of 2' }).waitFor();
+    const good = bar.getByRole('button', { name: 'Good response' });
+    const bad = bar.getByRole('button', { name: 'Bad response' });
+    await good.click();
+    assert.equal(await good.getAttribute('aria-pressed'), 'true');
+    await bad.click();
+    assert.equal(await good.getAttribute('aria-pressed'), 'false', 'one rating at a time');
+    assert.equal(await bad.getAttribute('aria-pressed'), 'true');
+    const dialog = page.getByRole('dialog', { name: 'What was wrong?' });
+    await dialog.waitFor();
+    assert.equal(await bad.getAttribute('aria-expanded'), 'true');
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Not true', 'focus moves to the first reason');
+    await dialog.getByRole('button', { name: 'Too long' }).click();
+    assert.equal(await dialog.isVisible(), false, 'a reason closes it');
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Bad response', 'focus goes back to thumbs down');
+    await bad.click();
+    assert.equal(await bad.getAttribute('aria-pressed'), 'false', 'pressed again takes the rating back');
+    assert.equal(await dialog.isVisible(), false, 'and does not ask');
+    const read = bar.getByRole('button', { name: 'Read aloud' });
+    await read.click();
+    assert.equal(await read.getAttribute('aria-pressed'), 'true');
+    await bar.locator('.ds-message-actions__wave').waitFor();
+    assert.equal(await bar.locator('.ds-message-actions__wave').getAttribute('aria-hidden'), 'true');
+    await read.click();
+    assert.equal(await bar.locator('.ds-message-actions__wave').count(), 0, 'Pause stops it');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-message-actions--thumbs-down&viewMode=story');
+    await page.getByRole('button', { name: 'Bad response' }).click();
+    await page.getByRole('dialog', { name: 'What was wrong?' }).waitFor();
+    await page.keyboard.press('Escape');
+    assert.equal(await page.getByRole('dialog', { name: 'What was wrong?' }).isVisible(), false, 'Escape closes it');
+    assert.equal(await page.getByText(/^Rating:/).textContent(), 'Rating: down', 'the rating stays');
+    await page.getByRole('button', { name: 'Good response' }).click();
+    assert.equal(await page.getByText(/^Rating:/).textContent(), 'Rating: up');
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });
