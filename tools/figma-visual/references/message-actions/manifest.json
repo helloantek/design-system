@@ -1,0 +1,75 @@
+{
+ "$comment": "Sort UI 2.0 pattern Message Actions (6126:2162): the bar at rest, with versions (2 / 3), copied, rated up, reading aloud, and the What was wrong? Popover (1x PNG, get_screenshot; the Popover cropped to its own box, without the Surface/Popover shadow's margin). renderers/message-actions.tsx renders them.",
+ "component": "message-actions",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6126:2162",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "rest",
+   "nodeId": "6283:4538",
+   "props": {
+    "State": "Rest"
+   },
+   "target": "#target .ds-message-actions",
+   "nodeW": 148,
+   "nodeH": 28
+  },
+  {
+   "slug": "versions",
+   "nodeId": "6283:4577",
+   "props": {
+    "State": "Versions"
+   },
+   "target": "#target .ds-message-actions",
+   "nodeW": 234,
+   "nodeH": 28
+  },
+  {
+   "slug": "copied",
+   "nodeId": "6283:4680",
+   "props": {
+    "State": "Copied"
+   },
+   "target": "#target .ds-message-actions",
+   "nodeW": 148,
+   "nodeH": 28
+  },
+  {
+   "slug": "rated-up",
+   "nodeId": "6283:4708",
+   "props": {
+    "State": "Rated up"
+   },
+   "target": "#target .ds-message-actions",
+   "nodeW": 148,
+   "nodeH": 28
+  },
+  {
+   "slug": "reading",
+   "nodeId": "6283:4736",
+   "props": {
+    "State": "Reading"
+   },
+   "target": "#target .ds-message-actions",
+   "nodeW": 209,
+   "nodeH": 28
+  },
+  {
+   "slug": "what-was-wrong",
+   "nodeId": "7124:1302",
+   "props": {
+    "State": "What was wrong"
+   },
+   "target": "#target .ds-popover__content",
+   "nodeW": 288,
+   "nodeH": 134
+  }
+ ]
+}

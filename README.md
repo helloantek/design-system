@@ -378,6 +378,35 @@ A pattern from the Sort UI 2.0 **Patterns** page: the small pill an AI reply sho
 | Taking long: "Taking longer than usual · 0:48", Stop | `status="slow"`, `elapsed`, `onStop` (a Secondary xs Button); `labels` | `ds-thinking--slow` · `__time` |
 | Stopped: a clock, "Stopped after 52 s" | `status="stopped"` | `ds-thinking--stopped` |
 
+## Message Actions
+
+A pattern from the Sort UI 2.0 **Patterns** page: the quiet bar under an AI message (**Message Actions**, node `6126:2162`).
+
+```tsx
+<MessageActions
+  copyText={answer}
+  onRegenerate={regenerate}
+  version={2}
+  versions={3}
+  onVersionChange={setVersion}
+  onRatingChange={rate}
+  onReason={sendFeedback}
+  onReadAloudChange={setReading}
+  reading={reading}
+  readTime="0:07"
+/>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The bar: Ghost Buttons and Toggles, sm, muted, 2 px apart | `MessageActions`: a group named "Message actions"; `children` adds actions at the end | `ds-message-actions` |
+| Copy; Copied: a green check for 2 s | `copyText` (written to the clipboard), `onCopy`; "Copied" is read out | `ds-message-actions__copied` · `__status` |
+| Regenerate, ‹ 2 / 3 › | `onRegenerate`; `version`, `versions` (more than one), `onVersionChange` | `ds-message-actions__versions` · `__version` |
+| Thumbs up and down; Rated up | Toggles: `rating` / `defaultRating` / `onRatingChange` (`'up' \| 'down' \| null`) | `ds-toggle` |
+| Thumbs down: What was wrong? | The library Popover from thumbs down: `reasons` (default Not true, Not helpful, Too long, Other…; `[]` asks nothing), `onReason` | `ds-message-actions__reasons` |
+| Reading aloud: a wave and Pause | `onReadAloudChange`, `reading`, `readTime` (the wave holds still with reduced motion) | `ds-message-actions__reading` · `__wave` · `__time` |
+| Texts | `labels`, for other languages | |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2053,6 +2082,7 @@ These come from the Figma files, not the code:
 - Decision Inbox (2.0): the answer buttons were set to radius 6 over the Button's 8 and the just-answered row had 10 px top and bottom where the empty row has 12; both were fixed in Figma (the library Button radius, 12 px).
 - Review Center (2.0): the queue rows other than the first had no left padding and radius 10 (the first: 10 px, radius 6); the action buttons were set to radius 6 over the Button's 8; the top bar lost 4 px when Undo went; the action rows had 12 px under them and 10 above, and the reasons 12 px on the right; the all-reviewed check was 20 px where the other patterns' is 16. All were fixed in Figma (10 px and radius 6, the library radius, a 44 px bar, 10 px above and below with the buttons 8 px from the edge, a 16 px check with 12 px padding).
 - Autonomy Dial (2.0): the lock's reason was a hand-drawn two-line frame (radius 6, 8 × 10 px padding, 13 px text) instead of the library Tooltip; it is the Tooltip now (Side=left), as the code shows it.
+- Message Actions (2.0): the actions were drawn 28 px frames (radius 6, muted fill when pressed) instead of library components, the reasons under "What was wrong?" drawn chips, and the panel a drawn 300 px card (radius 12, the Message's shadow) instead of the library Popover. All are library components now: Button Ghost sm icon only (radius 8; thumbs and Read aloud are Toggles sm in code, pressed in Fill 2), Button Outline sm, and Popover (288 px, radius 14, title 16 px Medium), 4 px under thumbs down.
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
 - Kbd (2.0): the Icon slot is an 8.65 px frame (a Lucide 8 px icon), hidden in every variant and demo; the code draws `icon` at 12 px, the key text's size. Figma renders the Inverted variants on white, where they are invisible; they are meant for dark surfaces such as Tooltip.
