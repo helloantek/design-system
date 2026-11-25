@@ -64,6 +64,7 @@ import { renderStepper } from './stepper';
 import { renderSwitch } from './switch';
 import { renderTabsList, renderTabsTrigger } from './tabs';
 import { renderTextarea } from './textarea';
+import { renderThinkingLoader } from './thinking-loader';
 import { renderThinkingState } from './thinking-state';
 import { renderToggle } from './toggle';
 import { renderToolCall } from './tool-call';
@@ -162,6 +163,7 @@ export const renderers: Record<string, Renderer> = {
   'tabs-list': renderTabsList,
   'tabs-trigger': renderTabsTrigger,
   textarea: renderTextarea,
+  'thinking-loader': renderThinkingLoader,
   'thinking-state': renderThinkingState,
   toggle: renderToggle,
   'toggle-group': renderToggleGroup,

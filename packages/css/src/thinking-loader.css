@@ -1,0 +1,77 @@
+/*
+ * Thinking Loader — the Sort UI 2.0 pattern "Thinking Loader" (node 6126:2130 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): the small pill an AI reply shows before its first word. A spinner and a label that rolls
+ * through what it is doing, then a check with how long it thought. When it takes long it says so and offers Stop.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-thinking ds-thinking--thinking">          (--done · --slow · --stopped)
+ *     <span class="ds-spinner ds-spinner--sm" aria-hidden="true">…</span>   (done: a check, stopped: a clock, aria-hidden)
+ *     <span class="ds-thinking__label" role="status">Reading 4 files…</span>
+ *     [<span class="ds-thinking__time">· 0:48</span>]
+ *     [<button class="ds-button ds-button--secondary ds-button--size-xs">Stop</button>]
+ *   </div>
+ */
+@layer ds.components {
+  /* A 28 px pill: 6 px corners, an inside border, 8 px before the icon and 10 px after the words. */
+  .ds-thinking {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    max-width: 100%;
+    padding: var(--ds-spacing-1) var(--ds-spacing-2-5) var(--ds-spacing-1) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    letter-spacing: -0.005em;
+    vertical-align: top;
+  }
+
+  /* While it works the spinner is the running blue. */
+  .ds-thinking > .ds-spinner {
+    flex: none;
+    color: var(--ds-palette-blue-solid);
+  }
+
+  .ds-thinking > svg {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+
+  .ds-thinking__label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-thinking__time {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  /* Done: a green check and the words in the text colour. */
+  .ds-thinking--done {
+    color: var(--ds-foreground);
+  }
+
+  .ds-thinking--done > svg {
+    color: var(--ds-palette-green-text);
+  }
+
+  /* Taking long: Stop sits 4 px from the end. */
+  .ds-thinking--slow {
+    padding-right: var(--ds-spacing-1);
+  }
+
+  .ds-thinking > .ds-button {
+    flex: none;
+  }
+}
