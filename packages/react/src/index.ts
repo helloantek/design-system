@@ -23,6 +23,7 @@ export * from './Checkbox';
 export * from './Combobox';
 export * from './Command';
 export * from './ContextMenu';
+export * from './ContextWindow';
 export * from './DatePicker';
 export * from './Collapsible';
 export * from './DecisionCard';

@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 pattern Context Window (6128:2518): in use, files opened, nearly full and compacting (1x PNG, get_screenshot, cropped to the card's own box). renderers/context-window.tsx renders them.",
+ "component": "context-window",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6128:2518",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "in-use",
+   "nodeId": "6289:4665",
+   "props": {
+    "State": "In use"
+   },
+   "target": "#target .ds-context-window",
+   "nodeW": 380,
+   "nodeH": 325
+  },
+  {
+   "slug": "files-open",
+   "nodeId": "6289:4976",
+   "props": {
+    "State": "Files open"
+   },
+   "target": "#target .ds-context-window",
+   "nodeW": 380,
+   "nodeH": 397
+  },
+  {
+   "slug": "nearly-full",
+   "nodeId": "6289:5255",
+   "props": {
+    "State": "Nearly full"
+   },
+   "target": "#target .ds-context-window",
+   "nodeW": 380,
+   "nodeH": 325
+  },
+  {
+   "slug": "compacting",
+   "nodeId": "6289:5527",
+   "props": {
+    "State": "Compacting"
+   },
+   "target": "#target .ds-context-window",
+   "nodeW": 380,
+   "nodeH": 321
+  }
+ ]
+}

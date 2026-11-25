@@ -22,6 +22,7 @@ import { renderCard } from './card';
 import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './checkbox';
 import { renderCombobox } from './combobox';
 import { renderContextMenu } from './context-menu';
+import { renderContextWindow } from './context-window';
 import { renderDatePicker } from './date-picker';
 import { renderDecisionCard } from './decision-card';
 import { renderCollapsible } from './collapsible';
@@ -112,6 +113,7 @@ export const renderers: Record<string, Renderer> = {
   combobox: renderCombobox,
   command: renderCommand,
   'context-menu': renderContextMenu,
+  'context-window': renderContextWindow,
   'date-picker': renderDatePicker,
   'decision-card': renderDecisionCard,
   collapsible: renderCollapsible,
