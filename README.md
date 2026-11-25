@@ -429,6 +429,7 @@ A pattern from the Sort UI 2.0 **Patterns** page: the quiet bar under an AI mess
 | Thumbs up and down; Rated up | Toggles: `rating` / `defaultRating` / `onRatingChange` (`'up' \| 'down' \| null`) | `ds-toggle` |
 | Thumbs down: What was wrong? | The library Popover from thumbs down: `reasons` (default Not true, Not helpful, Too long, Other…; `[]` asks nothing), `onReason` | `ds-message-actions__reasons` |
 | Reading aloud: a wave and Pause | `onReadAloudChange`, `reading`, `readTime` (the wave holds still with reduced motion) | `ds-message-actions__reading` · `__wave` · `__time` |
+| Texts | `labels`, for other languages | |
 
 ## Model Picker
 
