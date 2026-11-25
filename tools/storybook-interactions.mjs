@@ -2674,31 +2674,6 @@ Object.assign(tests, {
     await page.getByRole('button', { name: 'Answer' }).click();
     assert.equal(await page.getByRole('heading', { name: 'Which plan should the new team start on?' }).isVisible(), true, 'Answer opens the card again');
   },
-  'approval gates: a named run; A approves and R rejects the gate from inside it; Change it turns the arguments into a field, says what changed and Esc cancels; a decided gate opens to its reason': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-approval-gates--waiting&viewMode=story');
-    const run = page.getByRole('region', { name: /Approvals Launch the new pricing page/ });
-    await run.waitFor();
-    const gate = run.getByRole('article', { name: 'Publish 2.4.0 to npm' });
-    assert.equal(await gate.getByRole('button', { name: /Approve/ }).getAttribute('aria-keyshortcuts'), 'A');
-    await gate.getByRole('button', { name: 'Change it' }).click();
-    const field = gate.getByRole('textbox', { name: 'Arguments' });
-    assert.equal(await page.evaluate(() => document.activeElement?.tagName), 'TEXTAREA', 'Change it focuses the arguments');
-    await field.fill('npm publish --tag next\npackage: @acme/ui@2.4.0');
-    assert.match(await gate.textContent(), /Edited: --tag latest → next/);
-    await page.keyboard.press('Escape');
-    assert.equal(await gate.getByRole('textbox').count(), 0, 'Esc cancels the edit');
-    await gate.getByText('All tests passed').click();
-    await page.keyboard.press('a');
-    const decided = run.getByRole('list', { name: 'Decided' });
-    assert.match(await decided.getByRole('listitem').first().textContent(), /Publish 2.4.0 to npm.*Approved/, 'A approves; the gate drops into the decided list');
-    const row = decided.getByRole('button', { name: /Tag v2.4.0/ });
-    assert.equal(await row.getAttribute('aria-expanded'), 'false');
-    await row.click();
-    assert.equal(await row.getAttribute('aria-expanded'), 'true', 'a decided gate opens to its reason');
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-approval-gates--rejected&viewMode=story');
-    await page.getByText('The run stopped').waitFor();
-    assert.equal(await page.getByRole('status').filter({ hasText: 'The run stopped' }).count(), 1, 'the stopped run is a status');
-  },
   'decision inbox: a named list of decisions; an answer confirms in place with focus on Undo; Undo brings it back; the row folds away; the folded line opens it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-decision-inbox--open&viewMode=story');
     const inbox = page.getByRole('region', { name: '3 need your input' });

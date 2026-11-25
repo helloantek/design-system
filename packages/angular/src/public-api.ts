@@ -33,3 +33,16 @@ export {
   type PermissionDuration,
   type PermissionRequestState,
 } from './lib/permission-request/permission-request';
+export { DsDecisionCard, type DecisionAnswer, type DecisionOption, type DecisionTile } from './lib/decision-card/decision-card';
+export {
+  DsApprovalGate,
+  DsApprovalGateIcon,
+  DsApprovalGateRisk,
+  DsApprovalGates,
+  DsApprovalGatesDecided,
+  DsApprovalGatesDecidedItem,
+  DsApprovalGatesDone,
+  DsApprovalGatesStopped,
+  type ApprovalGateOutcome,
+  type ApprovalGatesStatus,
+} from './lib/approval-gates/approval-gates';

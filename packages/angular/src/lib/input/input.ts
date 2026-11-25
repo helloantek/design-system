@@ -43,6 +43,7 @@ export class DsSuffix {}
   host: {
     style: 'display: contents',
     '[attr.aria-label]': 'null',
+    '[attr.aria-keyshortcuts]': 'null',
     '[attr.label]': 'null',
     '[attr.caption]': 'null',
     '[attr.error]': 'null',
@@ -109,7 +110,7 @@ export class DsSuffix {}
             [attr.aria-busy]="loadingAt() ? 'true' : null"
             [attr.aria-labelledby]="label() === undefined && blockStart() !== undefined && ariaLabel() === undefined ? blockStartId() : null"
             [attr.aria-describedby]="describedBy()"
-            [attr.aria-keyshortcuts]="shortcut() ?? null"
+            [attr.aria-keyshortcuts]="shortcut() ?? ariaKeyshortcuts() ?? null"
             (input)="edit($event)"
             (blur)="blurred()"
           />
@@ -202,6 +203,8 @@ export class DsInput implements FormValueControl<string>, ControlValueAccessor {
   readonly maxlength = input<number | undefined>(undefined);
   readonly id = input<string>();
   readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
+  /** The native input's `aria-keyshortcuts` without a drawn key (`shortcut` draws one and sets it). */
+  readonly ariaKeyshortcuts = input<string | undefined>(undefined, { alias: 'aria-keyshortcuts' });
 
   private readonly autoId = uniqueId('ds-input');
   /** Signal Forms: marks the field touched when focus leaves the control. */

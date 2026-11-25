@@ -282,6 +282,57 @@ export const sharedTests = {
     assert.equal(await destructive.getByRole('button', { name: /Allow once/ }).count(), 1);
     assert.equal(await destructive.getByRole('list', { name: 'Files' }).getByRole('listitem').count(), 3);
   },
+  'decision card: the question names the card and its answers; the recommended one starts highlighted; a number key or a click answers; the last row sends your own words with Enter; the pager wraps round; Later folds it and Answer opens it': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-decision-card--questions&viewMode=story`);
+    const card = page.getByRole('region', { name: 'Which plan should the new team start on?' });
+    await card.waitFor();
+    const answers = card.getByRole('group', { name: 'Which plan should the new team start on?' });
+    assert.equal(await answers.getByRole('button', { name: /Team/ }).getAttribute('aria-keyshortcuts'), '2');
+    assert.match(await answers.getByRole('button', { name: /Team/ }).getAttribute('class'), /ds-decision__option--active/, 'the recommended answer starts highlighted');
+    await card.getByText('Onboarding').click();
+    await page.keyboard.press('3');
+    await page.getByRole('status').filter({ hasText: 'Answered: Enterprise' }).waitFor();
+    await answers.getByRole('button', { name: /Starter/ }).click();
+    await page.getByRole('status').filter({ hasText: 'Answered: Starter' }).waitFor();
+    const other = card.getByRole('textbox', { name: 'Something else' });
+    assert.equal(await other.getAttribute('aria-keyshortcuts'), '4');
+    await other.fill('Ask the team first');
+    await page.keyboard.press('Enter');
+    await page.getByRole('status').filter({ hasText: 'Answered: “Ask the team first”' }).waitFor();
+    await settles(() => other.inputValue(), '', 'sending clears the row');
+    await card.getByRole('button', { name: 'Previous question' }).click();
+    await page.getByRole('region', { name: 'Who should own billing?' }).waitFor();
+    await page.getByRole('region', { name: 'Who should own billing?' }).getByRole('button', { name: 'Later' }).click();
+    const line = page.getByRole('region', { name: /2 questions waiting/ });
+    await line.waitFor();
+    await line.getByRole('button', { name: 'Answer' }).click();
+    await page.getByRole('region', { name: 'Who should own billing?' }).waitFor();
+  },
+  'approval gates: a named run; A approves and R rejects the gate from inside it; Change it turns the arguments into a field, says what changed and Esc cancels; a decided gate opens to its reason': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-approval-gates--waiting&viewMode=story`);
+    const run = page.getByRole('region', { name: /Approvals Launch the new pricing page/ });
+    await run.waitFor();
+    const gate = run.getByRole('article', { name: 'Publish 2.4.0 to npm' });
+    assert.equal(await gate.getByRole('button', { name: /Approve/ }).getAttribute('aria-keyshortcuts'), 'A');
+    await gate.getByRole('button', { name: 'Change it' }).click();
+    const field = gate.getByRole('textbox', { name: 'Arguments' });
+    await settles(() => page.evaluate(() => document.activeElement?.tagName), 'TEXTAREA', 'Change it focuses the arguments');
+    await field.fill('npm publish --tag next\npackage: @acme/ui@2.4.0');
+    await settles(() => gate.locator('.ds-gate__edited').textContent(), 'Edited: --tag latest → next');
+    await page.keyboard.press('Escape');
+    await settles(() => gate.getByRole('textbox').count(), 0, 'Esc cancels the edit');
+    await gate.getByText('All tests passed').click();
+    await page.keyboard.press('a');
+    const decided = run.getByRole('list', { name: 'Decided' });
+    await settles(async () => /Publish 2.4.0 to npm.*Approved/.test(await decided.getByRole('listitem').first().textContent()), true, 'A approves; the gate drops into the decided list');
+    const row = decided.getByRole('button', { name: /Tag v2.4.0/ });
+    assert.equal(await row.getAttribute('aria-expanded'), 'false');
+    await row.click();
+    await settles(() => row.getAttribute('aria-expanded'), 'true', 'a decided gate opens to its reason');
+    await page.goto(`${base}/iframe.html?id=patterns-approval-gates--rejected&viewMode=story`);
+    await page.getByText('The run stopped').waitFor();
+    assert.equal(await page.getByRole('status').filter({ hasText: 'The run stopped' }).count(), 1, 'the stopped run is a status');
+  },
   'select: keyboard opens, moves, selects and keeps focus': async (page, base) => {
     const { open, combobox, listbox, state, press, type, tick } = selectHelpers(page, base);
     await open('components-select--playground');
