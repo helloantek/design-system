@@ -7,3 +7,8 @@ export { DsInput, DsInputAction, DsPrefix, DsSuffix, type InputSize, type InputV
 export { DsTooltip, type TooltipSide } from './lib/tooltip/tooltip';
 export { DsDialog, DsDialogClose, DsDialogFooter, DsDialogTrigger } from './lib/dialog/dialog';
 export { DsSelect, type SelectCaption, type SelectGroup, type SelectIndicator, type SelectItem, type SelectOption, type SelectSeparator, type SelectSize, type SelectVariant } from './lib/select/select';
+export { DsKbd, DsKbdGroup, type KbdSize, type KbdVariant } from './lib/kbd/kbd';
+export { DsSpinner, type SpinnerSize, type SpinnerVariant } from './lib/spinner/spinner';
+export { DsToggle, type ToggleSize, type ToggleVariant } from './lib/toggle/toggle';
+export { DsToggleGroup, type ToggleGroupOrientation, type ToggleGroupSpacing } from './lib/toggle-group/toggle-group';
+export { DsAvatar, DsAvatarGroup, type AvatarShape, type AvatarSize } from './lib/avatar/avatar';
