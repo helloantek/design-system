@@ -60,3 +60,4 @@ export {
   type ReviewCenterFilter,
 } from './lib/review-center/review-center';
 export { DsAutonomyDial, DsAutonomyIcon, runsOnItsOwn, type AutonomyAction, type AutonomyLevel, type AutonomyRisk, type AutonomyTool } from './lib/autonomy-dial/autonomy-dial';
+export { DsStepper, DsStepperItem, type StepperItemState, type StepperOrientation, type StepperStep, type StepperVariant } from './lib/stepper/stepper';
