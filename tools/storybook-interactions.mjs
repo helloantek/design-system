@@ -2810,6 +2810,33 @@ Object.assign(tests, {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-review-center--all-reviewed&viewMode=story');
     await page.getByRole('status').filter({ hasText: 'Nothing left to review' }).waitFor();
   },
+  'autonomy dial: a named agent with a three-stop dial; moving it moves actions between the lists and the dial never empties; locked actions always ask and their lock says why on focus': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-autonomy-dial--if-risky&viewMode=story');
+    const dial = page.getByRole('region', { name: 'Support agent' });
+    await dial.waitFor();
+    const stops = dial.getByRole('group', { name: 'Autonomy' });
+    assert.equal(await stops.getByRole('button', { name: 'If risky' }).getAttribute('aria-pressed'), 'true');
+    const runs = dial.getByRole('list', { name: /^Runs on its own/ });
+    const asks = dial.getByRole('list', { name: /^Asks you first/ });
+    assert.equal(await runs.getByRole('listitem').count(), 3, 'everyday work runs on its own');
+    assert.equal(await asks.getByRole('listitem').count(), 4, 'risky actions ask');
+    await stops.getByRole('button', { name: 'Full auto' }).click();
+    assert.equal(await runs.getByRole('listitem').count(), 5, 'all but the locked move over');
+    assert.deepEqual(await asks.locator('.ds-autonomy__label').allTextContents(), ['Give refunds', 'Delete customer data'], 'locked actions always ask');
+    await stops.getByRole('button', { name: 'Full auto' }).click();
+    assert.equal(await stops.getByRole('button', { name: 'Full auto' }).getAttribute('aria-pressed'), 'true', 'pressing the current stop keeps it');
+    const lock = asks.getByRole('button', { name: 'Locked' }).first();
+    await stops.getByRole('button', { name: 'Full auto' }).focus();
+    await page.keyboard.press('Tab');
+    assert.equal(await lock.evaluate((el) => el === document.activeElement), true, 'Tab goes from the dial to the first lock');
+    const tip = page.locator(`#${(await lock.getAttribute('aria-describedby')).split(' ').pop()}`);
+    await tip.waitFor();
+    assert.match(await tip.textContent(), /refunds always ask/, 'the lock says why');
+    await stops.getByRole('button', { name: 'Always ask' }).click();
+    assert.equal(await runs.count(), 0);
+    await dial.getByText('Nothing – it asks before every action.').waitFor();
+    assert.equal(await asks.getByRole('listitem').count(), 7, 'everything waits for you');
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });
