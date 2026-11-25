@@ -421,6 +421,28 @@ export const sharedTests = {
     await dial.getByText('Nothing – it asks before every action.').waitFor();
     assert.equal(await asks.getByRole('listitem').count(), 7, 'everything waits for you');
   },
+  'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
+    const stepper = page.getByRole('list', { name: 'Create a workspace' });
+    await stepper.waitFor();
+    assert.equal(await stepper.evaluate((el) => el.localName), 'ol');
+    const steps = stepper.getByRole('listitem');
+    assert.equal(await steps.count(), 4);
+    const current = () => stepper.locator('[aria-current="step"] .ds-stepper__label').textContent();
+    assert.equal(await current(), 'Account');
+    assert.equal(await page.getByRole('button', { name: 'Back' }).isDisabled(), true, 'Back is off on the first step');
+    await page.getByRole('button', { name: 'Next' }).click();
+    await settles(current, 'Workspace', 'Next moves the current step');
+    assert.match(await steps.first().textContent(), /Account.*, completed/, 'a done step says so');
+    assert.equal(await steps.first().locator('.ds-stepper__indicator').getAttribute('aria-hidden'), 'true', 'the check is only a picture');
+    await page.getByRole('button', { name: 'Back' }).click();
+    await settles(current, 'Account', 'Back moves it back');
+    await page.goto(`${base}/iframe.html?id=components-stepper--with-error&viewMode=story`);
+    const failed = page.getByRole('list', { name: 'Import' }).getByRole('listitem').nth(1);
+    await failed.waitFor();
+    assert.match(await failed.textContent(), /Check columns.*2 columns have no name.*, error/, 'a failed step says so');
+    assert.equal(await page.getByRole('list', { name: 'Import' }).getByRole('listitem').nth(2).locator('.ds-stepper__indicator').textContent(), '3', 'steps are numbered by their place');
+  },
   'select: keyboard opens, moves, selects and keeps focus': async (page, base) => {
     const { open, combobox, listbox, state, press, type, tick } = selectHelpers(page, base);
     await open('components-select--playground');
