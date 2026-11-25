@@ -33,6 +33,7 @@ export type ToggleGroupOrientation = 'horizontal' | 'vertical';
     '[attr.orientation]': 'null',
     '[attr.disabled]': 'null',
     '[attr.value]': 'null',
+    '[attr.allowEmpty]': 'null',
     '(keydown)': 'key($event)',
   },
 })
@@ -45,6 +46,11 @@ export class DsToggleGroup implements ToggleGroupContext {
   readonly spacing = input<ToggleGroupSpacing>(2);
   readonly orientation = input<ToggleGroupOrientation>('horizontal');
   readonly disabled = input(false, { transform: booleanAttribute });
+  /**
+   * `type="single"` only: pressing the pressed item lets it go (default). Set `false` for a choice that always has a
+   * value, such as a dial: pressing the current item then keeps it. (React gets this from a controlled `value`.)
+   */
+  readonly allowEmpty = input(true, { transform: booleanAttribute });
   /** The item with the Tab stop: the first pressed one, else the first enabled one. */
   readonly tabValue = computed(() => this.values()[0] ?? this.items().find((item) => !item.disabled())?.value());
 
@@ -70,6 +76,7 @@ export class DsToggleGroup implements ToggleGroupContext {
 
   flip(value: string) {
     const values = this.values();
+    if (this.type() === 'single' && !this.allowEmpty() && values.includes(value)) return;
     const next = this.type() === 'single' ? (values.includes(value) ? [] : [value]) : values.includes(value) ? values.filter((x) => x !== value) : [...values, value];
     this.value.set(this.type() === 'single' ? (next[0] ?? '') : next);
   }

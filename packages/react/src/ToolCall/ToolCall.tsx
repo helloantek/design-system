@@ -162,7 +162,7 @@ export function ToolCall({
 
 export interface ToolCallGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   ref?: Ref<HTMLDivElement>;
-  /** `ToolCall`s of one turn. */
+  /** `ToolCall`s of one turn, as direct children (the header counts them). */
   children: ReactNode;
   /** `running` shows a plain line ("Using tools…") over the calls as cards; `done` and `error` a card that sums them up. */
   status?: ToolCallStatus;

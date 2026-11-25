@@ -12,3 +12,24 @@ export { DsSpinner, type SpinnerSize, type SpinnerVariant } from './lib/spinner/
 export { DsToggle, type ToggleSize, type ToggleVariant } from './lib/toggle/toggle';
 export { DsToggleGroup, type ToggleGroupOrientation, type ToggleGroupSpacing } from './lib/toggle-group/toggle-group';
 export { DsAvatar, DsAvatarGroup, type AvatarShape, type AvatarSize } from './lib/avatar/avatar';
+export {
+  DsApprovalCard,
+  DsApprovalCardContent,
+  DsApprovalCardDetails,
+  DsApprovalCardIconMarker,
+  DsApprovalCardPreview,
+  DsApprovalCardRecipients,
+  DsApprovalCardSummary,
+  type ApprovalCardRisk,
+  type ApprovalCardState,
+} from './lib/approval-card/approval-card';
+export { DsToolCall, DsToolCallGroup, DsToolCallIcon, type ToolCallStatus } from './lib/tool-call/tool-call';
+export {
+  DsPermissionFiles,
+  DsPermissionIcon,
+  DsPermissionRequest,
+  DsPermissionScope,
+  DsPermissionToolIcon,
+  type PermissionDuration,
+  type PermissionRequestState,
+} from './lib/permission-request/permission-request';
