@@ -2713,6 +2713,47 @@ Object.assign(tests, {
     await page.keyboard.press('Enter');
     assert.equal(await head.getAttribute('aria-expanded'), 'false', 'Enter folds it again');
   },
+  'model picker: the trigger opens a named menu; arrows point at a model and show its speed, quality and cost; Enter chooses it; the thinking switch opens the effort and marks the trigger; Escape closes': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-model-picker--in-the-composer&viewMode=story');
+    const trigger = page.getByRole('button', { name: 'Sonnet 4.5', exact: true });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-haspopup'), 'dialog');
+    await trigger.click();
+    const menu = page.getByRole('dialog', { name: 'Model' });
+    await menu.waitFor();
+    const list = menu.getByRole('listbox', { name: 'Models' });
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('role')), 'listbox', 'focus moves to the models');
+    assert.equal(await list.getByRole('option', { selected: true }).getAttribute('id'), await list.getByRole('option', { name: 'Sonnet 4.5' }).getAttribute('id'), 'the chosen model is selected');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await list.getAttribute('aria-activedescendant'), await list.getByRole('option', { name: 'Sonnet 4.5' }).getAttribute('id'), 'the first arrow points at the chosen model');
+    await page.keyboard.press('ArrowDown');
+    const opus = list.getByRole('option', { name: 'Opus 4.1' });
+    assert.equal(await list.getAttribute('aria-activedescendant'), await opus.getAttribute('id'));
+    assert.equal(await opus.locator('dt').allTextContents().then((t) => t.join(',')), 'Speed,Quality,Cost', 'pointing shows the bars');
+    assert.match(await opus.locator('dd').first().textContent(), /1 of 5/);
+    assert.match(await menu.locator('.ds-model-picker__note').textContent(), /\$15/, 'the note follows the model pointed at');
+    await page.keyboard.press('Enter');
+    assert.equal(await menu.isVisible(), false, 'Enter chooses and closes');
+    const chosen = page.getByRole('button', { name: 'Opus 4.1', exact: true });
+    await chosen.waitFor();
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Opus 4.1', 'focus goes back to the trigger');
+    await chosen.click();
+    await menu.waitFor();
+    const thinking = menu.getByRole('switch', { name: 'Extended thinking' });
+    assert.equal(await menu.getByRole('group', { name: 'Effort' }).count(), 0, 'no effort while thinking is off');
+    await thinking.click();
+    assert.equal(await thinking.isChecked(), true);
+    const effort = menu.getByRole('group', { name: 'Effort' });
+    await effort.waitFor();
+    assert.equal(await effort.getByRole('button', { name: 'Medium' }).getAttribute('aria-pressed'), 'true');
+    assert.match(await menu.locator('.ds-model-picker__note').textContent(), /\+ thinking$/);
+    await page.getByRole('button', { name: 'Opus 4.1 · Thinking' }).waitFor();
+    await page.keyboard.press('Escape');
+    assert.equal(await menu.isVisible(), false, 'Escape closes it');
+    await page.getByRole('button', { name: 'Opus 4.1 · Thinking' }).click();
+    await menu.getByRole('option', { name: 'Haiku 4.5' }).click();
+    await page.getByRole('button', { name: 'Haiku 4.5 · Thinking' }).waitFor();
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });

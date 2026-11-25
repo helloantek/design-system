@@ -1,0 +1,213 @@
+/*
+ * Model Picker — the Sort UI 2.0 pattern "Model Picker" (node 6128:2365 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): the model menu of an AI chat, opened from the composer. Each model with its logo and what
+ * it is for (Select Items); pointing at one shows its speed, quality and cost; extended thinking (a Switch) with its
+ * effort (a Toggle Group); and what the choice means at the bottom: the time to the first word and the price.
+ * The menu is a Popover panel (popover.css) drawn like Select Content. Values are Sort UI 2.0 tokens.
+ * Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-popover">
+ *     <button class="ds-button ds-button--ghost ds-button--size-sm" aria-haspopup="dialog" aria-expanded="true">
+ *       <span class="ds-button__icon">…logo…</span>Sonnet 4.5 · Thinking<span class="ds-button__icon">…chevron…</span></button>
+ *     <div class="ds-popover__content ds-popover__content--end ds-model-picker" role="dialog" aria-label="Model">
+ *       <div class="ds-popover__body">
+ *         <div class="ds-model-picker__models" role="listbox" aria-label="Models" tabindex="0" [aria-activedescendant="o3"]>
+ *           <div class="ds-model-picker__model [ds-model-picker__model--open]" id="o3" role="option" aria-selected="false" [data-highlighted]>
+ *             <div class="ds-model-picker__item"><span class="ds-model-picker__icon">…</span>
+ *               <span class="ds-model-picker__text"><span class="ds-model-picker__label">Opus 4.1</span>
+ *                 <span class="ds-model-picker__description">Hard problems, long documents</span></span>
+ *               <span class="ds-model-picker__check">[…check…]</span></div>
+ *             [<dl class="ds-model-picker__bars"><div class="ds-model-picker__bar"><dt>Speed</dt><dd>
+ *                <span class="ds-model-picker__dashes"><span class="ds-model-picker__dash ds-model-picker__dash--on"></span>…</span>
+ *                <span class="ds-model-picker__hidden">1 of 5</span></dd></div>…</dl>]
+ *           </div>
+ *         </div>
+ *         [<div class="ds-model-picker__separator"></div>
+ *          <div class="ds-model-picker__thinking"><div class="ds-field ds-field--horizontal ds-field--control-end">…Switch sm…</div>
+ *            [<div class="ds-toggle-group …" role="group" aria-label="Effort">…</div>]</div>]
+ *         [<p class="ds-model-picker__note">First word in ~2 s · $15 per 1M tokens</p>]
+ *       </div>
+ *     </div>
+ *   </div>
+ */
+@layer ds.components {
+  /* Select Content: 4 px padding, the card radius, the Popover's fill, border and shadow. */
+  .ds-popover__content.ds-model-picker {
+    border-radius: var(--ds-radius-xl);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+  }
+
+  /* Over the Popover body's 16 px (popover.css loads after this file). */
+  .ds-popover__content.ds-model-picker > .ds-popover__body {
+    gap: 0;
+    padding: var(--ds-spacing-1);
+  }
+
+  .ds-model-picker__models {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+  }
+
+  .ds-model-picker__models:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* A model pointed at with its bars: one muted box around the item and the bars. */
+  .ds-model-picker__model {
+    border-radius: var(--ds-radius-sm);
+    cursor: pointer;
+  }
+
+  .ds-model-picker__model--open {
+    background-color: var(--ds-muted);
+  }
+
+  /* Select Item: logo, label over description, the check on the right. */
+  .ds-model-picker__item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-sm);
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-model-picker__model[data-highlighted] > .ds-model-picker__item {
+    background-color: var(--ds-accent);
+    color: var(--ds-accent-foreground);
+  }
+
+  .ds-model-picker__icon,
+  .ds-model-picker__check {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+  }
+
+  .ds-model-picker__icon > svg,
+  .ds-model-picker__check > svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .ds-model-picker__text {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  .ds-model-picker__description {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-2xs);
+    line-height: var(--ds-text-2xs--line-height);
+  }
+
+  /* Speed, quality and cost: under the label, five dashes each. */
+  .ds-model-picker__bars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    margin: 0;
+    padding: var(--ds-spacing-1-5) 0 var(--ds-spacing-2) var(--ds-spacing-8);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-model-picker__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+  }
+
+  /* Figma: the words in a 52 px column, so the dashes line up. */
+  .ds-model-picker__bar > dt {
+    width: calc(var(--ds-spacing-12) + var(--ds-spacing-1));
+  }
+
+  .ds-model-picker__bar > dd {
+    margin: 0;
+  }
+
+  .ds-model-picker__dashes {
+    display: flex;
+    gap: var(--ds-spacing-0-5);
+  }
+
+  .ds-model-picker__dash {
+    width: var(--ds-spacing-3);
+    height: calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1));
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-border);
+  }
+
+  .ds-model-picker__dash--on {
+    background-color: var(--ds-foreground);
+  }
+
+  .ds-model-picker__hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Select Separator: 8 px high, a line across the whole menu 4 px down. */
+  .ds-model-picker__separator {
+    flex: none;
+    height: var(--ds-stroke-width-1);
+    margin: var(--ds-spacing-1) calc(-1 * var(--ds-spacing-1)) calc(var(--ds-spacing-1) - var(--ds-stroke-width-1));
+    background-color: var(--ds-border);
+  }
+
+  /* Extended thinking: the switch with its words, then the effort, 8 px apart. */
+  .ds-model-picker__thinking {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-4);
+  }
+
+  .ds-model-picker__thinking > .ds-field {
+    align-self: stretch;
+    align-items: center;
+  }
+
+  .ds-model-picker__thinking .ds-field__content {
+    gap: 0;
+  }
+
+  .ds-model-picker__thinking .ds-field__label {
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  .ds-model-picker__thinking .ds-field__caption {
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* What the choice means: the time to the first word and the price, in a muted box. */
+  .ds-model-picker__note {
+    margin: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-4);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+}

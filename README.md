@@ -402,6 +402,34 @@ A pattern from the Sort UI 2.0 **Patterns** page: the AI at work, step by step, 
 | A source it could not reach, in amber | `ThinkingNote` | `ds-thinking-state__note` |
 | Done: "Thought for 14 s · 6 sources · 4 steps", opens to the steps | `status="done"`, `title`, `summary`, `open` / `defaultOpen` / `onOpenChange` (a button with `aria-expanded`) | `ds-thinking-state--done` · `__head` · `__title` · `__meta` |
 
+## Model Picker
+
+A pattern from the Sort UI 2.0 **Patterns** page: the model menu of an AI chat, opened from the composer (**Model Picker**, node `6128:2365`).
+
+```tsx
+<AIChatComposer
+  model={
+    <ModelPicker
+      models={[{ value: 'opus', label: 'Opus 4.1', description: 'Hard problems, long documents', icon: <RiClaudeFill />, speed: 1, quality: 5, cost: 5, note: 'First word in ~2 s · $15 per 1M tokens' }, …]}
+      value={model}
+      onValueChange={setModel}
+      thinking={thinking}
+      onThinkingChange={setThinking}
+    />
+  }
+/>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| In the composer: the model and, when on, "· Thinking" | The trigger: a Ghost sm Button for AIChatComposer's `model` slot | `ds-button` |
+| The menu (Select Content, 320 px) | A Popover named "Model" (`aria-label`), `align` (default `end`), `open` / `defaultOpen` / `onOpenChange` | `ds-model-picker` |
+| Each model: logo, label, what it is for, the check | `models` (`value`, `label`, `description`, `icon`), `value` / `defaultValue` / `onValueChange`: a listbox named "Models"; arrows point, Enter or a click chooses and closes | `ds-model-picker__models` · `__model` · `__item` · `__check` |
+| Pointing at one: speed, quality and cost | `speed`, `quality`, `cost` (1–5), shown for the model pointed at (mouse or arrows), read as "1 of 5" | `ds-model-picker__model--open` · `__bars` · `__dash` |
+| Extended thinking, its effort | `thinking` / `defaultThinking` / `onThinkingChange` (a Switch sm); `effort` / `defaultEffort` / `onEffortChange`, `efforts` (a Toggle Group, default Low, Medium, High) | `ds-model-picker__thinking` |
+| What the choice means | `note` of the model pointed at (else chosen), "+ thinking" when on | `ds-model-picker__note` |
+| Texts | `labels`, for other languages | |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2077,6 +2105,7 @@ These come from the Figma files, not the code:
 - Decision Inbox (2.0): the answer buttons were set to radius 6 over the Button's 8 and the just-answered row had 10 px top and bottom where the empty row has 12; both were fixed in Figma (the library Button radius, 12 px).
 - Review Center (2.0): the queue rows other than the first had no left padding and radius 10 (the first: 10 px, radius 6); the action buttons were set to radius 6 over the Button's 8; the top bar lost 4 px when Undo went; the action rows had 12 px under them and 10 above, and the reasons 12 px on the right; the all-reviewed check was 20 px where the other patterns' is 16. All were fixed in Figma (10 px and radius 6, the library radius, a 44 px bar, 10 px above and below with the buttons 8 px from the edge, a 16 px check with 12 px padding).
 - Autonomy Dial (2.0): the lock's reason was a hand-drawn two-line frame (radius 6, 8 × 10 px padding, 13 px text) instead of the library Tooltip; it is the Tooltip now (Side=left), as the code shows it.
+- Model Picker (2.0): the models were Select Items at the library's radius 10 while the one pointed at was 6 in a 6 px box; the price note had square corners and, with "+ thinking", ran past the menu's edge; the bars sat 33 px in where the labels start at 32. All are radius 6 now, the note wraps inside the menu, and the bars start at 32 px.
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).

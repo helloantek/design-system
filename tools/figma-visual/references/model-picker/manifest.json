@@ -1,0 +1,35 @@
+{
+ "$comment": "Sort UI 2.0 pattern Model Picker (6128:2365): the open menu pointing at Opus (its speed, quality and cost) and with extended thinking on (the effort, + thinking) (1x PNG, get_screenshot, cropped to the menu's own box without the Surface/Popover shadow's margin). renderers/model-picker.tsx renders them.",
+ "component": "model-picker",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6128:2365",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "pointing",
+   "nodeId": "6577:1426",
+   "props": {
+    "State": "Pointing"
+   },
+   "target": "#target .ds-popover__content",
+   "nodeW": 320,
+   "nodeH": 390
+  },
+  {
+   "slug": "thinking",
+   "nodeId": "6577:1613",
+   "props": {
+    "State": "Thinking"
+   },
+   "target": "#target .ds-popover__content",
+   "nodeW": 320,
+   "nodeH": 368
+  }
+ ]
+}
