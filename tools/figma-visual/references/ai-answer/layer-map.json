@@ -1,0 +1,123 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-ai-answer).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Question": {
+      "selector": ".ds-ai-answer__question"
+    },
+    "Question/TEXT": {
+      "selector": ".ds-ai-answer__question"
+    },
+    "Sources": {
+      "selector": ".ds-ai-answer__sources"
+    },
+    "Source": {
+      "selector": ".ds-ai-answer__sources > li:first-child > .ds-ai-answer__source",
+      "stroke": "inset-shadow"
+    },
+    "Source/Name": {
+      "selector": ".ds-ai-answer__sources > li:first-child .ds-ai-answer__source-name"
+    },
+    "Source/Name/TEXT": {
+      "selector": ".ds-ai-answer__sources > li:first-child .ds-ai-answer__source-name > :is(.ds-ai-answer__source-from, :only-child)"
+    },
+    "Source/TEXT#2": {
+      "selector": ".ds-ai-answer__sources > li:first-child .ds-ai-answer__source-title"
+    },
+    "More": {
+      "selector": ".ds-ai-answer__more",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs '+3' and 'more', whose widths follow the font."
+    },
+    "More/TEXT": {
+      "selector": ".ds-ai-answer__more-count"
+    },
+    "More/TEXT#1": {
+      "selector": ".ds-ai-answer__more-label"
+    },
+    "Answer": {
+      "selector": ".ds-ai-answer__answer"
+    },
+    "Answer label": {
+      "selector": ".ds-ai-answer__label"
+    },
+    "Answer label/TEXT": {
+      "selector": ".ds-ai-answer__label"
+    },
+    "Line/TEXT": {
+      "selector": ".ds-ai-answer__answer > p:nth-child(2) > strong"
+    },
+    "Line/TEXT#1": {
+      "selector": ".ds-ai-answer__answer > p:nth-child(2)"
+    },
+    "Citation": {
+      "selector": ".ds-ai-answer__citation",
+      "skip": [
+        "w"
+      ],
+      "$why": "The library Badge / Button hugs its label, whose width follows the font."
+    },
+    "Point": {
+      "selector": ".ds-ai-answer__point",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma's point is a row (dot, 8 px, the words); in code the words flow in the item and the dot is its ::before, 12 px in."
+    },
+    "Stopped": {
+      "selector": ".ds-ai-answer__stopped"
+    },
+    "Stopped/TEXT": {
+      "selector": ".ds-ai-answer__stopped"
+    },
+    "Related": {
+      "selector": ".ds-ai-answer__related"
+    },
+    "Related/TEXT": {
+      "selector": ".ds-ai-answer__related-title"
+    },
+    "Related question": {
+      "selector": ".ds-ai-answer__related li:first-child .ds-ai-answer__related-item"
+    },
+    "Related question/TEXT": {
+      "selector": ".ds-ai-answer__related li:first-child .ds-ai-answer__related-item > span"
+    },
+    "Caret": {
+      "selector": ".ds-ai-answer__caret"
+    },
+    "Footer": {
+      "selector": ".ds-ai-answer__footer",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line above the 40 px footer as its own layer; in code it is the footer's top border, so the card's height is the same."
+    },
+    "Message Actions": {
+      "selector": ".ds-message-actions"
+    },
+    "Icon button": {
+      "selector": ".ds-message-actions .ds-button"
+    },
+    "Footer/TEXT": {
+      "selector": ".ds-ai-answer__meta"
+    },
+    "Button": {
+      "selector": ".ds-ai-answer__footer > .ds-button",
+      "skip": [
+        "w"
+      ],
+      "stroke": "inset-shadow",
+      "$why": "The library Badge / Button hugs its label, whose width follows the font."
+    },
+    "Answer label/VECTOR": {
+      "selector": ".ds-ai-answer__label svg",
+      "fill": "svg"
+    }
+  }
+}

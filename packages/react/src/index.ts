@@ -1,4 +1,5 @@
 export * from './Accordion';
+export * from './AIAnswer';
 export * from './AIChatComposer';
 export * from './AITrace';
 export * from './Alert';

@@ -1,0 +1,352 @@
+/*
+ * AI Answer — the Sort UI 2.0 pattern "AI Answer" (node 6127:2351 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): an answer with its sources. The question, the sources it used as small cards with their
+ * numbers, the answer with its key words in bold and a citation chip after each claim, related questions to go on
+ * with, and the actions with how long it took. It streams in word by word; stopped early, it says so.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <article class="ds-ai-answer" aria-labelledby="q" [aria-busy="true"]>
+ *     <h3 class="ds-ai-answer__question" id="q">How long does a refund to a card take?</h3>
+ *     [<ol class="ds-ai-answer__sources" aria-label="Sources">
+ *       <li><a class="ds-ai-answer__source" href="…"><span class="ds-ai-answer__source-name"><span class="ds-ai-answer__source-icon">…</span>
+ *         <span class="ds-ai-answer__source-from">Notion</span><span class="ds-ai-answer__source-number">1</span></span>
+ *         <span class="ds-ai-answer__source-title">Refund policy – timelines</span></a></li>
+ *       [<li><span class="ds-ai-answer__source ds-ai-answer__source--searching"><span class="ds-ai-answer__source-name">Searching…</span></span></li>]
+ *       [<li><button class="ds-ai-answer__source ds-ai-answer__more"><span class="ds-ai-answer__more-count">+3</span><span class="ds-ai-answer__more-label">more</span></button></li>]
+ *     </ol>]
+ *     <div class="ds-ai-answer__answer"><p class="ds-ai-answer__label"><svg…sparkle…/>Answer</p>
+ *       <p><strong>5–10 working days</strong> after we send it… <span class="ds-badge … ds-ai-answer__citation">Notion +1</span></p>
+ *       [<ul class="ds-ai-answer__points"><li class="ds-ai-answer__point"><strong>Sent the same day:</strong> … <span class="ds-badge …">Help center</span></li></ul>]
+ *       [<span class="ds-ai-answer__caret"></span>]  [<p class="ds-ai-answer__stopped"><svg…alert…/>Stopped – the answer may be incomplete</p>]
+ *     </div>
+ *     [<div class="ds-ai-answer__related" role="group" aria-labelledby="r"><h4 class="ds-ai-answer__related-title" id="r">Related</h4>
+ *       <ul><li><button class="ds-ai-answer__related-item"><span>What if the card has expired?</span><svg…/></button></li></ul></div>]
+ *     <footer class="ds-ai-answer__footer">…Message Actions… [<span class="ds-ai-answer__meta">Answered in 3.4 s</span> | Stop | Continue]</footer>
+ *   </article>
+ */
+@layer ds.components {
+  .ds-ai-answer {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-ai-answer svg {
+    flex: none;
+    fill: currentColor;
+  }
+
+  .ds-ai-answer__question {
+    margin: 0;
+    padding: var(--ds-spacing-4) var(--ds-spacing-4) var(--ds-spacing-3);
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-base);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-base--line-height);
+  }
+
+  /* The sources as 150 px cards, 6 px apart, numbered in order. */
+  .ds-ai-answer__sources {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-3-5);
+    list-style: none;
+  }
+
+  .ds-ai-answer__source {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    width: calc(var(--ds-spacing-36) + var(--ds-spacing-1-5));
+    min-height: calc(var(--ds-spacing-20) + var(--ds-spacing-0-5));
+    padding: var(--ds-spacing-2) var(--ds-spacing-2-5);
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    text-decoration: none;
+  }
+
+  a.ds-ai-answer__source:hover,
+  button.ds-ai-answer__source:hover {
+    background-color: var(--ds-accent);
+  }
+
+  a.ds-ai-answer__source:focus-visible,
+  button.ds-ai-answer__source:focus-visible {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-ai-answer__source-name {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-ai-answer__source-icon {
+    display: inline-flex;
+    color: var(--ds-foreground);
+  }
+
+  .ds-ai-answer__source-icon > svg {
+    width: var(--ds-spacing-3);
+    height: var(--ds-spacing-3);
+  }
+
+  .ds-ai-answer__source-from {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-ai-answer__source-title {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  /* While the sources still load. */
+  .ds-ai-answer__source--searching {
+    background-color: var(--ds-muted);
+    box-shadow: none;
+  }
+
+  /* "+3 more": the count over the word. */
+  .ds-ai-answer__more {
+    gap: 0;
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  span.ds-ai-answer__more {
+    cursor: default;
+  }
+
+  .ds-ai-answer__more-count {
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-ai-answer__more-label {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* The answer: its label, then the words and points 8 px apart. */
+  .ds-ai-answer__answer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-3-5);
+    color: var(--ds-foreground);
+  }
+
+  .ds-ai-answer__answer p {
+    margin: 0;
+  }
+
+  .ds-ai-answer__answer strong {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-ai-answer__label {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-ai-answer__label > svg {
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+    color: var(--ds-palette-blue-text);
+  }
+
+  /* A citation after the claim, 4 px from its words, on the line's top (over badge.css, which loads later). */
+  .ds-ai-answer .ds-ai-answer__citation {
+    margin-left: var(--ds-spacing-1);
+    vertical-align: top;
+  }
+
+  .ds-ai-answer__points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A point: a 4 px dot, 8 px before the words. */
+  .ds-ai-answer__point {
+    position: relative;
+    padding-left: var(--ds-spacing-3);
+  }
+
+  .ds-ai-answer__point::before {
+    content: '';
+    position: absolute;
+    top: var(--ds-spacing-2);
+    left: 0;
+    width: var(--ds-spacing-1);
+    height: var(--ds-spacing-1);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-muted-foreground);
+  }
+
+  .ds-ai-answer .ds-ai-answer__point .ds-ai-answer__citation {
+    margin-left: 0;
+  }
+
+  /* The caret at the end of the words while it streams. */
+  .ds-ai-answer__caret {
+    display: inline-block;
+    width: var(--ds-spacing-0-5);
+    height: var(--ds-spacing-4);
+    margin-left: var(--ds-spacing-1);
+    background-color: var(--ds-palette-blue-solid);
+    vertical-align: -3px;
+    animation: ds-ai-answer-caret 1s steps(1) infinite;
+  }
+
+  @keyframes ds-ai-answer-caret {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-ai-answer__caret {
+      animation: none;
+    }
+  }
+
+  .ds-ai-answer__stopped {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-palette-amber-text);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-ai-answer__stopped > svg {
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+    color: var(--ds-palette-amber-solid);
+  }
+
+  /* Related questions: a label, then rows between lines. */
+  .ds-ai-answer__related {
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-2);
+  }
+
+  .ds-ai-answer__related-title {
+    margin: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    text-transform: uppercase;
+  }
+
+  .ds-ai-answer__related ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-ai-answer__related li {
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-ai-answer__related-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: var(--ds-spacing-2) 0;
+    border: 0;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .ds-ai-answer__related-item > span {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .ds-ai-answer__related-item:hover > span {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ds-ai-answer__related-item:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-ai-answer__related-item > svg {
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+    color: var(--ds-muted-foreground);
+  }
+
+  /* The actions on the left, how long it took or Stop / Continue on the right; a button sits 8 px from the edge. */
+  .ds-ai-answer__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-ai-answer__footer:has(> .ds-button:last-child) {
+    padding-right: var(--ds-spacing-2);
+  }
+
+  .ds-ai-answer__footer > :is(.ds-button, .ds-ai-answer__meta) {
+    margin-left: auto;
+  }
+
+  .ds-ai-answer__meta {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+}
