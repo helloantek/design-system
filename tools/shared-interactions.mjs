@@ -333,6 +333,94 @@ export const sharedTests = {
     await page.getByText('The run stopped').waitFor();
     assert.equal(await page.getByRole('status').filter({ hasText: 'The run stopped' }).count(), 1, 'the stopped run is a status');
   },
+  'decision inbox: a named list of decisions; an answer confirms in place with focus on Undo; Undo brings it back; the row folds away; the folded line opens it': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-decision-inbox--open&viewMode=story`);
+    const inbox = page.getByRole('region', { name: '3 need your input' });
+    await inbox.waitFor();
+    assert.equal(await inbox.getByRole('listitem').count(), 3);
+    const refund = inbox.getByRole('listitem', { name: 'Send the refund of €48 to Ana Silva?' });
+    await refund.getByRole('group', { name: 'Send the refund of €48 to Ana Silva?' }).getByRole('button', { name: 'Send' }).focus();
+    await page.keyboard.press('Enter');
+    const done = page.getByRole('status').filter({ hasText: 'Sent · €48 to Ana Silva' });
+    await done.waitFor();
+    await page.getByRole('region', { name: '2 need your input' }).waitFor();
+    await settles(() => page.evaluate(() => document.activeElement?.textContent?.trim()), 'Undo', 'focus moves to Undo, not to the page');
+    await page.keyboard.press('Enter');
+    await page.getByRole('listitem', { name: 'Send the refund of €48 to Ana Silva?' }).waitFor();
+    await page.getByRole('listitem', { name: 'Renew Figma for the design team?' }).getByRole('button', { name: 'Renew' }).click();
+    await page.mouse.move(0, 0);
+    await page.locator('body').click({ position: { x: 2, y: 2 } });
+    await page.getByText('Renewed · Figma, 12 seats').waitFor({ state: 'detached', timeout: 8000 });
+    await settles(() => page.getByRole('region', { name: '2 need your input' }).getByRole('listitem').count(), 2, 'the answered row folds away');
+    await page.goto(`${base}/iframe.html?id=patterns-decision-inbox--folded&viewMode=story`);
+    const line = page.getByRole('button', { name: /3 need your input.*oldest 2 h ago/ });
+    await line.click();
+    await page.getByRole('region', { name: '3 need your input' }).getByRole('listitem').first().waitFor();
+    await page.goto(`${base}/iframe.html?id=patterns-decision-inbox--nothing-open&viewMode=story`);
+    await page.getByRole('status').filter({ hasText: 'Nothing needs you' }).waitFor();
+  },
+  'review center: a named queue and the item in focus; R asks why and a number rejects; Z undoes; a mouse Reject focuses the first reason and Esc returns to Reject; A approves; a click in the queue shows that item': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-review-center--reviewing&viewMode=story`);
+    const center = page.getByRole('region', { name: 'Review center' });
+    await center.waitFor();
+    const queue = center.getByRole('list', { name: 'Queue' });
+    assert.equal(await queue.getByRole('listitem').count(), 6);
+    assert.equal(await queue.getByRole('button', { name: /Pay INV-2207/ }).getAttribute('aria-current'), 'true');
+    assert.equal(await center.getByRole('progressbar').getAttribute('aria-valuenow'), '26');
+    const item = center.getByRole('article', { name: 'Pay INV-2207 from Acme Logistics' });
+    assert.equal(await item.getByRole('button', { name: /Approve/ }).getAttribute('aria-keyshortcuts'), 'A');
+    await item.getByText('Amount and line items').click();
+    await page.keyboard.press('r');
+    const reasons = item.getByRole('group', { name: 'Why?' });
+    await reasons.waitFor();
+    assert.equal(await reasons.getByRole('button', { name: /Too risky/ }).getAttribute('aria-keyshortcuts'), '2');
+    await page.keyboard.press('2');
+    await center.getByRole('status').filter({ hasText: 'Rejected (Too risky) · Pay INV-2207 from Acme Logistics' }).waitFor();
+    await settles(() => queue.getByRole('listitem').count(), 5, 'the decided item leaves the queue');
+    await page.keyboard.press('z');
+    await item.waitFor();
+    await settles(() => queue.getByRole('listitem').count(), 6, 'Z undoes the last decision');
+    await item.getByRole('button', { name: /Reject/ }).click();
+    await reasons.waitFor();
+    await settles(async () => /^\s*Incorrect/.test(await page.evaluate(() => document.activeElement?.textContent ?? '')), true, 'the first reason takes the focus');
+    await page.keyboard.press('Escape');
+    await settles(() => reasons.count(), 0, 'Esc cancels');
+    await settles(async () => /^\s*Reject/.test(await page.evaluate(() => document.activeElement?.textContent ?? '')), true, 'focus returns to Reject');
+    await page.keyboard.press('a');
+    await center.getByRole('status').filter({ hasText: 'Approved · Pay INV-2207 from Acme Logistics' }).waitFor();
+    await queue.getByRole('button', { name: /Refund order #4821/ }).click();
+    await center.getByRole('article', { name: 'Refund order #4821' }).waitFor();
+    await settles(() => queue.getByRole('button', { name: /Refund order #4821/ }).getAttribute('aria-current'), 'true');
+    await page.goto(`${base}/iframe.html?id=patterns-review-center--all-reviewed&viewMode=story`);
+    await page.getByRole('status').filter({ hasText: 'Nothing left to review' }).waitFor();
+  },
+  'autonomy dial: a named agent with a three-stop dial; moving it moves actions between the lists and the dial never empties; locked actions always ask and their lock says why on focus': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-autonomy-dial--if-risky&viewMode=story`);
+    const dial = page.getByRole('region', { name: 'Support agent' });
+    await dial.waitFor();
+    const stops = dial.getByRole('group', { name: 'Autonomy' });
+    assert.equal(await stops.getByRole('button', { name: 'If risky' }).getAttribute('aria-pressed'), 'true');
+    const runs = dial.getByRole('list', { name: /^Runs on its own/ });
+    const asks = dial.getByRole('list', { name: /^Asks you first/ });
+    assert.equal(await runs.getByRole('listitem').count(), 3, 'everyday work runs on its own');
+    assert.equal(await asks.getByRole('listitem').count(), 4, 'risky actions ask');
+    await stops.getByRole('button', { name: 'Full auto' }).click();
+    await settles(() => runs.getByRole('listitem').count(), 5, 'all but the locked move over');
+    assert.deepEqual(await asks.locator('.ds-autonomy__label').allTextContents(), ['Give refunds', 'Delete customer data'], 'locked actions always ask');
+    await stops.getByRole('button', { name: 'Full auto' }).click();
+    await settles(() => stops.getByRole('button', { name: 'Full auto' }).getAttribute('aria-pressed'), 'true', 'pressing the current stop keeps it');
+    const lock = asks.getByRole('button', { name: 'Locked' }).first();
+    await stops.getByRole('button', { name: 'Full auto' }).focus();
+    await page.keyboard.press('Tab');
+    assert.equal(await lock.evaluate((el) => el === document.activeElement), true, 'Tab goes from the dial to the first lock');
+    const tip = page.locator(`#${(await lock.getAttribute('aria-describedby')).split(' ').pop()}`);
+    await tip.waitFor();
+    assert.match(await tip.textContent(), /refunds always ask/, 'the lock says why');
+    await stops.getByRole('button', { name: 'Always ask' }).click();
+    await settles(() => runs.count(), 0);
+    await dial.getByText('Nothing – it asks before every action.').waitFor();
+    assert.equal(await asks.getByRole('listitem').count(), 7, 'everything waits for you');
+  },
   'select: keyboard opens, moves, selects and keeps focus': async (page, base) => {
     const { open, combobox, listbox, state, press, type, tick } = selectHelpers(page, base);
     await open('components-select--playground');

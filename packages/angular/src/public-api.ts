@@ -46,3 +46,17 @@ export {
   type ApprovalGateOutcome,
   type ApprovalGatesStatus,
 } from './lib/approval-gates/approval-gates';
+export { DsDecisionInbox, DsDecisionInboxAnswered, DsDecisionInboxItem } from './lib/decision-inbox/decision-inbox';
+export {
+  DsReviewCenter,
+  DsReviewCenterDone,
+  DsReviewCenterItem,
+  DsReviewCenterMark,
+  DsReviewCenterQueueItem,
+  DsReviewCenterRisk,
+  type ReviewCenterAction,
+  type ReviewCenterAttachment,
+  type ReviewCenterField,
+  type ReviewCenterFilter,
+} from './lib/review-center/review-center';
+export { DsAutonomyDial, DsAutonomyIcon, runsOnItsOwn, type AutonomyAction, type AutonomyLevel, type AutonomyRisk, type AutonomyTool } from './lib/autonomy-dial/autonomy-dial';

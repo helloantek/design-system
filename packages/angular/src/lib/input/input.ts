@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Directive, ElementRef, booleanAttribute, computed, contentChild, forwardRef, inject, input, model, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, ElementRef, afterRenderEffect, booleanAttribute, computed, contentChild, forwardRef, inject, input, model, output, signal, viewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR, type ControlValueAccessor } from '@angular/forms';
 import type { FormValueControl } from '@angular/forms/signals';
 import { DsLeadingIcon, DsTrailingIcon } from '../slots/slots';
@@ -211,6 +211,14 @@ export class DsInput implements FormValueControl<string>, ControlValueAccessor {
   readonly touch = output<void>();
   private readonly formDisabled = signal(false);
   private readonly native = viewChild.required<ElementRef<HTMLInputElement>>('native');
+  // The [value] binding writes only when the bound value changed since the last render. A value typed and then set
+  // back to what it was before (e.g. cleared after Send) without a render in between would stay in the field; this
+  // keeps the native input in step with the model.
+  protected readonly syncValue = afterRenderEffect(() => {
+    const value = this.value();
+    const el = this.native().nativeElement;
+    if (el.value !== value) el.value = value;
+  });
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
 

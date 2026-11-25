@@ -19,11 +19,12 @@ export function popupPlacement(
   const pass = signal(0);
   let scroll: number | null = null;
 
-  // Back to the preferred side whenever the popup opens or the preference changes.
+  // Back to the preferred side whenever the popup opens or closes or the preference changes (a closed popup is on its
+  // preferred side, as in React: the input is not set yet when this is created).
   effect(() => {
     const wanted = preferred();
-    if (open()) side.set(wanted);
-    else scroll = null;
+    if (!open()) scroll = null;
+    side.set(wanted);
   });
 
   afterRenderEffect(() => {
