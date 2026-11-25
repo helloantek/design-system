@@ -37,6 +37,7 @@ import { renderItem } from './item';
 import { renderMessage } from './message';
 import { renderMessageActions } from './message-actions';
 import { renderMessageScroller } from './message-scroller';
+import { renderModelPicker } from './model-picker';
 import { renderBubble } from './bubble';
 import { renderCarousel } from './carousel';
 import { renderChart } from './chart';
@@ -132,6 +133,7 @@ export const renderers: Record<string, Renderer> = {
   message: renderMessage,
   'message-actions': renderMessageActions,
   'message-scroller': renderMessageScroller,
+  'model-picker': renderModelPicker,
   bubble: renderBubble,
   carousel: renderCarousel,
   chart: renderChart,

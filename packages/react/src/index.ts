@@ -43,6 +43,7 @@ export * from './Menubar';
 export * from './Message';
 export * from './MessageActions';
 export * from './MessageScroller';
+export * from './ModelPicker';
 export * from './NavigationMenu';
 export * from './Pagination';
 export * from './PermissionRequest';

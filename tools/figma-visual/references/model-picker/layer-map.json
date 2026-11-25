@@ -1,0 +1,117 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (the menu panel).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow",
+      "skip": [
+        "p"
+      ],
+      "$why": "Select Content's 4 px padding is on the Popover body inside the panel (.ds-popover__body); the items' size and place cover it."
+    },
+    "Select Item": {
+      "selector": ".ds-model-picker__model:first-child > .ds-model-picker__item",
+      "skip": [
+        "p"
+      ],
+      "$why": "Figma keeps 32 px on the right for the check; the code keeps the 16 px check slot plus the 8 px gap and 8 px padding, the same 32 px (the size check covers it)."
+    },
+    "Select Item#2": {
+      "selector": ".ds-model-picker__model:nth-child(3) > .ds-model-picker__item",
+      "skip": [
+        "p"
+      ],
+      "$why": "As Select Item."
+    },
+    "Opus": {
+      "selector": ".ds-model-picker__model--open"
+    },
+    "Details": {
+      "selector": ".ds-model-picker__bars",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma nests Bars (6 px on top, 4 px apart) in Details (8 px under, 32 px left); the code is one list with both, compared under Bars."
+    },
+    "Bars": {
+      "selector": ".ds-model-picker__bars",
+      "skip": [
+        "w",
+        "h",
+        "p"
+      ],
+      "$why": "The gap is compared here; size and padding under Details."
+    },
+    "Speed": {
+      "selector": ".ds-model-picker__bar",
+      "skip": [
+        "w"
+      ],
+      "$why": "The row spans the list; the words are a 52 px column as in Figma."
+    },
+    "Speed/TEXT": {
+      "selector": ".ds-model-picker__bar > dt"
+    },
+    "Dashes": {
+      "selector": ".ds-model-picker__dashes"
+    },
+    "Rectangle": {
+      "selector": ".ds-model-picker__dash--on",
+      "skip": [
+        "r"
+      ],
+      "$why": "Radius full: the same 1.5 px ends on a 3 px dash."
+    },
+    "Rectangle#1": {
+      "selector": ".ds-model-picker__dash:not(.ds-model-picker__dash--on)",
+      "skip": [
+        "r"
+      ],
+      "$why": "As Rectangle."
+    },
+    "Label": {
+      "selector": ".ds-model-picker__label"
+    },
+    "Label#1": {
+      "selector": ".ds-model-picker__description"
+    },
+    "Extended thinking": {
+      "selector": ".ds-model-picker__thinking"
+    },
+    "Switch row": {
+      "selector": ".ds-model-picker__thinking > .ds-field"
+    },
+    "Switch row/TEXT": {
+      "selector": ".ds-field__label"
+    },
+    "Switch row/TEXT#1": {
+      "selector": ".ds-field__caption"
+    },
+    "Switch": {
+      "selector": ".ds-switch__input",
+      "stroke": "inset-shadow",
+      "skip": [
+        "p"
+      ],
+      "$why": "The library Switch places its thumb by position, not padding (switch.css)."
+    },
+    "Cost": {
+      "selector": ".ds-model-picker__note",
+      "skip": [
+        "g"
+      ]
+    },
+    "Cost/TEXT": {
+      "selector": ".ds-model-picker__note"
+    },
+    "Cost#2": {
+      "selector": ".ds-model-picker__note",
+      "skip": [
+        "g"
+      ]
+    },
+    "Cost#2/TEXT": {
+      "selector": ".ds-model-picker__note"
+    }
+  }
+}
