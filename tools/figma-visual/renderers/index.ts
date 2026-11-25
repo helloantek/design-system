@@ -35,6 +35,7 @@ import { renderHoverCard } from './hover-card';
 import { renderInput } from './input';
 import { renderItem } from './item';
 import { renderMessage } from './message';
+import { renderMessageActions } from './message-actions';
 import { renderMessageScroller } from './message-scroller';
 import { renderModelPicker } from './model-picker';
 import { renderBubble } from './bubble';
@@ -130,6 +131,7 @@ export const renderers: Record<string, Renderer> = {
   'input-otp': renderInputOTP,
   item: renderItem,
   message: renderMessage,
+  'message-actions': renderMessageActions,
   'message-scroller': renderMessageScroller,
   'model-picker': renderModelPicker,
   bubble: renderBubble,

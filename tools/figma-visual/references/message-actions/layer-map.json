@@ -1,0 +1,52 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (the bar, or the Popover panel).",
+  "layers": {
+    "root": {
+      "stroke": "outer-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "The bar hugs its icons and the time, whose width follows the font (Figma 27 px for 0:07); the size check (\u00b12 px) still covers it. The Popover's border is a ring outside the panel, as in the library Popover."
+    },
+    "Icon button": {
+      "selector": ".ds-button"
+    },
+    "Versions": {
+      "selector": ".ds-message-actions__versions"
+    },
+    "TEXT": {
+      "selector": ".ds-message-actions__version, .ds-message-actions__time"
+    },
+    "Wave": {
+      "selector": ".ds-message-actions__wave"
+    },
+    "Wave/RECTANGLE#2": {
+      "selector": ".ds-message-actions__wave > span:nth-child(3)",
+      "skip": [
+        "r"
+      ],
+      "$why": "The bars are rounded with radius full, which draws the same 1 px corners on a 2 px bar."
+    },
+    "Title": {
+      "selector": ".ds-popover__title",
+      "skip": [
+        "w"
+      ]
+    },
+    "Reasons": {
+      "selector": ".ds-message-actions__reasons"
+    },
+    "Not true": {
+      "selector": ".ds-button",
+      "skip": [
+        "w"
+      ],
+      "$why": "The library Button hugs its label, whose width follows the font.",
+      "stroke": "inset-shadow"
+    },
+    "Icon button/VECTOR": {
+      "selector": ".ds-button svg",
+      "fill": "svg"
+    }
+  }
+}

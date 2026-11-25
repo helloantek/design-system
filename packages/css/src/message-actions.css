@@ -1,0 +1,127 @@
+/*
+ * Message Actions — the Sort UI 2.0 pattern "Message Actions" (node 6126:2162 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): the quiet bar under an AI message. Copy (a green check for 2 s once copied), regenerate
+ * with ‹ 2 / 3 › between the versions, thumbs up and down (down asks what was wrong in a Popover), read aloud (a wave,
+ * the time, and Pause). Ghost Buttons and Toggles in the muted colour; a pressed one is in the text colour.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <div class="ds-message-actions" role="group" aria-label="Message actions">
+ *     <button class="ds-button ds-button--ghost ds-button--size-sm ds-button--icon-only [ds-message-actions__copied]" aria-label="Copy">…</button>
+ *     <button class="ds-button ds-button--ghost …" aria-label="Regenerate">…</button>
+ *     [<span class="ds-message-actions__versions"><button … aria-label="Previous version">…</button>
+ *        <span class="ds-message-actions__version">2 / 3</span><button … aria-label="Next version">…</button></span>]
+ *     <button class="ds-toggle ds-toggle--size-sm ds-toggle--icon-only" aria-pressed="…" aria-label="Good response">…</button>
+ *     <div class="ds-popover"><button class="ds-toggle …" aria-label="Bad response">…</button>
+ *       <div class="ds-popover__content ds-popover__content--start" role="dialog">… What was wrong? …
+ *         <div class="ds-message-actions__reasons"><button class="ds-button ds-button--outline ds-button--size-sm">Not true</button>…</div>
+ *       </div></div>
+ *     <button class="ds-toggle … [ds-message-actions__reading]" aria-pressed="…" aria-label="Read aloud">…</button>
+ *     [<span class="ds-message-actions__wave" aria-hidden="true"><span></span>…</span><span class="ds-message-actions__time">0:07</span>]
+ *     <span class="ds-message-actions__status" role="status">Copied</span>
+ *   </div>
+ */
+@layer ds.components {
+  .ds-message-actions {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-spacing-0-5);
+    color: var(--ds-muted-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  /* The quiet bar: every action in the muted colour, a pressed one in the text colour. */
+  .ds-message-actions .ds-button--ghost {
+    --btn-fg: var(--ds-muted-foreground);
+  }
+
+  .ds-message-actions .ds-toggle:not([aria-pressed='true']) {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* Copied: a green check for 2 s. */
+  .ds-message-actions .ds-message-actions__copied {
+    --btn-fg: var(--ds-palette-green-text);
+  }
+
+  /* Reading aloud: Pause in blue. */
+  .ds-message-actions .ds-message-actions__reading {
+    color: var(--ds-palette-blue-text);
+  }
+
+  .ds-message-actions__versions {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .ds-message-actions__version {
+    min-width: var(--ds-spacing-7);
+    color: var(--ds-foreground);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* The reasons in the Popover, wrapping 6 px apart. */
+  .ds-message-actions__reasons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  /* Reading aloud: eight blue bars that move while it reads, then the time. */
+  .ds-message-actions__wave {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-0-5);
+    height: var(--ds-spacing-3-5);
+  }
+
+  .ds-message-actions__wave > span {
+    width: var(--ds-spacing-0-5);
+    height: var(--bar, 100%);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-palette-blue-solid);
+    animation: ds-message-actions-wave 1s var(--ds-ease-in-out) infinite alternate;
+  }
+
+  .ds-message-actions__wave > span:nth-child(1) { --bar: 43%; animation-delay: -0.1s; }
+  .ds-message-actions__wave > span:nth-child(2) { --bar: 71%; animation-delay: -0.5s; }
+  .ds-message-actions__wave > span:nth-child(3) { --bar: 100%; animation-delay: -0.3s; }
+  .ds-message-actions__wave > span:nth-child(4) { --bar: 57%; animation-delay: -0.7s; }
+  .ds-message-actions__wave > span:nth-child(5) { --bar: 86%; animation-delay: -0.2s; }
+  .ds-message-actions__wave > span:nth-child(6) { --bar: 43%; animation-delay: -0.6s; }
+  .ds-message-actions__wave > span:nth-child(7) { --bar: 71%; animation-delay: -0.4s; }
+  .ds-message-actions__wave > span:nth-child(8) { --bar: 29%; animation-delay: -0.8s; }
+
+  @keyframes ds-message-actions-wave {
+    to {
+      scale: 1 0.4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-message-actions__wave > span {
+      animation: none;
+    }
+  }
+
+  .ds-message-actions__time {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Read out by screen readers only ("Copied"). */
+  .ds-message-actions__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

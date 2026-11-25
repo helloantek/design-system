@@ -402,6 +402,34 @@ A pattern from the Sort UI 2.0 **Patterns** page: the AI at work, step by step, 
 | A source it could not reach, in amber | `ThinkingNote` | `ds-thinking-state__note` |
 | Done: "Thought for 14 s · 6 sources · 4 steps", opens to the steps | `status="done"`, `title`, `summary`, `open` / `defaultOpen` / `onOpenChange` (a button with `aria-expanded`) | `ds-thinking-state--done` · `__head` · `__title` · `__meta` |
 
+## Message Actions
+
+A pattern from the Sort UI 2.0 **Patterns** page: the quiet bar under an AI message (**Message Actions**, node `6126:2162`).
+
+```tsx
+<MessageActions
+  copyText={answer}
+  onRegenerate={regenerate}
+  version={2}
+  versions={3}
+  onVersionChange={setVersion}
+  onRatingChange={rate}
+  onReason={sendFeedback}
+  onReadAloudChange={setReading}
+  reading={reading}
+  readTime="0:07"
+/>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The bar: Ghost Buttons and Toggles, sm, muted, 2 px apart | `MessageActions`: a group named "Message actions"; `children` adds actions at the end | `ds-message-actions` |
+| Copy; Copied: a green check for 2 s | `copyText` (written to the clipboard), `onCopy`; "Copied" is read out | `ds-message-actions__copied` · `__status` |
+| Regenerate, ‹ 2 / 3 › | `onRegenerate`; `version`, `versions` (more than one), `onVersionChange` | `ds-message-actions__versions` · `__version` |
+| Thumbs up and down; Rated up | Toggles: `rating` / `defaultRating` / `onRatingChange` (`'up' \| 'down' \| null`) | `ds-toggle` |
+| Thumbs down: What was wrong? | The library Popover from thumbs down: `reasons` (default Not true, Not helpful, Too long, Other…; `[]` asks nothing), `onReason` | `ds-message-actions__reasons` |
+| Reading aloud: a wave and Pause | `onReadAloudChange`, `reading`, `readTime` (the wave holds still with reduced motion) | `ds-message-actions__reading` · `__wave` · `__time` |
+
 ## Model Picker
 
 A pattern from the Sort UI 2.0 **Patterns** page: the model menu of an AI chat, opened from the composer (**Model Picker**, node `6128:2365`).
@@ -2105,6 +2133,7 @@ These come from the Figma files, not the code:
 - Decision Inbox (2.0): the answer buttons were set to radius 6 over the Button's 8 and the just-answered row had 10 px top and bottom where the empty row has 12; both were fixed in Figma (the library Button radius, 12 px).
 - Review Center (2.0): the queue rows other than the first had no left padding and radius 10 (the first: 10 px, radius 6); the action buttons were set to radius 6 over the Button's 8; the top bar lost 4 px when Undo went; the action rows had 12 px under them and 10 above, and the reasons 12 px on the right; the all-reviewed check was 20 px where the other patterns' is 16. All were fixed in Figma (10 px and radius 6, the library radius, a 44 px bar, 10 px above and below with the buttons 8 px from the edge, a 16 px check with 12 px padding).
 - Autonomy Dial (2.0): the lock's reason was a hand-drawn two-line frame (radius 6, 8 × 10 px padding, 13 px text) instead of the library Tooltip; it is the Tooltip now (Side=left), as the code shows it.
+- Message Actions (2.0): the actions were drawn 28 px frames (radius 6, muted fill when pressed) instead of library components, the reasons under "What was wrong?" drawn chips, and the panel a drawn 300 px card (radius 12, the Message's shadow) instead of the library Popover. All are library components now: Button Ghost sm icon only (radius 8; thumbs and Read aloud are Toggles sm in code, pressed in Fill 2), Button Outline sm, and Popover (288 px, radius 14, title 16 px Medium), 4 px under thumbs down.
 - Model Picker (2.0): the models were Select Items at the library's radius 10 while the one pointed at was 6 in a 6 px box; the price note had square corners and, with "+ thinking", ran past the menu's edge; the bars sat 33 px in where the labels start at 32. All are radius 6 now, the note wraps inside the menu, and the bars start at 32 px.
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
