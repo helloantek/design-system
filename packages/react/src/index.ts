@@ -7,6 +7,7 @@ export * from './ApprovalCard';
 export * from './ApprovalGates';
 export * from './AspectRatio';
 export * from './Attachment';
+export * from './AutonomyDial';
 export * from './Avatar';
 export * from './Badge';
 export * from './Breadcrumb';

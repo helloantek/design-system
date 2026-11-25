@@ -6,6 +6,7 @@ import { renderAlertDialog } from './alert-dialog';
 import { renderAspectRatio } from './aspect-ratio';
 import { renderApprovalCard } from './approval-card';
 import { renderApprovalGates } from './approval-gates';
+import { renderAutonomyDial } from './autonomy-dial';
 import { renderDecisionInbox } from './decision-inbox';
 import { renderReviewCenter } from './review-center';
 import { renderAttachment } from './attachment';
@@ -82,6 +83,7 @@ export const renderers: Record<string, Renderer> = {
   'aspect-ratio': renderAspectRatio,
   'approval-card': renderApprovalCard,
   'approval-gates': renderApprovalGates,
+  'autonomy-dial': renderAutonomyDial,
   'decision-inbox': renderDecisionInbox,
   'review-center': renderReviewCenter,
   attachment: renderAttachment,

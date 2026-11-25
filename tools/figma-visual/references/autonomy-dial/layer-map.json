@@ -1,0 +1,73 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-autonomy).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-autonomy__header"
+    },
+    "Agent": {
+      "selector": ".ds-autonomy__agent"
+    },
+    "Agent/Mark": {
+      "selector": ".ds-autonomy__mark",
+      "stroke": "inset-shadow"
+    },
+    "Agent/Text": {
+      "selector": ".ds-autonomy__agent > div",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "Agent/TEXT": {
+      "selector": ".ds-autonomy__name"
+    },
+    "Agent/TEXT#1": {
+      "selector": ".ds-autonomy__description"
+    },
+    "Lists": {
+      "selector": ".ds-autonomy__lists",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the rule above it as a separate 1 px Separator; the code draws it as a top border, so it is 1 px taller (the card's size is compared)."
+    },
+    "Runs on its own": {
+      "selector": ".ds-autonomy__group:first-child"
+    },
+    "Runs on its own/Title": {
+      "selector": ".ds-autonomy__group:first-child .ds-autonomy__title",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "Runs on its own/Title/TEXT": {
+      "selector": ".ds-autonomy__group:first-child .ds-autonomy__title"
+    },
+    "Runs on its own/TEXT#2": {
+      "selector": ".ds-autonomy__empty"
+    },
+    "Asks you first": {
+      "selector": ".ds-autonomy__group:last-child"
+    },
+    "Asks you first/Title": {
+      "selector": ".ds-autonomy__group:last-child .ds-autonomy__title",
+      "skip": [
+        "w"
+      ],
+      "$why": "The width follows the words, whose widths depend on the font; padding and gap are compared."
+    },
+    "Action": {
+      "selector": ".ds-autonomy__action"
+    },
+    "Action/TEXT": {
+      "selector": ".ds-autonomy__action .ds-autonomy__label"
+    },
+    "Delete customer data": {
+      "selector": ".ds-autonomy__action--locked:last-child .ds-autonomy__label"
+    }
+  }
+}

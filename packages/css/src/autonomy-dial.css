@@ -1,0 +1,196 @@
+/*
+ * Autonomy Dial — the Sort UI 2.0 pattern "Autonomy Dial" (node 6115:1920 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): how much one agent may do on its own. Three stops (Always ask, If risky, Full auto), and
+ * every action it can take split between "Runs on its own" and "Asks you first", each with the tool it uses and how
+ * risky it is. Moving the dial moves actions between the lists; locked ones always ask, and their lock says why.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-autonomy" aria-labelledby="a">
+ *     <div class="ds-autonomy__header">
+ *       <div class="ds-autonomy__agent"><span class="ds-autonomy__mark">…</span>
+ *         <div><p class="ds-autonomy__name" id="a">Support agent</p><p class="ds-autonomy__description">What it may do…</p></div></div>
+ *       <div class="ds-toggle-group" role="group" aria-label="Autonomy">…Always ask · If risky · Full auto…</div>
+ *     </div>
+ *     <div class="ds-autonomy__lists">
+ *       <div class="ds-autonomy__group">
+ *         <h4 class="ds-autonomy__title" id="r">Runs on its own <span class="ds-badge …">3</span></h4>
+ *         <ul class="ds-autonomy__actions" aria-labelledby="r">
+ *           <li class="ds-autonomy__action [ds-autonomy__action--locked]"><svg…tool…/><span class="ds-autonomy__label">Send replies</span>
+ *             [<span class="ds-badge …">Risky</span>] [<button class="ds-autonomy__lock" aria-label="Locked">…</button>]</li>
+ *         </ul>
+ *         (empty: <p class="ds-autonomy__empty">Nothing – it asks before every action.</p>)
+ *       </div>
+ *       <div class="ds-autonomy__group">…Asks you first…</div>
+ *     </div>
+ *   </section>
+ */
+@layer ds.components {
+  /* The card: 12 px corners, an inside border and the Surface/Card shadow. */
+  .ds-autonomy {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-autonomy p,
+  .ds-autonomy h4 {
+    margin: 0;
+  }
+
+  /* The agent, then the dial. */
+  .ds-autonomy__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-3-5) var(--ds-spacing-4) var(--ds-spacing-3);
+  }
+
+  .ds-autonomy__agent {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    align-self: stretch;
+  }
+
+  .ds-autonomy__agent > div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-autonomy__mark {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-7);
+    height: var(--ds-spacing-7);
+    border-radius: var(--ds-radius-sm);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-foreground);
+  }
+
+  .ds-autonomy__mark > svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .ds-autonomy__name {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .ds-autonomy__description {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* The two lists under a rule, 14 px apart. */
+  .ds-autonomy__lists {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3-5);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4) var(--ds-spacing-3-5);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-autonomy__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+  }
+
+  .ds-autonomy__title {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    padding-bottom: var(--ds-spacing-1);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-autonomy__empty {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-autonomy__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* One action: the tool it uses, what it does, how risky; a locked one is muted and ends with its lock. */
+  .ds-autonomy__action {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-1) 0;
+  }
+
+  .ds-autonomy__action > svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    fill: var(--ds-foreground);
+  }
+
+  .ds-autonomy__label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-autonomy__action > .ds-badge {
+    flex: none;
+  }
+
+  .ds-autonomy__action--locked .ds-autonomy__label {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* The lock: a 14 px icon at the end that shows why on hover or focus. */
+  .ds-autonomy__action > .ds-tooltip-anchor {
+    margin-left: auto;
+  }
+
+  .ds-autonomy__lock {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    background: none;
+    color: var(--ds-muted-foreground);
+    cursor: help;
+  }
+
+  .ds-autonomy__lock:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-autonomy__lock > svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+}

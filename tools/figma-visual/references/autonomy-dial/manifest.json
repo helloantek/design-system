@@ -1,0 +1,45 @@
+{
+ "$comment": "Sort UI 2.0 pattern Autonomy Dial (6115:1920): Always ask, If risky and Full auto (1x PNG, get_screenshot; Full auto with its lock tooltip hidden, as the code shows it until hover or focus). renderers/autonomy-dial.tsx renders them 420 px wide.",
+ "component": "autonomy-dial",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6115:1920",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "always-ask",
+   "nodeId": "6273:4372",
+   "props": {
+    "State": "Always ask"
+   },
+   "target": "#target > .ds-autonomy",
+   "nodeW": 420,
+   "nodeH": 431
+  },
+  {
+   "slug": "if-risky",
+   "nodeId": "6273:4521",
+   "props": {
+    "State": "If risky"
+   },
+   "target": "#target > .ds-autonomy",
+   "nodeW": 420,
+   "nodeH": 409
+  },
+  {
+   "slug": "full-auto",
+   "nodeId": "6273:4659",
+   "props": {
+    "State": "Full auto"
+   },
+   "target": "#target > .ds-autonomy",
+   "nodeW": 420,
+   "nodeH": 409
+  }
+ ]
+}
