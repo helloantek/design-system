@@ -1,0 +1,270 @@
+/*
+ * Context Window — the Sort UI 2.0 pattern "Context Window" (node 6128:2518 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): what fills the model's context. How much is used of how much, a grid where every cell is a
+ * slice of the window coloured by what fills it, and each part with its size. Files open into a list to remove from;
+ * Compact squeezes the conversation into a summary; close to full it turns amber and offers a new chat.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-context-window [ds-context-window--full]" aria-labelledby="t">
+ *     <header class="ds-context-window__header"><h3 class="ds-context-window__title" id="t">Context window</h3>[<span class="ds-badge …">sonnet-4-5</span>]</header>
+ *     <p class="ds-context-window__used"><span class="ds-context-window__amount">136.4K</span>
+ *       <span class="ds-context-window__of">of 200K tokens</span><span class="ds-badge … ds-context-window__share">68%</span></p>
+ *     <div class="ds-context-window__grid" aria-hidden="true">
+ *       <span class="ds-context-window__cell" style="--context-color: …"></span>… <span class="ds-context-window__cell ds-context-window__cell--free"></span>…</div>
+ *     <ul class="ds-context-window__parts" aria-label="What fills the context">
+ *       <li class="ds-context-window__part" style="--context-color: …">
+ *         <div class="ds-context-window__row"><span class="ds-context-window__swatch"></span>
+ *           <span class="ds-context-window__label">Tools</span>  or  <button class="ds-context-window__toggle" aria-expanded="…">…label… chevron</button>
+ *           [<button class="ds-button ds-button--ghost ds-button--size-xs">Compact</button> | <span class="ds-context-window__compacting" role="status">…spinner… Compacting…</span>]
+ *           <span class="ds-context-window__size">12.8K</span></div>
+ *         [<ul class="ds-context-window__items" [hidden]><li class="ds-context-window__item"><span class="ds-context-window__item-icon">…</span>
+ *            <span class="ds-context-window__item-label">refund-policy.md</span><span class="ds-context-window__item-size">18.2K</span>[…Ghost xs remove…]</li></ul>]
+ *       </li>
+ *     </ul>
+ *     <footer class="ds-context-window__footer"><span class="ds-context-window__left">63.6K left</span>[…New chat, Outline or Default xs…]</footer>
+ *   </section>
+ */
+@layer ds.components {
+  .ds-context-window {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-context-window svg {
+    flex: none;
+    fill: currentColor;
+  }
+
+  .ds-context-window__header {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4) var(--ds-spacing-1);
+  }
+
+  .ds-context-window__title {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  /* How much is used of how much, the share on the right. */
+  .ds-context-window__used {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-2-5);
+  }
+
+  .ds-context-window__amount {
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-base);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-base--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-context-window__of {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-context-window__share {
+    margin-left: auto;
+  }
+
+  /* Every cell is an equal slice of the window, in the colour of what fills it; the free ones are muted. */
+  .ds-context-window__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-0-5);
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-2-5);
+  }
+
+  .ds-context-window__cell {
+    width: calc(var(--ds-spacing-2) - var(--ds-stroke-width-1));
+    height: calc(var(--ds-spacing-2) - var(--ds-stroke-width-1));
+    border-radius: calc(var(--ds-radius-xs) / 2);
+    background-color: var(--context-color);
+  }
+
+  .ds-context-window__cell--free {
+    background-color: var(--ds-muted);
+  }
+
+  .ds-context-window__parts {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-2);
+    list-style: none;
+  }
+
+  /* One part: its swatch and name, an action, its size at the end. */
+  .ds-context-window__row {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-height: var(--ds-spacing-7);
+    padding: var(--ds-spacing-1) 0;
+  }
+
+  .ds-context-window__swatch {
+    flex: none;
+    width: var(--ds-spacing-2);
+    height: var(--ds-spacing-2);
+    border-radius: calc(var(--ds-radius-xs) / 2);
+    background-color: var(--context-color);
+  }
+
+  .ds-context-window__label {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* A part with items opens into them: its name and a chevron. */
+  .ds-context-window__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    background: none;
+    color: var(--ds-muted-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+  }
+
+  .ds-context-window__toggle:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-context-window__toggle:hover .ds-context-window__label {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ds-context-window__toggle > svg {
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+  }
+
+  .ds-context-window__row > .ds-button,
+  .ds-context-window__compacting {
+    margin-left: auto;
+  }
+
+  .ds-context-window__size {
+    flex: none;
+    margin-left: auto;
+    color: var(--ds-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-context-window__row > :is(.ds-button, .ds-context-window__compacting) + .ds-context-window__size {
+    margin-left: 0;
+  }
+
+  .ds-context-window__compacting {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-palette-blue-text);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* The items under their part, under its name. */
+  .ds-context-window__items {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 0 0 var(--ds-spacing-4);
+    list-style: none;
+  }
+
+  .ds-context-window__items[hidden] {
+    display: none;
+  }
+
+  .ds-context-window__item {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-height: var(--ds-spacing-6);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-context-window__item-icon {
+    display: inline-flex;
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-context-window__item-icon > svg {
+    width: var(--ds-spacing-3);
+    height: var(--ds-spacing-3);
+  }
+
+  .ds-context-window__item-label {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-context-window__item-size {
+    color: var(--ds-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-context-window__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-context-window__left {
+    flex: 1 1 0;
+    min-width: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* Nearly full: what is left in amber. */
+  .ds-context-window--full .ds-context-window__left {
+    color: var(--ds-palette-amber-text);
+  }
+}

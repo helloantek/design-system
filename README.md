@@ -459,6 +459,37 @@ A pattern from the Sort UI 2.0 **Patterns** page: the model menu of an AI chat, 
 | What the choice means | `note` of the model pointed at (else chosen), "+ thinking" when on | `ds-model-picker__note` |
 | Texts | `labels`, for other languages | |
 
+## Context Window
+
+A pattern from the Sort UI 2.0 **Patterns** page: what fills the model's context (**Context Window**, node `6128:2518`).
+
+```tsx
+<ContextWindow
+  total={200_000}
+  model="sonnet-4-5"
+  modelIcon={<RiClaudeFill />}
+  parts={[
+    { id: 'system', label: 'System prompt', tokens: 4_200 },
+    { id: 'files', label: 'Files', tokens: 68_900, items: [{ id: 'refund', label: 'refund-policy.md', tokens: 18_200 }, …] },
+    { id: 'conversation', label: 'Conversation', tokens: 46_600, onCompact: compact, compacting },
+    …
+  ]}
+  onRemoveItem={removeFile}
+  onNewChat={newChat}
+/>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The card: title and the model's Badge | `ContextWindow`: a region named "Context window"; `model`, `modelIcon` | `ds-context-window` · `__header` |
+| How much is used of how much, the share | `total` and the parts' `tokens`, written by `format` (default `formatTokens`: "136.4K") | `ds-context-window__used` · `__amount` · `__share` |
+| The grid: every cell a slice of the window, coloured by what fills it | `cells` (default 200), split by `contextCells` (largest remainder); each part's `color` (default foreground, muted, blue, light blue, green) | `ds-context-window__grid` · `__cell` · `__cell--free` |
+| Each part with its swatch and size | `parts`: `id`, `label`, `tokens`, `color`; a list named "What fills the context" | `ds-context-window__part` · `__row` · `__swatch` · `__size` |
+| Files opened: remove one to free its room | A part's `items` (`id`, `label`, `tokens`, `icon`): a button with `aria-expanded` opens them; `onRemoveItem` (Ghost xs buttons) | `ds-context-window__toggle` · `__items` · `__item` |
+| Compact, Compacting… | A part's `onCompact` (Ghost xs), `compacting` (a small Spinner, read out) | `ds-context-window__compacting` |
+| What is left, New chat; nearly full in amber, New chat first | `onNewChat` (Outline xs, Default from `warnAt`, default 0.85) | `ds-context-window__footer` · `ds-context-window--full` |
+| Texts | `labels`, for other languages | |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2136,6 +2167,7 @@ These come from the Figma files, not the code:
 - Autonomy Dial (2.0): the lock's reason was a hand-drawn two-line frame (radius 6, 8 × 10 px padding, 13 px text) instead of the library Tooltip; it is the Tooltip now (Side=left), as the code shows it.
 - Message Actions (2.0): the actions were drawn 28 px frames (radius 6, muted fill when pressed) instead of library components, the reasons under "What was wrong?" drawn chips, and the panel a drawn 300 px card (radius 12, the Message's shadow) instead of the library Popover. All are library components now: Button Ghost sm icon only (radius 8; thumbs and Read aloud are Toggles sm in code, pressed in Fill 2), Button Outline sm, and Popover (288 px, radius 14, title 16 px Medium), 4 px under thumbs down.
 - Model Picker (2.0): the models were Select Items at the library's radius 10 while the one pointed at was 6 in a 6 px box; the price note had square corners and, with "+ thinking", ran past the menu's edge; the bars sat 33 px in where the labels start at 32. All are radius 6 now, the note wraps inside the menu, and the bars start at 32 px.
+- Context Window (2.0): the grids did not match the sizes beside them ("In use" coloured 46 cells for 68.9K of files and 62 for 46.6K of conversation, 128 used for 136.4K; the other states were off by one or two cells), the conversation's cells while compacting were a lighter blue than its swatch, New chat was set to radius 6 over the Button's 8, and the files' remove marks were bare icons. The grids now split the 200 cells by the sizes as the code does (largest remainder), the conversation keeps its blue, New chat has the library radius, and remove is the library Button Ghost xs (icon only).
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).

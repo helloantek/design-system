@@ -1,0 +1,147 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-context-window).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-context-window__header"
+    },
+    "Header/TEXT": {
+      "selector": ".ds-context-window__title"
+    },
+    "Model": {
+      "selector": ".ds-context-window__header .ds-badge",
+      "skip": [
+        "w",
+        "p",
+        "g"
+      ],
+      "$why": "The Badge hugs its label, whose width follows the font. The library Badge keeps part of its padding on the label (badge.css); its own visual check covers it."
+    },
+    "Used": {
+      "selector": ".ds-context-window__used"
+    },
+    "Used/TEXT": {
+      "selector": ".ds-context-window__amount"
+    },
+    "Used/TEXT#1": {
+      "selector": ".ds-context-window__of"
+    },
+    "Used/Badge": {
+      "selector": ".ds-context-window__share",
+      "skip": [
+        "w",
+        "p",
+        "g"
+      ],
+      "$why": "As Model."
+    },
+    "Grid wrap": {
+      "selector": ".ds-context-window__grid",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma nests Grid (cells 2 px apart) in Grid wrap (the padding); the code is one element, compared under Grid for the gap."
+    },
+    "Grid": {
+      "selector": ".ds-context-window__grid",
+      "skip": [
+        "w",
+        "h",
+        "p"
+      ],
+      "$why": "Size and padding are compared under Grid wrap."
+    },
+    "Grid/RECTANGLE": {
+      "selector": ".ds-context-window__cell:first-child",
+      "skip": [
+        "r"
+      ],
+      "$why": "Radius xs / 2 = 2 px in code for Figma's 1.5 px on a 7 px cell (no 1.5 px token)."
+    },
+    "Grid/RECTANGLE#199": {
+      "selector": ".ds-context-window__cell:last-child",
+      "skip": [
+        "r"
+      ],
+      "$why": "As Grid/RECTANGLE."
+    },
+    "Parts": {
+      "selector": ".ds-context-window__parts"
+    },
+    "System prompt": {
+      "selector": ".ds-context-window__part:nth-child(1) > .ds-context-window__row"
+    },
+    "Swatch": {
+      "selector": ".ds-context-window__part:nth-child(1) .ds-context-window__swatch"
+    },
+    "System prompt/TEXT": {
+      "selector": ".ds-context-window__part:nth-child(1) .ds-context-window__label"
+    },
+    "System prompt/TEXT#1": {
+      "selector": ".ds-context-window__part:nth-child(1) .ds-context-window__size"
+    },
+    "Files": {
+      "selector": ".ds-context-window__part:nth-child(3) > .ds-context-window__row"
+    },
+    "Conversation": {
+      "selector": ".ds-context-window__part:nth-child(4) > .ds-context-window__row"
+    },
+    "Conversation/Button": {
+      "selector": ".ds-context-window__part:nth-child(4) .ds-button",
+      "skip": [
+        "w"
+      ],
+      "$why": "The library Button hugs its label."
+    },
+    "Files list": {
+      "selector": ".ds-context-window__items"
+    },
+    "refund-policy.md": {
+      "selector": ".ds-context-window__item:first-child",
+      "skip": [
+        "p"
+      ],
+      "$why": "Figma's row has no padding; the item's min-height gives the same 24 px."
+    },
+    "refund-policy.md/TEXT": {
+      "selector": ".ds-context-window__item:first-child .ds-context-window__item-label"
+    },
+    "refund-policy.md/TEXT#1": {
+      "selector": ".ds-context-window__item:first-child .ds-context-window__item-size"
+    },
+    "Remove": {
+      "selector": ".ds-context-window__item:first-child .ds-button"
+    },
+    "Footer": {
+      "selector": ".ds-context-window__footer",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line above the 40 px footer as its own layer; in code it is the footer's top border (41 px), so the card's height is the same."
+    },
+    "Footer/TEXT": {
+      "selector": ".ds-context-window__left"
+    },
+    "Footer/Button": {
+      "selector": ".ds-context-window__footer .ds-button",
+      "skip": [
+        "w"
+      ],
+      "$why": "The library Button hugs its label.",
+      "stroke": "inset-shadow"
+    },
+    "Compacting": {
+      "selector": ".ds-context-window__compacting",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its words."
+    },
+    "Compacting/TEXT": {
+      "selector": ".ds-context-window__compacting"
+    }
+  }
+}
