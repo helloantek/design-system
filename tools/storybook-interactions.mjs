@@ -2674,6 +2674,23 @@ Object.assign(tests, {
     await page.getByRole('button', { name: 'Answer' }).click();
     assert.equal(await page.getByRole('heading', { name: 'Which plan should the new team start on?' }).isVisible(), true, 'Answer opens the card again');
   },
+  'thinking loader: what it is doing is a status that rolls through the phases, then says how long it thought; taking long it offers Stop, which stops it': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-loader--in-chat&viewMode=story');
+    const status = page.getByRole('status');
+    await status.filter({ hasText: 'Reading 4 files…' }).waitFor();
+    assert.equal(await page.locator('.ds-thinking .ds-spinner').getAttribute('aria-hidden'), 'true', 'the spinner is only a picture');
+    await status.filter({ hasText: 'Searching the docs…' }).waitFor({ timeout: 4000 });
+    await status.filter({ hasText: 'Thought for 5 s' }).waitFor({ timeout: 8000 });
+    assert.equal(await page.locator('.ds-thinking--done svg').getAttribute('aria-hidden'), 'true');
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-loader--ends&viewMode=story');
+    const slow = page.locator('.ds-thinking--slow');
+    await slow.waitFor();
+    assert.equal(await slow.getByRole('status').textContent(), 'Taking longer than usual');
+    assert.equal(await slow.locator('.ds-thinking__time').textContent(), '· 0:48');
+    await slow.getByRole('button', { name: 'Stop' }).click();
+    await page.getByRole('status').filter({ hasText: 'Stopped after 48 s' }).waitFor();
+    assert.equal(await page.getByRole('button', { name: 'Stop' }).count(), 0, 'stopped, Stop goes');
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });
