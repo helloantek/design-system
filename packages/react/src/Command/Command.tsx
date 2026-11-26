@@ -343,7 +343,13 @@ export function CommandDialog({ open, onOpenChange, width, children, ...rest }: 
       className="ds-command-dialog"
       aria-label={rest.label ?? 'Commands'}
       style={width ? ({ '--command-width': width } as CSSProperties) : undefined}
-      onClose={() => onOpenChange(false)}
+      // Escape reports the close at once: the native close event comes a task later, and a reopen (a key pressed right
+      // after Escape) would otherwise be lost to it.
+      onCancel={() => onOpenChange(false)}
+      onClose={() => {
+        // A late close event for a dialog that has opened again since is not a close.
+        if (!ref.current?.open) onOpenChange(false);
+      }}
       onClick={(event) => {
         if (event.target === event.currentTarget) onOpenChange(false);
       }}
