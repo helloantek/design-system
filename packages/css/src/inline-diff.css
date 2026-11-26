@@ -1,0 +1,153 @@
+/*
+ * Inline Diff — the Sort UI 2.0 pattern "Inline Diff" (node 6130:2467 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): AI edits to prose, shown in place. Struck words in red, new words in green; the focused edit
+ * is darker and carries a small popover, Accept (Y) or Reject (N); ‹ › and Tab move between edits; Reject all and
+ * Accept all close it out, and decided edits leave plain text with Undo.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-inline-diff [ds-inline-diff--done]">
+ *     <header class="ds-inline-diff__header"><svg…sparkle…/><span class="ds-inline-diff__label" role="status">Suggested by AI · Make it shorter</span></header>
+ *     <p class="ds-inline-diff__text">Hi everyone,
+ *       <span class="ds-inline-diff__edit [ds-inline-diff__edit--focused]" role="group" aria-roledescription="suggested edit" aria-label="Edit 1 of 3" tabindex="0">
+ *         [<del>a lot faster than before</del>] [<ins>twice as fast</ins>]
+ *         [<span class="ds-inline-diff__popover"><button class="ds-button ds-button--ghost ds-button--size-xs">Reject <kbd>N</kbd></button>
+ *           <button class="ds-button ds-button--default ds-button--size-xs">Accept <kbd>Y</kbd></button></span>]
+ *       </span> the new dashboard is live. …</p>
+ *     <footer class="ds-inline-diff__footer">
+ *       <span class="ds-inline-diff__count">3</span><span class="ds-inline-diff__count-label">suggestions</span>
+ *       …‹ › (Ghost xs), Reject all (Outline sm), Accept all (Default sm)…   or, done: …Undo (Ghost sm) with ⌘ Z…
+ *     </footer>
+ *   </section>
+ */
+@layer ds.components {
+  .ds-inline-diff {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-inline-diff__header {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4) var(--ds-spacing-1-5);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-inline-diff__header > svg {
+    flex: none;
+    width: var(--ds-spacing-3-5);
+    height: var(--ds-spacing-3-5);
+    color: var(--ds-palette-blue-text);
+    fill: currentColor;
+  }
+
+  /* Lines 4 px apart (24 px), without the extra 2 px above the first and below the last. */
+  .ds-inline-diff__text {
+    margin: calc(-1 * var(--ds-spacing-0-5)) var(--ds-spacing-4) calc(var(--ds-spacing-3) - var(--ds-spacing-0-5));
+    color: var(--ds-foreground);
+    line-height: var(--ds-spacing-6);
+  }
+
+  .ds-inline-diff__edit {
+    position: relative;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+  }
+
+  .ds-inline-diff__edit:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Struck words in red, new words in green. */
+  .ds-inline-diff__edit del,
+  .ds-inline-diff__edit ins {
+    padding: var(--ds-stroke-width-1) 0;
+    box-decoration-break: clone;
+  }
+
+  .ds-inline-diff__edit del {
+    background-color: var(--ds-palette-red-tint);
+    color: var(--ds-palette-red-text);
+    text-decoration: line-through;
+  }
+
+  .ds-inline-diff__edit ins {
+    background-color: var(--ds-palette-green-tint);
+    color: var(--ds-palette-green-text);
+    text-decoration: none;
+  }
+
+  /* The focused edit: the stronger tints, its words in the text colour (red or green text on them is under 4.5:1). */
+  .ds-inline-diff__edit--focused del {
+    background-color: var(--ds-palette-red-tint-strong);
+    color: var(--ds-foreground);
+  }
+
+  .ds-inline-diff__edit--focused ins {
+    background-color: var(--ds-palette-green-tint-strong);
+    color: var(--ds-foreground);
+  }
+
+  /* Accept / Reject, 4 px above the focused edit's first line. */
+  .ds-inline-diff__popover {
+    position: absolute;
+    z-index: 1;
+    bottom: calc(100% + var(--ds-spacing-1));
+    left: 0;
+    display: flex;
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-1);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-popover);
+    line-height: var(--ds-text-sm--line-height);
+    white-space: nowrap;
+  }
+
+  .ds-inline-diff__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  /* How many are left: the count in a pill, then the word. */
+  .ds-inline-diff__count {
+    padding: 0 var(--ds-spacing-1-5);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-muted);
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-inline-diff__count-label {
+    margin-right: auto;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* All decided: Undo on the right. */
+  .ds-inline-diff--done .ds-inline-diff__footer {
+    justify-content: flex-end;
+    padding-right: var(--ds-spacing-4);
+  }
+}

@@ -1,0 +1,45 @@
+{
+ "$comment": "Sort UI 2.0 pattern Inline Diff (6130:2467): reviewing (the focused edit darker with Accept Y / Reject N above it), one accepted (the next edit focused) and all decided (plain text, Undo) (1x PNG, get_screenshot, cropped to the card's own box). renderers/inline-diff.tsx renders them.",
+ "component": "inline-diff",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6130:2467",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "reviewing",
+   "nodeId": "6301:5108",
+   "props": {
+    "State": "Reviewing"
+   },
+   "target": "#target .ds-inline-diff",
+   "nodeW": 520,
+   "nodeH": 163
+  },
+  {
+   "slug": "one-accepted",
+   "nodeId": "6301:5258",
+   "props": {
+    "State": "One accepted"
+   },
+   "target": "#target .ds-inline-diff",
+   "nodeW": 520,
+   "nodeH": 163
+  },
+  {
+   "slug": "all-decided",
+   "nodeId": "6301:5368",
+   "props": {
+    "State": "All decided"
+   },
+   "target": "#target .ds-inline-diff",
+   "nodeW": 520,
+   "nodeH": 139
+  }
+ ]
+}

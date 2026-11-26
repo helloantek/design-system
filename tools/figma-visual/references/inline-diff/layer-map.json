@@ -1,0 +1,76 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-inline-diff).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-inline-diff__header"
+    },
+    "Header/TEXT": {
+      "selector": ".ds-inline-diff__label"
+    },
+    "Removed": {
+      "selector": ".ds-inline-diff__text del"
+    },
+    "Removed/TEXT": {
+      "selector": ".ds-inline-diff__text del"
+    },
+    "Added": {
+      "selector": ".ds-inline-diff__text ins"
+    },
+    "Added/TEXT": {
+      "selector": ".ds-inline-diff__text ins"
+    },
+    "Edit popover": {
+      "selector": ".ds-inline-diff__popover",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its buttons, whose labels' widths follow the font (Figma's Inter is about 1 px wider here)."
+    },
+    "Edit popover/Button": {
+      "selector": ".ds-inline-diff__popover .ds-button:first-child"
+    },
+    "Edit popover/Button#1": {
+      "selector": ".ds-inline-diff__popover .ds-button:last-child",
+      "stroke": "inset-shadow"
+    },
+    "Footer": {
+      "selector": ".ds-inline-diff__footer",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line above the 44 px footer as its own layer; in code it is the footer's top border, so the card's height is the same."
+    },
+    "Count": {
+      "selector": ".ds-inline-diff__count",
+      "skip": [
+        "r"
+      ],
+      "$why": "Radius full: the same 10 px ends on the 20 px pill."
+    },
+    "Count/TEXT": {
+      "selector": ".ds-inline-diff__count"
+    },
+    "Footer/TEXT#1": {
+      "selector": ".ds-inline-diff__count-label"
+    },
+    "Footer/Button": {
+      "selector": ".ds-inline-diff__footer .ds-button",
+      "skip": [
+        "w"
+      ],
+      "$why": "The library Button hugs its label and keys."
+    },
+    "Footer/Button#2": {
+      "selector": ".ds-inline-diff__footer .ds-button--outline",
+      "stroke": "inset-shadow"
+    },
+    "Footer/Button#3": {
+      "selector": ".ds-inline-diff__footer .ds-button--default",
+      "stroke": "inset-shadow"
+    }
+  }
+}
