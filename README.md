@@ -490,6 +490,38 @@ A pattern from the Sort UI 2.0 **Patterns** page: what fills the model's context
 | What is left, New chat; nearly full in amber, New chat first | `onNewChat` (Outline xs, Default from `warnAt`, default 0.85) | `ds-context-window__footer` · `ds-context-window--full` |
 | Texts | `labels`, for other languages | |
 
+## AI Answer
+
+A pattern from the Sort UI 2.0 **Patterns** page: an answer with its sources (**AI Answer**, node `6127:2351`).
+
+```tsx
+<AIAnswer
+  question="How long does a refund to a card take?"
+  sources={[{ name: 'Notion', title: 'Refund policy – timelines', icon: <RiNotionFill />, href: url }, …]}
+  moreSources={3}
+  related={['What if the card has expired?', …]}
+  actions={<MessageActions copyText={text} onRegenerate={regenerate} />}
+  meta="Answered in 3.4 s"
+>
+  <p><strong>5–10 working days</strong> after we send it, depending on the bank. <AIAnswerCitation>Notion +1</AIAnswerCitation></p>
+  <AIAnswerPoints>
+    <AIAnswerPoint lead="Sent the same day:" cite="Help center">refunds approved before 16:00 leave that evening.</AIAnswerPoint>
+  </AIAnswerPoints>
+</AIAnswer>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The card, the question | `AIAnswer`: an article named by its `question` | `ds-ai-answer` · `__question` |
+| Sources as small cards with their numbers, "+3 more" | `sources` (`name`, `title`, `icon`, `href` → a link), numbered in order; `moreSources`, `onMoreSources` | `ds-ai-answer__sources` · `__source` · `__more` |
+| Searching… while they load | `searching`: that many cards in their place | `ds-ai-answer__source--searching` |
+| The answer, its key words in bold, a citation after each claim | `children`: paragraphs with `<strong>`, `AIAnswerCitation` (a tint Badge), `AIAnswerPoints` / `AIAnswerPoint` (`lead`, `cite`) | `ds-ai-answer__answer` · `__citation` · `__points` · `__point` |
+| Streaming: the caret, Stop | `status="streaming"` (`aria-busy`), `AIAnswerCaret`, `onStop` | `ds-ai-answer__caret` |
+| Stopped early: says so, Continue | `status="stopped"`, `onContinue` | `ds-ai-answer__stopped` |
+| Related questions | `related`, `onRelated`: a group named "Related" (shown when done) | `ds-ai-answer__related` · `__related-item` |
+| The actions, how long it took | `actions` (Message Actions), `meta` | `ds-ai-answer__footer` · `__meta` |
+| Texts | `labels`, for other languages | |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2168,6 +2200,7 @@ These come from the Figma files, not the code:
 - Message Actions (2.0): the actions were drawn 28 px frames (radius 6, muted fill when pressed) instead of library components, the reasons under "What was wrong?" drawn chips, and the panel a drawn 300 px card (radius 12, the Message's shadow) instead of the library Popover. All are library components now: Button Ghost sm icon only (radius 8; thumbs and Read aloud are Toggles sm in code, pressed in Fill 2), Button Outline sm, and Popover (288 px, radius 14, title 16 px Medium), 4 px under thumbs down.
 - Model Picker (2.0): the models were Select Items at the library's radius 10 while the one pointed at was 6 in a 6 px box; the price note had square corners and, with "+ thinking", ran past the menu's edge; the bars sat 33 px in where the labels start at 32. All are radius 6 now, the note wraps inside the menu, and the bars start at 32 px.
 - Context Window (2.0): the grids did not match the sizes beside them ("In use" coloured 46 cells for 68.9K of files and 62 for 46.6K of conversation, 128 used for 136.4K; the other states were off by one or two cells), the conversation's cells while compacting were a lighter blue than its swatch, New chat was set to radius 6 over the Button's 8, and the files' remove marks were bare icons. The grids now split the 200 cells by the sizes as the code does (largest remainder), the conversation keeps its blue, New chat has the library radius, and remove is the library Button Ghost xs (icon only).
+- AI Answer (2.0): the actions in every footer were bare 16 px icons 12 px apart, not the Message Actions bar; Stop and Continue were set to radius 6 over the Button's 8; the source cards started 8 px in where everything else is 16, and the cards while searching were 80 px high, 8 px apart, where the sources are 82 px, 6 px apart. The footers now hold the Message Actions bar (library Ghost sm buttons, 2 px apart, 6 px above and below), the Buttons have the library radius, and the sources start 16 px in, 6 px apart, all 82 px.
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
