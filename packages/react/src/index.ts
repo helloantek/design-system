@@ -20,6 +20,7 @@ export * from './Card';
 export * from './Carousel';
 export * from './Chart';
 export * from './Checkbox';
+export * from './CitedAnswer';
 export * from './Combobox';
 export * from './Command';
 export * from './ContextMenu';

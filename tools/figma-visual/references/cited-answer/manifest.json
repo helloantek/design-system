@@ -1,0 +1,45 @@
+{
+ "$comment": "Sort UI 2.0 pattern Cited Answer (6127:2541): at rest, pointing at citation 2 (its sentences and source light up), and clicked (source 1's passage open) (1x PNG, get_screenshot, cropped to the card's own box). renderers/cited-answer.tsx renders them.",
+ "component": "cited-answer",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6127:2541",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "at-rest",
+   "nodeId": "6286:4560",
+   "props": {
+    "State": "At rest"
+   },
+   "target": "#target .ds-cited-answer",
+   "nodeW": 460,
+   "nodeH": 257
+  },
+  {
+   "slug": "pointing",
+   "nodeId": "6286:4665",
+   "props": {
+    "State": "Pointing"
+   },
+   "target": "#target .ds-cited-answer",
+   "nodeW": 460,
+   "nodeH": 257
+  },
+  {
+   "slug": "clicked",
+   "nodeId": "6286:4794",
+   "props": {
+    "State": "Clicked"
+   },
+   "target": "#target .ds-cited-answer",
+   "nodeW": 460,
+   "nodeH": 353
+  }
+ ]
+}

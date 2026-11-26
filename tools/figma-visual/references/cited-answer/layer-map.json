@@ -1,0 +1,133 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-cited-answer).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-cited-answer__header"
+    },
+    "Marks": {
+      "selector": ".ds-cited-answer__marks",
+      "skip": [
+        "g"
+      ],
+      "$why": "Figma overlaps the marks with a \u22124 px gap; the code uses \u22124 px margins (no negative gap in CSS)."
+    },
+    "Mark": {
+      "selector": ".ds-cited-answer__mark",
+      "stroke": "inset-shadow",
+      "skip": [
+        "r"
+      ],
+      "$why": "Radius full."
+    },
+    "Header/TEXT": {
+      "selector": ".ds-cited-answer__meta"
+    },
+    "Answer": {
+      "selector": ".ds-cited-answer__answer"
+    },
+    "Paragraph": {
+      "selector": ".ds-cited-answer__paragraph",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma lays the words out in rows 4 px apart (68 px for three lines); the code uses 24 px lines whose 2 px above the first and below the last sit in \u22122 px margins, so the box is 72 px but takes 68 (the card's height matches)."
+    },
+    "Paragraph/TEXT": {
+      "selector": ".ds-cited-answer__paragraph"
+    },
+    "Citation 1": {
+      "selector": ".ds-cited-answer__paragraph:first-child .ds-cited-answer__cite:nth-of-type(1)",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its number, whose width follows the font (Figma's Inter draws '1' 7 px wide, the web font 8.4 px)."
+    },
+    "Citation 1/TEXT": {
+      "selector": ".ds-cited-answer__paragraph:first-child .ds-cited-answer__cite:nth-of-type(1)"
+    },
+    "Citation 2": {
+      "selector": ".ds-cited-answer__paragraph:first-child .ds-cited-answer__cite:nth-of-type(2)",
+      "skip": [
+        "w"
+      ],
+      "$why": "As Citation 1."
+    },
+    "Citation 2/TEXT": {
+      "selector": ".ds-cited-answer__paragraph:first-child .ds-cited-answer__cite:nth-of-type(2)"
+    },
+    "Lit": {
+      "selector": ".ds-cited-answer__claim[data-lit]"
+    },
+    "Sources": {
+      "selector": ".ds-cited-answer__sources",
+      "skip": [
+        "w"
+      ],
+      "$why": "The chips wrap in the full width in code; Figma's row hugs them."
+    },
+    "Help center": {
+      "selector": ".ds-cited-answer__sources > li:nth-child(1) > .ds-cited-answer__source",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its name, whose width follows the font."
+    },
+    "Help center/TEXT": {
+      "selector": ".ds-cited-answer__sources > li:nth-child(1) .ds-cited-answer__source-name"
+    },
+    "Help center/TEXT#1": {
+      "selector": ".ds-cited-answer__sources > li:nth-child(1) .ds-cited-answer__source-number"
+    },
+    "Refund policy": {
+      "selector": ".ds-cited-answer__sources > li:nth-child(2) > .ds-cited-answer__source",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "As Help center."
+    },
+    "Refund policy/TEXT": {
+      "selector": ".ds-cited-answer__sources > li:nth-child(2) .ds-cited-answer__source-name"
+    },
+    "Quoted passage": {
+      "selector": ".ds-cited-answer__passage"
+    },
+    "From": {
+      "selector": ".ds-cited-answer__from"
+    },
+    "From/TEXT": {
+      "selector": ".ds-cited-answer__from"
+    },
+    "Quoted passage/TEXT#1": {
+      "selector": ".ds-cited-answer__quote"
+    },
+    "Footer": {
+      "selector": ".ds-cited-answer__footer",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line above the 40 px footer as its own layer; in code it is the footer's top border."
+    },
+    "Footer/TEXT": {
+      "selector": ".ds-cited-answer__status"
+    },
+    "Cited/TEXT": {
+      "selector": ".ds-cited-answer__status strong"
+    },
+    "Cited/TEXT#1": {
+      "selector": ".ds-cited-answer__status"
+    },
+    "Button": {
+      "selector": ".ds-cited-answer__footer .ds-button",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "The library Button hugs its label."
+    }
+  }
+}
