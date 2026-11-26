@@ -1,0 +1,60 @@
+{
+ "$comment": "Sort UI 2.0 pattern AI Answer (6127:2351): answered, streaming (sources still loading, the caret) and stopped early (1x PNG, get_screenshot, cropped to the card's own box). renderers/ai-answer.tsx renders them.",
+ "component": "ai-answer",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6127:2351",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "answered",
+   "nodeId": "6285:4521",
+   "props": {
+    "State": "Answered"
+   },
+   "target": "#target > .ds-ai-answer",
+   "nodeW": 560,
+   "nodeH": 461,
+   "specOverride": {
+    "root": {
+     "h": 457
+    },
+    "Answer": {
+     "h": 166
+    },
+    "Point": {
+     "h": 40
+    }
+   },
+   "sizeOverride": {
+    "h": 457
+   },
+   "$why": "Figma wraps the points as auto-layout rows 4 px apart, so a citation that wraps sits 24 px down; in code the words and the citation flow as text on 20 px lines, so 'Sent the same day' with its citation on a second line is 40 px, not 44 (the answer and the card 4 px shorter)."
+  },
+  {
+   "slug": "streaming",
+   "nodeId": "6285:4625",
+   "props": {
+    "State": "Streaming"
+   },
+   "target": "#target > .ds-ai-answer",
+   "nodeW": 560,
+   "nodeH": 251
+  },
+  {
+   "slug": "stopped",
+   "nodeId": "6285:4683",
+   "props": {
+    "State": "Stopped"
+   },
+   "target": "#target > .ds-ai-answer",
+   "nodeW": 560,
+   "nodeH": 307
+  }
+ ]
+}

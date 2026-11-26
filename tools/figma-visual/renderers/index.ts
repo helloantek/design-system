@@ -1,5 +1,6 @@
 import { renderAlert } from './alert';
 import { renderAccordion } from './accordion';
+import { renderAIAnswer } from './ai-answer';
 import { renderAIChatComposer, renderAIChatComposerToken } from './ai-chat-composer';
 import { renderAITrace, renderAITraceContent } from './ai-trace';
 import { renderAlertDialog } from './alert-dialog';
@@ -78,6 +79,7 @@ import type { Renderer } from './types';
 // One renderer per component folder in ../references.
 export const renderers: Record<string, Renderer> = {
   accordion: renderAccordion,
+  'ai-answer': renderAIAnswer,
   'ai-chat-composer': renderAIChatComposer,
   'ai-chat-composer-column': renderAIChatComposer,
   'ai-chat-composer-token': renderAIChatComposerToken,
