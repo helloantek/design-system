@@ -37,6 +37,7 @@ export * from './Empty';
 export * from './Field';
 export * from './FileIcon';
 export * from './HoverCard';
+export * from './InlineDiff';
 export * from './Input';
 export * from './InputOTP';
 export * from './Item';

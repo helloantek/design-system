@@ -548,6 +548,33 @@ A pattern from the Sort UI 2.0 **Patterns** page: an answer wired to its sources
 | "Refund policy · cited in 2 sentences", Follow up | The footer follows the source in view; `onFollowUp` (Outline xs) | `ds-cited-answer__footer` · `__status` |
 | Texts | `labels`, for other languages | |
 
+## Inline Diff
+
+A pattern from the Sort UI 2.0 **Patterns** page: AI edits to prose, shown in place (**Inline Diff**, node `6130:2467`).
+
+```tsx
+<InlineDiff
+  label="Suggested by AI · Make it shorter"
+  segments={[
+    'Hi everyone, ',
+    { id: 'intro', removed: 'we are very excited to announce that' },
+    ' the new dashboard is live. It loads ',
+    { id: 'speed', removed: 'a lot faster than before', added: 'twice as fast' },
+    …
+  ]}
+  onDecisionsChange={save}
+/>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The card, "Suggested by AI · Make it shorter" | `InlineDiff`, `label` (read out as a status, and the summary when done) | `ds-inline-diff` · `__header` · `__label` |
+| Struck words in red, new words in green | `segments`: words and `{ id, removed, added }` edits, as `<del>` and `<ins>` in a group named "Edit 1 of 3" (Tab moves between them) | `ds-inline-diff__edit` |
+| The focused edit, darker, with Accept Y / Reject N | Y and N on the focused edit (`aria-keyshortcuts`), or the popover's Ghost / Default xs buttons with Kbd; focus moves to the next edit | `ds-inline-diff__edit--focused` · `__popover` |
+| "3 suggestions", ‹ ›, Reject all, Accept all | The footer while reviewing | `ds-inline-diff__count` · `__footer` |
+| All decided: plain text, "3 edits accepted", Undo ⌘ Z | Undo steps back one decision (or all of them); `decisions` / `defaultDecisions` / `onDecisionsChange` | `ds-inline-diff--done` |
+| Texts | `labels`, for other languages | |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2229,6 +2256,7 @@ These come from the Figma files, not the code:
 - AI Answer (2.0): the actions in every footer were bare 16 px icons 12 px apart, not the Message Actions bar; the source cards started 8 px in where everything else is 16, and the cards while searching were 80 px high, 8 px apart, where the sources are 82 px, 6 px apart. The footers now hold the Message Actions bar (library Ghost sm buttons, 2 px apart, 6 px above and below), and the sources start 16 px in, 6 px apart, all 82 px. The "+3 more" card was 56 px high beside the 82 px sources; it is 82 px too now (Figma and code).
 - Cited Answer (2.0): in "Clicked" the answer was 8 px in on both sides where the other states (and the header and footer) are 16. It is 16 px now.
 - Button (2.0): Size=xs drew radius 8 like the other sizes, while the patterns set their xs buttons to 6 by hand (and some of those were "fixed" back to 8). The library's xs variants are radius 6 (`radius/sm`) now, so every xs Button in the file is 6 with no override, and the code follows (`--btn-radius`, also in Button Group).
+- Inline Diff (2.0): the states did not add up ("Reviewing" showed 3 edits and said "4 suggestions"; "One accepted" had two edits gone and said 3; "All decided" said "3 edits accepted · 1 rejected" over a text with every edit accepted), the focused edit was not darker than the others though the description says so, and the Accept / Reject popover sat on the focused edit's words. Fixed in Figma: 3, then 2 suggestions (only the first edit accepted) and "3 edits accepted", the focused edit in the strong tints with its words in the text colour (red or green text on the strong tints is under 4.5:1), the popover 4 px above it with radius 10 (the xs buttons' 6 plus its 4 px padding).
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
