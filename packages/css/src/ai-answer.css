@@ -132,11 +132,10 @@
     box-shadow: none;
   }
 
-  /* "+3 more": the count over the word. */
+  /* "+3 more": the count over the word, as tall as the sources. */
   .ds-ai-answer__more {
     gap: 0;
     width: auto;
-    min-height: 0;
     margin: 0;
     border: 0;
     background: none;
