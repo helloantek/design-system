@@ -20,6 +20,7 @@
     --btn-stroke: transparent;
     --btn-effect: 0 0 #0000;
     --btn-ring: 0 0 #0000;
+    --btn-radius: var(--ds-radius-md);
 
     box-sizing: border-box;
     display: inline-flex;
@@ -31,7 +32,8 @@
     margin: 0;
     padding: 0 var(--btn-pad-x);
     border: 0;
-    border-radius: var(--ds-radius-md);
+    /* Figma: 8 px, 6 px at Size=xs. */
+    border-radius: var(--btn-radius);
     outline: none;
     background: var(--btn-bg, transparent);
     /* --btn-stroke-shape lets Button Group drop the stroke on a side it shares with the previous button. */
@@ -78,6 +80,7 @@
   }
 
   .ds-button--size-xs {
+    --btn-radius: var(--ds-radius-sm);
     --btn-height: var(--ds-spacing-6);
     --btn-pad-x: var(--ds-spacing-1-5);
     --btn-gap: var(--ds-spacing-0-5);
