@@ -85,7 +85,8 @@ export const Profile: StoryObj = {
         <span style={muted}>Travel photographer based in Lisbon.</span>
       </div>
       <Separator />
-      <div style={{ display: 'flex', gap: 16, ...strong }}>
+      {/* The stats fill the 320 px column within 5 px; they keep to one line while the web font loads. */}
+      <div style={{ display: 'flex', gap: 16, whiteSpace: 'nowrap', ...strong }}>
         <span>248 posts</span>
         <Separator orientation="vertical" />
         <span>12.4k followers</span>
