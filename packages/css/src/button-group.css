@@ -49,15 +49,15 @@
     > :first-child,
     > .ds-dropdown:first-child > .ds-button,
     > .ds-field:first-child :is(.ds-input, .ds-select__trigger) {
-      border-start-start-radius: var(--ds-radius-md);
-      border-end-start-radius: var(--ds-radius-md);
+      border-start-start-radius: var(--btn-radius, var(--ds-radius-md));
+      border-end-start-radius: var(--btn-radius, var(--ds-radius-md));
     }
 
     > :last-child,
     > .ds-dropdown:last-child > .ds-button,
     > .ds-field:last-child :is(.ds-input, .ds-select__trigger) {
-      border-start-end-radius: var(--ds-radius-md);
-      border-end-end-radius: var(--ds-radius-md);
+      border-start-end-radius: var(--btn-radius, var(--ds-radius-md));
+      border-end-end-radius: var(--btn-radius, var(--ds-radius-md));
     }
 
     /* Figma Variant=Middle and End: no stroke on the start side (a Dropdown Menu's trigger counts as an item). */
@@ -77,13 +77,13 @@
   /* Vertical: the top corners on the first item, the bottom corners on the last. */
   .ds-button-group--vertical:not(:has(> .ds-button-group)) {
     > :first-child {
-      border-start-start-radius: var(--ds-radius-md);
-      border-start-end-radius: var(--ds-radius-md);
+      border-start-start-radius: var(--btn-radius, var(--ds-radius-md));
+      border-start-end-radius: var(--btn-radius, var(--ds-radius-md));
     }
 
     > :last-child {
-      border-end-start-radius: var(--ds-radius-md);
-      border-end-end-radius: var(--ds-radius-md);
+      border-end-start-radius: var(--btn-radius, var(--ds-radius-md));
+      border-end-end-radius: var(--btn-radius, var(--ds-radius-md));
     }
 
     > .ds-button:not(:first-child, :focus-visible) {
