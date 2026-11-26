@@ -20,6 +20,7 @@ import { renderButtonGroup, renderButtonGroupItem } from './button-group';
 import { renderCalendar, renderCalendarDay, renderCalendarNavigation } from './calendar';
 import { renderCard } from './card';
 import { renderCheckbox, renderCheckboxCard, renderCheckboxField } from './checkbox';
+import { renderCitedAnswer } from './cited-answer';
 import { renderCombobox } from './combobox';
 import { renderContextMenu } from './context-menu';
 import { renderContextWindow } from './context-window';
@@ -108,6 +109,7 @@ export const renderers: Record<string, Renderer> = {
   'calendar-navigation': renderCalendarNavigation,
   card: renderCard,
   checkbox: renderCheckbox,
+  'cited-answer': renderCitedAnswer,
   'checkbox-card': renderCheckboxCard,
   'checkbox-field': renderCheckboxField,
   combobox: renderCombobox,

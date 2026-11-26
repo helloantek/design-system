@@ -1,0 +1,255 @@
+/*
+ * Cited Answer — the Sort UI 2.0 pattern "Cited Answer" (node 6127:2541 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): an answer wired to its sources. Each claim ends in a numbered citation; point at one and
+ * its sentences and source light up while the rest fades; click a source for the passage it quotes, and Follow up.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <article class="ds-cited-answer [ds-cited-answer--focused]">
+ *     <header class="ds-cited-answer__header"><span class="ds-cited-answer__marks"><span class="ds-cited-answer__mark">…logo…</span>…</span>
+ *       <span class="ds-cited-answer__meta">3 sources · 12 pages read</span></header>
+ *     <div class="ds-cited-answer__answer">
+ *       <p class="ds-cited-answer__paragraph"><span class="ds-cited-answer__claim" [data-lit]>Card refunds … days,</span>
+ *         <button class="ds-cited-answer__cite" [data-active] aria-label="Source 1, Help center" aria-expanded="…">1</button> depending on your bank. …</p>
+ *       [<figure class="ds-cited-answer__passage"><figcaption class="ds-cited-answer__from">…icon… Help center · Refunds and returns</figcaption>
+ *         <blockquote class="ds-cited-answer__quote">“Card refunds … <strong>within 5–10 working days</strong>, …”</blockquote></figure>]
+ *       <ul class="ds-cited-answer__sources" aria-label="Sources"><li><button class="ds-cited-answer__source" [data-active] aria-pressed="…">
+ *         <span class="ds-cited-answer__source-icon">…</span><span class="ds-cited-answer__source-name">Help center</span>
+ *         <span class="ds-cited-answer__source-number">1</span></button></li>…</ul>
+ *     </div>
+ *     <footer class="ds-cited-answer__footer"><span class="ds-cited-answer__status">Ask about any sentence | <strong>Refund policy</strong> · cited in 2 sentences</span>
+ *       […Follow up, Outline xs…]</footer>
+ *   </article>
+ */
+@layer ds.components {
+  .ds-cited-answer {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-cited-answer svg {
+    flex: none;
+    fill: currentColor;
+  }
+
+  /* The sources' logos, overlapping, and how much it read. */
+  .ds-cited-answer__header {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4) var(--ds-spacing-1);
+  }
+
+  .ds-cited-answer__marks {
+    display: flex;
+  }
+
+  .ds-cited-answer__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-5);
+    height: var(--ds-spacing-5);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-foreground);
+  }
+
+  .ds-cited-answer__mark + .ds-cited-answer__mark {
+    margin-left: calc(-1 * var(--ds-spacing-1));
+  }
+
+  .ds-cited-answer__mark > svg {
+    width: calc(var(--ds-spacing-3) - var(--ds-stroke-width-1));
+    height: calc(var(--ds-spacing-3) - var(--ds-stroke-width-1));
+  }
+
+  .ds-cited-answer__meta {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-cited-answer__answer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-2) var(--ds-spacing-4) var(--ds-spacing-3);
+  }
+
+  /* Lines 4 px apart (24 px), without the extra 2 px above the first and below the last. */
+  .ds-cited-answer__paragraph {
+    margin: calc(-1 * var(--ds-spacing-0-5)) 0;
+    color: var(--ds-foreground);
+    line-height: var(--ds-spacing-6);
+    transition: color var(--ds-duration-150) var(--ds-ease-out);
+  }
+
+  /* Pointing at a citation: the rest fades, its sentences light up. */
+  .ds-cited-answer--focused .ds-cited-answer__paragraph {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-cited-answer__claim[data-lit] {
+    padding: var(--ds-stroke-width-1) 0;
+    background-color: var(--ds-palette-blue-tint);
+    color: var(--ds-foreground);
+    box-decoration-break: clone;
+  }
+
+  /* The citation: its number in a small muted box; the one pointed at in the text colour. */
+  .ds-cited-answer__cite {
+    display: inline-block;
+    min-height: var(--ds-spacing-5);
+    margin: 0 0 0 var(--ds-spacing-1);
+    padding: 0 var(--ds-spacing-1);
+    border: 0;
+    border-radius: var(--ds-radius-xs);
+    outline: none;
+    background-color: var(--ds-muted);
+    color: var(--ds-muted-foreground);
+    font: inherit;
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    letter-spacing: inherit;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+  }
+
+  .ds-cited-answer__cite[data-active] {
+    background-color: var(--ds-foreground);
+    color: var(--ds-background);
+  }
+
+  .ds-cited-answer__cite:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* The passage a source quotes, opened under the answer. */
+  .ds-cited-answer__passage {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-3);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+  }
+
+  .ds-cited-answer__from {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-cited-answer__from-icon {
+    display: inline-flex;
+  }
+
+  .ds-cited-answer__from-icon > svg,
+  .ds-cited-answer__source-icon > svg {
+    width: var(--ds-spacing-3);
+    height: var(--ds-spacing-3);
+  }
+
+  .ds-cited-answer__quote {
+    margin: 0;
+    color: var(--ds-foreground);
+  }
+
+  .ds-cited-answer__quote strong {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  /* The sources as chips; pointing at one or its citation lights it, the others fade. */
+  .ds-cited-answer__sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-cited-answer__source {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    margin: 0;
+    padding: var(--ds-spacing-1) var(--ds-spacing-2);
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    background: none;
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+    color: var(--ds-foreground);
+    font: inherit;
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    letter-spacing: inherit;
+    cursor: pointer;
+  }
+
+  .ds-cited-answer__source:hover {
+    background-color: var(--ds-accent);
+  }
+
+  .ds-cited-answer__source:focus-visible {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-ring), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-cited-answer--focused .ds-cited-answer__source:not([data-active]) {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-cited-answer__source[data-active] {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-input);
+  }
+
+  .ds-cited-answer__source-number {
+    color: var(--ds-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-cited-answer__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-cited-answer__status {
+    flex: 1 1 0;
+    min-width: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-cited-answer__status strong {
+    color: var(--ds-foreground);
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-cited-answer__paragraph {
+      transition: none;
+    }
+  }
+}
