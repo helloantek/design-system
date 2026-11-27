@@ -61,3 +61,5 @@ export {
 } from './lib/review-center/review-center';
 export { DsAutonomyDial, DsAutonomyIcon, runsOnItsOwn, type AutonomyAction, type AutonomyLevel, type AutonomyRisk, type AutonomyTool } from './lib/autonomy-dial/autonomy-dial';
 export { DsStepper, DsStepperItem, type StepperItemState, type StepperOrientation, type StepperStep, type StepperVariant } from './lib/stepper/stepper';
+export { DsThinkingLoader, type ThinkingLoaderStatus } from './lib/thinking/thinking-loader';
+export { DsThinkingNote, DsThinkingSource, DsThinkingSources, DsThinkingState, DsThinkingStep, DsThinkingStepIcon } from './lib/thinking/thinking-state';
