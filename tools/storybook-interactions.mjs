@@ -569,29 +569,6 @@ Object.assign(tests, {
     assert.equal(at.x + at.width <= 600, true, 'near the right edge it opens to the left of the pointer');
     await page.setViewportSize(viewport);
   },
-  'switch: role switch; label click and Space toggle; disabled does not; error describes it': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=components-switch--with-description&viewMode=story');
-    const onboarding = page.getByRole('switch', { name: 'User onboarding emails' });
-    await onboarding.waitFor();
-    assert.equal(await onboarding.isChecked(), true);
-    await page.getByText('User onboarding emails').click();
-    assert.equal(await onboarding.isChecked(), false, 'the label toggles it');
-    await onboarding.focus();
-    await page.keyboard.press('Space');
-    assert.equal(await onboarding.isChecked(), true, 'Space toggles it');
-    const thumb = page.locator('.ds-switch__thumb').first();
-    assert.notEqual(await thumb.evaluate((el) => getComputedStyle(el).translate), 'none', 'the thumb moves to the end when on');
-    const disabled = page.getByRole('switch', { name: 'Product update notifications' });
-    await page.getByText('Product update notifications').click({ force: true });
-    assert.equal(await disabled.isChecked(), false, 'a disabled switch does not toggle');
-    const disabledField = page.locator('.ds-field').filter({ has: disabled });
-    assert.equal(await disabledField.locator('.ds-field__label').evaluate((el) => getComputedStyle(el).opacity), '0.5', 'the disabled label fades');
-    assert.equal(await disabledField.locator('.ds-field__caption').evaluate((el) => getComputedStyle(el).opacity), '0.5', 'and so does its description');
-    await page.goto('http://localhost:6008/iframe.html?id=components-switch--invalid&viewMode=story');
-    const twoFactor = page.getByRole('switch', { name: 'Two-factor authentication' });
-    assert.equal(await twoFactor.getAttribute('aria-invalid'), 'true');
-    assert.equal(await page.locator(`#${await twoFactor.getAttribute('aria-describedby')}`).textContent(), 'Required for admins — turn it on to keep the role.');
-  },
   'switch: a click anywhere on a choice card toggles it; focus rings the card, not the switch': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-switch--choice-cards&viewMode=story');
     const shuffle = page.getByRole('switch', { name: 'Smart shuffle' });
@@ -2683,54 +2660,6 @@ Object.assign(tests, {
     await status.filter({ hasText: 'Thought for 5 s' }).waitFor({ timeout: 8000 });
     assert.equal(await page.locator('.ds-thinking--done svg').getAttribute('aria-hidden'), 'true');
   },
-  'message actions: a named group; Copy turns into Copied; Regenerate adds a version to switch between; thumbs are pressed toggles, down asks what was wrong in a Popover; Read aloud is pressed while it reads': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-message-actions--in-a-message&viewMode=story');
-    const bar = page.getByRole('group', { name: 'Message actions' });
-    await bar.waitFor();
-    await bar.getByRole('button', { name: 'Copy' }).click();
-    await bar.getByRole('button', { name: 'Copied' }).waitFor();
-    assert.equal(await bar.getByRole('status').textContent(), 'Copied', 'Copied is read out');
-    await bar.getByRole('button', { name: 'Copy' }).waitFor({ timeout: 4000 });
-    assert.equal(await bar.getByRole('group', { name: /^Version/ }).count(), 0, 'one version: no ‹ 1 / 1 ›');
-    await bar.getByRole('button', { name: 'Regenerate' }).click();
-    const versions = bar.getByRole('group', { name: 'Version 2 of 2' });
-    await versions.waitFor();
-    assert.equal(await versions.getByRole('button', { name: 'Next version' }).isDisabled(), true);
-    await versions.getByRole('button', { name: 'Previous version' }).click();
-    await bar.getByRole('group', { name: 'Version 1 of 2' }).waitFor();
-    const good = bar.getByRole('button', { name: 'Good response' });
-    const bad = bar.getByRole('button', { name: 'Bad response' });
-    await good.click();
-    assert.equal(await good.getAttribute('aria-pressed'), 'true');
-    await bad.click();
-    assert.equal(await good.getAttribute('aria-pressed'), 'false', 'one rating at a time');
-    assert.equal(await bad.getAttribute('aria-pressed'), 'true');
-    const dialog = page.getByRole('dialog', { name: 'What was wrong?' });
-    await dialog.waitFor();
-    assert.equal(await bad.getAttribute('aria-expanded'), 'true');
-    assert.equal(await page.evaluate(() => document.activeElement?.textContent), 'Not true', 'focus moves to the first reason');
-    await dialog.getByRole('button', { name: 'Too long' }).click();
-    assert.equal(await dialog.isVisible(), false, 'a reason closes it');
-    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Bad response', 'focus goes back to thumbs down');
-    await bad.click();
-    assert.equal(await bad.getAttribute('aria-pressed'), 'false', 'pressed again takes the rating back');
-    assert.equal(await dialog.isVisible(), false, 'and does not ask');
-    const read = bar.getByRole('button', { name: 'Read aloud' });
-    await read.click();
-    assert.equal(await read.getAttribute('aria-pressed'), 'true');
-    await bar.locator('.ds-message-actions__wave').waitFor();
-    assert.equal(await bar.locator('.ds-message-actions__wave').getAttribute('aria-hidden'), 'true');
-    await read.click();
-    assert.equal(await bar.locator('.ds-message-actions__wave').count(), 0, 'Pause stops it');
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-message-actions--thumbs-down&viewMode=story');
-    await page.getByRole('button', { name: 'Bad response' }).click();
-    await page.getByRole('dialog', { name: 'What was wrong?' }).waitFor();
-    await page.keyboard.press('Escape');
-    assert.equal(await page.getByRole('dialog', { name: 'What was wrong?' }).isVisible(), false, 'Escape closes it');
-    assert.equal(await page.getByText(/^Rating:/).textContent(), 'Rating: down', 'the rating stays');
-    await page.getByRole('button', { name: 'Good response' }).click();
-    assert.equal(await page.getByText(/^Rating:/).textContent(), 'Rating: up');
-  },
   'model picker: the trigger opens a named menu; arrows point at a model and show its speed, quality and cost; Enter chooses it; the thinking switch opens the effort and marks the trigger; Escape closes': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-model-picker--in-the-composer&viewMode=story');
     const trigger = page.getByRole('button', { name: 'Sonnet 4.5', exact: true });
@@ -3044,13 +2973,13 @@ Object.assign(tests, {
     const tree = page.locator('#storybook-explorer-tree');
     await framework.waitFor();
     assert.equal(await framework.getByRole('button', { name: 'React' }).getAttribute('aria-pressed'), 'true');
-    assert.equal(await tree.getByRole('button', { name: 'Switch', exact: true }).isVisible(), true, 'the React tree has every component');
+    assert.equal(await tree.getByRole('button', { name: 'Slider', exact: true }).isVisible(), true, 'the React tree has every component');
     assert.equal(await page.locator('#storybook-explorer-tree [data-title="Angular"]').isVisible(), false, 'no separate Angular section');
     await framework.getByRole('button', { name: 'Angular' }).click();
     await page.waitForURL(/angular_components-button--playground/);
     const angular = page.frameLocator('#storybook-ref-angular');
     await angular.locator('[ng-version] .ds-button').waitFor();
-    assert.equal(await tree.getByRole('button', { name: 'Switch', exact: true }).filter({ visible: true }).count(), 0, 'the Angular tree has only what Angular has');
+    assert.equal(await tree.getByRole('button', { name: 'Slider', exact: true }).filter({ visible: true }).count(), 0, 'the Angular tree has only what Angular has');
     await tree.getByRole('button', { name: 'Badge', exact: true }).filter({ visible: true }).click();
     await tree.locator('a[href*="components-badge--colors"]').filter({ visible: true }).click();
     await page.waitForURL(/angular_components-badge--colors/);

@@ -63,3 +63,6 @@ export { DsAutonomyDial, DsAutonomyIcon, runsOnItsOwn, type AutonomyAction, type
 export { DsStepper, DsStepperItem, type StepperItemState, type StepperOrientation, type StepperStep, type StepperVariant } from './lib/stepper/stepper';
 export { DsThinkingLoader, type ThinkingLoaderStatus } from './lib/thinking/thinking-loader';
 export { DsThinkingNote, DsThinkingSource, DsThinkingSources, DsThinkingState, DsThinkingStep, DsThinkingStepIcon } from './lib/thinking/thinking-state';
+export { DsPopover, DsPopoverActions, DsPopoverClose, DsPopoverTrigger, type PopoverAlign, type PopoverSide } from './lib/popover/popover';
+export { DsSwitch, type SwitchSize } from './lib/switch/switch';
+export { DsMessageActions, MESSAGE_FEEDBACK_REASONS, type MessageActionsLabels, type MessageRating } from './lib/message-actions/message-actions';
