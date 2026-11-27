@@ -2924,8 +2924,9 @@ Object.assign(tests, {
     await tone.getByRole('button', { name: 'Short' }).click();
     await card.getByRole('status').filter({ hasText: 'Rewriting it shorter…' }).waitFor();
     assert.equal(await card.locator('.ds-email-draft__body').getAttribute('aria-busy'), 'true');
-    await card.getByText('Hi Mira, invoice INV-3021 (€2,400) was due on 3 November.').waitFor({ timeout: 4000 });
-    assert.equal(await card.locator('.ds-email-draft__body').getAttribute('aria-busy'), null);
+    await card.locator('.ds-email-draft__body:not([aria-busy])').waitFor({ timeout: 4000 });
+    assert.equal(await card.locator('.ds-email-draft__rewriting').count(), 0, 'the status goes once it lands');
+    assert.match(await card.locator('.ds-email-draft__text').textContent(), /^Hi Mira, invoice INV-3021 \(€2,400\) was due on 3 November\./);
     const edit = card.getByRole('button', { name: 'Edit the text' });
     await edit.click();
     assert.equal(await edit.getAttribute('aria-pressed'), 'true');
