@@ -716,6 +716,43 @@ export const sharedTests = {
     await card.getByRole('group', { name: 'Edit 1 of 1' }).locator('.ds-inline-diff__popover').getByRole('button', { name: /^Reject/ }).click();
     await settles(async () => (await card.getByRole('status').textContent()).trim(), '1 edit accepted · 2 rejected');
   },
+  'prompt library: a named list of templates, the chosen one aria-current; typing into the gaps fills the preview and the count; Use prompt turns on once all are filled (and ⌘↵ uses it); search filters, nothing matching offers New prompt; another template starts empty': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-prompt-library--library&viewMode=story`);
+    const card = page.getByRole('region', { name: /^Prompts/ });
+    await card.waitFor();
+    const list = card.getByRole('list', { name: /^Prompts/ });
+    assert.equal(await list.getByRole('listitem').count(), 4);
+    assert.equal(await list.getByRole('button', { name: /^Reply to a complaint/ }).getAttribute('aria-current'), 'true');
+    const template = card.getByRole('group', { name: 'Reply to a complaint' });
+    assert.match(await template.textContent(), /1 of 3 filled/);
+    const use = card.getByRole('button', { name: /^Use prompt/ });
+    assert.equal(await use.isDisabled(), true, 'off until every gap is filled');
+    assert.equal(await use.getAttribute('aria-keyshortcuts'), 'Meta+Enter Control+Enter');
+    await template.getByRole('textbox', { name: 'customer' }).fill('Ana Silva');
+    await settles(async () => /reply to Ana Silva who is upset about \{problem\}/.test(await card.locator('.ds-prompt-library__prompt').textContent()), true);
+    assert.match((await card.locator('.ds-prompt-library__tokens').textContent()).trim(), /1 left to fill$/);
+    await template.getByRole('textbox', { name: 'problem' }).fill('a late refund');
+    await settles(async () => /3 of 3 filled/.test(await template.textContent()), true);
+    assert.match((await card.locator('.ds-prompt-library__tokens').textContent()).trim(), /ready$/);
+    assert.equal(await use.isDisabled(), false);
+    await page.keyboard.press('Control+Enter');
+    await page.getByText('Used: Write a friendly reply to Ana Silva who is upset about a late refund. Keep it under 120 words.').waitFor();
+    await card.getByRole('button', { name: /^Copy/ }).click();
+    await page.getByText('Copied.').waitFor();
+    const search = card.getByRole('searchbox', { name: 'Search templates' });
+    await search.fill('sales');
+    await settles(() => list.getByRole('listitem').count(), 1, 'a category matches too');
+    await search.fill('xyz');
+    await card.getByText('No prompts match “xyz”').waitFor();
+    await card.getByRole('button', { name: 'New prompt' }).click();
+    await page.getByText('New prompt: xyz').waitFor();
+    await search.fill('');
+    await list.getByRole('button', { name: /^Summarise a call/ }).click();
+    const call = card.getByRole('group', { name: 'Summarise a call' });
+    await call.waitFor();
+    assert.match(await call.textContent(), /0 of 2 filled/, 'another template starts empty');
+    assert.equal(await use.isDisabled(), true);
+  },
   'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });
