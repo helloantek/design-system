@@ -600,6 +600,35 @@ export const sharedTests = {
     await page.getByRole('button', { name: 'Opus 4.1 · Thinking' }).click();
     await menu.getByRole('option', { name: 'Haiku 4.5' }).click();
     await page.getByRole('button', { name: 'Haiku 4.5 · Thinking' }).waitFor();
+  },  'context window: a named region; the parts are a list with their sizes; Files opens into files to remove, which frees their room; Compact shows Compacting… and shrinks the conversation; nearly full turns amber': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-context-window--in-use&viewMode=story`);
+    const card = page.getByRole('region', { name: 'Context window' });
+    await card.waitFor();
+    assert.equal(await card.locator('.ds-context-window__amount').textContent(), '136.4K');
+    assert.equal((await card.locator('.ds-context-window__share').textContent()).trim(), '68%');
+    const parts = card.getByRole('list', { name: 'What fills the context' });
+    assert.equal(await parts.locator(':scope > li').count(), 5);
+    assert.equal(await card.locator('.ds-context-window__cell').count(), 200, 'every cell a slice of the window');
+    assert.equal(await card.locator('.ds-context-window__cell:not(.ds-context-window__cell--free)').count(), 137, 'used cells follow the sizes');
+    const files = card.getByRole('button', { name: 'Files' });
+    assert.equal(await files.getAttribute('aria-expanded'), 'false');
+    await files.click();
+    await settles(() => files.getAttribute('aria-expanded'), 'true');
+    const list = card.locator(`[id="${await files.getAttribute('aria-controls')}"]`);
+    assert.equal(await list.locator('li').count(), 3);
+    await card.getByRole('button', { name: 'Remove orders-2026.csv' }).click();
+    await settles(() => list.locator('li').count(), 2, 'the file is gone');
+    assert.equal(await card.locator('.ds-context-window__amount').textContent(), '94.8K', 'and its room is free');
+    assert.equal(await card.locator('.ds-context-window__left').textContent(), '105.2K left');
+    await card.getByRole('button', { name: 'Compact' }).click();
+    await card.getByRole('status').filter({ hasText: 'Compacting…' }).waitFor();
+    await card.getByRole('button', { name: 'Compact' }).waitFor({ timeout: 5000 });
+    await settles(() => parts.locator(':scope > li').nth(3).locator('.ds-context-window__size').textContent(), '8.4K', 'the conversation is a summary now');
+    await page.goto(`${base}/iframe.html?id=patterns-context-window--nearly-full&viewMode=story`);
+    const full = page.getByRole('region', { name: 'Context window' });
+    await full.waitFor();
+    assert.equal(await full.locator('.ds-context-window__left').textContent(), '24.4K left · it will start forgetting soon');
+    assert.match(await full.getByRole('button', { name: 'New chat' }).getAttribute('class'), /ds-button--default/, 'New chat comes first');
   },  'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });

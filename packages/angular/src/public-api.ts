@@ -67,3 +67,4 @@ export { DsPopover, DsPopoverActions, DsPopoverClose, DsPopoverTrigger, type Pop
 export { DsSwitch, type SwitchSize } from './lib/switch/switch';
 export { DsMessageActions, MESSAGE_FEEDBACK_REASONS, type MessageActionsLabels, type MessageRating } from './lib/message-actions/message-actions';
 export { DsModelPicker, DsModelPickerIcon, type ModelPickerEffort, type ModelPickerLabels, type ModelPickerModel } from './lib/model-picker/model-picker';
+export { DsContextWindow, DsContextWindowModelIcon, type ContextWindowItem, type ContextWindowLabels, type ContextWindowPart } from './lib/context-window/context-window';
