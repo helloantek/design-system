@@ -36,6 +36,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderFileIcon } from './file-icon';
 import { renderHoverCard } from './hover-card';
 import { renderInlineDiff } from './inline-diff';
+import { renderEmailDraft } from './email-draft';
 import { renderInput } from './input';
 import { renderItem } from './item';
 import { renderMessage } from './message';
@@ -46,6 +47,7 @@ import { renderBubble } from './bubble';
 import { renderCarousel } from './carousel';
 import { renderChart } from './chart';
 import { renderUsageBar } from './usage-bar';
+import { renderWritingAssistant } from './writing-assistant';
 import { renderSidebar } from './sidebar';
 import { renderCommand } from './command';
 import { renderMenubar } from './menubar';
@@ -134,6 +136,7 @@ export const renderers: Record<string, Renderer> = {
   'field-set': renderFieldSet,
   'file-icon': renderFileIcon,
   'hover-card': renderHoverCard,
+  'email-draft': renderEmailDraft,
   'inline-diff': renderInlineDiff,
   input: renderInput,
   'input-group-dropdown': renderInputGroupDropdown,
@@ -184,4 +187,5 @@ export const renderers: Record<string, Renderer> = {
   'tool-call': renderToolCall,
   tooltip: renderTooltip,
   'usage-bar': renderUsageBar,
+  'writing-assistant': renderWritingAssistant,
 };

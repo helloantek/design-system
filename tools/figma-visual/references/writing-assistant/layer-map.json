@@ -1,0 +1,126 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-writing-assistant).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-writing-assistant__header",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line under the 64 px header as its own layer; in code it is the header's bottom border (65 px), so the panel's height is the same."
+    },
+    "Mark": {
+      "selector": ".ds-writing-assistant__mark"
+    },
+    "Text/TEXT": {
+      "selector": ".ds-writing-assistant__title"
+    },
+    "Text/TEXT#1": {
+      "selector": ".ds-writing-assistant__description"
+    },
+    "Button": {
+      "selector": ".ds-writing-assistant__header .ds-button"
+    },
+    "Conversation": {
+      "selector": ".ds-writing-assistant__conversation"
+    },
+    "Selected text": {
+      "selector": ".ds-writing-assistant__selection",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma's quote is a row (a 2 px line, 10 px, the words); in code the line is an inset shadow and the words sit 12 px in."
+    },
+    "Selected text/TEXT": {
+      "selector": ".ds-writing-assistant__selection"
+    },
+    "Suggestions": {
+      "selector": ".ds-writing-assistant__suggestions"
+    },
+    "Suggestions/TEXT": {
+      "selector": ".ds-writing-assistant__prompt"
+    },
+    "Chips": {
+      "selector": ".ds-writing-assistant__chips"
+    },
+    "Chips/Button": {
+      "selector": ".ds-writing-assistant__chips .ds-button:first-child",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Bubble": {
+      "selector": ".ds-writing-assistant__ask",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Bubble/TEXT": {
+      "selector": ".ds-writing-assistant__ask"
+    },
+    "Streaming": {
+      "selector": ".ds-writing-assistant__streaming",
+      "skip": [
+        "p",
+        "g"
+      ],
+      "$why": "Figma's row (the words, 2 px, the caret) is a paragraph in code, the caret 2 px after the words."
+    },
+    "Streaming/TEXT": {
+      "selector": ".ds-writing-assistant__streaming"
+    },
+    "Streaming/RECTANGLE": {
+      "selector": ".ds-writing-assistant__caret"
+    },
+    "Stop row/Button": {
+      "selector": ".ds-writing-assistant__stop .ds-button",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Result": {
+      "selector": ".ds-writing-assistant__result",
+      "stroke": "inset-shadow"
+    },
+    "Result/TEXT": {
+      "selector": ".ds-writing-assistant__reply"
+    },
+    "Actions": {
+      "selector": ".ds-writing-assistant__actions",
+      "skip": [
+        "w"
+      ],
+      "$why": "The row spans the box in code; Figma's hugs its buttons."
+    },
+    "Actions/Button": {
+      "selector": ".ds-writing-assistant__actions .ds-button:nth-child(1)",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Actions/Button#1": {
+      "selector": ".ds-writing-assistant__actions .ds-button:nth-child(2)",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Actions/Button#2": {
+      "selector": ".ds-writing-assistant__actions .ds-button:nth-child(3)"
+    },
+    "Composer": {
+      "selector": ".ds-writing-assistant__composer"
+    }
+  }
+}
