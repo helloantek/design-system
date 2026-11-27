@@ -600,7 +600,8 @@ export const sharedTests = {
     await page.getByRole('button', { name: 'Opus 4.1 · Thinking' }).click();
     await menu.getByRole('option', { name: 'Haiku 4.5' }).click();
     await page.getByRole('button', { name: 'Haiku 4.5 · Thinking' }).waitFor();
-  },  'context window: a named region; the parts are a list with their sizes; Files opens into files to remove, which frees their room; Compact shows Compacting… and shrinks the conversation; nearly full turns amber': async (page, base) => {
+  },
+  'context window: a named region; the parts are a list with their sizes; Files opens into files to remove, which frees their room; Compact shows Compacting… and shrinks the conversation; nearly full turns amber': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=patterns-context-window--in-use&viewMode=story`);
     const card = page.getByRole('region', { name: 'Context window' });
     await card.waitFor();
@@ -629,7 +630,8 @@ export const sharedTests = {
     await full.waitFor();
     assert.equal(await full.locator('.ds-context-window__left').textContent(), '24.4K left · it will start forgetting soon');
     assert.match(await full.getByRole('button', { name: 'New chat' }).getAttribute('class'), /ds-button--default/, 'New chat comes first');
-  },  'ai answer: an article named by its question; the sources a numbered list of links; related questions in a named group; streaming it is busy with Stop, stopped it says so with Continue, then it finishes': async (page, base) => {
+  },
+  'ai answer: an article named by its question; the sources a numbered list of links; related questions in a named group; streaming it is busy with Stop, stopped it says so with Continue, then it finishes': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=patterns-ai-answer--answered&viewMode=story`);
     const answer = page.getByRole('article', { name: 'How long does a refund to a card take?' });
     await answer.waitFor();
@@ -651,7 +653,8 @@ export const sharedTests = {
     await live.getByRole('button', { name: 'Continue' }).click();
     await live.getByText('Answered in 3.4 s').waitFor({ timeout: 8000 });
     await settles(() => live.locator('.ds-ai-answer__caret').count(), 0, 'no caret once done');
-  },  'cited answer: pointing at a citation lights its sentences and source and says where it is cited; a click opens the passage it quotes, the source chip shows it pressed and closes it again': async (page, base) => {
+  },
+  'cited answer: pointing at a citation lights its sentences and source and says where it is cited; a click opens the passage it quotes, the source chip shows it pressed and closes it again': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=patterns-cited-answer--at-rest&viewMode=story`);
     const card = page.locator('.ds-cited-answer');
     await card.waitFor();
@@ -683,7 +686,8 @@ export const sharedTests = {
     await page.keyboard.press('Shift+Tab');
     assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Source 3, #support', 'the citations are reachable with Tab, the last one just before the sources');
     await settles(async () => (await status.textContent()).trim(), '#support · cited in 1 sentence', 'focus lights it as pointing does');
-  },  'inline diff: each edit is a named group with del and ins; Y accepts and N rejects the focused edit and focus moves on; Accept all closes it out with a summary; Undo steps back': async (page, base) => {
+  },
+  'inline diff: each edit is a named group with del and ins; Y accepts and N rejects the focused edit and focus moves on; Accept all closes it out with a summary; Undo steps back': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=patterns-inline-diff--reviewing&viewMode=story`);
     const card = page.locator('.ds-inline-diff');
     await card.waitFor();
@@ -711,7 +715,8 @@ export const sharedTests = {
     await settles(async () => (await count.textContent()).trim(), '1', 'Undo brings the last step back');
     await card.getByRole('group', { name: 'Edit 1 of 1' }).locator('.ds-inline-diff__popover').getByRole('button', { name: /^Reject/ }).click();
     await settles(async () => (await card.getByRole('status').textContent()).trim(), '1 edit accepted · 2 rejected');
-  },  'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
+  },
+  'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });
     await stepper.waitFor();
