@@ -83,3 +83,4 @@ export {
 export { DsCitedAnswer, DsCitedAnswerIcon, type CitedAnswerLabels, type CitedAnswerPart, type CitedAnswerQuotePart, type CitedAnswerSource } from './lib/cited-answer/cited-answer';
 export { DsInlineDiff, type InlineDiffDecision, type InlineDiffEdit, type InlineDiffLabels, type InlineDiffSegment } from './lib/inline-diff/inline-diff';
 export { DsPromptLibrary, estimateTokens, fillPrompt, promptGaps, promptParts, type PromptLibraryLabels, type PromptTemplate, type PromptValues } from './lib/prompt-library/prompt-library';
+export { DsMemoryPanel, DsMemoryPanelIcon, type Memory, type MemoryPanelLabels } from './lib/memory-panel/memory-panel';

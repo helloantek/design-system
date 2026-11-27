@@ -753,6 +753,57 @@ export const sharedTests = {
     assert.match(await call.textContent(), /0 of 2 filled/, 'another template starts empty');
     assert.equal(await use.isDisabled(), true);
   },
+  'memory panel: a named panel with a switch and category filters; Tab reaches the Edit, Pause and Forget; edit in place (Enter saves, Escape cancels); pause shows Paused; forget leaves Undo (focus moves to it) and Undo brings it back; New memory adds one; off, the footer says so': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-memory-panel--panel&viewMode=story`);
+    const panel = page.getByRole('region', { name: 'Memory' });
+    await panel.waitFor();
+    const use = panel.getByRole('switch', { name: 'Use memory' });
+    assert.equal(await use.isChecked(), true);
+    const tabs = panel.getByRole('group', { name: 'Categories' });
+    assert.equal(await tabs.getByRole('button', { name: 'All 8' }).getAttribute('aria-pressed'), 'true');
+    await tabs.getByRole('button', { name: 'Work 3' }).click();
+    await settles(() => panel.locator('.ds-memory-panel__memory').count(), 3, 'only Work');
+    await tabs.getByRole('button', { name: 'All 8' }).click();
+    await settles(() => panel.locator('.ds-memory-panel__memory').count(), 8);
+    const edit = panel.getByRole('button', { name: 'Edit: Prefers TypeScript examples over plain JavaScript' });
+    await edit.focus();
+    assert.equal(await panel.locator('.ds-memory-panel__memory').first().locator('.ds-memory-panel__actions').evaluate((el) => getComputedStyle(el).opacity), '1', 'focus shows the actions');
+    await page.keyboard.press('Enter');
+    const field = panel.getByRole('textbox', { name: 'Edit' });
+    await field.waitFor();
+    await settles(() => field.evaluate((el) => el === document.activeElement), true, 'the field takes focus');
+    await page.keyboard.press('End');
+    await page.keyboard.type(', with strict types');
+    await page.keyboard.press('Escape');
+    await settles(() => panel.getByText('Prefers TypeScript examples over plain JavaScript', { exact: true }).count(), 1, 'Escape keeps the old words');
+    await settles(() => edit.evaluate((el) => el === document.activeElement), true, 'focus back on Edit');
+    await page.keyboard.press('Enter');
+    await settles(() => field.evaluate((el) => el === document.activeElement), true);
+    await page.keyboard.press('End');
+    await page.keyboard.type(', with strict types');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Prefers TypeScript examples over plain JavaScript, with strict types').waitFor();
+    await panel.getByRole('button', { name: /^Pause: Designs with Inter/ }).click();
+    await settles(async () => /Paused/.test(await panel.locator('.ds-memory-panel__memory', { hasText: 'Designs with Inter' }).textContent()), true);
+    assert.equal((await panel.locator('footer').textContent()).trim(), '8 memories · 2 paused');
+    await panel.getByRole('button', { name: 'Forget: Ships every second Thursday' }).click();
+    const forgot = panel.getByRole('status').filter({ hasText: 'Forgot “Ships every second Thursday”' });
+    await forgot.waitFor();
+    const undo = forgot.getByRole('button', { name: 'Undo' });
+    await settles(() => undo.evaluate((el) => el === document.activeElement), true, 'focus moves to Undo');
+    assert.equal((await tabs.getByRole('button', { name: /^All/ }).textContent()).replace(/\s+/g, ' ').trim(), 'All 7');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Ships every second Thursday', { exact: true }).waitFor();
+    assert.equal(await forgot.count(), 0);
+    await panel.getByRole('button', { name: 'New memory' }).click();
+    await settles(() => page.evaluate(() => document.activeElement?.localName), 'textarea');
+    await page.keyboard.type('Writes in Polish and English');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Writes in Polish and English').waitFor();
+    assert.equal((await panel.locator('footer').textContent()).trim(), '9 memories · 2 paused');
+    await use.click();
+    await settles(async () => (await panel.locator('footer').textContent()).trim(), 'Memory is off – it keeps what it knows but learns nothing new');
+  },
   'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });
