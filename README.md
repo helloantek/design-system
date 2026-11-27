@@ -575,6 +575,35 @@ A pattern from the Sort UI 2.0 **Patterns** page: AI edits to prose, shown in pl
 | All decided: plain text, "3 edits accepted", Undo ⌘ Z | Undo steps back one decision (or all of them); `decisions` / `defaultDecisions` / `onDecisionsChange` | `ds-inline-diff--done` |
 | Texts | `labels`, for other languages | |
 
+## Prompt Library
+
+A pattern from the Sort UI 2.0 **Patterns** page: saved prompt templates with variables (**Prompt Library**, node `6132:2927`).
+
+```tsx
+<PromptLibrary
+  templates={[
+    { id: 'complaint', name: 'Reply to a complaint', category: 'Support', categoryColor: 'violet',
+      text: 'Write a {tone} reply to {customer} who is upset about {problem}. Keep it under 120 words.' },
+    …
+  ]}
+  onCopy={copy}
+  onUse={(prompt, template) => send(prompt)}
+  onNew={(query) => createTemplate(query)}
+/>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The card | `PromptLibrary`: a region named by its heading | `ds-prompt-library` · `__main` |
+| Prompts 4, Search templates | the heading with the count; an Input (search) that filters by name or category (`query` / `defaultQuery` / `onQueryChange`) | `ds-prompt-library__templates` · `__heading` · `__count` |
+| The list, the chosen template | `templates` (`category`, `categoryColor` as a tint Badge); buttons in a list named by the heading, the chosen one `aria-current` (`selected` / `defaultSelected` / `onSelectedChange`) | `ds-prompt-library__list` · `__item` |
+| Nothing matches, New prompt | "No prompts match “xyz”" as a status; `onNew` (Outline sm) | `ds-prompt-library__empty` |
+| The template, 1 of 3 filled | a group named by the template's name; a dot per gap | `ds-prompt-library__template` · `__title` · `__progress` · `__dots` |
+| The sentence and its gaps | `{name}` in `text` becomes a field named after it that grows as you type: dashed while empty, the ring while you type, blue once filled (`values` / `defaultValues` / `onValuesChange`; they clear when another template is chosen) | `ds-prompt-library__sentence` · `__gap` · `__gap--filled` |
+| Preview | the prompt as it will be sent (`fillPrompt`), gaps not yet filled as `{name}`, muted | `ds-prompt-library__preview` · `__prompt` · `__missing` |
+| ~33 tokens · 2 left to fill, Copy, Use prompt ⌘↵ | `countTokens` (about four characters to a token by default); `onCopy`; `onUse`, on once every gap is filled (also ⌘↵ / Ctrl+↵) | `ds-prompt-library__footer` · `__tokens` |
+| Texts | `labels`, for other languages | |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2257,6 +2286,7 @@ These come from the Figma files, not the code:
 - Cited Answer (2.0): in "Clicked" the answer was 8 px in on both sides where the other states (and the header and footer) are 16. It is 16 px now.
 - Button (2.0): Size=xs drew radius 8 like the other sizes, while the patterns set their xs buttons to 6 by hand (and some of those were "fixed" back to 8). The library's xs variants are radius 6 (`radius/sm`) now, so every xs Button in the file is 6 with no override, and the code follows (`--btn-radius`, also in Button Group).
 - Inline Diff (2.0): the states did not add up ("Reviewing" showed 3 edits and said "4 suggestions"; "One accepted" had two edits gone and said 3; "All decided" said "3 edits accepted · 1 rejected" over a text with every edit accepted), the focused edit was not darker than the others though the description says so, and the Accept / Reject popover sat on the focused edit's words. Fixed in Figma: 3, then 2 suggestions (only the first edit accepted) and "3 edits accepted", the focused edit in the strong tints with its words in the text colour (red or green text on the strong tints is under 4.5:1), the popover 4 px above it with radius 10 (the xs buttons' 6 plus its 4 px padding).
+- Prompt Library (2.0): Use prompt was drawn "off" as the Default button at 45 % opacity instead of State=Disabled; Copy, Use prompt and New prompt (Button sm) were radius 6; the template rows were radius 6 when chosen and 8 otherwise; the search (Input Group) was set to 6 over the library's 10; the template column was 14 px from the top (2 px below "Prompts") and 8 px from the right where its left is 16; and "Prompts" and "No prompts match" sat 4 and 6 px in where the rows' names are 8. Fixed in Figma: State=Disabled, radius 8, rows 6, search 10, the column 12 / 16 px, the heading and the note 8 px in.
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).
