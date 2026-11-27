@@ -601,6 +601,121 @@ export const sharedTests = {
     await menu.getByRole('option', { name: 'Haiku 4.5' }).click();
     await page.getByRole('button', { name: 'Haiku 4.5 · Thinking' }).waitFor();
   },
+  'context window: a named region; the parts are a list with their sizes; Files opens into files to remove, which frees their room; Compact shows Compacting… and shrinks the conversation; nearly full turns amber': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-context-window--in-use&viewMode=story`);
+    const card = page.getByRole('region', { name: 'Context window' });
+    await card.waitFor();
+    assert.equal(await card.locator('.ds-context-window__amount').textContent(), '136.4K');
+    assert.equal((await card.locator('.ds-context-window__share').textContent()).trim(), '68%');
+    const parts = card.getByRole('list', { name: 'What fills the context' });
+    assert.equal(await parts.locator(':scope > li').count(), 5);
+    assert.equal(await card.locator('.ds-context-window__cell').count(), 200, 'every cell a slice of the window');
+    assert.equal(await card.locator('.ds-context-window__cell:not(.ds-context-window__cell--free)').count(), 137, 'used cells follow the sizes');
+    const files = card.getByRole('button', { name: 'Files' });
+    assert.equal(await files.getAttribute('aria-expanded'), 'false');
+    await files.click();
+    await settles(() => files.getAttribute('aria-expanded'), 'true');
+    const list = card.locator(`[id="${await files.getAttribute('aria-controls')}"]`);
+    assert.equal(await list.locator('li').count(), 3);
+    await card.getByRole('button', { name: 'Remove orders-2026.csv' }).click();
+    await settles(() => list.locator('li').count(), 2, 'the file is gone');
+    assert.equal(await card.locator('.ds-context-window__amount').textContent(), '94.8K', 'and its room is free');
+    assert.equal(await card.locator('.ds-context-window__left').textContent(), '105.2K left');
+    await card.getByRole('button', { name: 'Compact' }).click();
+    await card.getByRole('status').filter({ hasText: 'Compacting…' }).waitFor();
+    await card.getByRole('button', { name: 'Compact' }).waitFor({ timeout: 5000 });
+    await settles(() => parts.locator(':scope > li').nth(3).locator('.ds-context-window__size').textContent(), '8.4K', 'the conversation is a summary now');
+    await page.goto(`${base}/iframe.html?id=patterns-context-window--nearly-full&viewMode=story`);
+    const full = page.getByRole('region', { name: 'Context window' });
+    await full.waitFor();
+    assert.equal(await full.locator('.ds-context-window__left').textContent(), '24.4K left · it will start forgetting soon');
+    assert.match(await full.getByRole('button', { name: 'New chat' }).getAttribute('class'), /ds-button--default/, 'New chat comes first');
+  },
+  'ai answer: an article named by its question; the sources a numbered list of links; related questions in a named group; streaming it is busy with Stop, stopped it says so with Continue, then it finishes': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-ai-answer--answered&viewMode=story`);
+    const answer = page.getByRole('article', { name: 'How long does a refund to a card take?' });
+    await answer.waitFor();
+    const sources = answer.getByRole('list', { name: 'Sources' });
+    assert.equal(await sources.getByRole('link').count(), 3, 'each source is a link');
+    assert.match((await sources.getByRole('link').first().textContent()).replace(/\s/g, ''), /^Notion1Refundpolicy/);
+    assert.equal((await sources.getByRole('button').textContent()).replace(/\s/g, ''), '+3more');
+    assert.equal(await answer.getByRole('group', { name: 'Related' }).getByRole('button').count(), 2);
+    assert.equal(await answer.getByRole('group', { name: 'Message actions' }).count(), 1, 'the actions are Message Actions');
+    assert.equal((await answer.locator('.ds-ai-answer__meta').textContent()).trim(), 'Answered in 3.4 s');
+    await page.goto(`${base}/iframe.html?id=patterns-ai-answer--streaming&viewMode=story`);
+    const live = page.getByRole('article', { name: 'How long does a refund to a card take?' });
+    await live.waitFor();
+    assert.equal(await live.getAttribute('aria-busy'), 'true', 'busy while it streams');
+    assert.match(await live.getByRole('list', { name: 'Sources' }).textContent(), /Searching…/, 'the sources still load');
+    await live.getByRole('button', { name: 'Stop' }).click();
+    await live.getByText('Stopped – the answer may be incomplete').waitFor();
+    await settles(() => live.getAttribute('aria-busy'), null);
+    await live.getByRole('button', { name: 'Continue' }).click();
+    await live.getByText('Answered in 3.4 s').waitFor({ timeout: 8000 });
+    await settles(() => live.locator('.ds-ai-answer__caret').count(), 0, 'no caret once done');
+  },
+  'cited answer: pointing at a citation lights its sentences and source and says where it is cited; a click opens the passage it quotes, the source chip shows it pressed and closes it again': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-cited-answer--at-rest&viewMode=story`);
+    const card = page.locator('.ds-cited-answer');
+    await card.waitFor();
+    const status = card.locator('.ds-cited-answer__status');
+    assert.equal((await status.textContent()).trim(), 'Ask about any sentence');
+    const cite2 = card.getByRole('button', { name: 'Source 2, Refund policy' }).first();
+    await cite2.hover();
+    await settles(async () => /ds-cited-answer--focused/.test(await card.getAttribute('class')), true, 'the rest fades');
+    assert.equal(await card.locator('.ds-cited-answer__claim[data-lit]').count(), 2, 'both sentences citing source 2 light up');
+    assert.equal((await status.textContent()).trim(), 'Refund policy · cited in 2 sentences');
+    assert.equal((await card.locator('.ds-cited-answer__source[data-active]').textContent()).replace(/\s/g, ''), 'Refundpolicy2');
+    await page.mouse.move(0, 0);
+    await settles(async () => (await status.textContent()).trim(), 'Ask about any sentence', 'moving away puts it back');
+    const cite1 = card.getByRole('button', { name: 'Source 1, Help center' });
+    await cite1.click();
+    await settles(() => cite1.getAttribute('aria-expanded'), 'true');
+    const passage = card.locator(`[id="${await cite1.getAttribute('aria-controls')}"]`);
+    assert.match(await passage.locator('figcaption').textContent(), /Help center · Refunds and returns/);
+    assert.match(await passage.locator('blockquote').textContent(), /within 5–10 working days/);
+    await page.mouse.move(0, 0);
+    const chip = card.getByRole('list', { name: 'Sources' }).getByRole('button', { name: /Help center/ });
+    assert.equal(await chip.getAttribute('aria-pressed'), 'true', 'its source shows it is open');
+    await settles(async () => (await status.textContent()).trim(), 'Help center · cited in 1 sentence');
+    await chip.click();
+    await settles(() => card.locator('figure').count(), 0, 'pressing the source again closes the passage');
+    // The passage closing moves the chips under the mouse; take the mouse away so only focus points.
+    await page.mouse.move(0, 0);
+    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Source 3, #support', 'the citations are reachable with Tab, the last one just before the sources');
+    await settles(async () => (await status.textContent()).trim(), '#support · cited in 1 sentence', 'focus lights it as pointing does');
+  },
+  'inline diff: each edit is a named group with del and ins; Y accepts and N rejects the focused edit and focus moves on; Accept all closes it out with a summary; Undo steps back': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-inline-diff--reviewing&viewMode=story`);
+    const card = page.locator('.ds-inline-diff');
+    await card.waitFor();
+    const text = card.locator('.ds-inline-diff__text');
+    const count = card.locator('.ds-inline-diff__count');
+    assert.equal((await count.textContent()).trim(), '3');
+    const first = card.getByRole('group', { name: 'Edit 1 of 3' });
+    assert.equal(await first.locator('del').textContent(), 'we are very excited to announce that');
+    assert.equal(await card.locator('.ds-inline-diff__popover').count(), 1, 'one popover, on the focused edit');
+    assert.match(await card.locator('.ds-inline-diff__popover').textContent(), /Reject\s*N\s*Accept\s*Y/);
+    await first.focus();
+    await page.keyboard.press('y');
+    await settles(async () => (await count.textContent()).trim(), '2', 'Y accepts');
+    assert.match((await text.textContent()).replace(/\s+/g, ' ').trim(), /^Hi everyone, the new dashboard is live/, 'the struck words leave');
+    await settles(() => page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Edit 1 of 2', 'focus moves to the next edit');
+    await page.keyboard.press('n');
+    await settles(async () => (await count.textContent()).trim(), '1');
+    assert.match((await text.textContent()).replace(/\s+/g, ' ').trim(), /It loads a lot faster than before and/, 'N rejects: the old words stay');
+    assert.equal((await count.textContent()).trim(), '1');
+    assert.equal(await card.getByRole('button', { name: 'Next edit' }).isDisabled(), true, 'one edit left: nothing to move to');
+    await card.getByRole('button', { name: 'Accept all' }).click();
+    await settles(async () => (await card.getByRole('status').textContent()).trim(), '2 edits accepted · 1 rejected');
+    assert.match((await text.textContent()).replace(/\s+/g, ' ').trim(), /CSV in one click\.$/);
+    await card.getByRole('button', { name: /^Undo/ }).click();
+    await settles(async () => (await count.textContent()).trim(), '1', 'Undo brings the last step back');
+    await card.getByRole('group', { name: 'Edit 1 of 1' }).locator('.ds-inline-diff__popover').getByRole('button', { name: /^Reject/ }).click();
+    await settles(async () => (await card.getByRole('status').textContent()).trim(), '1 edit accepted · 2 rejected');
+  },
   'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });

@@ -2,3 +2,4 @@ export { computePlacement, isVertical, OPPOSITE, POPUP_MARGIN, POPUP_MIN_BLOCK_S
 export type { Box, PlacementInput, PlacementResult, PopupSide } from './placement.ts';
 export { firstEnabled, lastEnabled, moveEnabled, pageEnabled, PAGE_SIZE, Typeahead } from './list.ts';
 export { revealInList } from './dom.ts';
+export { contextCells, formatTokens } from './tokens.ts';
