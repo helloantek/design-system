@@ -683,6 +683,34 @@ export const sharedTests = {
     await page.keyboard.press('Shift+Tab');
     assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Source 3, #support', 'the citations are reachable with Tab, the last one just before the sources');
     await settles(async () => (await status.textContent()).trim(), '#support · cited in 1 sentence', 'focus lights it as pointing does');
+  },  'inline diff: each edit is a named group with del and ins; Y accepts and N rejects the focused edit and focus moves on; Accept all closes it out with a summary; Undo steps back': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-inline-diff--reviewing&viewMode=story`);
+    const card = page.locator('.ds-inline-diff');
+    await card.waitFor();
+    const text = card.locator('.ds-inline-diff__text');
+    const count = card.locator('.ds-inline-diff__count');
+    assert.equal((await count.textContent()).trim(), '3');
+    const first = card.getByRole('group', { name: 'Edit 1 of 3' });
+    assert.equal(await first.locator('del').textContent(), 'we are very excited to announce that');
+    assert.equal(await card.locator('.ds-inline-diff__popover').count(), 1, 'one popover, on the focused edit');
+    assert.match(await card.locator('.ds-inline-diff__popover').textContent(), /Reject\s*N\s*Accept\s*Y/);
+    await first.focus();
+    await page.keyboard.press('y');
+    await settles(async () => (await count.textContent()).trim(), '2', 'Y accepts');
+    assert.match((await text.textContent()).replace(/\s+/g, ' ').trim(), /^Hi everyone, the new dashboard is live/, 'the struck words leave');
+    await settles(() => page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Edit 1 of 2', 'focus moves to the next edit');
+    await page.keyboard.press('n');
+    await settles(async () => (await count.textContent()).trim(), '1');
+    assert.match((await text.textContent()).replace(/\s+/g, ' ').trim(), /It loads a lot faster than before and/, 'N rejects: the old words stay');
+    assert.equal((await count.textContent()).trim(), '1');
+    assert.equal(await card.getByRole('button', { name: 'Next edit' }).isDisabled(), true, 'one edit left: nothing to move to');
+    await card.getByRole('button', { name: 'Accept all' }).click();
+    await settles(async () => (await card.getByRole('status').textContent()).trim(), '2 edits accepted · 1 rejected');
+    assert.match((await text.textContent()).replace(/\s+/g, ' ').trim(), /CSV in one click\.$/);
+    await card.getByRole('button', { name: /^Undo/ }).click();
+    await settles(async () => (await count.textContent()).trim(), '1', 'Undo brings the last step back');
+    await card.getByRole('group', { name: 'Edit 1 of 1' }).locator('.ds-inline-diff__popover').getByRole('button', { name: /^Reject/ }).click();
+    await settles(async () => (await card.getByRole('status').textContent()).trim(), '1 edit accepted · 2 rejected');
   },  'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });

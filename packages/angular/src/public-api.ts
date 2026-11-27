@@ -81,3 +81,4 @@ export {
   type AIAnswerStatus,
 } from './lib/ai-answer/ai-answer';
 export { DsCitedAnswer, DsCitedAnswerIcon, type CitedAnswerLabels, type CitedAnswerPart, type CitedAnswerQuotePart, type CitedAnswerSource } from './lib/cited-answer/cited-answer';
+export { DsInlineDiff, type InlineDiffDecision, type InlineDiffEdit, type InlineDiffLabels, type InlineDiffSegment } from './lib/inline-diff/inline-diff';
