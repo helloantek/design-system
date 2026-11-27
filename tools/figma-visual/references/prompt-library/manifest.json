@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 pattern Prompt Library (6132:2927): filling in (the 'customer' gap being typed into), ready, one match and nothing matches (1x PNG, get_screenshot, cropped to the card's own box). renderers/prompt-library.tsx renders them.",
+ "component": "prompt-library",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6132:2927",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "filling",
+   "nodeId": "6293:4961",
+   "props": {
+    "State": "Filling"
+   },
+   "target": "#target > .ds-prompt-library",
+   "nodeW": 760,
+   "nodeH": 273
+  },
+  {
+   "slug": "ready",
+   "nodeId": "6293:5105",
+   "props": {
+    "State": "Ready"
+   },
+   "target": "#target > .ds-prompt-library",
+   "nodeW": 760,
+   "nodeH": 273
+  },
+  {
+   "slug": "search",
+   "nodeId": "6293:5240",
+   "props": {
+    "State": "Search"
+   },
+   "target": "#target > .ds-prompt-library",
+   "nodeW": 760,
+   "nodeH": 241
+  },
+  {
+   "slug": "no-match",
+   "nodeId": "6293:5348",
+   "props": {
+    "State": "No match"
+   },
+   "target": "#target > .ds-prompt-library",
+   "nodeW": 760,
+   "nodeH": 241
+  }
+ ]
+}
