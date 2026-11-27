@@ -66,3 +66,4 @@ export { DsThinkingNote, DsThinkingSource, DsThinkingSources, DsThinkingState, D
 export { DsPopover, DsPopoverActions, DsPopoverClose, DsPopoverTrigger, type PopoverAlign, type PopoverSide } from './lib/popover/popover';
 export { DsSwitch, type SwitchSize } from './lib/switch/switch';
 export { DsMessageActions, MESSAGE_FEEDBACK_REASONS, type MessageActionsLabels, type MessageRating } from './lib/message-actions/message-actions';
+export { DsModelPicker, DsModelPickerIcon, type ModelPickerEffort, type ModelPickerLabels, type ModelPickerModel } from './lib/model-picker/model-picker';
