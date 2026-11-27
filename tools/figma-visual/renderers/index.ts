@@ -60,6 +60,7 @@ import { renderMarker } from './marker';
 import { renderPagination } from './pagination';
 import { renderPermissionRequest } from './permission-request';
 import { renderPopover } from './popover';
+import { renderPromptLibrary } from './prompt-library';
 import { renderProgress, renderProgressCircle } from './progress';
 import { renderRadio, renderRadioCard } from './radio';
 import { renderSelect, renderSelectItem } from './select';
@@ -157,6 +158,7 @@ export const renderers: Record<string, Renderer> = {
   pagination: renderPagination,
   'permission-request': renderPermissionRequest,
   popover: renderPopover,
+  'prompt-library': renderPromptLibrary,
   progress: renderProgress,
   'progress-circle': renderProgressCircle,
   radio: renderRadio,

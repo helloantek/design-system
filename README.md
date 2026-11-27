@@ -575,6 +575,35 @@ A pattern from the Sort UI 2.0 **Patterns** page: AI edits to prose, shown in pl
 | All decided: plain text, "3 edits accepted", Undo ⌘ Z | Undo steps back one decision (or all of them); `decisions` / `defaultDecisions` / `onDecisionsChange` | `ds-inline-diff--done` |
 | Texts | `labels`, for other languages | |
 
+## Prompt Library
+
+A pattern from the Sort UI 2.0 **Patterns** page: saved prompt templates with variables (**Prompt Library**, node `6132:2927`).
+
+```tsx
+<PromptLibrary
+  templates={[
+    { id: 'complaint', name: 'Reply to a complaint', category: 'Support', categoryColor: 'violet',
+      text: 'Write a {tone} reply to {customer} who is upset about {problem}. Keep it under 120 words.' },
+    …
+  ]}
+  onCopy={copy}
+  onUse={(prompt, template) => send(prompt)}
+  onNew={(query) => createTemplate(query)}
+/>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The card | `PromptLibrary`: a region named by its heading | `ds-prompt-library` · `__main` |
+| Prompts 4, Search templates | the heading with the count; an Input (search) that filters by name or category (`query` / `defaultQuery` / `onQueryChange`) | `ds-prompt-library__templates` · `__heading` · `__count` |
+| The list, the chosen template | `templates` (`category`, `categoryColor` as a tint Badge); buttons in a list named by the heading, the chosen one `aria-current` (`selected` / `defaultSelected` / `onSelectedChange`) | `ds-prompt-library__list` · `__item` |
+| Nothing matches, New prompt | "No prompts match “xyz”" as a status; `onNew` (Outline sm) | `ds-prompt-library__empty` |
+| The template, 1 of 3 filled | a group named by the template's name; a dot per gap | `ds-prompt-library__template` · `__title` · `__progress` · `__dots` |
+| The sentence and its gaps | `{name}` in `text` becomes a field named after it that grows as you type: dashed while empty, the ring while you type, blue once filled (`values` / `defaultValues` / `onValuesChange`; they clear when another template is chosen) | `ds-prompt-library__sentence` · `__gap` · `__gap--filled` |
+| Preview | the prompt as it will be sent (`fillPrompt`), gaps not yet filled as `{name}`, muted | `ds-prompt-library__preview` · `__prompt` · `__missing` |
+| ~33 tokens · 2 left to fill, Copy, Use prompt ⌘↵ | `countTokens` (about four characters to a token by default); `onCopy`; `onUse`, on once every gap is filled (also ⌘↵ / Ctrl+↵) | `ds-prompt-library__footer` · `__tokens` |
+| Texts | `labels`, for other languages | |
+
 ## Email Draft
 
 A pattern from the Sort UI 2.0 **Patterns** page: an email an agent wrote, for you to check before it goes (**Email Draft**, node `6130:2704`).
@@ -2328,6 +2357,7 @@ These come from the Figma files, not the code:
 - Cited Answer (2.0): in "Clicked" the answer was 8 px in on both sides where the other states (and the header and footer) are 16. It is 16 px now.
 - Button (2.0): Size=xs drew radius 8 like the other sizes, while the patterns set their xs buttons to 6 by hand (and some of those were "fixed" back to 8). The library's xs variants are radius 6 (`radius/sm`) now, so every xs Button in the file is 6 with no override, and the code follows (`--btn-radius`, also in Button Group).
 - Inline Diff (2.0): the states did not add up ("Reviewing" showed 3 edits and said "4 suggestions"; "One accepted" had two edits gone and said 3; "All decided" said "3 edits accepted · 1 rejected" over a text with every edit accepted), the focused edit was not darker than the others though the description says so, and the Accept / Reject popover sat on the focused edit's words. Fixed in Figma: 3, then 2 suggestions (only the first edit accepted) and "3 edits accepted", the focused edit in the strong tints with its words in the text colour (red or green text on the strong tints is under 4.5:1), the popover 4 px above it with radius 10 (the xs buttons' 6 plus its 4 px padding).
+- Prompt Library (2.0): Use prompt was drawn "off" as the Default button at 45 % opacity instead of State=Disabled; Copy, Use prompt and New prompt (Button sm) were radius 6; the template rows were radius 6 when chosen and 8 otherwise; the search (Input Group) was set to 6 over the library's 10; the template column was 14 px from the top (2 px below "Prompts") and 8 px from the right where its left is 16; and "Prompts" and "No prompts match" sat 4 and 6 px in where the rows' names are 8. Fixed in Figma: State=Disabled, radius 8, rows 6, search 10, the column 12 / 16 px, the heading and the note 8 px in.
 - Email Draft (2.0): Send email (Button sm) was radius 6 and the recipient Select sm 6 where the library draws both 8; "Draft discarded" had Restore 16 px from the edge where Undo (and every footer button) is 8; while editing, the tone toggles moved 8 px left with the field; the open recipient list had 8 px padding with 4 at the bottom and rows of radius 6 and 10. Fixed in Figma: 8, 8, 8 px, the toggles back at 16, the list 4 px all round with radius 6 rows. The Select trigger in code shows the name only; Figma's also shows the address.
 - Writing Assistant (2.0): the header was 8 px in on the left and 16 on the right (the mark sat 8 px from the edge where everything else is 16), "Reply ready" had its conversation 8 px in where the other states are 16, and the composer was Layout=Row, whose placeholder "Ask about anything…" wrapped to two lines in the 368 px panel. Fixed in Figma: 16 px on both sides, and the composer is Layout=Column where it holds the placeholder (the recording one stays a row).
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.

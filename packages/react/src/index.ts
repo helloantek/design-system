@@ -54,6 +54,7 @@ export * from './Pagination';
 export * from './PermissionRequest';
 export * from './Popover';
 export * from './Progress';
+export * from './PromptLibrary';
 export * from './ReviewCenter';
 export * from './Radio';
 export * from './Select';
