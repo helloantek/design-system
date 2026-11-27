@@ -75,3 +75,4 @@ export * from './ToggleGroup';
 export * from './ToolCall';
 export * from './Tooltip';
 export * from './UsageBar';
+export * from './WritingAssistant';

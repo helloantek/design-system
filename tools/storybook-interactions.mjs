@@ -2957,6 +2957,33 @@ Object.assign(tests, {
     await page.getByText('Sent for good.').waitFor({ timeout: 8000 });
     assert.equal(await page.getByRole('region', { name: 'Sent to Mira Holt' }).getByRole('button').count(), 0, 'Undo is gone once it runs out');
   },
+  'writing assistant: a named panel quoting the selection; a suggestion starts the reply, busy while it streams with Stop; ready, Enter replaces and Insert below and Copy are there; Close closes': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-writing-assistant--writing&viewMode=story');
+    const panel = page.getByRole('region', { name: 'Writing assistant' });
+    await panel.waitFor();
+    assert.equal(await panel.getAttribute('aria-describedby') !== null, true, 'it says what it works on');
+    assert.match(await panel.locator('blockquote').textContent(), /^Your refund has been processed/);
+    const suggestions = panel.getByRole('group', { name: 'What should I do with it?' });
+    assert.equal(await suggestions.getByRole('button').count(), 4);
+    await suggestions.getByRole('button', { name: 'Sound more friendly' }).click();
+    assert.equal(await panel.locator('.ds-writing-assistant__ask').textContent(), 'Sound more friendly');
+    const conversation = panel.locator('.ds-writing-assistant__conversation');
+    assert.equal(await conversation.getAttribute('aria-busy'), 'true', 'busy while it streams');
+    await panel.getByRole('button', { name: 'Stop' }).waitFor();
+    assert.equal(await page.evaluate(() => document.activeElement?.classList.contains('ds-writing-assistant__conversation')), true, 'focus stays in the panel');
+    const replace = panel.getByRole('button', { name: /^Replace/ });
+    await replace.waitFor({ timeout: 8000 });
+    assert.equal(await conversation.getAttribute('aria-busy'), null);
+    assert.equal(await replace.getAttribute('aria-keyshortcuts'), 'Enter');
+    await page.keyboard.press('Enter');
+    await page.getByText('Replaced the selection.').waitFor();
+    await panel.getByRole('button', { name: 'Insert below' }).click();
+    await page.getByText('Inserted below the selection.').waitFor();
+    await panel.getByRole('button', { name: 'Copy' }).click();
+    await page.getByText('Copied.').waitFor();
+    await panel.getByRole('button', { name: 'Close' }).click();
+    await suggestions.waitFor();
+  },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');
     const post = page.getByRole('textbox', { name: 'Post' });
