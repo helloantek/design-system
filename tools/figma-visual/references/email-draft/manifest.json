@@ -1,0 +1,16 @@
+{
+ "$comment": "Sort UI 2.0 pattern Email Draft (6130:2704): to review, rewriting it shorter, editing the text in place, sent (Undo) and discarded (Restore) (1x PNG, get_screenshot, cropped to the card's own box). The open recipient list (6291:4780) is the Select's menu, checked with Select. renderers/email-draft.tsx renders them.",
+ "component": "email-draft",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6130:2704",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": { "maxMismatch": 0.08, "maxTint": 0.1, "maxSizeDelta": 2 },
+ "entries": [
+  { "slug": "review", "nodeId": "6291:4656", "props": { "State": "Review" }, "target": "#target > .ds-email-draft", "nodeW": 520, "nodeH": 283 },
+  { "slug": "rewriting", "nodeId": "6291:4911", "props": { "State": "Rewriting" }, "target": "#target > .ds-email-draft", "nodeW": 520, "nodeH": 275 },
+  { "slug": "editing", "nodeId": "6291:5029", "props": { "State": "Editing" }, "target": "#target > .ds-email-draft", "nodeW": 520, "nodeH": 275 },
+  { "slug": "sent", "nodeId": "6291:5165", "props": { "State": "Sent" }, "target": "#target > .ds-email-draft", "nodeW": 520, "nodeH": 60 },
+  { "slug": "discarded", "nodeId": "6291:5176", "props": { "State": "Discarded" }, "target": "#target > .ds-email-draft", "nodeW": 520, "nodeH": 60 }
+ ]
+}

@@ -1,0 +1,172 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-email-draft).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-email-draft__header"
+    },
+    "About": {
+      "selector": ".ds-email-draft__about"
+    },
+    "Title": {
+      "selector": ".ds-email-draft__heading",
+      "skip": [
+        "w"
+      ],
+      "$why": "The row spans the column in code; Figma's hugs the title and the badge."
+    },
+    "INV-3021": {
+      "selector": ".ds-email-draft__header .ds-email-draft__title"
+    },
+    "Header/Badge": {
+      "selector": ".ds-email-draft__heading .ds-badge",
+      "skip": [
+        "w",
+        "p"
+      ],
+      "$why": "It hugs its label, whose width follows the font. Figma's 6 px sides are the Badge's 2 px padding plus its label's 4 px in code."
+    },
+    "Brightline Studio": {
+      "selector": ".ds-email-draft__header .ds-email-draft__subtitle"
+    },
+    "€2,400": {
+      "selector": ".ds-email-draft__amount"
+    },
+    "To": {
+      "selector": ".ds-email-draft__to",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line above the row as its own layer; in code it is the row's top border (45 px), so the card's height is the same."
+    },
+    "To/TEXT": {
+      "selector": ".ds-email-draft__to-label"
+    },
+    "Recipient": {
+      "selector": ".ds-email-draft__to .ds-select__trigger",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w",
+        "p",
+        "g"
+      ],
+      "$why": "Figma's select hugs the name and the address; code's shows the name (the Select trigger shows labels) and hugs it. Figma pads the select's inner Body frame; code pads the trigger itself (Select's own check covers them)."
+    },
+    "Attachment": {
+      "selector": ".ds-email-draft__attachment",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Attachment/TEXT": {
+      "selector": ".ds-email-draft__attachment"
+    },
+    "Rewriting": {
+      "selector": ".ds-email-draft__rewriting",
+      "skip": [
+        "w"
+      ],
+      "$why": "The row spans the body in code; Figma's hugs the spinner and the words."
+    },
+    "Rewriting/TEXT": {
+      "selector": ".ds-email-draft__rewriting"
+    },
+    "Editing": {
+      "selector": ".ds-email-draft__editor",
+      "stroke": "inset-shadow",
+      "skip": [
+        "stroke"
+      ],
+      "$why": "Editing, the field has focus: code draws the ring colour and the focus ring, as Approval Gates' editable arguments do; Figma draws the rest stroke (colors/input)."
+    },
+    "Message": {
+      "selector": ".ds-email-draft__text, .ds-email-draft__editor",
+      "skip": [
+        "fw"
+      ],
+      "$why": "The text mixes weights (the link is Medium), so Figma reports none."
+    },
+    "Tone": {
+      "selector": ".ds-email-draft__tone",
+      "skip": [
+        "w",
+        "p"
+      ],
+      "$why": "The row spans the body in code; Figma's hugs the toggles. While editing, Figma's body is 8 px in (for the field) and the row 8 more; in code the body stays 16 px in and the field reaches 8 px out."
+    },
+    "Toggle Group": {
+      "selector": ".ds-email-draft__tone .ds-toggle-group",
+      "skip": [
+        "w",
+        "g"
+      ],
+      "$why": "It hugs its toggles, whose widths follow the font. Figma's 8 px gap is on the group's inner items frame."
+    },
+    "Tone/Button": {
+      "selector": ".ds-email-draft__tone > .ds-button"
+    },
+    "Footer": {
+      "selector": ".ds-email-draft__footer",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line above the footer as its own layer; in code it is the footer's top border (45 px)."
+    },
+    "Billing agent": {
+      "selector": ".ds-email-draft__agent"
+    },
+    "Footer/Badge": {
+      "selector": ".ds-email-draft__footer .ds-badge",
+      "skip": [
+        "w",
+        "p"
+      ],
+      "$why": "It hugs its label, whose width follows the font. Figma's 6 px sides are the Badge's 2 px padding plus its label's 4 px in code."
+    },
+    "Footer/Button": {
+      "selector": ".ds-email-draft__discard",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Footer/Button#1": {
+      "selector": ".ds-email-draft__footer > .ds-button:last-child",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Line": {
+      "selector": ".ds-email-draft__line"
+    },
+    "Mark": {
+      "selector": ".ds-email-draft__mark"
+    },
+    "Line/Text": {
+      "selector": ".ds-email-draft__summary",
+      "skip": [
+        "w"
+      ],
+      "$why": "It takes the room left beside the button, whose width follows the font."
+    },
+    "Line/Text/TEXT": {
+      "selector": ".ds-email-draft__summary .ds-email-draft__title"
+    },
+    "Line/Text/TEXT#1": {
+      "selector": ".ds-email-draft__summary .ds-email-draft__subtitle"
+    },
+    "Line/Button": {
+      "selector": ".ds-email-draft__line .ds-button",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font.",
+      "stroke": "inset-shadow"
+    }
+  }
+}

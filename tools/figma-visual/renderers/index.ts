@@ -36,6 +36,7 @@ import { renderField, renderFieldGroup, renderFieldLabel, renderFieldSeparator, 
 import { renderFileIcon } from './file-icon';
 import { renderHoverCard } from './hover-card';
 import { renderInlineDiff } from './inline-diff';
+import { renderEmailDraft } from './email-draft';
 import { renderInput } from './input';
 import { renderItem } from './item';
 import { renderMessage } from './message';
@@ -134,6 +135,7 @@ export const renderers: Record<string, Renderer> = {
   'field-set': renderFieldSet,
   'file-icon': renderFileIcon,
   'hover-card': renderHoverCard,
+  'email-draft': renderEmailDraft,
   'inline-diff': renderInlineDiff,
   input: renderInput,
   'input-group-dropdown': renderInputGroupDropdown,
