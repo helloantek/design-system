@@ -61,6 +61,15 @@ export const ExtendedThinking: StoryObj = {
   ),
 };
 
+/** On its own, out of the composer: the same menu, with the thinking switch. */
+export const Alone: StoryObj = {
+  render: () => (
+    <div style={{ paddingBottom: 420 }}>
+      <ModelPicker models={MODELS} defaultValue="sonnet" defaultThinking={false} />
+    </div>
+  ),
+};
+
 /** Without the thinking switch, for models that have none; the menu opens at the trigger's start. */
 export const ModelsOnly: StoryObj = {
   render: () => (

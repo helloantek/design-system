@@ -558,6 +558,49 @@ export const sharedTests = {
     await page.getByRole('button', { name: 'Good response' }).click();
     await settles(async () => (await page.getByText(/^Rating:/).textContent()).trim(), 'Rating: up');
   },
+  'model picker: the trigger opens a named menu; arrows point at a model and show its speed, quality and cost; Enter chooses it; the thinking switch opens the effort and marks the trigger; Escape closes': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-model-picker--alone&viewMode=story`);
+    const trigger = page.getByRole('button', { name: 'Sonnet 4.5', exact: true });
+    await trigger.waitFor();
+    assert.equal(await trigger.getAttribute('aria-haspopup'), 'dialog');
+    await trigger.click();
+    const menu = page.getByRole('dialog', { name: 'Model' });
+    await menu.waitFor();
+    const list = menu.getByRole('listbox', { name: 'Models' });
+    await settles(() => page.evaluate(() => document.activeElement?.getAttribute('role')), 'listbox', 'focus moves to the models');
+    assert.equal(await list.getByRole('option', { selected: true }).getAttribute('id'), await list.getByRole('option', { name: 'Sonnet 4.5' }).getAttribute('id'), 'the chosen model is selected');
+    await page.keyboard.press('ArrowDown');
+    const sonnetId = await list.getByRole('option', { name: 'Sonnet 4.5' }).getAttribute('id');
+    await settles(() => list.getAttribute('aria-activedescendant'), sonnetId, 'the first arrow points at the chosen model');
+    await page.keyboard.press('ArrowDown');
+    const opus = list.getByRole('option', { name: 'Opus 4.1' });
+    const opusId = await opus.getAttribute('id');
+    await settles(() => list.getAttribute('aria-activedescendant'), opusId);
+    assert.equal(await opus.locator('dt').allTextContents().then((t) => t.join(',')), 'Speed,Quality,Cost', 'pointing shows the bars');
+    assert.match(await opus.locator('dd').first().textContent(), /1 of 5/);
+    assert.match(await menu.locator('.ds-model-picker__note').textContent(), /\$15/, 'the note follows the model pointed at');
+    await page.keyboard.press('Enter');
+    await settles(() => menu.isVisible(), false, 'Enter chooses and closes');
+    const chosen = page.getByRole('button', { name: 'Opus 4.1', exact: true });
+    await chosen.waitFor();
+    await settles(() => page.evaluate(() => document.activeElement?.textContent.trim()), 'Opus 4.1', 'focus goes back to the trigger');
+    await chosen.click();
+    await menu.waitFor();
+    const thinking = menu.getByRole('switch', { name: 'Extended thinking' });
+    assert.equal(await menu.getByRole('group', { name: 'Effort' }).count(), 0, 'no effort while thinking is off');
+    await thinking.click();
+    await settles(() => thinking.isChecked(), true);
+    const effort = menu.getByRole('group', { name: 'Effort' });
+    await effort.waitFor();
+    assert.equal(await effort.getByRole('button', { name: 'Medium' }).getAttribute('aria-pressed'), 'true');
+    assert.match(await menu.locator('.ds-model-picker__note').textContent(), /\+ thinking$/);
+    await page.getByRole('button', { name: 'Opus 4.1 · Thinking' }).waitFor();
+    await page.keyboard.press('Escape');
+    await settles(() => menu.isVisible(), false, 'Escape closes it');
+    await page.getByRole('button', { name: 'Opus 4.1 · Thinking' }).click();
+    await menu.getByRole('option', { name: 'Haiku 4.5' }).click();
+    await page.getByRole('button', { name: 'Haiku 4.5 · Thinking' }).waitFor();
+  },
   'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });
