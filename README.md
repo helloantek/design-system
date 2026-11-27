@@ -575,6 +575,46 @@ A pattern from the Sort UI 2.0 **Patterns** page: AI edits to prose, shown in pl
 | All decided: plain text, "3 edits accepted", Undo ⌘ Z | Undo steps back one decision (or all of them); `decisions` / `defaultDecisions` / `onDecisionsChange` | `ds-inline-diff--done` |
 | Texts | `labels`, for other languages | |
 
+## Email Draft
+
+A pattern from the Sort UI 2.0 **Patterns** page: an email an agent wrote, for you to check before it goes (**Email Draft**, node `6130:2704`).
+
+```tsx
+<EmailDraft
+  title="INV-3021"
+  status={<Badge variant="tint" color="amber">Overdue 12 days</Badge>}
+  subtitle="Brightline Studio"
+  amount="€2,400"
+  recipients={[{ value: 'mira', label: 'Mira Holt', description: 'mira@brightline.co' }, …]}
+  attachment="INV-3021.pdf"
+  onRemoveAttachment={remove}
+  text={text}
+  onTextChange={setText}
+  tone={tone}
+  onToneChange={rewrite}
+  rewriting={busy ? 'Rewriting it shorter…' : undefined}
+  agent="Billing agent"
+  subject="Invoice reminder"
+  onSend={send}
+  onUndo={unsend}
+  onUndoExpire={sendForGood}
+>
+  Hi Mira, … <a href={invoiceUrl}>View invoice</a>
+</EmailDraft>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| The card: the subject, its badge, the client, the amount | `EmailDraft`: a region named by `title`; `status`, `subtitle`, `amount` | `ds-email-draft` · `__header` · `__heading` · `__amount` |
+| To: the recipient, the attachment × | `recipients` in a Select sm named "To" (`recipient` / `defaultRecipient` / `onRecipientChange`); `attachment`, `onRemoveAttachment` | `ds-email-draft__to` · `__recipient` · `__attachment` · `__remove` |
+| The text, its link | `children` (or `text`) | `ds-email-draft__text` |
+| Editing the text in place | the pencil (Ghost xs, `aria-pressed`) opens a field on `text` (`defaultText`, `onTextChange`; `editing` / `defaultEditing` / `onEditingChange`); Escape leaves it | `ds-email-draft__editor` |
+| Friendly / Short / Formal | `tones` in a Toggle Group named "Tone" (`tone` / `defaultTone` / `onToneChange`) | `ds-email-draft__tone` |
+| Shorter: "Rewriting it shorter…", Rewriting | `rewriting`: a status with a Spinner, the body busy and its text dimmed; the footer badge says Rewriting | `ds-email-draft--rewriting` · `__rewriting` |
+| Billing agent, Ready for review, Discard, Send email ⌘↵ | `agent`, `agentIcon`; `onDiscard`; `onSend` (also ⌘↵ / Ctrl+↵ anywhere in the card) | `ds-email-draft__footer` · `__agent` · `__discard` |
+| After: Sent to Mira Holt with Undo; Draft discarded with Restore | `outcome` / `defaultOutcome` / `onOutcomeChange`; `subject`, Undo for `undoSeconds` (`onUndo`, `onUndoExpire`); `discardedNote`, `onRestore`; focus follows to Undo / Restore and back to Send | `ds-email-draft--done` · `__line` · `__mark` · `__summary` |
+| Texts | `labels`, for other languages | |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2257,6 +2297,7 @@ These come from the Figma files, not the code:
 - Cited Answer (2.0): in "Clicked" the answer was 8 px in on both sides where the other states (and the header and footer) are 16. It is 16 px now.
 - Button (2.0): Size=xs drew radius 8 like the other sizes, while the patterns set their xs buttons to 6 by hand (and some of those were "fixed" back to 8). The library's xs variants are radius 6 (`radius/sm`) now, so every xs Button in the file is 6 with no override, and the code follows (`--btn-radius`, also in Button Group).
 - Inline Diff (2.0): the states did not add up ("Reviewing" showed 3 edits and said "4 suggestions"; "One accepted" had two edits gone and said 3; "All decided" said "3 edits accepted · 1 rejected" over a text with every edit accepted), the focused edit was not darker than the others though the description says so, and the Accept / Reject popover sat on the focused edit's words. Fixed in Figma: 3, then 2 suggestions (only the first edit accepted) and "3 edits accepted", the focused edit in the strong tints with its words in the text colour (red or green text on the strong tints is under 4.5:1), the popover 4 px above it with radius 10 (the xs buttons' 6 plus its 4 px padding).
+- Email Draft (2.0): Send email (Button sm) was radius 6 and the recipient Select sm 6 where the library draws both 8; "Draft discarded" had Restore 16 px from the edge where Undo (and every footer button) is 8; while editing, the tone toggles moved 8 px left with the field; the open recipient list had 8 px padding with 4 at the bottom and rows of radius 6 and 10. Fixed in Figma: 8, 8, 8 px, the toggles back at 16, the list 4 px all round with radius 6 rows. The Select trigger in code shows the name only; Figma's also shows the address.
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).

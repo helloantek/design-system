@@ -33,6 +33,7 @@ export * from './Dialog';
 export * from './Diff';
 export * from './Drawer';
 export * from './DropdownMenu';
+export * from './EmailDraft';
 export * from './Empty';
 export * from './Field';
 export * from './FileIcon';
