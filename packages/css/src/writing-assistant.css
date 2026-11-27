@@ -1,0 +1,186 @@
+/*
+ * Writing Assistant — the Sort UI 2.0 pattern "Writing Assistant" (node 6132:2642 on the Patterns page 6084:1290 in
+ * file 4JnqgEbdlnKgiFrfmiwEZw): an AI panel for writing next to your text. The text you selected, suggestions to start
+ * from, and a composer you can also dictate into (ai-chat-composer.css). The reply streams in with Stop, then lands
+ * with Replace, Insert below and Copy.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-writing-assistant" aria-labelledby="t" aria-describedby="d">
+ *     <header class="ds-writing-assistant__header"><span class="ds-writing-assistant__mark">…sparkle…</span>
+ *       <span class="ds-writing-assistant__heading"><h2 class="ds-writing-assistant__title" id="t">Writing assistant</h2>
+ *         <p class="ds-writing-assistant__description" id="d">Works on the text you selected</p></span>
+ *       […Close, Ghost xs…]</header>
+ *     <div class="ds-writing-assistant__conversation" aria-live="polite" [aria-busy="true"]>
+ *       [<blockquote class="ds-writing-assistant__selection">Your refund has been processed…</blockquote>]
+ *       [<div class="ds-writing-assistant__suggestions"><p class="ds-writing-assistant__prompt" id="p">What should I do with it?</p>
+ *         <div class="ds-writing-assistant__chips" role="group" aria-labelledby="p">…Outline xs buttons…</div></div>]
+ *       [<p class="ds-writing-assistant__ask">Sound more friendly</p>]
+ *       [<p class="ds-writing-assistant__streaming">Good news – …<span class="ds-writing-assistant__caret"></span></p>
+ *        <div class="ds-writing-assistant__stop">…Stop, Outline xs…</div>]
+ *       [<div class="ds-writing-assistant__result"><p class="ds-writing-assistant__reply">…</p>
+ *         <div class="ds-writing-assistant__actions">…Replace (Default xs, ↵), Insert below (Outline xs), Copy (Ghost xs)…</div></div>]
+ *     </div>
+ *     [<div class="ds-writing-assistant__composer">…AI Chat Composer…</div>]
+ *   </section>
+ */
+@layer ds.components {
+  .ds-writing-assistant {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-writing-assistant p,
+  .ds-writing-assistant blockquote {
+    margin: 0;
+  }
+
+  /* The mark, the name and what it works on, Close on the right. */
+  .ds-writing-assistant__header {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    border-bottom: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-writing-assistant__mark {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--ds-spacing-7);
+    height: var(--ds-spacing-7);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-palette-blue-tint);
+    color: var(--ds-palette-blue-text);
+  }
+
+  .ds-writing-assistant__mark > svg {
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    fill: currentColor;
+  }
+
+  .ds-writing-assistant__heading {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .ds-writing-assistant__title {
+    margin: 0;
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-writing-assistant__description {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-writing-assistant__conversation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    outline: none;
+  }
+
+  /* The selected text, quoted with a line on its left. */
+  .ds-writing-assistant__selection {
+    padding-left: calc(var(--ds-spacing-2-5) + var(--ds-spacing-0-5));
+    box-shadow: inset var(--ds-spacing-0-5) 0 0 var(--ds-border);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-writing-assistant__suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+  }
+
+  .ds-writing-assistant__prompt {
+    color: var(--ds-foreground);
+  }
+
+  .ds-writing-assistant__chips,
+  .ds-writing-assistant__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  /* What they asked, on the right. */
+  .ds-writing-assistant__ask {
+    align-self: flex-end;
+    max-width: 80%;
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-2-5);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+    color: var(--ds-foreground);
+  }
+
+  .ds-writing-assistant__streaming {
+    color: var(--ds-foreground);
+  }
+
+  .ds-writing-assistant__caret {
+    display: inline-block;
+    width: var(--ds-spacing-0-5);
+    height: var(--ds-spacing-4);
+    margin-left: var(--ds-spacing-0-5);
+    background-color: var(--ds-palette-blue-solid);
+    vertical-align: -3px;
+    animation: ds-writing-assistant-caret 1s steps(1) infinite;
+  }
+
+  @keyframes ds-writing-assistant-caret {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-writing-assistant__caret {
+      animation: none;
+    }
+  }
+
+  .ds-writing-assistant__stop {
+    display: flex;
+  }
+
+  /* The reply, ready: in a box with what to do with it. */
+  .ds-writing-assistant__result {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2-5);
+    padding: var(--ds-spacing-2-5) var(--ds-spacing-3);
+    border-radius: var(--ds-radius-sm);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border);
+  }
+
+  .ds-writing-assistant__reply {
+    color: var(--ds-foreground);
+  }
+
+  .ds-writing-assistant__composer {
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-2-5);
+  }
+}
