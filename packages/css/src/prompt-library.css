@@ -1,0 +1,292 @@
+/*
+ * Prompt Library — the Sort UI 2.0 pattern "Prompt Library" (node 6132:2927 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): saved prompt templates with variables. Pick one from the list (search, categories), type
+ * straight into the gaps in its sentence, and watch the prompt assemble below with its token count. Use prompt turns on
+ * once every gap is filled.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-prompt-library" aria-label="Prompt library">
+ *     <div class="ds-prompt-library__main">
+ *       <div class="ds-prompt-library__templates">
+ *         <h3 class="ds-prompt-library__heading" id="h">Prompts <span class="ds-prompt-library__count">4</span></h3>
+ *         …Input with a search icon…
+ *         <ul class="ds-prompt-library__list" aria-labelledby="h">
+ *           <li><button class="ds-prompt-library__item" aria-current="true">Reply to a complaint …Badge, Tint…</button></li>…</ul>
+ *         [or <div class="ds-prompt-library__empty"><p>No prompts match “xyz”</p>…New prompt (Outline sm)…</div>]
+ *       </div>
+ *       <div class="ds-prompt-library__template">
+ *         <div class="ds-prompt-library__title"><h4 class="ds-prompt-library__name">Reply to a complaint</h4>…Badge…
+ *           <span class="ds-prompt-library__progress"><span class="ds-prompt-library__dots" aria-hidden><i class="…--filled"></i><i></i><i></i></span>1 of 3 filled</span></div>
+ *         <p class="ds-prompt-library__sentence">Write a <input class="ds-prompt-library__gap [ds-prompt-library__gap--filled]" aria-label="tone" placeholder="tone"> reply to …</p>
+ *         <div class="ds-prompt-library__preview"><p class="ds-prompt-library__preview-label">Preview</p>
+ *           <p class="ds-prompt-library__prompt">Write a friendly reply to <span class="ds-prompt-library__missing">{customer}</span> …</p></div>
+ *       </div>
+ *     </div>
+ *     <footer class="ds-prompt-library__footer"><span class="ds-prompt-library__tokens">~33 tokens · 2 left to fill</span>
+ *       …Copy (Outline sm), Use prompt (Default sm, ⌘ ↵, disabled until every gap is filled)…</footer>
+ *   </section>
+ */
+@layer ds.components {
+  .ds-prompt-library {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-prompt-library :where(p, h3, h4, ul) {
+    margin: 0;
+  }
+
+  /* The list on the left, the chosen template on the right, a rule between them. */
+  .ds-prompt-library__main {
+    display: flex;
+    min-height: 0;
+  }
+
+  .ds-prompt-library__templates {
+    box-sizing: border-box;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    width: calc(var(--ds-spacing-60) + var(--ds-spacing-2-5) + var(--ds-stroke-width-1));
+    padding: var(--ds-spacing-3) var(--ds-spacing-2-5);
+    border-right: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-prompt-library__heading {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ds-spacing-1-5);
+    padding: 0 0 var(--ds-spacing-1) var(--ds-spacing-2);
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-prompt-library__count {
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-normal);
+  }
+
+  .ds-prompt-library__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A template: its name, its category on the right; the chosen one on the muted fill. */
+  .ds-prompt-library__item {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    width: 100%;
+    margin: 0;
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-1-5) var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .ds-prompt-library__item > :first-child {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-prompt-library__item > .ds-badge {
+    flex: none;
+  }
+
+  .ds-prompt-library__item:hover,
+  .ds-prompt-library__item[aria-current='true'] {
+    background-color: var(--ds-muted);
+  }
+
+  .ds-prompt-library__item:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* Nothing matches: the words, then New prompt. */
+  .ds-prompt-library__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ds-spacing-1-5);
+    padding: var(--ds-spacing-2-5) 0 0 var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+  }
+
+  /* The chosen template: its name and how many gaps are filled, the sentence, the prompt it makes. */
+  .ds-prompt-library__template {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--ds-spacing-3);
+    min-width: 0;
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+  }
+
+  .ds-prompt-library__title {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    min-width: 0;
+  }
+
+  .ds-prompt-library__name {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-prompt-library__title > .ds-badge {
+    flex: none;
+  }
+
+  .ds-prompt-library__progress {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    margin-left: auto;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-prompt-library__dots {
+    display: inline-flex;
+    gap: var(--ds-spacing-0-5);
+  }
+
+  .ds-prompt-library__dots > i {
+    width: var(--ds-spacing-1-5);
+    height: var(--ds-spacing-1-5);
+    border-radius: var(--ds-radius-full);
+    background-color: var(--ds-border);
+  }
+
+  .ds-prompt-library__dots > .ds-prompt-library__dot--filled {
+    background-color: var(--ds-palette-blue-solid);
+  }
+
+  /* The sentence: lines 28 px apart (a 22 px gap and 6 px between rows), without the extra 4 px above and below. */
+  .ds-prompt-library__sentence {
+    margin: calc(-1 * var(--ds-spacing-1)) 0;
+    color: var(--ds-foreground);
+    line-height: var(--ds-spacing-7);
+    overflow-wrap: anywhere;
+  }
+
+  /* A gap to type into: dashed while empty, the input stroke and ring while you type, blue once filled. It grows
+     with what you type. */
+  .ds-prompt-library__gap {
+    box-sizing: border-box;
+    min-width: var(--ds-spacing-8);
+    max-width: 100%;
+    height: calc(var(--ds-spacing-5) + var(--ds-spacing-0-5));
+    margin: 0;
+    padding: var(--ds-stroke-width-1) var(--ds-spacing-1-5);
+    border: var(--ds-stroke-width-1) dashed var(--ds-border);
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: inherit;
+    vertical-align: baseline;
+    field-sizing: content;
+  }
+
+  .ds-prompt-library__gap::placeholder {
+    color: var(--ds-muted-foreground);
+    opacity: 1;
+  }
+
+  .ds-prompt-library__gap--filled {
+    border-color: transparent;
+    background-color: var(--ds-palette-blue-tint);
+    color: var(--ds-palette-blue-text);
+  }
+
+  .ds-prompt-library__gap:focus {
+    border-color: transparent;
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-3) var(--ds-ring), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  /* The prompt as it will be sent; gaps not yet filled stay as {name}, muted. */
+  .ds-prompt-library__preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2-5);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-prompt-library__preview-label {
+    color: var(--ds-muted-foreground);
+    font-weight: var(--ds-font-weight-medium);
+    text-transform: uppercase;
+  }
+
+  .ds-prompt-library__prompt {
+    color: var(--ds-foreground);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-prompt-library__missing {
+    color: var(--ds-muted-foreground);
+  }
+
+  /* The token count and what is left, then Copy and Use prompt 8 px from the edge. */
+  .ds-prompt-library__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-2) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-prompt-library__tokens {
+    flex: 1 1 0;
+    min-width: 0;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+}
