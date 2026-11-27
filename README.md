@@ -575,6 +575,35 @@ A pattern from the Sort UI 2.0 **Patterns** page: AI edits to prose, shown in pl
 | All decided: plain text, "3 edits accepted", Undo ⌘ Z | Undo steps back one decision (or all of them); `decisions` / `defaultDecisions` / `onDecisionsChange` | `ds-inline-diff--done` |
 | Texts | `labels`, for other languages | |
 
+## Memory Panel
+
+A pattern from the Sort UI 2.0 **Patterns** page: what the assistant remembers about you (**Memory Panel**, node `6132:3066`).
+
+```tsx
+<MemoryPanel
+  memories={memories} // { id, text, category, source: 'From chat · Oct 12', sourceIcon, paused }
+  onMemoriesChange={save}
+  enabled={memoryOn}
+  onEnabledChange={setMemoryOn}
+  onForget={(memory) => …}
+  listMaxHeight={378}
+/>
+```
+
+| Figma | React | CSS class |
+|---|---|---|
+| Memory 8, Use memory | `MemoryPanel`: a region named "Memory", the count (Badge), a Switch sm named "Use memory" (`enabled` / `defaultEnabled` / `onEnabledChange`) | `ds-memory-panel` · `__header` · `__use` |
+| All 8 · Preferences 3 · Work 3 · Projects 2, search | toggle buttons in a group named "Categories" (`category` / `defaultCategory` / `onCategoryChange`; `categories` sets the order); the search button opens a field over them (Escape closes it) | `ds-memory-panel__categories` · `__tab` · `__count` |
+| PREFERENCES, WORK | a group per category, named by its heading | `ds-memory-panel__group` · `__group-title` |
+| A memory: what, where from and when, Paused | `memories`: `text`, `source`, `sourceIcon`, `paused` (an amber tint Badge, the words muted) | `ds-memory-panel__memory` · `__fact` · `__source` |
+| Pointed at: edit, pause, forget | Ghost xs buttons named after the memory; shown on hover and when focused (Tab reaches them) | `ds-memory-panel__actions` |
+| Editing a memory in place | Edit opens a field (`defaultEditing`); Save (Enter) and Cancel (Escape), focus back on Edit | `ds-memory-panel__editing` · `__editor` |
+| Forgotten, with Undo | a status line at the foot of the list, focus on Undo; Undo puts the memory back where it was (`onForget`, `onRestore`) | `ds-memory-panel__forgot` |
+| New memory | adds one to the category shown (or the first), as "You added" (`newMemory` makes your own) | `ds-memory-panel__new` |
+| 8 memories · 1 paused; Memory off | the footer; off, the memories' words muted (Figma fades the list to 50 %, under 4.5:1) and "Memory is off – it keeps what it knows but learns nothing new" | `ds-memory-panel__footer` · `ds-memory-panel--off` |
+| The list's height | it scrolls past `listMaxHeight` (Figma's frames show its top) | `--memory-panel-list-max-height` |
+| Texts | `labels`, for other languages | |
+
 ## Aspect Ratio
 
 A box that keeps a width-to-height ratio, filled by its picture: Sort UI 2.0 **Aspect Ratio** (ratio).
@@ -2257,6 +2286,7 @@ These come from the Figma files, not the code:
 - Cited Answer (2.0): in "Clicked" the answer was 8 px in on both sides where the other states (and the header and footer) are 16. It is 16 px now.
 - Button (2.0): Size=xs drew radius 8 like the other sizes, while the patterns set their xs buttons to 6 by hand (and some of those were "fixed" back to 8). The library's xs variants are radius 6 (`radius/sm`) now, so every xs Button in the file is 6 with no override, and the code follows (`--btn-radius`, also in Button Group).
 - Inline Diff (2.0): the states did not add up ("Reviewing" showed 3 edits and said "4 suggestions"; "One accepted" had two edits gone and said 3; "All decided" said "3 edits accepted · 1 rejected" over a text with every edit accepted), the focused edit was not darker than the others though the description says so, and the Accept / Reject popover sat on the focused edit's words. Fixed in Figma: 3, then 2 suggestions (only the first edit accepted) and "3 edits accepted", the focused edit in the strong tints with its words in the text colour (red or green text on the strong tints is under 4.5:1), the popover 4 px above it with radius 10 (the xs buttons' 6 plus its 4 px padding).
+- Memory Panel (2.0): the memory rows were radius 6 when pointed at and 10 otherwise; the edit, pause and forget actions and the search were bare 16 px icons, not buttons; "Forgotten" had its list 8 px in where the others are 16, and its Undo line's words 10 px in where the memories' are 8. Fixed in Figma: rows 6, the actions and the search Ghost xs icon Buttons, 16 and 8 px. The counts (All 8) cover more memories than the frames show: the list scrolls, and the code takes `listMaxHeight`.
 - Thinking Loader (2.0): Stop was a drawn frame (muted fill, 2 × 8 px padding, radius 6) instead of the library Button; it is Button Variant=Secondary, Size=xs now, as in the code.
 - Thinking State (2.0): the running steps used the small Spinner (12 px) beside 16 px icons, so their words started 4 px left of the others; they use the default Spinner now, as the drawing rules ask (the code draws it 16 px, Figma 17 px).
 - Stepper (2.0): the Stepper sets left every step's Number at "1", and Style=Bar drew the Upcoming, Complete and Error labels in Regular while Current was Medium; both were fixed in Figma (numbers 1–5, all labels Medium). The Error label and the Bar's cross were `colors/destructive` (3.8:1 on white, below 4.5:1); they are `colors/destructive-foreground` now, in Figma and in code, as other error texts. The Error marker's cross is `colors/primary-foreground` (it was `destructive-foreground`, dark red on red); in Dark that is black on the same red. The code numbers steps by their place. Figma's Inter draws "1" 7 px wide at 13 px and the web font 5.33 px, so the Bar's number box is narrower in code (the spec check skips that width).

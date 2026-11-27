@@ -43,6 +43,7 @@ export * from './InputOTP';
 export * from './Item';
 export * from './Kbd';
 export * from './Marker';
+export * from './MemoryPanel';
 export * from './Menubar';
 export * from './Message';
 export * from './MessageActions';

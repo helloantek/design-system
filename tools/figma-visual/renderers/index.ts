@@ -38,6 +38,7 @@ import { renderHoverCard } from './hover-card';
 import { renderInlineDiff } from './inline-diff';
 import { renderInput } from './input';
 import { renderItem } from './item';
+import { renderMemoryPanel } from './memory-panel';
 import { renderMessage } from './message';
 import { renderMessageActions } from './message-actions';
 import { renderMessageScroller } from './message-scroller';
@@ -138,6 +139,7 @@ export const renderers: Record<string, Renderer> = {
   'input-group-dropdown': renderInputGroupDropdown,
   'input-otp': renderInputOTP,
   item: renderItem,
+  'memory-panel': renderMemoryPanel,
   message: renderMessage,
   'message-actions': renderMessageActions,
   'message-scroller': renderMessageScroller,
