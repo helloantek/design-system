@@ -2660,11 +2660,89 @@ Object.assign(tests, {
     await status.filter({ hasText: 'Thought for 5 s' }).waitFor({ timeout: 8000 });
     assert.equal(await page.locator('.ds-thinking--done svg').getAttribute('aria-hidden'), 'true');
   },
-
-
-
-
-
+  'memory panel: a named panel with a switch and category filters; Tab reaches the Edit, Pause and Forget; edit in place (Enter saves, Escape cancels); pause shows Paused; forget leaves Undo (focus moves to it) and Undo brings it back; New memory adds one; off, the footer says so': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-memory-panel--panel&viewMode=story');
+    const panel = page.getByRole('region', { name: 'Memory' });
+    await panel.waitFor();
+    const use = panel.getByRole('switch', { name: 'Use memory' });
+    assert.equal(await use.isChecked(), true);
+    const tabs = panel.getByRole('group', { name: 'Categories' });
+    assert.equal(await tabs.getByRole('button', { name: 'All 8' }).getAttribute('aria-pressed'), 'true');
+    await tabs.getByRole('button', { name: 'Work 3' }).click();
+    assert.equal(await panel.locator('.ds-memory-panel__memory').count(), 3, 'only Work');
+    await tabs.getByRole('button', { name: 'All 8' }).click();
+    const edit = panel.getByRole('button', { name: 'Edit: Prefers TypeScript examples over plain JavaScript' });
+    await edit.focus();
+    assert.equal(await panel.locator('.ds-memory-panel__memory').first().locator('.ds-memory-panel__actions').evaluate((el) => getComputedStyle(el).opacity), '1', 'focus shows the actions');
+    await page.keyboard.press('Enter');
+    const field = panel.getByRole('textbox', { name: 'Edit' });
+    assert.equal(await field.evaluate((el) => el === document.activeElement), true, 'the field takes focus');
+    await page.keyboard.press('End');
+    await page.keyboard.type(', with strict types');
+    await page.keyboard.press('Escape');
+    assert.equal(await panel.getByText('Prefers TypeScript examples over plain JavaScript', { exact: true }).count(), 1, 'Escape keeps the old words');
+    assert.equal(await edit.evaluate((el) => el === document.activeElement), true, 'focus back on Edit');
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('End');
+    await page.keyboard.type(', with strict types');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Prefers TypeScript examples over plain JavaScript, with strict types').waitFor();
+    await panel.getByRole('button', { name: /^Pause: Designs with Inter/ }).click();
+    assert.match(await panel.locator('.ds-memory-panel__memory', { hasText: 'Designs with Inter' }).textContent(), /Paused/);
+    assert.equal(await panel.locator('footer').textContent(), '8 memories · 2 paused');
+    await panel.getByRole('button', { name: 'Forget: Ships every second Thursday' }).click();
+    const forgot = panel.getByRole('status').filter({ hasText: 'Forgot “Ships every second Thursday”' });
+    await forgot.waitFor();
+    const undo = forgot.getByRole('button', { name: 'Undo' });
+    assert.equal(await undo.evaluate((el) => el === document.activeElement), true, 'focus moves to Undo');
+    assert.equal(await tabs.getByRole('button', { name: /^All/ }).textContent(), 'All 7');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Ships every second Thursday', { exact: true }).waitFor();
+    assert.equal(await forgot.count(), 0);
+    await panel.getByRole('button', { name: 'New memory' }).click();
+    await page.keyboard.type('Writes in Polish and English');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Writes in Polish and English').waitFor();
+    assert.equal(await panel.locator('footer').textContent(), '9 memories · 2 paused');
+    await use.click();
+    assert.equal(await panel.locator('footer').textContent(), 'Memory is off – it keeps what it knows but learns nothing new');
+  },
+  'prompt library: a named list of templates, the chosen one aria-current; typing into the gaps fills the preview and the count; Use prompt turns on once all are filled (and ⌘↵ uses it); search filters, nothing matching offers New prompt; another template starts empty': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-prompt-library--library&viewMode=story');
+    const card = page.getByRole('region', { name: /^Prompts/ });
+    await card.waitFor();
+    const list = card.getByRole('list', { name: /^Prompts/ });
+    assert.equal(await list.getByRole('listitem').count(), 4);
+    assert.equal(await list.getByRole('button', { name: /^Reply to a complaint/ }).getAttribute('aria-current'), 'true');
+    const template = card.getByRole('group', { name: 'Reply to a complaint' });
+    assert.match(await template.textContent(), /1 of 3 filled/);
+    const use = card.getByRole('button', { name: /^Use prompt/ });
+    assert.equal(await use.isDisabled(), true, 'off until every gap is filled');
+    assert.equal(await use.getAttribute('aria-keyshortcuts'), 'Meta+Enter Control+Enter');
+    await template.getByRole('textbox', { name: 'customer' }).fill('Ana Silva');
+    assert.match(await card.locator('.ds-prompt-library__prompt').textContent(), /reply to Ana Silva who is upset about \{problem\}/);
+    assert.match(await card.locator('.ds-prompt-library__tokens').textContent(), /1 left to fill$/);
+    await template.getByRole('textbox', { name: 'problem' }).fill('a late refund');
+    assert.match(await template.textContent(), /3 of 3 filled/);
+    assert.match(await card.locator('.ds-prompt-library__tokens').textContent(), /ready$/);
+    assert.equal(await use.isDisabled(), false);
+    await page.keyboard.press('Control+Enter');
+    await page.getByText('Used: Write a friendly reply to Ana Silva who is upset about a late refund. Keep it under 120 words.').waitFor();
+    await card.getByRole('button', { name: /^Copy/ }).click();
+    await page.getByText('Copied.').waitFor();
+    const search = card.getByRole('searchbox', { name: 'Search templates' });
+    await search.fill('sales');
+    assert.equal(await list.getByRole('listitem').count(), 1, 'a category matches too');
+    await search.fill('xyz');
+    await card.getByText('No prompts match “xyz”').waitFor();
+    await card.getByRole('button', { name: 'New prompt' }).click();
+    await page.getByText('New prompt: xyz').waitFor();
+    await search.fill('');
+    await list.getByRole('button', { name: /^Summarise a call/ }).click();
+    const call = card.getByRole('group', { name: 'Summarise a call' });
+    assert.match(await call.textContent(), /0 of 2 filled/, 'another template starts empty');
+    assert.equal(await use.isDisabled(), true);
+  },
   'email draft: a card named by its subject; a tone rewrites it (busy, status) and lands; the pencil edits in place and Escape leaves; the attachment comes off; Ctrl+Enter sends and folds with Undo (focus follows), Undo brings it back; Discard folds with Restore; Undo runs out': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-email-draft--review&viewMode=story');
     const card = page.getByRole('region', { name: 'INV-3021' });

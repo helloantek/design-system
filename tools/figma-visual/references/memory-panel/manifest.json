@@ -1,0 +1,61 @@
+{
+ "$comment": "Sort UI 2.0 pattern Memory Panel (6132:3066): the list with the first memory pointed at, editing a memory in place, just forgotten with Undo, and memory off (1x PNG, get_screenshot, cropped to the panel's own box). The list holds 8 memories and scrolls; Figma's frames show its top. renderers/memory-panel.tsx renders them.",
+ "component": "memory-panel",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6132:3066",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "list",
+   "nodeId": "6294:5110",
+   "props": {
+    "State": "List"
+   },
+   "target": "#target > .ds-memory-panel",
+   "nodeW": 430,
+   "nodeH": 543
+  },
+  {
+   "slug": "editing",
+   "nodeId": "6294:5226",
+   "props": {
+    "State": "Editing"
+   },
+   "target": "#target > .ds-memory-panel",
+   "nodeW": 430,
+   "nodeH": 537
+  },
+  {
+   "slug": "forgotten",
+   "nodeId": "6294:5330",
+   "props": {
+    "State": "Forgotten"
+   },
+   "target": "#target > .ds-memory-panel",
+   "nodeW": 430,
+   "nodeH": 567
+  },
+  {
+   "slug": "off",
+   "nodeId": "6294:5420",
+   "props": {
+    "State": "Off"
+   },
+   "target": "#target > .ds-memory-panel",
+   "nodeW": 430,
+   "nodeH": 523,
+   "specOverride": {
+    "PREFERENCES/Memory/Text/TEXT": {
+     "color": "#626262"
+    }
+   },
+   "$why": "Off, Figma fades the whole list to 50 %, which takes the words under 4.5:1 (axe color-contrast); code mutes the memories' words (colors/muted-foreground) instead."
+  }
+ ]
+}
