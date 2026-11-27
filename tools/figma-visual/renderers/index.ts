@@ -46,6 +46,7 @@ import { renderBubble } from './bubble';
 import { renderCarousel } from './carousel';
 import { renderChart } from './chart';
 import { renderUsageBar } from './usage-bar';
+import { renderWritingAssistant } from './writing-assistant';
 import { renderSidebar } from './sidebar';
 import { renderCommand } from './command';
 import { renderMenubar } from './menubar';
@@ -182,4 +183,5 @@ export const renderers: Record<string, Renderer> = {
   'tool-call': renderToolCall,
   tooltip: renderTooltip,
   'usage-bar': renderUsageBar,
+  'writing-assistant': renderWritingAssistant,
 };

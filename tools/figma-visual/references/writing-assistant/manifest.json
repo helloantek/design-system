@@ -1,0 +1,55 @@
+{
+ "$comment": "Sort UI 2.0 pattern Writing Assistant (6132:2642): empty (the selected text and where to start), replying (streaming, Stop), reply ready (Replace, Insert below, Copy) and dictating (1x PNG, get_screenshot, cropped to the panel's own box). renderers/writing-assistant.tsx renders them.",
+ "component": "writing-assistant",
+ "figmaFile": "4JnqgEbdlnKgiFrfmiwEZw",
+ "componentSet": "6132:2642",
+ "brand": "theme-1",
+ "scheme": "light",
+ "thresholds": {
+  "maxMismatch": 0.08,
+  "maxTint": 0.1,
+  "maxSizeDelta": 2
+ },
+ "entries": [
+  {
+   "slug": "empty",
+   "nodeId": "6292:4845",
+   "props": {
+    "State": "Empty"
+   },
+   "target": "#target > .ds-writing-assistant",
+   "nodeW": 400,
+   "nodeH": 313
+  },
+  {
+   "slug": "replying",
+   "nodeId": "6292:4910",
+   "props": {
+    "State": "Replying"
+   },
+   "target": "#target > .ds-writing-assistant",
+   "nodeW": 400,
+   "nodeH": 331
+  },
+  {
+   "slug": "reply-ready",
+   "nodeId": "6292:4987",
+   "props": {
+    "State": "Reply ready"
+   },
+   "target": "#target > .ds-writing-assistant",
+   "nodeW": 400,
+   "nodeH": 337
+  },
+  {
+   "slug": "dictating",
+   "nodeId": "6292:5072",
+   "props": {
+    "State": "Dictating"
+   },
+   "target": "#target > .ds-writing-assistant",
+   "nodeW": 400,
+   "nodeH": 273
+  }
+ ]
+}
