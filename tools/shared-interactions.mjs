@@ -600,7 +600,8 @@ export const sharedTests = {
     await page.getByRole('button', { name: 'Opus 4.1 · Thinking' }).click();
     await menu.getByRole('option', { name: 'Haiku 4.5' }).click();
     await page.getByRole('button', { name: 'Haiku 4.5 · Thinking' }).waitFor();
-  },  'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
+  },
+  'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });
     await stepper.waitFor();
