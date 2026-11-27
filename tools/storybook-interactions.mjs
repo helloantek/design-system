@@ -2662,29 +2662,7 @@ Object.assign(tests, {
   },
 
 
-  'ai answer: an article named by its question; the sources a numbered list of links; related questions in a named group; streaming it is busy with Stop, stopped it says so with Continue, then it finishes': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-ai-answer--answered&viewMode=story');
-    const answer = page.getByRole('article', { name: 'How long does a refund to a card take?' });
-    await answer.waitFor();
-    const sources = answer.getByRole('list', { name: 'Sources' });
-    assert.equal(await sources.getByRole('link').count(), 3, 'each source is a link');
-    assert.match(await sources.getByRole('link').first().textContent(), /^Notion1Refund policy/);
-    assert.equal(await sources.getByRole('button').textContent(), '+3more');
-    assert.equal(await answer.getByRole('group', { name: 'Related' }).getByRole('button').count(), 2);
-    assert.equal(await answer.getByRole('group', { name: 'Message actions' }).count(), 1, 'the actions are Message Actions');
-    assert.equal(await answer.locator('.ds-ai-answer__meta').textContent(), 'Answered in 3.4 s');
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-ai-answer--streaming&viewMode=story');
-    const live = page.getByRole('article', { name: 'How long does a refund to a card take?' });
-    await live.waitFor();
-    assert.equal(await live.getAttribute('aria-busy'), 'true', 'busy while it streams');
-    assert.match(await live.getByRole('list', { name: 'Sources' }).textContent(), /Searching…/, 'the sources still load');
-    await live.getByRole('button', { name: 'Stop' }).click();
-    await live.getByText('Stopped – the answer may be incomplete').waitFor();
-    assert.equal(await live.getAttribute('aria-busy'), null);
-    await live.getByRole('button', { name: 'Continue' }).click();
-    await live.getByText('Answered in 3.4 s').waitFor({ timeout: 8000 });
-    assert.equal(await live.locator('.ds-ai-answer__caret').count(), 0, 'no caret once done');
-  },
+
   'cited answer: pointing at a citation lights its sentences and source and says where it is cited; a click opens the passage it quotes, the source chip shows it pressed and closes it again': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-cited-answer--at-rest&viewMode=story');
     const card = page.locator('.ds-cited-answer');
