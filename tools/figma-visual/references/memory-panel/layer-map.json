@@ -1,0 +1,181 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-memory-panel).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Header": {
+      "selector": ".ds-memory-panel__header"
+    },
+    "Memory": {
+      "selector": ".ds-memory-panel__title"
+    },
+    "Header/Badge": {
+      "selector": ".ds-memory-panel__header .ds-badge",
+      "skip": [
+        "w",
+        "p"
+      ],
+      "$why": "It hugs its label, whose width follows the font. Figma's 6 px sides are the Badge's 2 px padding plus its label's 4 px in code."
+    },
+    "Use memory": {
+      "selector": ".ds-memory-panel__use > span"
+    },
+    "Switch": {
+      "selector": ".ds-memory-panel__use .ds-switch__track, .ds-memory-panel__use .ds-switch",
+      "skip": [
+        "p",
+        "g",
+        "fill",
+        "stroke",
+        "r"
+      ],
+      "$why": "Switch's own check covers its insides."
+    },
+    "Categories": {
+      "selector": ".ds-memory-panel__categories",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line under the row as its own layer; in code it is the row's bottom border (39 px)."
+    },
+    "All": {
+      "selector": ".ds-memory-panel__tab:first-child",
+      "skip": [
+        "w",
+        "g"
+      ],
+      "$why": "It hugs its label and count, whose widths follow the font; the space between them is a space in code."
+    },
+    "All/TEXT": {
+      "selector": ".ds-memory-panel__tab:first-child"
+    },
+    "All/TEXT#1": {
+      "selector": ".ds-memory-panel__tab:first-child .ds-memory-panel__count"
+    },
+    "Preferences": {
+      "selector": ".ds-memory-panel__tab:nth-child(2)",
+      "skip": [
+        "w",
+        "g"
+      ],
+      "$why": "It hugs its label and count, whose widths follow the font; the space between them is a space in code."
+    },
+    "Preferences/TEXT": {
+      "selector": ".ds-memory-panel__tab:nth-child(2)"
+    },
+    "Categories/Button": {
+      "selector": ".ds-memory-panel__categories > .ds-button"
+    },
+    "Memories": {
+      "selector": ".ds-memory-panel__memories",
+      "skip": [
+        "h",
+        "opacity"
+      ],
+      "$why": "The list holds all 8 memories and scrolls (listMaxHeight is Figma's height); the frame's own height is checked by the panel's. Off, Figma fades the list to 50 % (its words fall under 4.5:1); code mutes the words instead."
+    },
+    "PREFERENCES/Title": {
+      "selector": ".ds-memory-panel__group-title",
+      "skip": [
+        "w"
+      ],
+      "$why": "The heading spans the list in code; Figma's hugs the word."
+    },
+    "PREFERENCES/Title/TEXT": {
+      "selector": ".ds-memory-panel__group-title"
+    },
+    "PREFERENCES/Memory": {
+      "selector": ".ds-memory-panel__memory"
+    },
+    "PREFERENCES/Memory/Text": {
+      "selector": ".ds-memory-panel__memory .ds-memory-panel__text"
+    },
+    "PREFERENCES/Memory/Text/TEXT": {
+      "selector": ".ds-memory-panel__memory .ds-memory-panel__fact"
+    },
+    "PREFERENCES/Memory/Source/TEXT": {
+      "selector": ".ds-memory-panel__memory .ds-memory-panel__source"
+    },
+    "PREFERENCES/Memory#1": {
+      "selector": ".ds-memory-panel__memory ~ .ds-memory-panel__memory"
+    },
+    "PREFERENCES/Memory#1/Text/TEXT": {
+      "selector": ".ds-memory-panel__memory ~ .ds-memory-panel__memory .ds-memory-panel__fact"
+    },
+    "PREFERENCES/Memory#1/Badge": {
+      "selector": ".ds-memory-panel__source .ds-badge",
+      "skip": [
+        "w",
+        "p"
+      ],
+      "$why": "It hugs its label, whose width follows the font. Figma's 6 px sides are the Badge's 2 px padding plus its label's 4 px in code."
+    },
+    "Actions": {
+      "selector": ".ds-memory-panel__memory .ds-memory-panel__actions"
+    },
+    "Actions/Button": {
+      "selector": ".ds-memory-panel__memory .ds-memory-panel__actions .ds-button"
+    },
+    "Editing": {
+      "selector": ".ds-memory-panel__editing",
+      "stroke": "inset-shadow",
+      "skip": [
+        "stroke"
+      ],
+      "$why": "Editing, the field has focus: code draws the ring colour and the focus ring, as other in-place fields do; Figma draws the rest stroke (colors/input)."
+    },
+    "Editing/TEXT": {
+      "selector": ".ds-memory-panel__editor"
+    },
+    "Editing/Button": {
+      "selector": ".ds-memory-panel__edit-actions .ds-button:first-child",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Editing/Button#1": {
+      "selector": ".ds-memory-panel__edit-actions .ds-button:last-child",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Forgot": {
+      "selector": ".ds-memory-panel__forgot"
+    },
+    "Forgot/TEXT": {
+      "selector": ".ds-memory-panel__forgot > span"
+    },
+    "Forgot/Button": {
+      "selector": ".ds-memory-panel__forgot .ds-button",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "New memory": {
+      "selector": ".ds-memory-panel__new",
+      "skip": [
+        "h",
+        "p"
+      ],
+      "$why": "Figma draws the 1 px line above the row as its own layer; in code it is the row's top border (37 px). Figma's row has no right padding (its words hug); code keeps 16 px so a long label stays clear of the edge."
+    },
+    "New memory/TEXT": {
+      "selector": ".ds-memory-panel__new"
+    },
+    "Footer": {
+      "selector": ".ds-memory-panel__footer",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line above the footer as its own layer; in code it is the footer's top border (45 px)."
+    },
+    "Footer/TEXT": {
+      "selector": ".ds-memory-panel__footer"
+    }
+  }
+}

@@ -2913,6 +2913,53 @@ Object.assign(tests, {
     await card.getByRole('group', { name: 'Edit 1 of 1' }).locator('.ds-inline-diff__popover').getByRole('button', { name: /^Reject/ }).click();
     assert.equal(await card.getByRole('status').textContent(), '1 edit accepted · 2 rejected');
   },
+  'memory panel: a named panel with a switch and category filters; Tab reaches the Edit, Pause and Forget; edit in place (Enter saves, Escape cancels); pause shows Paused; forget leaves Undo (focus moves to it) and Undo brings it back; New memory adds one; off, the footer says so': async () => {
+    await page.goto('http://localhost:6008/iframe.html?id=patterns-memory-panel--panel&viewMode=story');
+    const panel = page.getByRole('region', { name: 'Memory' });
+    await panel.waitFor();
+    const use = panel.getByRole('switch', { name: 'Use memory' });
+    assert.equal(await use.isChecked(), true);
+    const tabs = panel.getByRole('group', { name: 'Categories' });
+    assert.equal(await tabs.getByRole('button', { name: 'All 8' }).getAttribute('aria-pressed'), 'true');
+    await tabs.getByRole('button', { name: 'Work 3' }).click();
+    assert.equal(await panel.locator('.ds-memory-panel__memory').count(), 3, 'only Work');
+    await tabs.getByRole('button', { name: 'All 8' }).click();
+    const edit = panel.getByRole('button', { name: 'Edit: Prefers TypeScript examples over plain JavaScript' });
+    await edit.focus();
+    assert.equal(await panel.locator('.ds-memory-panel__memory').first().locator('.ds-memory-panel__actions').evaluate((el) => getComputedStyle(el).opacity), '1', 'focus shows the actions');
+    await page.keyboard.press('Enter');
+    const field = panel.getByRole('textbox', { name: 'Edit' });
+    assert.equal(await field.evaluate((el) => el === document.activeElement), true, 'the field takes focus');
+    await page.keyboard.press('End');
+    await page.keyboard.type(', with strict types');
+    await page.keyboard.press('Escape');
+    assert.equal(await panel.getByText('Prefers TypeScript examples over plain JavaScript', { exact: true }).count(), 1, 'Escape keeps the old words');
+    assert.equal(await edit.evaluate((el) => el === document.activeElement), true, 'focus back on Edit');
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('End');
+    await page.keyboard.type(', with strict types');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Prefers TypeScript examples over plain JavaScript, with strict types').waitFor();
+    await panel.getByRole('button', { name: /^Pause: Designs with Inter/ }).click();
+    assert.match(await panel.locator('.ds-memory-panel__memory', { hasText: 'Designs with Inter' }).textContent(), /Paused/);
+    assert.equal(await panel.locator('footer').textContent(), '8 memories · 2 paused');
+    await panel.getByRole('button', { name: 'Forget: Ships every second Thursday' }).click();
+    const forgot = panel.getByRole('status').filter({ hasText: 'Forgot “Ships every second Thursday”' });
+    await forgot.waitFor();
+    const undo = forgot.getByRole('button', { name: 'Undo' });
+    assert.equal(await undo.evaluate((el) => el === document.activeElement), true, 'focus moves to Undo');
+    assert.equal(await tabs.getByRole('button', { name: /^All/ }).textContent(), 'All 7');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Ships every second Thursday', { exact: true }).waitFor();
+    assert.equal(await forgot.count(), 0);
+    await panel.getByRole('button', { name: 'New memory' }).click();
+    await page.keyboard.type('Writes in Polish and English');
+    await page.keyboard.press('Enter');
+    await panel.getByText('Writes in Polish and English').waitFor();
+    assert.equal(await panel.locator('footer').textContent(), '9 memories · 2 paused');
+    await use.click();
+    assert.equal(await panel.locator('footer').textContent(), 'Memory is off – it keeps what it knows but learns nothing new');
+  },
   'prompt library: a named list of templates, the chosen one aria-current; typing into the gaps fills the preview and the count; Use prompt turns on once all are filled (and ⌘↵ uses it); search filters, nothing matching offers New prompt; another template starts empty': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-prompt-library--library&viewMode=story');
     const card = page.getByRole('region', { name: /^Prompts/ });
