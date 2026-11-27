@@ -1,0 +1,185 @@
+{
+  "$comment": "Figma layer path (as in spec.json) -> element inside the entry's target (.ds-prompt-library).",
+  "layers": {
+    "root": {
+      "stroke": "inset-shadow"
+    },
+    "Main": {
+      "selector": ".ds-prompt-library__main"
+    },
+    "Templates": {
+      "selector": ".ds-prompt-library__templates",
+      "skip": [
+        "g",
+        "w"
+      ],
+      "$why": "Figma draws the 1 px line between the columns as its own layer; in code it is the list's right border (251 px), so the template column starts at the same place. The list is its own element in code, 4 px under the search like Figma's rows are 4 px apart."
+    },
+    "Templates/Title": {
+      "selector": ".ds-prompt-library__heading"
+    },
+    "Prompts": {
+      "selector": ".ds-prompt-library__heading"
+    },
+    "Templates/Title/TEXT#1": {
+      "selector": ".ds-prompt-library__count"
+    },
+    "Search": {
+      "selector": ".ds-prompt-library__templates .ds-input",
+      "skip": [
+        "p",
+        "g",
+        "r"
+      ],
+      "$why": "Input's own check covers its insides; the design system draws every control with radius 8 where Figma's Input Group is 10 (see the README).",
+      "stroke": "inset-shadow"
+    },
+    "Reply to a complaint": {
+      "selector": ".ds-prompt-library__item[aria-current]"
+    },
+    "Reply to a complaint/TEXT": {
+      "selector": ".ds-prompt-library__item[aria-current] > span"
+    },
+    "Reply to a complaint/Badge": {
+      "selector": ".ds-prompt-library__item[aria-current] .ds-badge",
+      "skip": [
+        "w",
+        "p"
+      ],
+      "$why": "It hugs its label, whose width follows the font. Figma's 6 px sides are the Badge's 2 px padding plus its label's 4 px in code."
+    },
+    "Summarise a call": {
+      "selector": "li:nth-child(2) .ds-prompt-library__item"
+    },
+    "No match": {
+      "selector": ".ds-prompt-library__empty"
+    },
+    "No match/TEXT": {
+      "selector": ".ds-prompt-library__empty > p"
+    },
+    "No match/Button": {
+      "selector": ".ds-prompt-library__empty .ds-button",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Template": {
+      "selector": ".ds-prompt-library__template",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma's column hugs its content; code's fills the row beside the list."
+    },
+    "Template/Title": {
+      "selector": ".ds-prompt-library__title"
+    },
+    "Template/Title/TEXT": {
+      "selector": ".ds-prompt-library__name"
+    },
+    "Template/Title/Badge": {
+      "selector": ".ds-prompt-library__title .ds-badge",
+      "skip": [
+        "w",
+        "p"
+      ],
+      "$why": "It hugs its label, whose width follows the font. Figma's 6 px sides are the Badge's 2 px padding plus its label's 4 px in code."
+    },
+    "Filled": {
+      "selector": ".ds-prompt-library__dots"
+    },
+    "Filled/ELLIPSE": {
+      "selector": ".ds-prompt-library__dots > i:first-child"
+    },
+    "Filled/ELLIPSE#2": {
+      "selector": ".ds-prompt-library__dots > i:last-child"
+    },
+    "Template/Title/TEXT#2": {
+      "selector": ".ds-prompt-library__progress"
+    },
+    "Sentence": {
+      "selector": ".ds-prompt-library__sentence",
+      "skip": [
+        "p",
+        "g",
+        "h"
+      ],
+      "$why": "Figma's sentence is a wrapping row of word frames (each 4 px wider than its word, rows 6 px apart); in code it is a paragraph with spaces, 28 px lines pulled in 4 px above and below, so the box is 56 px and takes 48."
+    },
+    "Variable": {
+      "selector": ".ds-prompt-library__gap:nth-of-type(1)",
+      "skip": [
+        "w"
+      ],
+      "$why": "It grows with what is typed, whose width follows the font."
+    },
+    "Variable/TEXT": {
+      "selector": ".ds-prompt-library__gap:nth-of-type(1)"
+    },
+    "Variable#1": {
+      "selector": ".ds-prompt-library__gap:nth-of-type(2)",
+      "skip": [
+        "w",
+        "stroke"
+      ],
+      "$why": "It grows with what is typed. Being typed into, code draws the ring colour and the focus ring (as other fields do); Figma draws the input stroke."
+    },
+    "Variable#1/TEXT": {
+      "selector": ".ds-prompt-library__gap:nth-of-type(2)",
+      "skip": [
+        "color"
+      ],
+      "$why": "An empty gap shows its name as the placeholder (muted); the check reads the input's own text colour."
+    },
+    "Variable#2": {
+      "selector": ".ds-prompt-library__gap:nth-of-type(3)",
+      "skip": [
+        "w"
+      ],
+      "$why": "It grows with what is typed, whose width follows the font."
+    },
+    "Variable#2/TEXT": {
+      "selector": ".ds-prompt-library__gap:nth-of-type(3)",
+      "skip": [
+        "color"
+      ],
+      "$why": "An empty gap shows its name as the placeholder (muted); the check reads the input's own text colour."
+    },
+    "Preview": {
+      "selector": ".ds-prompt-library__preview"
+    },
+    "Preview/TEXT": {
+      "selector": ".ds-prompt-library__preview-label"
+    },
+    "Preview/TEXT#1": {
+      "selector": ".ds-prompt-library__prompt"
+    },
+    "Footer": {
+      "selector": ".ds-prompt-library__footer",
+      "skip": [
+        "h"
+      ],
+      "$why": "Figma draws the 1 px line above the footer as its own layer; in code it is the footer's top border (45 px), so the card's height is the same."
+    },
+    "Footer/TEXT": {
+      "selector": ".ds-prompt-library__tokens"
+    },
+    "Footer/Button": {
+      "selector": ".ds-prompt-library__footer .ds-button:nth-of-type(1)",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    },
+    "Footer/Button#1": {
+      "selector": ".ds-prompt-library__footer .ds-button:nth-of-type(2)",
+      "stroke": "inset-shadow",
+      "skip": [
+        "w"
+      ],
+      "$why": "It hugs its label, whose width follows the font."
+    }
+  }
+}

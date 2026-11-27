@@ -1,0 +1,337 @@
+/*
+ * Memory Panel — the Sort UI 2.0 pattern "Memory Panel" (node 6132:3066 on the Patterns page 6084:1290 in file
+ * 4JnqgEbdlnKgiFrfmiwEZw): what the assistant remembers about you. A switch to use memory at all, categories with
+ * counts, every memory with where it came from and when; point at one to edit, pause or forget it, forgetting with
+ * Undo; add one yourself. Off, it keeps what it knows but learns nothing new.
+ * Values are Sort UI 2.0 tokens. Framework-agnostic: any markup with these classes works.
+ *
+ * Markup (parts in [] are optional):
+ *   <section class="ds-memory-panel [ds-memory-panel--off]" aria-labelledby="t">
+ *     <header class="ds-memory-panel__header"><h3 class="ds-memory-panel__title" id="t">Memory</h3>…Badge 8…
+ *       <span class="ds-memory-panel__use"><span id="u">Use memory</span>…Switch sm, aria-labelledby="u"…</span></header>
+ *     <div class="ds-memory-panel__categories">
+ *       <div class="ds-memory-panel__tabs" role="group" aria-label="Categories">
+ *         <button class="ds-memory-panel__tab" aria-pressed="true">All <span class="ds-memory-panel__count">8</span></button>…</div>
+ *       …Search (Ghost xs, icon)…  or, searching: …Input sm…</div>
+ *     <div class="ds-memory-panel__memories">
+ *       <div class="ds-memory-panel__group" role="group" aria-labelledby="g"><h4 id="g" class="ds-memory-panel__group-title">Preferences</h4>
+ *         <ul class="ds-memory-panel__list"><li class="ds-memory-panel__memory [ds-memory-panel__memory--paused]">
+ *           <span class="ds-memory-panel__text"><span class="ds-memory-panel__fact">Prefers TypeScript…</span>
+ *             <span class="ds-memory-panel__source"><svg…/>From chat · Oct 12 […Badge Paused…]</span></span>
+ *           <span class="ds-memory-panel__actions">…Edit, Pause, Forget (Ghost xs, icon)…</span></li>
+ *           or, editing: <li class="ds-memory-panel__editing"><textarea class="ds-memory-panel__editor">…</textarea>
+ *             <span class="ds-memory-panel__edit-actions">…Cancel (Ghost xs, Esc), Save (Default xs, ↵)…</span></li>
+ *         </ul></div>…
+ *       [<p class="ds-memory-panel__forgot">Forgot “Prefers metric units” …Undo (Ghost xs)…</p>]
+ *     </div>
+ *     <button class="ds-memory-panel__new"><svg…/>New memory</button>
+ *     <footer class="ds-memory-panel__footer">8 memories · 1 paused</footer>
+ *   </section>
+ */
+@layer ds.components {
+  .ds-memory-panel {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-radius: var(--ds-radius-xl);
+    background-color: var(--ds-card);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-1) var(--ds-border), var(--ds-surface-card);
+    color: var(--ds-card-foreground);
+    font-family: var(--ds-font-sans);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-normal);
+    line-height: var(--ds-text-sm--line-height);
+    letter-spacing: -0.005em;
+  }
+
+  .ds-memory-panel :where(p, h3, h4, ul) {
+    margin: 0;
+  }
+
+  /* "Memory", how many, and the switch on the right. */
+  .ds-memory-panel__header {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+  }
+
+  .ds-memory-panel__title {
+    color: var(--ds-foreground);
+    font-size: var(--ds-text-sm);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-sm--line-height);
+  }
+
+  .ds-memory-panel__use {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    margin-left: auto;
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  /* Categories with counts; the one shown on the muted fill. Search on the right. */
+  .ds-memory-panel__categories {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    padding: 0 var(--ds-spacing-4) var(--ds-spacing-2-5) var(--ds-spacing-2);
+    border-bottom: var(--ds-stroke-width-1) solid var(--ds-border);
+  }
+
+  .ds-memory-panel__tabs {
+    display: flex;
+    flex: 1 1 0;
+    flex-wrap: wrap;
+    gap: var(--ds-spacing-1);
+    min-width: 0;
+  }
+
+  .ds-memory-panel__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-spacing-1);
+    margin: 0;
+    padding: var(--ds-spacing-1) var(--ds-spacing-2);
+    border: 0;
+    border-radius: var(--ds-radius-sm);
+    outline: none;
+    background: none;
+    color: var(--ds-muted-foreground);
+    font: inherit;
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+    letter-spacing: inherit;
+    cursor: pointer;
+  }
+
+  .ds-memory-panel__tab:hover {
+    color: var(--ds-foreground);
+  }
+
+  .ds-memory-panel__tab[aria-pressed='true'] {
+    background-color: var(--ds-muted);
+    color: var(--ds-foreground);
+  }
+
+  .ds-memory-panel__tab:focus-visible {
+    box-shadow: 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-memory-panel__count {
+    color: var(--ds-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-memory-panel__categories > .ds-field {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* The memories, by category. */
+  /* Scrolls past --memory-panel-list-max-height (the listMaxHeight prop); Figma's frames show the top of the list. */
+  .ds-memory-panel__memories {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-1);
+    max-height: var(--memory-panel-list-max-height, none);
+    padding: var(--ds-spacing-1) var(--ds-spacing-4);
+    overflow-y: auto;
+  }
+
+  /* Off: what it knows stays, dimmed. Figma fades the list to 50 %, which takes its words under 4.5:1; code mutes the
+     words instead, and the sources and badges stay as they are. */
+  .ds-memory-panel--off .ds-memory-panel__fact {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-memory-panel__group-title {
+    padding: var(--ds-spacing-1-5) 0 var(--ds-spacing-0-5) var(--ds-spacing-2);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-text-xs--line-height);
+    text-transform: uppercase;
+  }
+
+  .ds-memory-panel__list {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A memory: what it is, where it came from; Edit, Pause and Forget while pointed at or focused. */
+  .ds-memory-panel__memory {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-1-5) var(--ds-spacing-1-5) var(--ds-spacing-1-5) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-sm);
+  }
+
+  .ds-memory-panel__memory:hover,
+  .ds-memory-panel__memory:focus-within {
+    background-color: var(--ds-muted);
+  }
+
+  .ds-memory-panel__text {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--ds-spacing-0-5);
+    min-width: 0;
+  }
+
+  .ds-memory-panel__fact {
+    color: var(--ds-foreground);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-memory-panel__memory--paused .ds-memory-panel__fact {
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-memory-panel__source {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-1-5);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+
+  .ds-memory-panel__source > svg {
+    flex: none;
+    width: var(--ds-spacing-3);
+    height: var(--ds-spacing-3);
+    fill: currentColor;
+  }
+
+  .ds-memory-panel__actions {
+    display: flex;
+    flex: none;
+  }
+
+  /* Out of sight until the memory is pointed at or focused, taking no room (so the words use the whole row, as in
+     Figma); still in the tab order, and focusing one brings them back. */
+  .ds-memory-panel__memory:not(:hover, :focus-within) .ds-memory-panel__actions {
+    position: absolute;
+    top: var(--ds-spacing-1-5);
+    right: var(--ds-spacing-1-5);
+    opacity: 0;
+  }
+
+  @media (hover: none) {
+    .ds-memory-panel__memory:not(:hover, :focus-within) .ds-memory-panel__actions {
+      position: static;
+      opacity: 1;
+    }
+  }
+
+  /* Editing in place: a field with the 1.5 px input border, Cancel and Save under the words. */
+  .ds-memory-panel__editing {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2);
+    border-radius: var(--ds-radius-sm);
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-3) var(--ds-input);
+  }
+
+  .ds-memory-panel__editing:focus-within {
+    box-shadow: inset 0 0 0 var(--ds-stroke-width-3) var(--ds-ring), 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-memory-panel__editor {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: none;
+    color: var(--ds-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    resize: none;
+    field-sizing: content;
+  }
+
+  .ds-memory-panel__edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--ds-spacing-1-5);
+  }
+
+  /* Just forgotten: what it was, with Undo. */
+  /* Kept in view at the foot of the list while it scrolls. */
+  .ds-memory-panel__forgot {
+    position: sticky;
+    z-index: 1;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    padding: var(--ds-spacing-2) var(--ds-spacing-1-5) var(--ds-spacing-2) var(--ds-spacing-2);
+    border-radius: var(--ds-radius-sm);
+    background-color: var(--ds-muted);
+    color: var(--ds-muted-foreground);
+  }
+
+  .ds-memory-panel__forgot > span {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Add one yourself: the whole row is the button. */
+  .ds-memory-panel__new {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-spacing-2);
+    width: 100%;
+    margin: 0;
+    padding: var(--ds-spacing-2) var(--ds-spacing-4);
+    border: 0;
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+    outline: none;
+    background: none;
+    color: var(--ds-muted-foreground);
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .ds-memory-panel__new:hover {
+    color: var(--ds-foreground);
+  }
+
+  .ds-memory-panel__new:focus-visible {
+    box-shadow: inset 0 0 0 calc(var(--ds-spacing-0-5) + var(--ds-stroke-width-1)) var(--ds-alpha-ring-30);
+  }
+
+  .ds-memory-panel__new > svg {
+    flex: none;
+    width: var(--ds-spacing-4);
+    height: var(--ds-spacing-4);
+    fill: currentColor;
+  }
+
+  .ds-memory-panel__footer {
+    padding: var(--ds-spacing-3) var(--ds-spacing-4);
+    border-top: var(--ds-stroke-width-1) solid var(--ds-border);
+    color: var(--ds-muted-foreground);
+    font-size: var(--ds-text-xs);
+    line-height: var(--ds-text-xs--line-height);
+  }
+}

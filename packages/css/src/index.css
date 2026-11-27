@@ -47,6 +47,7 @@
 @import './item.css';
 @import './kbd.css';
 @import './marker.css';
+@import './memory-panel.css';
 @import './menubar.css';
 @import './message.css';
 @import './message-actions.css';
@@ -57,6 +58,7 @@
 @import './permission-request.css';
 @import './popover.css';
 @import './progress.css';
+@import './prompt-library.css';
 @import './review-center.css';
 @import './radio.css';
 @import './select.css';
