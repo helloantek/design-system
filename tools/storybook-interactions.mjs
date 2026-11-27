@@ -2674,7 +2674,7 @@ Object.assign(tests, {
     await page.getByRole('button', { name: 'Answer' }).click();
     assert.equal(await page.getByRole('heading', { name: 'Which plan should the new team start on?' }).isVisible(), true, 'Answer opens the card again');
   },
-  'thinking loader: what it is doing is a status that rolls through the phases, then says how long it thought; taking long it offers Stop, which stops it': async () => {
+  'thinking loader: in a chat, what it is doing is a status that rolls through the phases, then says how long it thought': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-loader--in-chat&viewMode=story');
     const status = page.getByRole('status');
     await status.filter({ hasText: 'Reading 4 files…' }).waitFor();
@@ -2682,36 +2682,6 @@ Object.assign(tests, {
     await status.filter({ hasText: 'Searching the docs…' }).waitFor({ timeout: 4000 });
     await status.filter({ hasText: 'Thought for 5 s' }).waitFor({ timeout: 8000 });
     assert.equal(await page.locator('.ds-thinking--done svg').getAttribute('aria-hidden'), 'true');
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-loader--ends&viewMode=story');
-    const slow = page.locator('.ds-thinking--slow');
-    await slow.waitFor();
-    assert.equal(await slow.getByRole('status').textContent(), 'Taking longer than usual');
-    assert.equal(await slow.locator('.ds-thinking__time').textContent(), '· 0:48');
-    await slow.getByRole('button', { name: 'Stop' }).click();
-    await page.getByRole('status').filter({ hasText: 'Stopped after 48 s' }).waitFor();
-    assert.equal(await page.getByRole('button', { name: 'Stop' }).count(), 0, 'stopped, Stop goes');
-  },
-  'thinking state: the steps are a list that is announced as it grows; the running one has a spinner; sources are links; done folds to a button that opens the steps': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-state--reading-and-writing&viewMode=story');
-    const steps = page.getByRole('list', { name: 'Steps' });
-    await steps.waitFor();
-    assert.equal(await steps.getAttribute('aria-live'), 'polite', 'new steps are read out');
-    assert.equal(await steps.locator(':scope > li').count(), 4);
-    assert.equal(await page.locator('.ds-thinking-step--running .ds-spinner').getAttribute('aria-hidden'), 'true');
-    const sources = page.getByRole('list', { name: 'Sources' });
-    assert.equal(await sources.getByRole('link').count(), 3, 'each source is a link');
-    assert.equal(await sources.getByRole('listitem').last().textContent(), '+3 more');
-    assert.match(await page.locator('.ds-thinking-state__note').textContent(), /Couldn’t open GitHub/);
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-state--done&viewMode=story');
-    const head = page.getByRole('button', { name: /Thought for 14 s · 6 sources · 4 steps/ });
-    await head.waitFor();
-    assert.equal(await head.getAttribute('aria-expanded'), 'false');
-    assert.equal(await page.getByRole('list', { name: 'Steps' }).isVisible(), false, 'folded: the steps are hidden');
-    await head.click();
-    assert.equal(await head.getAttribute('aria-expanded'), 'true');
-    assert.equal(await page.getByRole('list', { name: 'Steps' }).locator(':scope > li').count(), 4, 'opened: every step');
-    await page.keyboard.press('Enter');
-    assert.equal(await head.getAttribute('aria-expanded'), 'false', 'Enter folds it again');
   },
   'message actions: a named group; Copy turns into Copied; Regenerate adds a version to switch between; thumbs are pressed toggles, down asks what was wrong in a Popover; Read aloud is pressed while it reads': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-message-actions--in-a-message&viewMode=story');

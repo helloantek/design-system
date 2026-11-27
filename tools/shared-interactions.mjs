@@ -421,6 +421,42 @@ export const sharedTests = {
     await dial.getByText('Nothing – it asks before every action.').waitFor();
     assert.equal(await asks.getByRole('listitem').count(), 7, 'everything waits for you');
   },
+  'thinking loader: what it is doing is a status; done and stopped show a hidden icon; taking long it says so with the time and Stop, which stops it': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-thinking-loader--phases&viewMode=story`);
+    await page.getByRole('status').filter({ hasText: 'Reading 4 files…' }).waitFor();
+    assert.equal(await page.locator('.ds-thinking .ds-spinner').first().getAttribute('aria-hidden'), 'true', 'the spinner is only a picture');
+    await page.goto(`${base}/iframe.html?id=patterns-thinking-loader--ends&viewMode=story`);
+    const slow = page.locator('.ds-thinking--slow');
+    await slow.waitFor();
+    assert.equal(await page.locator('.ds-thinking--done svg').getAttribute('aria-hidden'), 'true');
+    assert.equal(await slow.getByRole('status').textContent(), 'Taking longer than usual');
+    assert.equal(await slow.locator('.ds-thinking__time').textContent(), '· 0:48');
+    await slow.getByRole('button', { name: 'Stop' }).click();
+    await page.getByRole('status').filter({ hasText: 'Stopped after 48 s' }).waitFor();
+    await settles(() => page.getByRole('button', { name: 'Stop' }).count(), 0, 'stopped, Stop goes');
+  },
+  'thinking state: the steps are a list that is announced as it grows; the running one has a spinner; sources are links; done folds to a button that opens the steps': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-thinking-state--reading-and-writing&viewMode=story`);
+    const steps = page.getByRole('list', { name: 'Steps' });
+    await steps.waitFor();
+    assert.equal(await steps.getAttribute('aria-live'), 'polite', 'new steps are read out');
+    assert.equal(await steps.locator(':scope > li').count(), 4);
+    assert.equal(await page.locator('.ds-thinking-step--running .ds-spinner').getAttribute('aria-hidden'), 'true');
+    const sources = page.getByRole('list', { name: 'Sources' });
+    assert.equal(await sources.getByRole('link').count(), 3, 'each source is a link');
+    assert.equal((await sources.getByRole('listitem').last().textContent()).trim(), '+3 more');
+    assert.match(await page.locator('.ds-thinking-state__note').textContent(), /Couldn’t open GitHub/);
+    await page.goto(`${base}/iframe.html?id=patterns-thinking-state--done&viewMode=story`);
+    const head = page.getByRole('button', { name: /Thought for 14 s · 6 sources · 4 steps/ });
+    await head.waitFor();
+    assert.equal(await head.getAttribute('aria-expanded'), 'false');
+    assert.equal(await page.getByRole('list', { name: 'Steps' }).isVisible(), false, 'folded: the steps are hidden');
+    await head.click();
+    await settles(() => head.getAttribute('aria-expanded'), 'true');
+    assert.equal(await page.getByRole('list', { name: 'Steps' }).locator(':scope > li').count(), 4, 'opened: every step');
+    await page.keyboard.press('Enter');
+    await settles(() => head.getAttribute('aria-expanded'), 'false', 'Enter folds it again');
+  },
   'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });
