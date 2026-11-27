@@ -2663,36 +2663,7 @@ Object.assign(tests, {
 
 
 
-  'cited answer: pointing at a citation lights its sentences and source and says where it is cited; a click opens the passage it quotes, the source chip shows it pressed and closes it again': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-cited-answer--at-rest&viewMode=story');
-    const card = page.locator('.ds-cited-answer');
-    await card.waitFor();
-    const status = card.locator('.ds-cited-answer__status');
-    assert.equal(await status.textContent(), 'Ask about any sentence');
-    const cite2 = card.getByRole('button', { name: 'Source 2, Refund policy' }).first();
-    await cite2.hover();
-    assert.match(await card.getAttribute('class'), /ds-cited-answer--focused/, 'the rest fades');
-    assert.equal(await card.locator('.ds-cited-answer__claim[data-lit]').count(), 2, 'both sentences citing source 2 light up');
-    assert.equal(await status.textContent(), 'Refund policy · cited in 2 sentences');
-    assert.equal(await card.locator('.ds-cited-answer__source[data-active]').textContent(), 'Refund policy2');
-    await page.mouse.move(0, 0);
-    assert.equal(await status.textContent(), 'Ask about any sentence', 'moving away puts it back');
-    const cite1 = card.getByRole('button', { name: 'Source 1, Help center' });
-    await cite1.click();
-    assert.equal(await cite1.getAttribute('aria-expanded'), 'true');
-    const passage = card.locator(`[id="${await cite1.getAttribute('aria-controls')}"]`);
-    assert.match(await passage.locator('figcaption').textContent(), /Help center · Refunds and returns/);
-    assert.match(await passage.locator('blockquote').textContent(), /within 5–10 working days/);
-    await page.mouse.move(0, 0);
-    const chip = card.getByRole('list', { name: 'Sources' }).getByRole('button', { name: /Help center/ });
-    assert.equal(await chip.getAttribute('aria-pressed'), 'true', 'its source shows it is open');
-    assert.equal(await status.textContent(), 'Help center · cited in 1 sentence');
-    await chip.click();
-    assert.equal(await card.locator('figure').count(), 0, 'pressing the source again closes the passage');
-    await page.keyboard.press('Shift+Tab');
-    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Source 3, #support', 'the citations are reachable with Tab, the last one just before the sources');
-    assert.equal(await status.textContent(), '#support · cited in 1 sentence', 'focus lights it as pointing does');
-  },
+
   'inline diff: each edit is a named group with del and ins; Y accepts and N rejects the focused edit and focus moves on; Accept all closes it out with a summary; Undo steps back': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-inline-diff--reviewing&viewMode=story');
     const card = page.locator('.ds-inline-diff');

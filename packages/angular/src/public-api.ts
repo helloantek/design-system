@@ -80,3 +80,4 @@ export {
   type AIAnswerSource,
   type AIAnswerStatus,
 } from './lib/ai-answer/ai-answer';
+export { DsCitedAnswer, DsCitedAnswerIcon, type CitedAnswerLabels, type CitedAnswerPart, type CitedAnswerQuotePart, type CitedAnswerSource } from './lib/cited-answer/cited-answer';

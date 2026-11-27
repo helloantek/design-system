@@ -651,6 +651,38 @@ export const sharedTests = {
     await live.getByRole('button', { name: 'Continue' }).click();
     await live.getByText('Answered in 3.4 s').waitFor({ timeout: 8000 });
     await settles(() => live.locator('.ds-ai-answer__caret').count(), 0, 'no caret once done');
+  },  'cited answer: pointing at a citation lights its sentences and source and says where it is cited; a click opens the passage it quotes, the source chip shows it pressed and closes it again': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-cited-answer--at-rest&viewMode=story`);
+    const card = page.locator('.ds-cited-answer');
+    await card.waitFor();
+    const status = card.locator('.ds-cited-answer__status');
+    assert.equal((await status.textContent()).trim(), 'Ask about any sentence');
+    const cite2 = card.getByRole('button', { name: 'Source 2, Refund policy' }).first();
+    await cite2.hover();
+    await settles(async () => /ds-cited-answer--focused/.test(await card.getAttribute('class')), true, 'the rest fades');
+    assert.equal(await card.locator('.ds-cited-answer__claim[data-lit]').count(), 2, 'both sentences citing source 2 light up');
+    assert.equal((await status.textContent()).trim(), 'Refund policy · cited in 2 sentences');
+    assert.equal((await card.locator('.ds-cited-answer__source[data-active]').textContent()).replace(/\s/g, ''), 'Refundpolicy2');
+    await page.mouse.move(0, 0);
+    await settles(async () => (await status.textContent()).trim(), 'Ask about any sentence', 'moving away puts it back');
+    const cite1 = card.getByRole('button', { name: 'Source 1, Help center' });
+    await cite1.click();
+    await settles(() => cite1.getAttribute('aria-expanded'), 'true');
+    const passage = card.locator(`[id="${await cite1.getAttribute('aria-controls')}"]`);
+    assert.match(await passage.locator('figcaption').textContent(), /Help center · Refunds and returns/);
+    assert.match(await passage.locator('blockquote').textContent(), /within 5–10 working days/);
+    await page.mouse.move(0, 0);
+    const chip = card.getByRole('list', { name: 'Sources' }).getByRole('button', { name: /Help center/ });
+    assert.equal(await chip.getAttribute('aria-pressed'), 'true', 'its source shows it is open');
+    await settles(async () => (await status.textContent()).trim(), 'Help center · cited in 1 sentence');
+    await chip.click();
+    await settles(() => card.locator('figure').count(), 0, 'pressing the source again closes the passage');
+    // The passage closing moves the chips under the mouse; take the mouse away so only focus points.
+    await page.mouse.move(0, 0);
+    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Source 3, #support', 'the citations are reachable with Tab, the last one just before the sources');
+    await settles(async () => (await status.textContent()).trim(), '#support · cited in 1 sentence', 'focus lights it as pointing does');
   },  'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });
