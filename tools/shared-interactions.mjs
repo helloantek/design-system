@@ -880,6 +880,50 @@ export const sharedTests = {
     await panel.getByRole('button', { name: 'Close' }).click();
     await suggestions.waitFor();
   },
+  'email draft: a card named by its subject; a tone rewrites it (busy, status) and lands; the pencil edits in place and Escape leaves; the attachment comes off; Ctrl+Enter sends and folds with Undo (focus follows), Undo brings it back; Discard folds with Restore; Undo runs out': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-email-draft--review&viewMode=story`);
+    const card = page.getByRole('region', { name: 'INV-3021' });
+    await card.waitFor();
+    const send = card.getByRole('button', { name: /^Send email/ });
+    assert.equal(await send.getAttribute('aria-keyshortcuts'), 'Meta+Enter Control+Enter');
+    assert.equal(await card.getByRole('combobox', { name: 'To' }).count(), 1, 'the recipient is a select named To');
+    const tone = card.getByRole('group', { name: 'Tone' });
+    await tone.getByRole('button', { name: 'Short' }).click();
+    await card.getByRole('status').filter({ hasText: 'Rewriting it shorter…' }).waitFor();
+    await settles(() => card.locator('.ds-email-draft__body').getAttribute('aria-busy'), 'true');
+    await card.locator('.ds-email-draft__body:not([aria-busy])').waitFor({ timeout: 4000 });
+    assert.equal(await card.locator('.ds-email-draft__rewriting').count(), 0, 'the status goes once it lands');
+    await settles(async () => /^Hi Mira, invoice INV-3021 \(€2,400\) was due on 3 November\./.test((await card.locator('.ds-email-draft__text').textContent()).trim()), true);
+    const edit = card.getByRole('button', { name: 'Edit the text' });
+    await edit.click();
+    await settles(() => edit.getAttribute('aria-pressed'), 'true');
+    const field = card.getByRole('textbox', { name: 'Edit the text' });
+    await settles(() => field.evaluate((el) => el === document.activeElement), true, 'the field takes focus');
+    await page.keyboard.press('End');
+    await page.keyboard.type(' Thanks!');
+    await page.keyboard.press('Escape');
+    await settles(() => field.count(), 0);
+    assert.match((await card.locator('.ds-email-draft__text').textContent()).trim(), /View invoice Thanks!$/);
+    await card.getByRole('button', { name: 'Remove INV-3021.pdf' }).click();
+    await settles(() => card.getByText('INV-3021.pdf').count(), 0);
+    await tone.getByRole('button', { name: 'Short' }).focus();
+    await page.keyboard.press('Control+Enter');
+    const sent = page.getByRole('region', { name: 'Sent to Mira Holt' });
+    await sent.waitFor();
+    assert.match(await sent.textContent(), /Invoice reminder · Undo for 5 s/);
+    const undo = sent.getByRole('button', { name: 'Undo' });
+    await settles(() => undo.evaluate((el) => el === document.activeElement), true, 'focus moves to Undo');
+    await page.keyboard.press('Enter');
+    await card.waitFor();
+    await settles(() => send.evaluate((el) => el === document.activeElement), true, 'focus comes back to Send');
+    await card.getByRole('button', { name: 'Discard' }).click();
+    const discarded = page.getByRole('region', { name: 'Draft discarded' });
+    await discarded.getByText('The billing agent will not send it').waitFor();
+    await discarded.getByRole('button', { name: 'Restore' }).click();
+    await send.click();
+    await page.getByText('Sent for good.').waitFor({ timeout: 8000 });
+    assert.equal(await page.getByRole('region', { name: 'Sent to Mira Holt' }).getByRole('button').count(), 0, 'Undo is gone once it runs out');
+  },
   'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });

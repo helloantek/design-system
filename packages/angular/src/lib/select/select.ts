@@ -95,6 +95,7 @@ type Row =
   host: {
     style: 'display: contents',
     '[attr.aria-label]': 'null',
+    '[attr.aria-labelledby]': 'null',
     '[attr.aria-describedby]': 'null',
     '[attr.label]': 'null',
     '[attr.caption]': 'null',
@@ -130,7 +131,7 @@ type Row =
           aria-haspopup="listbox"
           [attr.aria-expanded]="open()"
           [attr.aria-controls]="menuId()"
-          [attr.aria-labelledby]="label() !== undefined ? labelId() : null"
+          [attr.aria-labelledby]="label() !== undefined ? labelId() : ariaLabel() === undefined ? (ariaLabelledby() ?? null) : null"
           [attr.aria-label]="label() === undefined ? (ariaLabel() ?? null) : null"
           [attr.aria-describedby]="describedBy()"
           [attr.aria-activedescendant]="open() && highlighted() >= 0 ? optionId(highlighted()) : null"
@@ -333,6 +334,8 @@ export class DsSelect implements FormValueControl<string | string[] | null>, Con
   readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
   /** More descriptions of the combobox (ids). */
   readonly ariaDescribedby = input<string | undefined>(undefined, { alias: 'aria-describedby' });
+  /** Names the combobox by another element (e.g. a "To" before it) when there is no `label`. */
+  readonly ariaLabelledby = input<string | undefined>(undefined, { alias: 'aria-labelledby' });
   /** Figma Field "Description": help text under the field. */
   readonly caption = input<string>();
   /** Figma State=Invalid (Field "Error"): the message replaces the caption and marks the select invalid. */
