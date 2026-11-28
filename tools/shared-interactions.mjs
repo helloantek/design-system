@@ -51,6 +51,30 @@ const selectHelpers = (page, base) => {
   };
 };
 
+// Escape closes a <dialog> at once, but its close event comes a task later. Opened again before then, the dialog
+// must stay open: the late close event is not a close. Returns how many of `times` reopens were lost.
+export async function reopenAfterEscape(page, url, times = 5) {
+  let lost = 0;
+  for (let i = 0; i < times; i++) {
+    await page.goto(url);
+    const trigger = page.locator('[aria-haspopup="dialog"]').first();
+    await trigger.click();
+    await page.waitForFunction(() => document.querySelector('dialog')?.open);
+    await page.evaluate(async () => {
+      document.querySelector('dialog').requestClose();
+      await new Promise((resolve) => queueMicrotask(resolve));
+      document.querySelector('[aria-haspopup="dialog"]').click();
+    });
+    await page.evaluate(() => new Promise((resolve) => setTimeout(() => requestAnimationFrame(() => requestAnimationFrame(resolve)), 100)));
+    const open = await page.evaluate(() => {
+      const dialog = document.querySelector('dialog');
+      return dialog.open && dialog.contains(document.activeElement);
+    });
+    if (!open) lost++;
+  }
+  return lost;
+}
+
 export const sharedTests = {
   'badge: the close icon is a named button that removes the badge': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-badge--playground&viewMode=story&args=closeIcon:!true;label:Design`);
@@ -207,6 +231,9 @@ export const sharedTests = {
     assert.equal(await dialog.isVisible(), true, 'a click inside keeps it open');
     await page.keyboard.press('Escape');
     await dialog.waitFor({ state: 'hidden' });
+  },
+  'dialog: opened again right after Escape, it stays open with focus inside (the late close event is not a close)': async (page, base) => {
+    assert.equal(await reopenAfterEscape(page, `${base}/iframe.html?id=components-dialog--playground&viewMode=story`), 0);
   },
   'approval card: a named card; Esc denies and folds it to a status line with Undo, which brings it back; Enter approves; the approving card is busy': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=patterns-approval-card--high-risk&viewMode=story`);

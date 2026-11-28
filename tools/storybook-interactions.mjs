@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, extname } from 'node:path';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
-import { sharedTests } from './shared-interactions.mjs';
+import { reopenAfterEscape, sharedTests } from './shared-interactions.mjs';
 
 const dir = join(import.meta.dirname, '../apps/storybook/storybook-static');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
@@ -2618,6 +2618,11 @@ Object.assign(tests, {
     await page.getByRole('button', { name: 'Later' }).click();
     await page.getByRole('button', { name: 'Answer' }).click();
     assert.equal(await page.getByRole('heading', { name: 'Which plan should the new team start on?' }).isVisible(), true, 'Answer opens the card again');
+  },
+  'sheet, drawer, alert dialog: opened again right after Escape, each stays open with focus inside': async () => {
+    for (const name of ['sheet', 'drawer', 'alert-dialog']) {
+      assert.equal(await reopenAfterEscape(page, `http://localhost:6008/iframe.html?id=components-${name}--playground&viewMode=story`), 0, name);
+    }
   },
   'textarea: the label names it; the count follows typing and maxLength stops it': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-textarea--character-limit&viewMode=story');

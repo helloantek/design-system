@@ -49,6 +49,7 @@ export class DsDialogFooter {}
       [attr.aria-label]="ariaLabel() ?? null"
       [style.--dialog-width]="width() ?? null"
       (click)="backdrop($event)"
+      (cancel)="cancelled($event)"
       (close)="closed()"
     >
       @if (title() !== undefined || description() !== undefined || closeButton()) {
@@ -116,6 +117,7 @@ export class DsDialog {
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   private readonly body = viewChild.required<ElementRef<HTMLElement>>('body');
   private returnFocus: HTMLElement | null = null;
+  private cancelling = false;
 
   constructor() {
     // Figma "content" is optional (a confirmation is a title, a description and the actions): like React, no empty body.
@@ -148,8 +150,20 @@ export class DsDialog {
     if (!inside) this.setOpen(false);
   }
 
-  // Escape, a form with method="dialog" or close(): keep the state in step and give focus back.
+  // Escape: report the close at once, not a task later with the close event.
+  protected cancelled(event: Event) {
+    if (event.defaultPrevented) return;
+    this.cancelling = true;
+    this.setOpen(false);
+  }
+
+  // Escape, a form with method="dialog" or close(): keep the state in step and give focus back. A late close event
+  // for a dialog that has opened again since is not a close: it may already be open again, or still about to be
+  // (the effect that shows it runs after the event).
   protected closed() {
+    const afterEscape = this.cancelling;
+    this.cancelling = false;
+    if (this.dialog().nativeElement.open || (afterEscape && this.open())) return;
     this.setOpen(false);
     this.returnFocus?.focus();
     this.returnFocus = null;
