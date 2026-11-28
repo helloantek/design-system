@@ -2295,7 +2295,8 @@ Object.assign(tests, {
     assert.ok(await toEnd.isVisible(), 'the end button shows while there is more below');
     await toEnd.click();
     await page.waitForFunction(() => { const v = document.querySelector('.ds-message-scroller__viewport'); return v.scrollHeight - v.scrollTop - v.clientHeight <= 2; });
-    assert.ok(await toEnd.isHidden(), 'and hides at the end');
+    // The edge state follows the scroll event, a render later: wait for it rather than read it at once.
+    await toEnd.waitFor({ state: 'hidden', timeout: 2000 }).catch(() => assert.fail('and hides at the end'));
     assert.equal(await page.evaluate(() => document.activeElement.getAttribute('role')), 'log', 'focus moves to the log');
 
     await page.goto(url('demo'));
@@ -2717,6 +2718,10 @@ Object.assign(tests, {
     await angular.locator('[ng-version] .ds-button').waitFor();
     assert.equal(await tree.getByRole('button', { name: 'Slider', exact: true }).filter({ visible: true }).count(), 0, 'the Angular tree has only what Angular has');
     await tree.getByRole('button', { name: 'Badge', exact: true }).filter({ visible: true }).click();
+    // Badge opens on its Docs page; leaving it before it has rendered can leave the Angular story blank (a Storybook
+    // render race, not the switch), so let it render first.
+    await page.waitForURL(/angular_components-badge--docs/);
+    await angular.locator('#storybook-docs:not([hidden]) .ds-badge').first().waitFor();
     await tree.locator('a[href*="components-badge--colors"]').filter({ visible: true }).click();
     await page.waitForURL(/angular_components-badge--colors/);
     await angular.locator('[ng-version] .ds-badge').first().waitFor();
