@@ -124,7 +124,8 @@
 
   .ds-button--destructive {
     --btn-fg: var(--ds-destructive-foreground);
-    --btn-stroke: var(--ds-alpha-destructive-50);
+    /* The border is the label's colour (Figma: colors/destructive-foreground), in every state. */
+    --btn-stroke: var(--ds-destructive-foreground);
     --btn-badge-bg: var(--ds-alpha-destructive-10);
   }
 
@@ -155,8 +156,8 @@
     --btn-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-ring-30);
 
     &.ds-button--default {
-      /* Figma swaps the primary-control effect for a 0.5 px border ring, the drop shadow and the inner glow. */
-      --btn-effect: 0 0 0 0.5px var(--ds-primary-border), 0 3px 3px -2px var(--ds-alpha-black-20), inset 0 0 3px 0 var(--ds-alpha-white-20);
+      /* Figma swaps the primary-control effect for the drop shadow and the inner glow (the ring stroke is the border). */
+      --btn-effect: 0 3px 3px -2px var(--ds-alpha-black-20), inset 0 0 3px 0 var(--ds-alpha-white-20);
     }
 
     &.ds-button--outline {
@@ -169,7 +170,7 @@
     }
 
     &.ds-button--destructive {
-      --btn-stroke: var(--ds-destructive);
+      --btn-stroke: var(--ds-destructive-foreground);
       --btn-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-destructive-20);
     }
   }
@@ -182,7 +183,7 @@
 
     &.ds-button--default {
       --btn-bg: var(--ds-muted-foreground);
-      --btn-stroke: var(--ds-primary-border-disabled);
+      --btn-stroke: transparent; /* no border: Figma dropped primary-border-disabled */
       --btn-effect: var(--ds-controls-primary-control-disabled);
     }
 
