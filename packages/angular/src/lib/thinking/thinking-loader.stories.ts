@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
+import { signal } from '@angular/core';
+import { DsBubble } from '../bubble/bubble';
 import { DsThinkingLoader } from './thinking-loader';
 
 const FIGMA_URL = 'https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=6126-2130';
 
 const meta = {
   title: 'Patterns/Thinking Loader',
-  decorators: [moduleMetadata({ imports: [DsThinkingLoader] })],
+  decorators: [moduleMetadata({ imports: [DsThinkingLoader, DsBubble] })],
   parameters: {
     docs: {
       description: {
@@ -21,6 +23,32 @@ export default meta;
 // The React stories' inline styles, written as the CSSOM serialises them.
 const COLUMN = 'display: grid; gap: 10px; justify-items: start;';
 const PHASES = ['Reading 4 files…', 'Searching the docs…', 'Writing the answer…'];
+
+/** Figma "In chat": under the question, where the answer will start. The label rolls through the phases, then it is done. */
+export const InChat: StoryObj = {
+  render: () => {
+    const step = signal(0);
+    const next = () => {
+      if (step() > PHASES.length - 1) return;
+      setTimeout(() => {
+        step.update((s) => s + 1);
+        next();
+      }, 1500);
+    };
+    next();
+    return {
+      props: { step, phases: PHASES },
+      template: `<div style="${COLUMN} width: min(420px, -32px + 100vw);">
+        <div dsBubble variant="muted" align="end" style="justify-self: end;">Which CRM fits a 10-person sales team best?</div>
+        @if (step() >= phases.length) {
+          <div dsThinkingLoader status="done">Thought for 5 s</div>
+        } @else {
+          <div dsThinkingLoader>{{ phases[step()] }}</div>
+        }
+      </div>`,
+    };
+  },
+};
 
 /** Figma "Phases": the label rolls through what it does. */
 export const Phases: StoryObj = {

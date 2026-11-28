@@ -804,6 +804,55 @@ export const sharedTests = {
     await use.click();
     await settles(async () => (await panel.locator('footer').textContent()).trim(), 'Memory is off – it keeps what it knows but learns nothing new');
   },
+  'ai chat composer: past 8 lines the prompt scrolls and Expand grows it; dictating shows the waveform, Stop transcribes and the words land in the prompt': async (page, base) => {
+    const url = (id) => `${base}/iframe.html?id=components-ai-chat-composer--${id}&viewMode=story`;
+    await page.goto(url('long-text'));
+    const expand = page.getByRole('button', { name: 'Expand' });
+    await expand.waitFor();
+    const long = page.getByRole('textbox', { name: 'Message' });
+    const before = (await long.boundingBox()).height;
+    assert.ok(await long.evaluate((el) => el.scrollHeight > el.clientHeight), 'past 8 lines the prompt scrolls');
+    await expand.click();
+    await page.getByRole('button', { name: 'Collapse' }).waitFor();
+    await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    assert.ok((await long.boundingBox()).height > before, 'expanded, the prompt grows');
+    assert.equal(await page.getByRole('button', { name: 'Collapse' }).getAttribute('aria-pressed'), 'true');
+
+    await page.goto(url('dictation'));
+    await page.getByRole('button', { name: 'Dictate' }).click();
+    await page.getByRole('button', { name: 'Stop recording' }).waitFor();
+    assert.ok(await page.locator('.ds-ai-composer__waveform i').count() > 10, 'recording shows the waveform');
+    await page.getByRole('button', { name: 'Stop recording' }).click();
+    await page.getByRole('status').filter({ hasText: 'Transcribing' }).waitFor();
+    await page.waitForFunction(() => document.querySelector('.ds-ai-composer__input')?.value.includes('vendor review'));
+    assert.equal(await page.getByRole('button', { name: 'Dictate' }).count(), 1, 'back to typing');
+  },
+  'bubble: a long message shows 8 lines and a Show more toggle that opens and closes it; short messages get none': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=components-bubble--long-message&viewMode=story`);
+    const more = page.getByRole('button', { name: 'Show more' });
+    await more.waitFor();
+    assert.equal(await more.getAttribute('aria-expanded'), 'false');
+    const text = page.locator(`#${await more.getAttribute('aria-controls')}`);
+    assert.equal(Math.round((await text.boundingBox()).height), 160, 'the long message shows 8 lines');
+    await more.click();
+    const less = page.getByRole('button', { name: 'Show less' });
+    await less.waitFor();
+    assert.equal(await less.getAttribute('aria-expanded'), 'true');
+    assert.ok((await text.boundingBox()).height > 160, 'Show more expands it');
+    await less.click();
+    await more.waitFor();
+    await settles(async () => Math.round((await text.boundingBox()).height), 160, 'Show less collapses it');
+    assert.equal(await page.locator('.ds-bubble__more').count(), 1, 'short messages get no toggle');
+  },
+  'thinking loader: in a chat, what it is doing is a status that rolls through the phases, then says how long it thought': async (page, base) => {
+    await page.goto(`${base}/iframe.html?id=patterns-thinking-loader--in-chat&viewMode=story`);
+    const status = page.getByRole('status');
+    await status.filter({ hasText: 'Reading 4 files…' }).waitFor();
+    assert.equal(await page.locator('.ds-thinking .ds-spinner').getAttribute('aria-hidden'), 'true', 'the spinner is only a picture');
+    await status.filter({ hasText: 'Searching the docs…' }).waitFor({ timeout: 4000 });
+    await status.filter({ hasText: 'Thought for 5 s' }).waitFor({ timeout: 8000 });
+    assert.equal(await page.locator('.ds-thinking--done svg').getAttribute('aria-hidden'), 'true');
+  },
   'stepper: a named ordered list; the current step is aria-current="step"; done and failed steps say so; Next and Back move the current step': async (page, base) => {
     await page.goto(`${base}/iframe.html?id=components-stepper--in-a-form&viewMode=story`);
     const stepper = page.getByRole('list', { name: 'Create a workspace' });

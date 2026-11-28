@@ -84,3 +84,14 @@ export { DsCitedAnswer, DsCitedAnswerIcon, type CitedAnswerLabels, type CitedAns
 export { DsInlineDiff, type InlineDiffDecision, type InlineDiffEdit, type InlineDiffLabels, type InlineDiffSegment } from './lib/inline-diff/inline-diff';
 export { DsPromptLibrary, estimateTokens, fillPrompt, promptGaps, promptParts, type PromptLibraryLabels, type PromptTemplate, type PromptValues } from './lib/prompt-library/prompt-library';
 export { DsMemoryPanel, DsMemoryPanelIcon, type Memory, type MemoryPanelLabels } from './lib/memory-panel/memory-panel';
+export { DsBubble, DsBubbleGroup, DsBubbleReactions, type BubbleReactionsPlacement, type BubbleVariant } from './lib/bubble/bubble';
+export {
+  DsAIChatComposer,
+  DsAIChatComposerToken,
+  DsComposerBadges,
+  DsComposerHeader,
+  DsComposerLeading,
+  DsComposerModel,
+  type AIChatComposerLayout,
+  type AIChatComposerState,
+} from './lib/ai-chat-composer/ai-chat-composer';

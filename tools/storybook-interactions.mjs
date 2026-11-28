@@ -2236,25 +2236,6 @@ Object.assign(tests, {
     const [inputBox, markBox] = await Promise.all([input.boundingBox(), composer.locator('.ds-ai-composer-token').boundingBox()]);
     assert.ok(markBox.x > inputBox.x && markBox.y >= inputBox.y - 1, 'the tint sits under the typed text');
 
-    await page.goto(url('long-text'));
-    const expand = page.getByRole('button', { name: 'Expand' });
-    await expand.waitFor();
-    const long = page.getByRole('textbox', { name: 'Message' });
-    const before = (await long.boundingBox()).height;
-    assert.ok(await long.evaluate((el) => el.scrollHeight > el.clientHeight), 'past 8 lines the prompt scrolls');
-    await expand.click();
-    await page.getByRole('button', { name: 'Collapse' }).waitFor();
-    assert.ok((await long.boundingBox()).height > before, 'expanded, the prompt grows');
-    assert.equal(await page.getByRole('button', { name: 'Collapse' }).getAttribute('aria-pressed'), 'true');
-
-    await page.goto(url('dictation'));
-    await page.getByRole('button', { name: 'Dictate' }).click();
-    await page.getByRole('button', { name: 'Stop recording' }).waitFor();
-    assert.ok(await page.locator('.ds-ai-composer__waveform i').count() > 10, 'recording shows the waveform');
-    await page.getByRole('button', { name: 'Stop recording' }).click();
-    await page.getByRole('status').filter({ hasText: 'Transcribing' }).waitFor();
-    await page.waitForFunction(() => document.querySelector('.ds-ai-composer__input')?.value.includes('vendor review'));
-    assert.equal(await page.getByRole('button', { name: 'Dictate' }).count(), 1, 'back to typing');
   },
   'attachment: a named group of files; uploading is busy; retry and remove act on the right file; card actions show on hover or focus only; a link card opens from anywhere on it; long names are cut with an ellipsis': async () => {
     const url = (id) => `http://localhost:6008/iframe.html?id=components-attachment--${id}&viewMode=story`;
@@ -2405,19 +2386,6 @@ Object.assign(tests, {
     const column = await page.locator('.ds-bubble-group').first().boundingBox();
     assert.ok(Math.abs(column.x + column.width - (b1.x + b1.width)) < 1, 'an end group aligns its bubbles to the end');
 
-    await page.goto('http://localhost:6008/iframe.html?id=components-bubble--long-message&viewMode=story');
-    const more = page.getByRole('button', { name: 'Show more' });
-    await more.waitFor();
-    assert.equal(await more.getAttribute('aria-expanded'), 'false');
-    const text = page.locator(`#${await more.getAttribute('aria-controls')}`);
-    assert.equal(Math.round((await text.boundingBox()).height), 160, 'the long message shows 8 lines');
-    await more.click();
-    const less = page.getByRole('button', { name: 'Show less' });
-    assert.equal(await less.getAttribute('aria-expanded'), 'true');
-    assert.ok((await text.boundingBox()).height > 160, 'Show more expands it');
-    await less.click();
-    assert.equal(Math.round((await text.boundingBox()).height), 160, 'Show less collapses it');
-    assert.equal(await page.locator('.ds-bubble__more').count(), 1, 'short messages get no toggle');
   },
   'carousel: a named carousel region of "n of total" slides; Previous / Next (disabled at the ends), the arrow keys, Home and End on the viewport, indicators and outside controls move it; slides out of view are hidden and inert; overlay controls are white over near-black pictures and dark over grey and light ones': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=components-carousel--demo&viewMode=story');
@@ -2650,15 +2618,6 @@ Object.assign(tests, {
     await page.getByRole('button', { name: 'Later' }).click();
     await page.getByRole('button', { name: 'Answer' }).click();
     assert.equal(await page.getByRole('heading', { name: 'Which plan should the new team start on?' }).isVisible(), true, 'Answer opens the card again');
-  },
-  'thinking loader: in a chat, what it is doing is a status that rolls through the phases, then says how long it thought': async () => {
-    await page.goto('http://localhost:6008/iframe.html?id=patterns-thinking-loader--in-chat&viewMode=story');
-    const status = page.getByRole('status');
-    await status.filter({ hasText: 'Reading 4 files…' }).waitFor();
-    assert.equal(await page.locator('.ds-thinking .ds-spinner').getAttribute('aria-hidden'), 'true', 'the spinner is only a picture');
-    await status.filter({ hasText: 'Searching the docs…' }).waitFor({ timeout: 4000 });
-    await status.filter({ hasText: 'Thought for 5 s' }).waitFor({ timeout: 8000 });
-    assert.equal(await page.locator('.ds-thinking--done svg').getAttribute('aria-hidden'), 'true');
   },
   'email draft: a card named by its subject; a tone rewrites it (busy, status) and lands; the pencil edits in place and Escape leaves; the attachment comes off; Ctrl+Enter sends and folds with Undo (focus follows), Undo brings it back; Discard folds with Restore; Undo runs out': async () => {
     await page.goto('http://localhost:6008/iframe.html?id=patterns-email-draft--review&viewMode=story');
