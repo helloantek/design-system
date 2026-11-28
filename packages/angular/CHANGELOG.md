@@ -1,5 +1,11 @@
 # @helloantek/ds-angular
 
+## 2.58.1
+
+### Patch Changes
+
+- @helloantek/ds-core@2.58.1
+
 ## 2.58.0
 
 ### Minor Changes
