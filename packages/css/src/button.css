@@ -183,7 +183,7 @@
 
     &.ds-button--default {
       --btn-bg: var(--ds-muted-foreground);
-      --btn-stroke: var(--ds-primary-border-disabled);
+      --btn-stroke: transparent; /* no border: Figma dropped primary-border-disabled */
       --btn-effect: var(--ds-controls-primary-control-disabled);
     }
 
