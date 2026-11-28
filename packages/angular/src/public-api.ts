@@ -95,3 +95,5 @@ export {
   type AIChatComposerLayout,
   type AIChatComposerState,
 } from './lib/ai-chat-composer/ai-chat-composer';
+export { DsWritingAssistant, DsWritingAssistantComposer, type WritingAssistantLabels, type WritingAssistantStatus } from './lib/writing-assistant/writing-assistant';
+export { DsEmailDraft, DsEmailDraftAgentIcon, DsEmailDraftStatus, type EmailDraftLabels, type EmailDraftOutcome, type EmailDraftTone } from './lib/email-draft/email-draft';
