@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-Diau3x_I.js";e();

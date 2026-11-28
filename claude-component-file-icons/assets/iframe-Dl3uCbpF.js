@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-BAUMTE2E.js";e();

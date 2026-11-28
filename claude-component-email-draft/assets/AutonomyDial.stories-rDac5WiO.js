@@ -1,0 +1,55 @@
+import{n as e}from"./rolldown-runtime-vtgMY1y5.js";import{n as t,p as n}from"./iframe-4j9267yI.js";import{It as r,Lt as i,Pt as a,Ut as o,Zt as s,_t as c,gn as l,ot as u}from"./react-DWOn_GiV.js";import{n as d,t as f}from"./Badge-CFU9snet.js";import{n as p,r as m,t as h}from"./ToggleGroup-BWsq242D.js";import{n as g,t as _}from"./Tooltip-DNSXGBEb.js";function runsOnItsOwn(e,t){return e.locked!==void 0&&e.locked!==!1?!1:t===`auto`||t===`risky`&&(e.risk??`safe`)===`safe`}function AutonomyDial({agent:e,agentIcon:t,description:n,value:r,defaultValue:o=`risky`,onValueChange:s,actions:c,labels:l={},className:u,...d}){let m=(0,v.useId)(),g={description:`What it may do without asking you`,dial:`Autonomy`,ask:`Always ask`,risky:`If risky`,auto:`Full auto`,runs:`Runs on its own`,asks:`Asks you first`,nothing:`Nothing – it asks before every action.`,riskyBadge:`Risky`,destructiveBadge:`Destructive`,locked:`Locked`,...l},[b,x]=(0,v.useState)(o),S=r??b,change=e=>{(e===`ask`||e===`risky`||e===`auto`)&&(r===void 0&&x(e),s?.(e))},C=c.filter(e=>runsOnItsOwn(e,S)),w=c.filter(e=>!runsOnItsOwn(e,S)),row=(e,t)=>{let n=e.locked!==void 0&&e.locked!==!1;return(0,y.jsxs)(`li`,{className:[`ds-autonomy__action`,n&&`ds-autonomy__action--locked`].filter(Boolean).join(` `),children:[e.icon,(0,y.jsx)(`span`,{className:`ds-autonomy__label`,children:e.label}),e.risk===`risky`&&(0,y.jsx)(f,{variant:`tint`,color:`amber`,children:g.riskyBadge}),e.risk===`destructive`&&(0,y.jsx)(f,{variant:`tint`,color:`red`,children:g.destructiveBadge}),n&&(0,y.jsx)(_,{content:e.locked,side:`left`,children:(0,y.jsx)(`button`,{type:`button`,className:`ds-autonomy__lock`,"aria-label":g.locked,children:(0,y.jsx)(i,{"aria-hidden":!0})})})]},t)};return(0,y.jsxs)(`section`,{...d,"aria-labelledby":d[`aria-label`]?void 0:`${m}-agent`,className:[`ds-autonomy`,u].filter(Boolean).join(` `),children:[(0,y.jsxs)(`div`,{className:`ds-autonomy__header`,children:[(0,y.jsxs)(`div`,{className:`ds-autonomy__agent`,children:[(0,y.jsx)(`span`,{className:`ds-autonomy__mark`,"aria-hidden":!0,children:t??(0,y.jsx)(a,{})}),(0,y.jsxs)(`div`,{children:[(0,y.jsx)(`p`,{className:`ds-autonomy__name`,id:`${m}-agent`,children:e}),(0,y.jsx)(`p`,{className:`ds-autonomy__description`,children:n??g.description})]})]}),(0,y.jsxs)(h,{type:`single`,value:S,onValueChange:change,"aria-label":g.dial,children:[(0,y.jsx)(p,{value:`ask`,children:g.ask}),(0,y.jsx)(p,{value:`risky`,children:g.risky}),(0,y.jsx)(p,{value:`auto`,children:g.auto})]})]}),(0,y.jsxs)(`div`,{className:`ds-autonomy__lists`,children:[(0,y.jsxs)(`div`,{className:`ds-autonomy__group`,children:[(0,y.jsxs)(`h4`,{className:`ds-autonomy__title`,id:`${m}-runs`,children:[g.runs,(0,y.jsx)(f,{variant:`tint`,color:`neutral`,children:C.length})]}),C.length>0?(0,y.jsx)(`ul`,{className:`ds-autonomy__actions`,"aria-labelledby":`${m}-runs`,children:C.map(row)}):(0,y.jsx)(`p`,{className:`ds-autonomy__empty`,children:g.nothing})]}),w.length>0&&(0,y.jsxs)(`div`,{className:`ds-autonomy__group`,children:[(0,y.jsxs)(`h4`,{className:`ds-autonomy__title`,id:`${m}-asks`,children:[g.asks,(0,y.jsx)(f,{variant:`tint`,color:`neutral`,children:w.length})]}),(0,y.jsx)(`ul`,{className:`ds-autonomy__actions`,"aria-labelledby":`${m}-asks`,children:w.map(row)})]})]})]})}var v,y;function init_AutonomyDial(){return(init_AutonomyDial=e((()=>{r(),v=n(),d(),m(),g(),y=t(),AutonomyDial.__docgenInfo={description:`How much one agent may do on its own: a three-stop dial, and its actions split between "Runs on its own" and "Asks you first".`,methods:[],displayName:`AutonomyDial`,props:{ref:{required:!1,tsType:{name:`Ref`,elements:[{name:`HTMLElement`}],raw:`Ref<HTMLElement>`},description:``},agent:{required:!0,tsType:{name:`ReactNode`},description:`The agent: "Support agent", and its mark (default a robot).`},agentIcon:{required:!1,tsType:{name:`ReactNode`},description:``},description:{required:!1,tsType:{name:`ReactNode`},description:`Under the agent (default "What it may do without asking you").`},value:{required:!1,tsType:{name:`union`,raw:`'ask' | 'risky' | 'auto'`,elements:[{name:`literal`,value:`'ask'`},{name:`literal`,value:`'risky'`},{name:`literal`,value:`'auto'`}]},description:"The stop: controlled (`value`, `onValueChange`) or not (`defaultValue`, default `risky`)."},defaultValue:{required:!1,tsType:{name:`union`,raw:`'ask' | 'risky' | 'auto'`,elements:[{name:`literal`,value:`'ask'`},{name:`literal`,value:`'risky'`},{name:`literal`,value:`'auto'`}]},description:``,defaultValue:{value:`'risky'`,computed:!1}},onValueChange:{required:!1,tsType:{name:`signature`,type:`function`,raw:`(value: AutonomyLevel) => void`,signature:{arguments:[{type:{name:`union`,raw:`'ask' | 'risky' | 'auto'`,elements:[{name:`literal`,value:`'ask'`},{name:`literal`,value:`'risky'`},{name:`literal`,value:`'auto'`}]},name:`value`}],return:{name:`void`}}},description:``},actions:{required:!0,tsType:{name:`Array`,elements:[{name:`AutonomyAction`}],raw:`AutonomyAction[]`},description:`Every action it can take, in order; the dial splits them between the two lists.`},labels:{required:!1,tsType:{name:`Partial`,elements:[{name:`signature`,type:`object`,raw:`{
+  description: string;
+  dial: string;
+  ask: string;
+  risky: string;
+  auto: string;
+  runs: string;
+  asks: string;
+  nothing: string;
+  riskyBadge: string;
+  destructiveBadge: string;
+  locked: string;
+}`,signature:{properties:[{key:`description`,value:{name:`string`,required:!0}},{key:`dial`,value:{name:`string`,required:!0}},{key:`ask`,value:{name:`string`,required:!0}},{key:`risky`,value:{name:`string`,required:!0}},{key:`auto`,value:{name:`string`,required:!0}},{key:`runs`,value:{name:`string`,required:!0}},{key:`asks`,value:{name:`string`,required:!0}},{key:`nothing`,value:{name:`string`,required:!0}},{key:`riskyBadge`,value:{name:`string`,required:!0}},{key:`destructiveBadge`,value:{name:`string`,required:!0}},{key:`locked`,value:{name:`string`,required:!0}}]}}],raw:`Partial<{
+  description: string;
+  dial: string;
+  ask: string;
+  risky: string;
+  auto: string;
+  runs: string;
+  asks: string;
+  nothing: string;
+  riskyBadge: string;
+  destructiveBadge: string;
+  locked: string;
+}>`},description:`Texts, for other languages.`,defaultValue:{value:`{}`,computed:!1}}},composes:[`Omit`]}})))()}var b,x,S,C,w,T,E,D,O,k;function init_AutonomyDial_stories(){return(init_AutonomyDial_stories=e((()=>{r(),b=n(),init_AutonomyDial(),x=t(),S={title:`Patterns/Autonomy Dial`,parameters:{docs:{description:{component:'The Sort UI 2.0 pattern **Autonomy Dial** ([open in Figma](https://www.figma.com/design/4JnqgEbdlnKgiFrfmiwEZw?node-id=6115-1920)): how much one agent may do on its own. Three stops – Always ask, If risky, Full auto – and every action it can take split between "Runs on its own" and "Asks you first", each with the tool it uses and how risky it is (`risk`: safe · risky · destructive). Moving the dial moves actions between the lists; `locked` ones always ask, and their lock says why.\n\n**When to use:** setting how much one agent may do on its own, and showing which actions run alone and which ask first.\n**When not to use:** granting one specific right for a limited time (use Permission Request), or the agent has no actions with side effects.'}}}},C={width:`min(420px, calc(100vw - 32px))`},w=[{label:`Read the help center`,icon:(0,x.jsx)(c,{"aria-hidden":!0})},{label:`Tag and sort tickets`,icon:(0,x.jsx)(u,{"aria-hidden":!0})},{label:`Draft replies`,icon:(0,x.jsx)(o,{"aria-hidden":!0})},{label:`Send replies`,icon:(0,x.jsx)(o,{"aria-hidden":!0}),risk:`risky`},{label:`Update customer records`,icon:(0,x.jsx)(u,{"aria-hidden":!0}),risk:`risky`},{label:`Give refunds`,icon:(0,x.jsx)(l,{"aria-hidden":!0}),risk:`destructive`,locked:`Locked by your admin: refunds always ask, whatever the dial says.`},{label:`Delete customer data`,icon:(0,x.jsx)(s,{"aria-hidden":!0}),risk:`destructive`,locked:`Locked by your admin: deleting data always asks, whatever the dial says.`}],T={render:function Render(){let[e,t]=(0,b.useState)(`risky`);return(0,x.jsx)(`div`,{style:C,children:(0,x.jsx)(AutonomyDial,{agent:`Support agent`,actions:w,value:e,onValueChange:t})})}},E={render:()=>(0,x.jsx)(`div`,{style:C,children:(0,x.jsx)(AutonomyDial,{agent:`Support agent`,actions:w,defaultValue:`ask`})})},D={render:()=>(0,x.jsx)(`div`,{style:C,children:(0,x.jsx)(AutonomyDial,{agent:`Support agent`,actions:w,defaultValue:`auto`})})},O={parameters:{layout:`fullscreen`},render:()=>(0,x.jsx)(`div`,{style:{display:`grid`,gridTemplateColumns:`repeat(auto-fit, minmax(340px, 1fr))`},children:[`light`,`dark`].map(e=>(0,x.jsx)(`div`,{"data-ds-brand":`theme-1`,"data-ds-scheme":e,style:{background:`var(--ds-background)`,padding:24},children:(0,x.jsx)(AutonomyDial,{"aria-label":`Support agent (${e})`,agent:`Support agent`,actions:w,defaultValue:`risky`})},e))})},k=[`IfRisky`,`AlwaysAsk`,`FullAuto`,`Themes`],T.parameters={...T.parameters,docs:{...T.parameters?.docs,source:{originalSource:`{
+  render: function Render() {
+    const [level, setLevel] = useState<AutonomyLevel>('risky');
+    return <div style={WIDTH}>
+        <AutonomyDial agent="Support agent" actions={ACTIONS} value={level} onValueChange={setLevel} />
+      </div>;
+  }
+}`,...T.parameters?.docs?.source},description:{story:`Figma "If risky": everyday work runs on its own, risky actions ask. Move the dial.`,...T.parameters?.docs?.description}}},E.parameters={...E.parameters,docs:{...E.parameters?.docs,source:{originalSource:`{
+  render: () => <div style={WIDTH}>
+      <AutonomyDial agent="Support agent" actions={ACTIONS} defaultValue="ask" />
+    </div>
+}`,...E.parameters?.docs?.source},description:{story:`Figma "Always ask": everything waits for you.`,...E.parameters?.docs?.description}}},D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`{
+  render: () => <div style={WIDTH}>
+      <AutonomyDial agent="Support agent" actions={ACTIONS} defaultValue="auto" />
+    </div>
+}`,...D.parameters?.docs?.source},description:{story:`Figma "Full auto": all but the locked actions move over; a lock says why on hover or focus.`,...D.parameters?.docs?.description}}},O.parameters={...O.parameters,docs:{...O.parameters?.docs,source:{originalSource:`{
+  parameters: {
+    layout: 'fullscreen'
+  },
+  render: () => <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))'
+  }}>
+      {(['light', 'dark'] as const).map(scheme => <div key={scheme} data-ds-brand="theme-1" data-ds-scheme={scheme} style={{
+      background: 'var(--ds-background)',
+      padding: 24
+    }}>
+          <AutonomyDial aria-label={\`Support agent (\${scheme})\`} agent="Support agent" actions={ACTIONS} defaultValue="risky" />
+        </div>)}
+    </div>
+}`,...O.parameters?.docs?.source},description:{story:`Light and Dark, driven only by tokens.`,...O.parameters?.docs?.description}}}})))()}init_AutonomyDial_stories();export{E as AlwaysAsk,D as FullAuto,T as IfRisky,O as Themes,k as __namedExportsOrder,S as default};
