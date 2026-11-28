@@ -124,7 +124,8 @@
 
   .ds-button--destructive {
     --btn-fg: var(--ds-destructive-foreground);
-    --btn-stroke: var(--ds-alpha-destructive-50);
+    /* The border is the label's colour (Figma: colors/destructive-foreground), in every state. */
+    --btn-stroke: var(--ds-destructive-foreground);
     --btn-badge-bg: var(--ds-alpha-destructive-10);
   }
 
@@ -169,7 +170,7 @@
     }
 
     &.ds-button--destructive {
-      --btn-stroke: var(--ds-destructive);
+      --btn-stroke: var(--ds-destructive-foreground);
       --btn-ring: 0 0 0 var(--ds-stroke-width-4) var(--ds-alpha-destructive-20);
     }
   }
