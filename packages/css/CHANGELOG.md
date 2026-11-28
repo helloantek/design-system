@@ -1,5 +1,11 @@
 # @helloantek/ds-css
 
+## 2.58.1
+
+### Patch Changes
+
+- 1375cbf: Button follows Sort UI 2.0's fixes: Destructive's border is the label's colour (`--ds-destructive-foreground`) in every state, Focus included (it was the 50 % destructive red, and the full `--ds-destructive` in Focus); Default in Focus no longer draws a second 0.5 px dark outline inside its ring; Default when disabled has no border (Figma dropped its `primary-border-disabled` stroke), and `--ds-controls-primary-control-disabled` loses its white 1 px top highlight.
+
 ## 2.58.0
 
 ### Minor Changes
