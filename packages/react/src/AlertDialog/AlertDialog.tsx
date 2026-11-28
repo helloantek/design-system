@@ -36,7 +36,7 @@ export interface AlertDialogProps extends Omit<DialogHTMLAttributes<HTMLDialogEl
 }
 
 /** Figma "Alert Dialog": a modal that asks to confirm an action. */
-export function AlertDialog({ trigger, open: openProp, defaultOpen = false, onOpenChange, size = 'default', variant = 'default', media, title, titleAs: Title = 'h2', description, children, className, onClose, ...rest }: AlertDialogProps) {
+export function AlertDialog({ trigger, open: openProp, defaultOpen = false, onOpenChange, size = 'default', variant = 'default', media, title, titleAs: Title = 'h2', description, children, className, onCancel, onClose, ...rest }: AlertDialogProps) {
   const [uncontrolled, setUncontrolled] = useState(defaultOpen);
   const open = openProp ?? uncontrolled;
   const dialog = useRef<HTMLDialogElement>(null);
@@ -80,9 +80,16 @@ export function AlertDialog({ trigger, open: openProp, defaultOpen = false, onOp
         aria-labelledby={titleId}
         aria-describedby={description !== undefined ? descriptionId : undefined}
         className={cx('ds-alert-dialog', size === 'sm' && 'ds-alert-dialog--sm', variant === 'destructive' && 'ds-alert-dialog--destructive', className)}
-        // Escape, a form with method="dialog" or close(): keep the state in step and give focus back.
+        // Escape: report the close at once, not a task later with the close event.
+        onCancel={(event) => {
+          onCancel?.(event);
+          if (!event.defaultPrevented) setOpen(false);
+        }}
+        // Escape, a form with method="dialog" or close(): keep the state in step and give focus back. A late close
+        // event for a dialog that has opened again since is not a close.
         onClose={(event) => {
           onClose?.(event);
+          if (dialog.current?.open) return;
           if (open) setOpen(false);
           returnFocus.current?.focus();
           returnFocus.current = null;

@@ -65,6 +65,7 @@ export function ModalPanel({
   width,
   className,
   style,
+  onCancel,
   onClose,
   onClick,
   before,
@@ -129,9 +130,16 @@ export function ModalPanel({
           const inside = event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom;
           if (!inside) setOpen(false);
         }}
-        // Escape, a form with method="dialog" or close(): keep the state in step and give focus back.
+        // Escape: report the close at once, not a task later with the close event.
+        onCancel={(event) => {
+          onCancel?.(event);
+          if (!event.defaultPrevented) setOpen(false);
+        }}
+        // Escape, a form with method="dialog" or close(): keep the state in step and give focus back. A late close
+        // event for a dialog that has opened again since is not a close.
         onClose={(event) => {
           onClose?.(event);
+          if (dialog.current?.open) return;
           if (open) setOpen(false);
           returnFocus.current?.focus();
           returnFocus.current = null;

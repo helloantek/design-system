@@ -49,6 +49,7 @@ export class DsDialogFooter {}
       [attr.aria-label]="ariaLabel() ?? null"
       [style.--dialog-width]="width() ?? null"
       (click)="backdrop($event)"
+      (cancel)="cancelled($event)"
       (close)="closed()"
     >
       @if (title() !== undefined || description() !== undefined || closeButton()) {
@@ -148,8 +149,15 @@ export class DsDialog {
     if (!inside) this.setOpen(false);
   }
 
-  // Escape, a form with method="dialog" or close(): keep the state in step and give focus back.
+  // Escape: report the close at once, not a task later with the close event.
+  protected cancelled(event: Event) {
+    if (!event.defaultPrevented) this.setOpen(false);
+  }
+
+  // Escape, a form with method="dialog" or close(): keep the state in step and give focus back. A late close event
+  // for a dialog that has opened again since is not a close.
   protected closed() {
+    if (this.dialog().nativeElement.open) return;
     this.setOpen(false);
     this.returnFocus?.focus();
     this.returnFocus = null;
